@@ -1,0 +1,125 @@
+<?php
+
+module_load_include('inc', 'bookbox', 'bookbox.functions');
+
+function bookbox_block_info() {
+  $blocks = array();
+
+  $blocks['MiniCart'] = array(
+    'info' => t('Mini cart'),
+  );
+
+  return $blocks;
+}
+
+function bookbox_block_view($delta = '') {
+  $block = array();
+
+  switch ($delta) {
+    case 'MiniCart':
+      $block['subject'] = '';
+      $form = drupal_get_form('bookbox_mini_cart_block');
+      $block['content'] = drupal_render($form);
+      break;
+  }
+
+  return $block;
+}
+
+function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state) {
+  $form_product = $form['product_id']['#value'];
+  $wrapper = _bookbox_get_cart_items();
+
+  foreach ($wrapper->commerce_line_items as $delta => $line_item_wrapper) {
+    $cart_product = $line_item_wrapper->commerce_product->value()->product_id;
+
+    if($form_product == $cart_product) {
+      $can_add2cart = false;
+      break;
+    }
+  }
+
+  if (!$can_add2cart) {
+    $form['submit']['#attributes']['disabled'] = TRUE;
+  }
+}
+
+function bookbox_mini_cart_block($form, &$form_state) {
+
+  $wrapper = _bookbox_get_cart_items();
+  $cart_count = 0;
+
+  $form['title'] = array(
+    '#type' => 'markup',
+    '#markup' => '<h3>Замовлення лютого</h3>', //todo
+  );
+
+  foreach ($wrapper->commerce_line_items as $delta => $line_item_wrapper) {
+    $cart_product = $line_item_wrapper->commerce_product->value()->product_id;
+
+    $product_display = _bookbox_get_product_display_by_product_id($cart_product);
+    //dsm($product_display);
+
+    if($product_display->nid) {
+      $cart_count = $cart_count + 1;
+
+      if($product_display->field_nni) {
+        $fid = $product_display->field_nni['und']['0']['fid'];
+        $file = file_load($fid);
+
+        if($file) {
+          $uri = $file->uri;
+          $img = '<img src=\'' . image_style_url("bookcover", $uri) . '\' />';
+
+          $form['book_cover'.$cart_count] = array(
+              '#type' => 'markup',
+              '#markup' => $img,
+          );
+        }
+      }
+
+      $form['book_'.$cart_count] = array(
+          '#type' => 'markup',
+          '#markup' => $product_display->title,
+      );
+
+      //if ($cart_count == 1) {
+        $form['del_from_cart_submit'.$cart_count] = array(
+            '#type' => 'submit',
+          //'#validate' => array('statistiques_form_validate'),
+            '#submit' => array('bookbox_delete_bookfromcart' .$cart_count),
+          //'#weight' => 10,
+            '#value' => 'del'.$cart_count,
+        );
+      //}
+    }
+  }
+
+  //todo
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    //'#validate' => array('statistiques_form_validate'),
+    '#submit' => array('bookbox_confirm_box_form_submit'),
+    '#weight' => 10,
+    '#value' => t('Підтвердити замовлення'), //todo
+  );
+
+  dsm($form);
+  return $form;
+
+}
+
+function bookbox_delete_bookfromcart1 () {
+  drupal_set_message('11');
+}
+
+
+function bookbox_delete_bookfromcart2 () {
+  drupal_set_message('222');
+  //commerce_cart_order_product_line_item_delete($order, $line_item_id, $skip_save = FALSE)
+}
+
+function _confirm_box_form_submit() {
+  drupal_set_message('333');
+}

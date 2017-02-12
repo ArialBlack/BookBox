@@ -1,0 +1,11 @@
+name = Bookbox
+description = Bookbox functions
+core = 7.x
+package = Bookbox
+
+dependencies[] = commerce
+
+version = "7.x-1.0"
+core = "7.x"
+
+
