@@ -5,9 +5,14 @@ function _bookbox_get_cart_items() {
   $can_add2cart = true;
 
   $order = commerce_cart_order_load($user->uid);
-  $wrapper = entity_metadata_wrapper('commerce_order', $order);
+  if ($order) {
+    $wrapper = entity_metadata_wrapper('commerce_order', $order);
+    return $wrapper;
+  } else {
+    return false;
+  }
 
-  return $wrapper;
+
 }
 
 function _bookbox_get_product_display_by_product_id($product_id, $bundle = 'product_display', $field_name = 'field_bookfields') {
