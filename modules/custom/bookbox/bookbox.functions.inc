@@ -11,8 +11,6 @@ function _bookbox_get_cart_items() {
   } else {
     return false;
   }
-
-
 }
 
 function _bookbox_get_product_display_by_product_id($product_id, $bundle = 'product_display', $field_name = 'field_bookfields') {
@@ -36,9 +34,13 @@ function bookbox_get_in_prolong() {
   global $user;
 
   $result = db_select('commerce_order', 'o')
-      ->fields('o', array('order_id'))
-      ->condition('o.status', 'completed')
+      ->fields('o', array('order_id', 'status'))
       ->condition('o.uid', $user->uid)
+      ->condition(
+          db_or()
+              ->condition('o.status', 'completed')
+              ->condition('o.status', 'prolong')
+      )
       ->orderBy('o.order_id', 'DESC')
       ->range(0,2)
       ->execute()->fetchAll();

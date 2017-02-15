@@ -1,0 +1,98 @@
+<?php
+
+
+// Блок ЧИТАЮ СЕЙЧАС
+//
+function bookbox_reading_now_block ($form, &$form_state) {
+
+    $form['title'] = array(
+        '#type' => 'markup',
+        '#markup' => '<h3>Зараз читаю</h3>', //todo
+    );
+
+    $result = bookbox_get_in_prolong();
+    dsm($result);
+
+    if ($result) {
+        $box_count = 0;
+
+        foreach ($result as $res) {
+            //
+            $order = commerce_order_load($res->order_id);
+
+            //dsm($order);
+
+            $line_item_id = $order->commerce_line_items['und'][0]['line_item_id'];
+            $line_item = commerce_line_item_load($line_item_id);
+            $product_id =  $line_item->commerce_product['und'][0]['product_id'];
+            $product_display = _bookbox_get_product_display_by_product_id($product_id);
+
+            if ($product_display->nid) {
+                $box_count = $box_count + 1;
+
+                if ($product_display->field_nni) {
+                    $fid = $product_display->field_nni['und']['0']['fid'];
+                    $file = file_load($fid);
+
+                    if ($file) {
+                        $uri = $file->uri;
+                        $img = '<img src=\'' . image_style_url("bookcover", $uri) . '\' />';
+
+                        $form['book_cover' . $box_count] = array(
+                            '#type' => 'markup',
+                            '#markup' => $img,
+                        );
+                    }
+                }
+
+                $form['book_' . $box_count] = array(
+                    '#type' => 'markup',
+                    '#markup' => $product_display->title,
+                );
+
+                //todo
+                switch ($res->status) {
+                    case 'completed':
+                        $form['prolong_book' . $box_count] = array(
+                            '#type' => 'submit',
+                            '#submit' => array('bookbox_prolongbook' . $box_count),
+                            '#value' => t('Prolong book ') . $box_count,
+                        );
+                        break;
+
+                    case 'prolong':
+                        $form['prolong_book' . $box_count] = array(
+                            '#type' => 'submit',
+                            //'#submit' => array('bookbox_prolongbook' . $box_count),
+                            '#value' => t('Already prolonged book ') . $box_count,
+                        );
+                        $form['prolong_book' . $box_count]['#attributes']['disabled'] = TRUE;
+                        break;
+                }
+            }
+
+        }
+    }
+
+    return $form;
+}
+
+function bookbox_prolongbook1($form, &$form_state) {
+    $result = bookbox_get_in_prolong();
+
+    if ($result) {
+        $order_id = $result[0]->order_id;
+        $order = commerce_order_load($order_id);
+        commerce_order_status_update($order, 'prolong', $skip_save = FALSE, $revision = NULL, $log = '');
+    }
+}
+
+function bookbox_prolongbook2($form, &$form_state) {
+    $result = bookbox_get_in_prolong();
+
+    if ($result && count($result) > 1) {
+        $order_id = $result[1]->order_id;
+        $order = commerce_order_load($order_id);
+        commerce_order_status_update($order, 'prolong', $skip_save = FALSE, $revision = NULL, $log = '');
+    }
+}
