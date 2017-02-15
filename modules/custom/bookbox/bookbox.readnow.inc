@@ -4,14 +4,15 @@
 // Блок ЧИТАЮ СЕЙЧАС
 //
 function bookbox_reading_now_block ($form, &$form_state) {
+    $title = variable_get('readingNow_title');
 
     $form['title'] = array(
         '#type' => 'markup',
-        '#markup' => '<h3>Зараз читаю</h3>', //todo
+        '#markup' => '<h3>' . $title . ' </h3>', //todo
     );
 
     $result = bookbox_get_in_prolong();
-    dsm($result);
+    //dsm($result);
 
     if ($result) {
         $box_count = 0;

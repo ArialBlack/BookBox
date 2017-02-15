@@ -4,6 +4,24 @@ module_load_include('inc', 'bookbox', 'bookbox.functions');
 module_load_include('inc', 'bookbox', 'bookbox.forms');
 module_load_include('inc', 'bookbox', 'bookbox.cart');
 module_load_include('inc', 'bookbox', 'bookbox.readnow');
+module_load_include('inc', 'bookbox', 'bookbox.adminmessages');
+
+function bookbox_menu(){
+  $items=array();
+  
+  $items['admin/bookbox/labels'] = array(
+      'title' => 'Bookbox admin labels',
+      'description' => 'Admin labels',
+      'type' => MENU_NORMAL_ITEM,
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('bookbox_admin_labels_form'),
+      'access arguments' => array('access adminstration page'),
+      'access callback' => TRUE,
+  );
+  
+  return $items;
+}
+
 
 function bookbox_block_info() {
   $blocks = array();
