@@ -27,3 +27,21 @@ function _bookbox_get_product_display_by_product_id($product_id, $bundle = 'prod
     return node_load($product_display_nid);
   }
 }
+
+function bookbox_count_in_prolong() {
+  return count(bookbox_get_in_prolong());
+}
+
+function bookbox_get_in_prolong() {
+  global $user;
+
+  $result = db_select('commerce_order', 'o')
+      ->fields('o', array('order_id'))
+      ->condition('o.status', 'completed')
+      ->condition('o.uid', $user->uid)
+      ->orderBy('o.order_id', 'DESC')
+      ->range(0,2)
+      ->execute()->fetchAll();
+
+  return $result;
+}

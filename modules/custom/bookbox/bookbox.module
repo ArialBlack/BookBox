@@ -9,6 +9,10 @@ function bookbox_block_info() {
     'info' => t('Mini cart'),
   );
 
+  $blocks['ReadingNow'] = array(
+      'info' => t('Reading now'),
+  );
+
   return $blocks;
 }
 
@@ -19,11 +23,13 @@ function bookbox_block_view($delta = '') {
     case 'MiniCart':
       $block['subject'] = '';
       $form = drupal_get_form('bookbox_mini_cart_block');
-      if(isset($form['book_1'])) {
-        $block['content'] = drupal_render($form);
-      } else {
-        $block['content'] = null;
-      }
+      $block['content'] = drupal_render($form);
+      break;
+
+    case 'ReadingNow':
+      $block['subject'] = '';
+      $form = drupal_get_form('bookbox_reading_now_block');
+      $block['content'] = drupal_render($form);
       break;
   }
 
@@ -36,6 +42,9 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state)
   // а если есть книжка из заказа прошлого месяца то 1
   // а если 2 то 0
   // если эта книга уже в заказе на продление то тоже не добавлять
+
+  //todo
+  //может быть 0 книг в корзине но 1 или 2 в продленке
   $form_product = $form['product_id']['#value'];
   $wrapper = _bookbox_get_cart_items();
   $can_add2cart = true;
@@ -56,8 +65,12 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state)
   }
 }
 
-function bookbox_mini_cart_block($form, &$form_state)
-{
+function bookbox_mini_cart_block($form, &$form_state) {
+  $form['title'] = array(
+    '#type' => 'markup',
+    '#markup' => '<h3>Замовлення лютого</h3>', //todo
+  );
+
   //todo
   // если у нас есть книжки их прошлого месяца то тогда что?
   // если 1 из прошлого то показывать 1 свободное место
@@ -65,11 +78,6 @@ function bookbox_mini_cart_block($form, &$form_state)
   $cart_count = 0;
 
   if ($wrapper) {
-    $form['title'] = array(
-        '#type' => 'markup',
-        '#markup' => '<h3>Замовлення лютого</h3>', //todo
-    );
-
     foreach ($wrapper->commerce_line_items as $delta => $line_item_wrapper) {
       $cart_product = $line_item_wrapper->commerce_product->value()->product_id;
 
@@ -106,7 +114,7 @@ function bookbox_mini_cart_block($form, &$form_state)
       }
     }
   }
-
+  
   if ($cart_count > 0) {
     $form['submit_box'] = array(
         '#type' => 'submit',
@@ -115,11 +123,89 @@ function bookbox_mini_cart_block($form, &$form_state)
         '#weight' => 10,
         '#value' => t('Підтвердити замовлення'), //todo
     );
+  }
 
-    if ($cart_count < 2) {
-      //todo можно один сабмитить если 1 книга в продлении :TRUE
-      $form['submit_box']['#attributes']['disabled'] = FALSE;
-      //dsm($form, 'form');
+  if ($cart_count < 2) {
+    $in_prolong = bookbox_count_in_prolong();
+    $empty_cells = 2 - $cart_count - $in_prolong;
+
+
+    for($i=0; $i <$empty_cells;$i++) {
+      dsm($empty_cells);
+
+      $form['add_book_link_'.$i] = array(
+          '#type' => 'markup',
+          '#markup' => '<a class="add_some_book" href="/books">Оберіть книгу</a>',
+      );
+
+    }
+
+    //todo можно один сабмитить если 1 книга в продлении :TRUE
+    $form['submit_box']['#attributes']['disabled'] = FALSE;
+    //dsm($form, 'form');
+  }
+
+  return $form;
+}
+
+
+// Блок ЧИТАЮ СЕЙЧАС
+//
+function bookbox_reading_now_block ($form, &$form_state) {
+
+  $form['title'] = array(
+      '#type' => 'markup',
+      '#markup' => '<h3>Зараз читаю</h3>', //todo
+  );
+
+  $result = bookbox_get_in_prolong();
+  //dsm($result);
+
+  if ($result) {
+    $box_count = 0;
+
+    foreach ($result as $res) {
+      //
+      $order = commerce_order_load($res->order_id);
+
+      dsm($order);
+
+      $line_item_id = $order->commerce_line_items['und'][0]['line_item_id'];
+      $line_item = commerce_line_item_load($line_item_id);
+      $product_id =  $line_item->commerce_product['und'][0]['product_id'];
+      $product_display = _bookbox_get_product_display_by_product_id($product_id);
+
+      if ($product_display->nid) {
+        $box_count = $box_count + 1;
+
+        if ($product_display->field_nni) {
+          $fid = $product_display->field_nni['und']['0']['fid'];
+          $file = file_load($fid);
+
+          if ($file) {
+            $uri = $file->uri;
+            $img = '<img src=\'' . image_style_url("bookcover", $uri) . '\' />';
+
+            $form['book_cover' . $box_count] = array(
+                '#type' => 'markup',
+                '#markup' => $img,
+            );
+          }
+        }
+
+        $form['book_' . $box_count] = array(
+            '#type' => 'markup',
+            '#markup' => $product_display->title,
+        );
+
+        //todo
+        $form['prolong_book' . $box_count] = array(
+            '#type' => 'submit',
+            '#submit' => array('bookbox_prolongbook' . $box_count),
+            '#value' => t('Подовжити'),
+        );
+      }
+
     }
   }
 
@@ -177,5 +263,33 @@ function bookbox_confirm_box($form, &$form_state) {
 
     //5. проапдейтим статус второго товара
     commerce_order_status_update($order, 'completed', $skip_save = FALSE, $revision = NULL, $log = '');
+  }
+}
+
+function bookbox_form_alter(&$form, &$form_state, $form_id){
+  if ($form['#id'] == 'user-register-form') {
+    $form['#validate'][] = 'bookbox_registeruser_validate';
+  }
+}
+
+function bookbox_registeruser_validate($form, &$form_state) {
+  $company_id = $form_state['values']['field_company']['und'][0]['target_id'];
+  $usermail = $form_state['values']['mail'];
+
+  if ($usermail && $company_id) {
+    $usermail_domain = substr(strrchr($usermail, "@"), 1);
+    $node = node_load($company_id);
+    $domains = $node->field_maildomain['und'];
+    $in_list = false;
+
+    for($i = 0; $i < count($domains); $i++) {
+      if ($domains[$i]['value'] == $usermail_domain) {
+        $in_list = true;
+      }
+    }
+
+    if (!$in_list) {
+      form_set_error('mail', 'Ваш email не співпадає з обранною компанією');
+    }
   }
 }
