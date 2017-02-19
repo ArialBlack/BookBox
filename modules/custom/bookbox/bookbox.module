@@ -22,7 +22,6 @@ function bookbox_menu(){
   return $items;
 }
 
-
 function bookbox_block_info() {
   $blocks = array();
 
@@ -58,27 +57,46 @@ function bookbox_block_view($delta = '') {
 }
 
 function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state) {
-  //todo
   // можно добавить максимум 2
   // а если есть книжка из заказа прошлого месяца то 1
   // а если 2 то 0
-  // если эта книга уже в заказе на продление то тоже не добавлять
-
-  //todo
-  //может быть 0 книг в корзине но 1 или 2 в продленке
-  $form_product = $form['product_id']['#value'];
-  $wrapper = _bookbox_get_cart_items();
   $can_add2cart = true;
+  $in_prolong = 0;
+  $in_cart = 0;
 
+
+  if (isset($form['product_id'])) {
+    $form_product = $form['product_id']['#value'];
+  }
+
+  $wrapper = _bookbox_get_cart_items();
+
+  //что-то есть в корзине
   if ($wrapper) {
     foreach ($wrapper->commerce_line_items as $delta => $line_item_wrapper) {
       $cart_product = $line_item_wrapper->commerce_product->value()->product_id;
+      $in_cart = $in_cart + 1;
 
       if($form_product == $cart_product) {
-        $can_add2cart = false;
+        $can_add2cart = false; // если эта книга уже в корзине, то нечего ее добавлять, ок, да?
         break;
       }
     }
+  }
+
+  $prolong = bookbox_get_in_prolong();
+
+  //что-то продлено
+  if($prolong) {
+    foreach($prolong as $item) {
+      if ($item->status == 'prolong') {
+        $in_prolong = $in_prolong + 1;
+      }
+    }
+  }
+
+  if ($in_cart + $in_prolong >= 2) {
+    $can_add2cart = false;
   }
 
   if (!$can_add2cart) {

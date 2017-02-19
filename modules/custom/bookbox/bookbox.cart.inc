@@ -4,7 +4,7 @@
 function bookbox_mini_cart_block($form, &$form_state) {
     $form['title'] = array(
         '#type' => 'markup',
-        '#markup' => '<h3>Замовлення лютого</h3>', //todo
+        '#markup' => '<h3>Замовлення '. ua_month() . '</h3>',
     );
 
     //todo
@@ -50,34 +50,43 @@ function bookbox_mini_cart_block($form, &$form_state) {
             }
         }
     }
+    
+    $in_prolong = bookbox_count_in_prolong();
+    $in_confirm = bookbox_get_in_confirm();
 
+    dsm(bookbox_count_in_confirm_this_month());
+
+    // кнопка подтверждения доступна если
+    // 1. число 1- 20
+    // и 2.колво выбраных + кол-во в пролонге = 2
+    /////// если колво выбраных + пролонг > 2 и (1.) писать "удалите одну"
+    // 3. если он уже подтверждал выбор в этом мес (полтв в этом мес > 0)
+    // писать вы уже какбе того
+
+
+/*
     if ($cart_count > 0) {
         $form['submit_box'] = array(
             '#type' => 'submit',
-            //'#validate' => array('statistiques_form_validate'),
             '#submit' => array('bookbox_confirm_box'),
             '#weight' => 10,
             '#value' => t('Підтвердити замовлення'), //todo
         );
-    }
+    }*/
 
     if ($cart_count < 2) {
         $in_prolong = bookbox_count_in_prolong();
         $empty_cells = 2 - $cart_count - $in_prolong;
 
-
         for($i=0; $i <$empty_cells;$i++) {
-            //dsm($empty_cells);
-
             $form['add_book_link_'.$i] = array(
                 '#type' => 'markup',
                 '#markup' => '<a class="add_some_book" href="/books">Оберіть книгу</a>',
             );
 
         }
-
         //todo можно один сабмитить если 1 книга в продлении :TRUE
-        $form['submit_box']['#attributes']['disabled'] = FALSE;
+        //$form['submit_box']['#attributes']['disabled'] = FALSE;
         //dsm($form, 'form');
     }
 
@@ -109,11 +118,21 @@ function bookbox_confirm_box($form, &$form_state) {
     drupal_set_message('confirm');
     global $user;
 
+    $prolong = bookbox_get_in_prolong();
+    $in_prolong = 0;
+    //что-то продлено
+    if($prolong) {
+        foreach($prolong as $item) {
+            if ($item->status == 'prolong') {
+                $in_prolong = $in_prolong + 1;
+            }
+        }
+    }
+
     $order = commerce_cart_order_load($user->uid);
     //dsm($order, 'order');
 
-    //todo в принципе юзер может подтвердать и один товар если второй в продленке на этот мес
-    if(count($order->commerce_line_items['und']) > 1) {
+    if(count($order->commerce_line_items['und']) + $in_prolong == 2) {
         // 1. запомним второй товар
         $line_item_id2 = $order->commerce_line_items['und'][1]['line_item_id'];
         $line_item2 = commerce_line_item_load($line_item_id2); // второй товар
@@ -138,5 +157,7 @@ function bookbox_confirm_box($form, &$form_state) {
 
         //5. проапдейтим статус второго товара
         commerce_order_status_update($order, 'completed', $skip_save = FALSE, $revision = NULL, $log = '');
+    } else {
+        drupal_set_message('Error');
     }
 }
