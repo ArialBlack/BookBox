@@ -62,6 +62,38 @@ function bookbox_mini_cart_block($form, &$form_state) {
     /////// если колво выбраных + пролонг > 2 и (1.) писать "удалите одну"
     // 3. если он уже подтверждал выбор в этом мес (полтв в этом мес > 0)
     // писать вы уже какбе того
+    dsm('this', bookbox_count_in_confirm_this_month());
+
+    if(current_period() == 1 && bookbox_count_in_confirm_this_month() == 0 && $cart_count > 0) {
+        //может быть кнопка. 1-20 число и еще не потверждал и что-то есть в корзине
+        if ($cart_count + bookbox_count_in_prolong() == 2) {
+            $form['submit_box'] = array(
+                '#type' => 'submit',
+                '#submit' => array('bookbox_confirm_box'),
+                '#weight' => 10,
+                '#value' => t('Підтвердити замовлення'), //todo
+            );
+        }
+
+        if ($cart_count + bookbox_count_in_prolong() == 3 && bookbox_count_in_prolong() == 1) {
+            $form['submit_box_markup'] = array(
+                '#type' => 'markup',
+                '#markup' => 'Удалите одну книгу для подтверждения заказа'
+            );
+        }
+
+        if ($cart_count + bookbox_count_in_prolong() > 3) {
+            $form['submit_box_markup'] = array(
+                '#type' => 'markup',
+                '#markup' => 'Подтвердите заказ с 1-го числа следующего месяца'
+            );
+        }
+    } else {
+        $form['submit_box_markup'] = array(
+            '#type' => 'markup',
+            '#markup' => 'Подтвердите заказ с 1-го числа следующего месяца'
+        );
+    }
 
 
 /*
@@ -74,9 +106,11 @@ function bookbox_mini_cart_block($form, &$form_state) {
         );
     }*/
 
+    dsm('c', $cart_count);
+
     if ($cart_count < 2) {
         $in_prolong = bookbox_count_in_prolong();
-        $empty_cells = 2 - $cart_count - $in_prolong;
+        $empty_cells = 2 - $cart_count;
 
         for($i=0; $i <$empty_cells;$i++) {
             $form['add_book_link_'.$i] = array(

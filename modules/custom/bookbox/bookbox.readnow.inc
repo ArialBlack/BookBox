@@ -11,8 +11,8 @@ function bookbox_reading_now_block ($form, &$form_state) {
         '#markup' => '<h3>' . $title . ' </h3>', //todo
     );
 
-    $result = bookbox_get_in_prolong();
-    //dsm($result);
+    $result = bookbox_get_in_reading_now();
+    dsm($result);
 
     if ($result) {
         $box_count = 0;
@@ -54,13 +54,15 @@ function bookbox_reading_now_block ($form, &$form_state) {
                 //todo
                 switch ($res->status) {
                     case 'completed':
-                        $form['prolong_book' . $box_count] = array(
-                            '#type' => 'submit',
-                            '#submit' => array('bookbox_prolongbook' . $box_count),
-                            '#value' => t('Prolong book ') . $box_count,
-                        );
-                        break;
+                        if(current_period() == 1) {
+                            $form['prolong_book' . $box_count] = array(
+                                '#type' => 'submit',
+                                '#submit' => array('bookbox_prolongbook' . $box_count),
+                                '#value' => t('Prolong book ') . $box_count,
+                            );
 
+                        }
+                        break;
                     case 'prolong':
                         $form['prolong_book' . $box_count] = array(
                             '#type' => 'submit',
@@ -79,7 +81,7 @@ function bookbox_reading_now_block ($form, &$form_state) {
 }
 
 function bookbox_prolongbook1($form, &$form_state) {
-    $result = bookbox_get_in_prolong();
+    $result = bookbox_get_in_reading_now();
 
     if ($result) {
         $order_id = $result[0]->order_id;
@@ -89,7 +91,7 @@ function bookbox_prolongbook1($form, &$form_state) {
 }
 
 function bookbox_prolongbook2($form, &$form_state) {
-    $result = bookbox_get_in_prolong();
+    $result = bookbox_get_in_reading_now();
 
     if ($result && count($result) > 1) {
         $order_id = $result[1]->order_id;

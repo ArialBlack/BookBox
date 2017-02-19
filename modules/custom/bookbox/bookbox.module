@@ -58,12 +58,8 @@ function bookbox_block_view($delta = '') {
 
 function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state) {
   // можно добавить максимум 2
-  // а если есть книжка из заказа прошлого месяца то 1
-  // а если 2 то 0
   $can_add2cart = true;
-  $in_prolong = 0;
   $in_cart = 0;
-
 
   if (isset($form['product_id'])) {
     $form_product = $form['product_id']['#value'];
@@ -84,22 +80,49 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state)
     }
   }
 
-  $prolong = bookbox_get_in_prolong();
-
-  //что-то продлено
-  if($prolong) {
-    foreach($prolong as $item) {
-      if ($item->status == 'prolong') {
-        $in_prolong = $in_prolong + 1;
-      }
-    }
-  }
-
-  if ($in_cart + $in_prolong >= 2) {
+  if ($in_cart == 2) {
     $can_add2cart = false;
   }
 
   if (!$can_add2cart) {
     $form['submit']['#attributes']['disabled'] = TRUE;
   }
+}
+
+// Крон работы
+function bookbox_cron() {
+  if(intval(d()) == 1) {
+    $result = db_select('commerce_order', 'o')
+        ->fields('o', array('order_id', 'status', 'changed'))
+        ->condition(
+            db_or()
+                ->condition('o.status', 'completed')
+                ->condition('o.status', 'prolong')
+        )
+        ->orderBy('o.order_id', 'DESC')
+        ->execute()->fetchAll();
+    
+    foreach ($result as $item) {
+      $order_month = intval(date('m', $item->changed));
+      //1-го числа мы удаляем все книги из "я читаю" если они были заказаны в прошлом месяце - меняем статус на архив
+      if($item->status == 'completed' && $order_month < intval(m())) {
+        //dsm('в архив!');
+        $order = commerce_order_load($item->order_id);
+        commerce_order_status_update($order, 'archive', $skip_save = FALSE, $revision = NULL, $log = '');
+      }
+
+      //1-го числа мы меняем статус всех книг "пролонг" из "я читаю" на "подтверждено" и меняем дату так как будто они были подтверждены в этом месяце
+      if($item->status == 'prolong' && $order_month < intval(m())) {
+        db_update('commerce_order')
+            ->fields(array('changed' => time ()))
+            ->fields(array('status' => 'completed'))
+            ->condition('order_id', $item->order_id)
+            ->execute();
+      }
+    }
+  }
+
+  //Мейл рассылка:
+
+
 }

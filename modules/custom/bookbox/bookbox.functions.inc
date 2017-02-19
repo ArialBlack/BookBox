@@ -1,14 +1,35 @@
 <?php
 
+function m() {
+  $month = date("m");
+
+  //hack month for testing
+  $month = '03';
+
+  return $month;
+}
+
+
+function d() {
+  $day = date("d");
+
+  //hack day for testing
+  $day = '1';
+
+  return $day;
+}
+
+
+
 function ua_month() {
-  $current_date = intval(date("m")) - 1;
+  $current_date = intval(m()) - 1;
   $ua_monthes = ['січня', 'лютого', 'березня', 'квітня', 'травня','червня', 'липня', 'серпня', 'вересня', 'жовтня', 'листопада', 'грудня'];
 
   return $ua_monthes[$current_date];
 }
 
 function current_period() {
-  $current_date = date("d");
+  $current_date = d();
   $period = 0;
 
   if ($current_date >=1 && $current_date <=20) {
@@ -17,8 +38,6 @@ function current_period() {
     $period = 2;
   }
 
-  //hack period for testing
-  $period = 1;
   return $period;
 }
 
@@ -91,7 +110,7 @@ function bookbox_count_in_confirm_this_month() {
   $in_confirm_this_month = 0;
 
   foreach(bookbox_get_in_confirm() as $item) {
-    if (date("m", $item->changed) == date("m")) {
+    if (date("m", $item->changed) == m()) {
       $in_confirm_this_month = $in_confirm_this_month + 1;
     }
   }
@@ -111,6 +130,24 @@ function bookbox_get_in_confirm() {
       //        ->condition('o.status', 'prolong')
       //)
       ->condition('o.status', 'completed')
+      ->orderBy('o.order_id', 'DESC')
+      ->range(0,2)
+      ->execute()->fetchAll();
+
+  return $result;
+}
+
+function bookbox_get_in_reading_now() {
+  global $user;
+
+  $result = db_select('commerce_order', 'o')
+      ->fields('o', array('order_id', 'status'))
+      ->condition('o.uid', $user->uid)
+      ->condition(
+          db_or()
+              ->condition('o.status', 'completed')
+              ->condition('o.status', 'prolong')
+      )
       ->orderBy('o.order_id', 'DESC')
       ->range(0,2)
       ->execute()->fetchAll();
