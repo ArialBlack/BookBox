@@ -1,0 +1,40 @@
+.node-location {
+  &.node-teaser {
+    &.red {
+      background: @dostupno-red;
+    }
+    &.yellow {
+      background: @dostupno-yellow;
+    }
+    &.green {
+      background: @dostupno-green;
+    }
+
+
+  }
+
+  .field-name-field-place-revision-photo  {
+     float: left;
+     margin-right: 60px;
+
+    img {
+      width: 300px;
+    }
+  }
+
+  .field-name-field-field-place-type  {
+    float: left;
+
+    .field-item {
+      &:after {
+        content: ': ';
+        margin-right: 10px;
+      }
+    }
+  }
+
+  .field-name-field-place-revision-rating  {
+    margin-left: 10px;
+    text-transform: lowercase;
+  }
+}

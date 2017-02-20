@@ -1,0 +1,63 @@
+#bpMArker {
+    display: inline-block;
+    visibility: visible;
+    height: 1px;
+    width: 1px;
+    
+    @media (min-width: 1200px) {
+        display: none;
+        visibility: hidden;
+    }
+}
+
+.not-front {
+    @media (min-width: 992px) {
+        #bpMArker {
+            display: none;
+            visibility: hidden;
+        }
+    }
+}
+
+html {
+    height: 100%;
+    font-size: @basefontsize * 1px;
+}
+
+body {
+    .f("l");
+    font-size: 20px;
+    font-size: 1rem;
+    font-family: 'Roboto', sans-serif;
+    line-height: 140%;
+} 
+
+h1, h2, h3, h4, h5, h6 {
+    .f("l");
+    font-family: 'Roboto', sans-serif;
+}
+
+p {
+    margin-bottom: 40px;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.translation_en,
+.translation_uk {
+    display: none !important;
+}
+
+.view-cities {
+    margin-top: 40px;
+
+    .views-row {
+        display: inline;
+        float: left;
+        margin-right: 20px;
+        margin-bottom: 20px;
+    }
+}
