@@ -88,8 +88,13 @@
 
   <div class="row">
 
+    <div class="col-sm-12">
+      <?php print $messages; ?>
+      <?php print render($page['precontent']); ?>
+    </div>
+
     <?php if (!empty($page['sidebar_first'])): ?>
-      <aside class="col-sm-4" role="complementary">
+      <aside class="col-sm-3" role="complementary">
         <?php print render($page['sidebar_first']); ?>
       </aside>  <!-- /#sidebar-first -->
     <?php endif; ?>
@@ -105,7 +110,6 @@
         <h1 class="page-header"><?php print $title; ?></h1>
       <?php endif; ?>
       <?php print render($title_suffix); ?>
-      <?php print $messages; ?>
       <?php if (!empty($tabs)): ?>
         <?php print render($tabs); ?>
       <?php endif; ?>

@@ -87,20 +87,18 @@
   </header> <!-- /#page-header -->
 
   <div class="row">
-
-    <?php if (!empty($page['sidebar_first'])): ?>
-      <aside class="col-sm-4" role="complementary">
-        <?php print render($page['sidebar_first']); ?>
-      </aside>  <!-- /#sidebar-first -->
-    <?php endif; ?>
+    <div class="col-sm-12">
+      <?php print $messages; ?>
+      <?php print render($page['precontent']); ?>
+    </div>
  
-    <section<?php print $content_column_class; ?>>
+    <section class="col-sm-8">
       <?php if (!empty($page['highlighted'])): ?>
         <div class="highlighted jumbotron"><?php print render($page['highlighted']); ?></div>
       <?php endif; ?>
       <?php if (!empty($breadcrumb)): print $breadcrumb; endif;?>
       <a id="main-content"></a>
-      <?php print $messages; ?>
+
       <?php if (!empty($tabs)): ?>
         <?php print render($tabs); ?>
       <?php endif; ?>

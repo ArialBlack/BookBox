@@ -72,6 +72,20 @@ function bookbox_ui_preprocess_page(&$vars) {
     //
     // Latter items take precedence.
   }
+
+
+
+}
+
+function bookbox_ui_preprocess(&$variables) {
+  global $user;
+
+  $query = db_select('flagging', 'f');
+  $query->addExpression('COUNT(*)');
+  $query->condition('f.uid', $user->uid);
+  $count = $query->execute()->fetchField();
+
+  $variables['u_flag'] = $count;
 }
 
 /*function dostupno_ui_menu_link__main_menu($variables)

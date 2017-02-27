@@ -74,6 +74,8 @@
  */
 ?>
 
+<?php global $user; ?>
+
 <header id="navbar" role="banner" class="<?php print $navbar_classes; ?>">
     <div class="<?php print $container_class; ?>">
         <div class="navbar-header">
@@ -103,11 +105,16 @@
                     <?php if (!empty($primary_nav)): ?>
                         <?php print render($primary_nav); ?>
                     <?php endif; ?>
-                    <?php if (!empty($secondary_nav)): ?>
+
+                    <?php if (!empty($secondary_nav) && $user->uid != 0): ?>
                         <?php print render($secondary_nav); ?>
                     <?php endif; ?>
-                    <?php if (!empty($page['navigation'])): ?>
+                    <?php if (!empty($page['navigation']) && $user->uid != 0): ?>
                         <?php print render($page['navigation']); ?>
+                    <?php endif; ?>
+
+                    <?php if ($u_flag > 0): ?>
+                        <div class="user-fav-nav"><span>♥</span><span><?php print $u_flag; ?></span></div>
                     <?php endif; ?>
                 </nav>
             </div>
@@ -127,8 +134,13 @@
 
   <div class="row">
 
+    <div class="col-sm-12">
+      <?php print $messages; ?>
+      <?php print render($page['precontent']); ?>
+    </div>
+
     <?php if (!empty($page['sidebar_first'])): ?>
-      <aside class="col-sm-4" role="complementary">
+      <aside class="col-sm-3" role="complementary">
         <?php print render($page['sidebar_first']); ?>
       </aside>  <!-- /#sidebar-first -->
     <?php endif; ?>
@@ -144,7 +156,6 @@
         <h1 class="page-header"><?php print $title; ?></h1>
       <?php endif; ?>
       <?php print render($title_suffix); ?>
-      <?php print $messages; ?>
       <?php if (!empty($tabs)): ?>
         <?php print render($tabs); ?>
       <?php endif; ?>

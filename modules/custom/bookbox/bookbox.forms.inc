@@ -3,6 +3,11 @@ function bookbox_form_alter(&$form, &$form_state, $form_id){
     if ($form['#id'] == 'user-register-form') {
         $form['#validate'][] = 'bookbox_registeruser_validate';
     }
+    
+    if(isset($form['#node_edit_form']) && $form['#node_edit_form'] && $form['type']['#value'] == 'book') {
+        $form['field_bookfields']['und']['form']['commerce_price']['und'][0]['amount']['#default_value'] = 0;
+        $form['field_bookfields']['und']['form']['commerce_price']['#access'] = false;
+    }
 }
 
 function bookbox_registeruser_validate($form, &$form_state) {

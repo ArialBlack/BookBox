@@ -33,7 +33,7 @@ function bookbox_mini_cart_block($form, &$form_state) {
 
                     if ($file) {
                         $uri = $file->uri;
-                        $img = '<div class="book-card"><img src=\'' . image_style_url("bookcover", $uri) . '\' />';
+                        $img = '<div class="cart-book"><img src=\'' . image_style_url("bookcover", $uri) . '\' />';
 
                         $form['book_cover' . $cart_count] = array(
                             '#type' => 'markup',
@@ -171,6 +171,8 @@ function bookbox_confirm_box($form, &$form_state) {
     $order = commerce_cart_order_load($user->uid);
     $order_count = count($order->commerce_line_items['und']);
 
+    $product_id2 = '';
+
     // 1. запомним второй товар
     if($order_count == 2) {
         $line_item_id2 = $order->commerce_line_items['und'][1]['line_item_id'];
@@ -196,9 +198,11 @@ function bookbox_confirm_box($form, &$form_state) {
     if($order_count == 2) {
         $order = commerce_order_new($user->uid, 'checkout_checkout');
         commerce_order_save($order);
+
         $product = commerce_product_load($product_id2);
         $line_item = commerce_product_line_item_new($product, 1, $order->order_id);
         commerce_line_item_save($line_item);
+
         $order_wrapper = entity_metadata_wrapper('commerce_order', $order);
         $order_wrapper->commerce_line_items[] = $line_item;
         commerce_order_save($order);
