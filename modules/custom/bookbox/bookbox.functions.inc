@@ -4,7 +4,7 @@ function m() {
   $month = date("m");
 
   //hack month for testing
-  $month = '03';
+  $month = variable_get('testMonth_title');
 
   return $month;
 }
@@ -14,15 +14,20 @@ function d() {
   $day = date("d");
 
   //hack day for testing
-  $day = '1';
+  $day = variable_get('testDay_title');
 
   return $day;
 }
 
 
 
-function ua_month() {
-  $current_date = intval(m()) - 1;
+function ua_month($m = null) {
+  if(!$m) {
+    $current_date = intval(m()) - 1;
+  } else {
+    $current_date = $m;
+  }
+
   $ua_monthes = ['січня', 'лютого', 'березня', 'квітня', 'травня','червня', 'липня', 'серпня', 'вересня', 'жовтня', 'листопада', 'грудня'];
 
   return $ua_monthes[$current_date];

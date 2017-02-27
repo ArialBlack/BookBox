@@ -10,7 +10,7 @@ function bookbox_menu(){
   $items=array();
   
   $items['admin/bookbox/labels'] = array(
-      'title' => 'Bookbox admin labels',
+      'title' => 'Адмін-тексти',
       'description' => 'Admin labels',
       'type' => MENU_NORMAL_ITEM,
       'page callback' => 'drupal_get_form',
@@ -58,11 +58,15 @@ function bookbox_block_view($delta = '') {
 
 function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state) {
   // можно добавить максимум 2
-  $can_add2cart = true;
+
   $in_cart = 0;
 
   if (isset($form['product_id'])) {
     $form_product = $form['product_id']['#value'];
+    $can_add2cart = true;
+  } else {
+    $form_product = null;
+    $can_add2cart = false;
   }
 
   $wrapper = _bookbox_get_cart_items();

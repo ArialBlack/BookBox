@@ -1,3 +1,14 @@
+@font-face {
+    font-family: 'MyriadPro-Regular';
+    src: url('../fonts/MyriadPro-Regular.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/MyriadPro-Regular.otf')  format('opentype'),
+    url('../fonts/MyriadPro-Regular.woff') format('woff'),
+    url('../fonts/MyriadPro-Regular.ttf')  format('truetype'),
+    url('../fonts/MyriadPro-Regular.svg#MyriadPro-Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
 #bpMArker {
     display: inline-block;
     visibility: visible;
@@ -20,21 +31,18 @@
 }
 
 html {
+    font-family: 'MyriadPro-Regular';
     height: 100%;
     font-size: @basefontsize * 1px;
 }
 
 body {
-    .f("l");
-    font-size: 20px;
-    font-size: 1rem;
-    font-family: 'Roboto', sans-serif;
+    .font-size(14);
     line-height: 140%;
 } 
 
 h1, h2, h3, h4, h5, h6 {
-    .f("l");
-    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
 }
 
 p {
@@ -51,13 +59,3 @@ img {
     display: none !important;
 }
 
-.view-cities {
-    margin-top: 40px;
-
-    .views-row {
-        display: inline;
-        float: left;
-        margin-right: 20px;
-        margin-bottom: 20px;
-    }
-}

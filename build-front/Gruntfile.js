@@ -17,6 +17,20 @@ module.exports = function(grunt) {
             }
         },
 
+        bake: {
+            your_target: {
+                options: {
+                    // Task-specific options go here.
+                },
+
+                files: {
+                    // files go here, like so:
+                    "../themes/bookbox_ui/templates/page.tpl.php": "../themes/bookbox_ui/_templates-src/page.tpl.php",
+                    "../themes/bookbox_ui/templates/page--type-book.tpl.php": "../themes/bookbox_ui/_templates-src/page--type-book.tpl.php"
+                }
+            }
+        },
+
         watch: {
             grunt: {
                 files: ['Gruntfile.js']
@@ -24,10 +38,19 @@ module.exports = function(grunt) {
 
             less: {
                 files: [
-                    '../themes/bookbox_ui/less/**/*.less'
+                    '../themes/bookbox_ui/less/**/*.less',
+                    '../themes/bookbox_ui/less/**/**/*.less'
                 ],
                 tasks: ['less', 'postcss']
+            },
+
+            bake: {
+                files: [
+                    '../themes/bookbox_ui/_templates-src/**/*.php'
+                ],
+                tasks: ['bake']
             }
+
         },
         
         postcss: {
@@ -43,13 +66,14 @@ module.exports = function(grunt) {
     });
 
     // load npm modules
+    grunt.loadNpmTasks('grunt-bake');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-postcss');
 
     // register tasks
-    grunt.registerTask('default', ['less', 'postcss', 'watch']);
-    grunt.registerTask('jenkins', ['less', 'postcss']);
+    grunt.registerTask('default', ['less', 'bake', 'postcss', 'watch']);
+    grunt.registerTask('jenkins', ['less', 'bake', 'postcss']);
    
     //grunt.registerTask('default', ['less', 'postcss', 'copy:main', 'watch']);
    // grunt.registerTask('jenkins', ['less', 'postcss', 'copy:main']);

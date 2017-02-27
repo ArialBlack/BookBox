@@ -6,15 +6,15 @@
 function bookbox_reading_now_block ($form, &$form_state) {
     $title = variable_get('readingNow_title');
 
-    $form['title'] = array(
-        '#type' => 'markup',
-        '#markup' => '<h3>' . $title . ' </h3>', //todo
-    );
-
     $result = bookbox_get_in_reading_now();
-    dsm($result);
+    //dsm($result);
 
     if ($result) {
+        $form['title'] = array(
+            '#type' => 'markup',
+            '#markup' => '<h3>' . $title . ' </h3><h6>Повернення книг до <span>20-го' .  ua_month() . '</span></h6>', //todo
+        );
+
         $box_count = 0;
 
         foreach ($result as $res) {
@@ -37,7 +37,7 @@ function bookbox_reading_now_block ($form, &$form_state) {
 
                     if ($file) {
                         $uri = $file->uri;
-                        $img = '<img src=\'' . image_style_url("bookcover", $uri) . '\' />';
+                        $img = '<div class="book-card"><img src=\'' . image_style_url("bookcover", $uri) . '\' />';
 
                         $form['book_cover' . $box_count] = array(
                             '#type' => 'markup',
@@ -48,7 +48,7 @@ function bookbox_reading_now_block ($form, &$form_state) {
 
                 $form['book_' . $box_count] = array(
                     '#type' => 'markup',
-                    '#markup' => $product_display->title,
+                    '#markup' => '<h4 class="book-title">' . $product_display->title . '</h4>',
                 );
 
                 //todo
@@ -72,6 +72,11 @@ function bookbox_reading_now_block ($form, &$form_state) {
                         $form['prolong_book' . $box_count]['#attributes']['disabled'] = TRUE;
                         break;
                 }
+
+                $form['book_markup' . $box_count] = array(
+                    '#type' => 'markup',
+                    '#markup' => '</div>',
+                );
             }
 
         }
