@@ -1,0 +1,61 @@
+@font-face {
+    font-family: 'MyriadPro-Regular';
+    src: url('../fonts/MyriadPro-Regular.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/MyriadPro-Regular.otf')  format('opentype'),
+    url('../fonts/MyriadPro-Regular.woff') format('woff'),
+    url('../fonts/MyriadPro-Regular.ttf')  format('truetype'),
+    url('../fonts/MyriadPro-Regular.svg#MyriadPro-Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+#bpMArker {
+    display: inline-block;
+    visibility: visible;
+    height: 1px;
+    width: 1px;
+    
+    @media (min-width: 1200px) {
+        display: none;
+        visibility: hidden;
+    }
+}
+
+.not-front {
+    @media (min-width: 992px) {
+        #bpMArker {
+            display: none;
+            visibility: hidden;
+        }
+    }
+}
+
+html {
+    font-family: 'MyriadPro-Regular';
+    height: 100%;
+    font-size: @basefontsize * 1px;
+}
+
+body {
+    .font-size(14);
+    line-height: 140%;
+} 
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+}
+
+p {
+    margin-bottom: 20px;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.translation_en,
+.translation_uk {
+    display: none !important;
+}
+

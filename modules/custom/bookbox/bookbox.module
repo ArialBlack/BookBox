@@ -1,12 +1,44 @@
 <?php
 
 module_load_include('inc', 'bookbox', 'bookbox.functions');
+module_load_include('inc', 'bookbox', 'bookbox.forms');
+module_load_include('inc', 'bookbox', 'bookbox.cart');
+module_load_include('inc', 'bookbox', 'bookbox.readnow');
+module_load_include('inc', 'bookbox', 'bookbox.adminmessages');
+
+function bookbox_menu(){
+  $items=array();
+  
+  $items['admin/bookbox/labels'] = array(
+      'title' => 'Адмін-тексти',
+      'description' => 'Admin labels',
+      'type' => MENU_NORMAL_ITEM,
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('bookbox_admin_labels_form'),
+      'access arguments' => array('access adminstration page'),
+      'access callback' => TRUE,
+  );
+
+  $items['user/%user/orders'] = array(
+      'title' => 'Історія замовлень',
+      'page callback' => 'bookbox_user_orders_history',
+      'page arguments' => array(1),
+      'access callback' => TRUE,
+      'type' => MENU_LOCAL_TASK,
+  );
+
+  return $items;
+}
 
 function bookbox_block_info() {
   $blocks = array();
 
   $blocks['MiniCart'] = array(
     'info' => t('Mini cart'),
+  );
+
+  $blocks['ReadingNow'] = array(
+      'info' => t('Reading now'),
   );
 
   return $blocks;
@@ -19,12 +51,13 @@ function bookbox_block_view($delta = '') {
     case 'MiniCart':
       $block['subject'] = '';
       $form = drupal_get_form('bookbox_mini_cart_block');
-      if(isset($form['book_1'])) {
-        $block['content'] = drupal_render($form);
-      } else {
-        $block['content'] = null;
-      }
+      $block['content'] = drupal_render($form);
+      break;
 
+    case 'ReadingNow':
+      $block['subject'] = '';
+      $form = drupal_get_form('bookbox_reading_now_block');
+      $block['content'] = drupal_render($form);
       break;
   }
 
@@ -32,22 +65,35 @@ function bookbox_block_view($delta = '') {
 }
 
 function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state) {
-  //todo
   // можно добавить максимум 2
-  // а если есть книжка из заказа прошлого месяца то 1
-  // а если 2 то 0
-  // если эта книга уже в заказе на продление то тоже не добавлять
-  $form_product = $form['product_id']['#value'];
+
+  $in_cart = 0;
+
+  if (isset($form['product_id'])) {
+    $form_product = $form['product_id']['#value'];
+    $can_add2cart = true;
+  } else {
+    $form_product = null;
+    $can_add2cart = false;
+  }
+
   $wrapper = _bookbox_get_cart_items();
-  $can_add2cart = true;
 
-  foreach ($wrapper->commerce_line_items as $delta => $line_item_wrapper) {
-    $cart_product = $line_item_wrapper->commerce_product->value()->product_id;
+  //что-то есть в корзине
+  if ($wrapper) {
+    foreach ($wrapper->commerce_line_items as $delta => $line_item_wrapper) {
+      $cart_product = $line_item_wrapper->commerce_product->value()->product_id;
+      $in_cart = $in_cart + 1;
 
-    if($form_product == $cart_product) {
-      $can_add2cart = false;
-      break;
+      if($form_product == $cart_product) {
+        $can_add2cart = false; // если эта книга уже в корзине, то нечего ее добавлять, ок, да?
+        break;
+      }
     }
+  }
+
+  if ($in_cart == 2) {
+    $can_add2cart = false;
   }
 
   if (!$can_add2cart) {
@@ -55,89 +101,72 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state)
   }
 }
 
-function bookbox_mini_cart_block($form, &$form_state)
-{
-  //todo
-  // если у нас есть книжки их прошлого месяца то тогда что?
-  // если 1 из прошлого то показывать 1 свободное место
-  $wrapper = _bookbox_get_cart_items();
-  $cart_count = 0;
+// Крон работы
+function bookbox_cron() {
+  if(intval(d()) == 1) {
+    $result = db_select('commerce_order', 'o')
+        ->fields('o', array('order_id', 'status', 'changed'))
+        ->condition(
+            db_or()
+                ->condition('o.status', 'completed')
+                ->condition('o.status', 'prolong')
+        )
+        ->orderBy('o.order_id', 'DESC')
+        ->execute()->fetchAll();
+    
+    foreach ($result as $item) {
+      $order_month = intval(date('m', $item->changed));
+      //1-го числа мы удаляем все книги из "я читаю" если они были заказаны в прошлом месяце - меняем статус на архив
+      if($item->status == 'completed' && $order_month < intval(m())) {
+        //dsm('в архив!');
+        $order = commerce_order_load($item->order_id);
+        commerce_order_status_update($order, 'archive', $skip_save = FALSE, $revision = NULL, $log = '');
+      }
 
-  if ($wrapper) {
-    $form['title'] = array(
-        '#type' => 'markup',
-        '#markup' => '<h3>Замовлення лютого</h3>', //todo
-    );
-
-    foreach ($wrapper->commerce_line_items as $delta => $line_item_wrapper) {
-      $cart_product = $line_item_wrapper->commerce_product->value()->product_id;
-
-      $product_display = _bookbox_get_product_display_by_product_id($cart_product);
-
-      if ($product_display->nid) {
-        $cart_count = $cart_count + 1;
-
-        if ($product_display->field_nni) {
-          $fid = $product_display->field_nni['und']['0']['fid'];
-          $file = file_load($fid);
-
-          if ($file) {
-            $uri = $file->uri;
-            $img = '<img src=\'' . image_style_url("bookcover", $uri) . '\' />';
-
-            $form['book_cover' . $cart_count] = array(
-                '#type' => 'markup',
-                '#markup' => $img,
-            );
-          }
-        }
-
-        $form['book_' . $cart_count] = array(
-            '#type' => 'markup',
-            '#markup' => $product_display->title,
-        );
-
-        $form['del_from_cart_submit' . $cart_count] = array(
-            '#type' => 'submit',
-            '#submit' => array('bookbox_delete_bookfromcart' . $cart_count),
-            '#value' => t('delete from box'),
-        );
+      //1-го числа мы меняем статус всех книг "пролонг" из "я читаю" на "подтверждено" и меняем дату так как будто они были подтверждены в этом месяце
+      if($item->status == 'prolong' && $order_month < intval(m())) {
+        db_update('commerce_order')
+            ->fields(array('changed' => time ()))
+            ->fields(array('status' => 'completed'))
+            ->condition('order_id', $item->order_id)
+            ->execute();
       }
     }
   }
 
-  if ($cart_count > 0) {
-    $form['submit'] = array(
-        '#type' => 'submit',
-      //'#validate' => array('statistiques_form_validate'),
-        '#submit' => array('bookbox_confirm_box_form_submit'),
-        '#weight' => 10,
-        '#value' => t('Підтвердити замовлення'), //todo
-    );
-    $form['submit']['#attributes']['disabled'] = $cart_count == 2 ? FALSE : TRUE;
-    return $form;
+  //Мейл рассылка:
+}
 
+function bookbox_user_orders_history() {
+  global $user;
+  $content = '<h1>Історія замовлень</h1>';
+
+  $result = db_select('commerce_order', 'o')
+      ->fields('o', array('order_id', 'changed'))
+      ->condition('o.uid', $user->uid)
+      ->condition('o.status', 'archive')
+      ->orderBy('o.order_id', 'DESC')
+      ->execute()->fetchAll();
+
+  foreach ($result as $res) {
+    $order = commerce_order_load($res->order_id);
+    $line_item_id = $order->commerce_line_items['und'][0]['line_item_id'];
+    $line_item = commerce_line_item_load($line_item_id);
+    $product_id =  $line_item->commerce_product['und'][0]['product_id'];
+    $product_display = _bookbox_get_product_display_by_product_id($product_id);
+
+    if ($product_display->nid) {
+      setlocale(LC_TIME, 'uk_UA');
+      $dateM = ua_month_original(intval(date('m', $res->changed))-1);
+      $dateY = date('Y', $res->changed);
+      $content = $content . '<h2>' . $dateM . ' ' . $dateY . '</h2>';
+
+      $node = node_load($product_display->nid);
+      $node_view = node_view($node, 'teaser');
+      $rendered_teaser = render($node_view);
+      $content = $content . $rendered_teaser;
+    }
   }
 
-}
-
-function bookbox_delete_bookfromcart1 ($form, &$form_state) {
-  global $user;
-  $order = commerce_cart_order_load($user->uid);
-  $line_item = $order->commerce_line_items['und'][0]['line_item_id'];
-  commerce_cart_order_product_line_item_delete($order, $line_item);
-  commerce_cart_order_refresh($order);
-}
-
-
-function bookbox_delete_bookfromcart2 ($form, &$form_state) {
-  global $user;
-  $order = commerce_cart_order_load($user->uid);
-  $line_item = $order->commerce_line_items['und'][1]['line_item_id'];
-  commerce_cart_order_product_line_item_delete($order, $line_item);
-  commerce_cart_order_refresh($order);
-}
-
-function _confirm_box_form_submit() {
-  drupal_set_message('333');
+  return $content;
 }
