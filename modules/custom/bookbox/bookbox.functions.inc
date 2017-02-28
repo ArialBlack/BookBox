@@ -33,6 +33,18 @@ function ua_month($m = null) {
   return $ua_monthes[$current_date];
 }
 
+function ua_month_original($m = null) {
+  if(!$m) {
+    $current_date = intval(m()) - 1;
+  } else {
+    $current_date = $m;
+  }
+
+  $ua_monthes = ['січень', 'лютий', 'березень', 'квітень', 'травень','червень', 'липень', 'серпень', 'вересень', 'жовтень', 'листопад', 'грудень'];
+
+  return $ua_monthes[$current_date];
+}
+
 function current_period() {
   $current_date = d();
   $period = 0;

@@ -3,7 +3,7 @@
 function bookbox_admin_labels_form($form, &$form_state){
     $form['readingNow_title'] = array(
         '#type' => 'textfield',
-        '#title' => t('Текст для зараз читаю'),
+        '#title' => 'Текст для зараз читаю',
         '#required' => TRUE,
         '#default_value' => variable_get('readingNow_title', 'Зараз читаю'),
     );

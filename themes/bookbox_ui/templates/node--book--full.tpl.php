@@ -78,8 +78,19 @@
  *
  * @ingroup templates
  */
+
+$product_id = $node->field_bookfields['und'][0]['product_id'];
+$product = commerce_product_load($product_id);
+$status = $product->status;
+
+$aviable_class = '';
+
+if ($status == 0) {
+  $aviable_class = ' not-aviable';
+}
+
 ?>
-<article id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
+<article id="node-<?php print $node->nid; ?>" class="<?php print $classes;  print $aviable_class; ?> clearfix"<?php print $attributes; ?>>
   <?php
   // Hide comments, tags, and links now so that we can render them later.
   hide($content['comments']);
@@ -87,8 +98,14 @@
   hide($content['field_tags']);
   //print render($content);
 
-  $desc = $node->field_book_author['und'][0]['taxonomy_term']->description;
-  $uri = $node->field_book_author['und'][0]['taxonomy_term']->field_author_photo['und'][0]['uri'];
+  $author_count = count($node->field_book_author['und']);
+  dsm($author_count);
+
+  if ($author_count > 1) {
+    $tab_title = 'Про авторів';
+  } else {
+    $tab_title = 'Про автора';
+  }
   ?>
 
   <header>
@@ -113,15 +130,21 @@
   <div class="description-tabs">
     <ul class="nav nav-tabs" role="tablist">
       <li role="presentation" class="active"><a href="#book" aria-controls="book" role="tab" data-toggle="tab">Про книгу</a></li>
-      <li role="presentation"><a href="#author" aria-controls="author" role="tab" data-toggle="tab">Про автора</a></li>
+      <li role="presentation"><a href="#author" aria-controls="author" role="tab" data-toggle="tab"><?php print $tab_title; ?></a></li>
     </ul>
     <div class="tab-content">
       <div role="tabpanel" class="tab-pane active" id="book">
         <?php print render($content['body']); ?>
       </div>
       <div role="tabpanel" class="tab-pane" id="author">
-        <div><img src="<?php print image_style_url("medium", $uri) ?>"/></div>
-        <?php print $desc; ?>
+        <?php
+          for($i = 0; $i < $author_count; $i++) {
+            $desc = $node->field_book_author['und'][$i]['taxonomy_term']->description;
+            $uri = $node->field_book_author['und'][$i]['taxonomy_term']->field_author_photo['und'][0]['uri'];
+            print '<div><img src="' . image_style_url("medium", $uri) . '"/></div>';
+            print $desc;
+          }
+        ?>
       </div>
     </div>
   </div>

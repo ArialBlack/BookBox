@@ -106,6 +106,13 @@
                         <?php print render($primary_nav); ?>
                     <?php endif; ?>
 
+                    <div class="search-block">
+                        <?php
+                        $block = module_invoke('views', 'block_view', '-exp-booksearch-page');
+                        print render($block['content']);
+                        ?>
+                    </div>
+
                     <?php if (!empty($secondary_nav) && $user->uid != 0): ?>
                         <?php print render($secondary_nav); ?>
                     <?php endif; ?>
@@ -121,6 +128,9 @@
         <?php endif; ?>
     </div>
 </header>
+
+
+
 
 <div class="main-container <?php print $container_class; ?>">
 

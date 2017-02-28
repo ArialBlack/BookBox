@@ -78,8 +78,19 @@
  *
  * @ingroup templates
  */
+
+$product_id = $node->field_bookfields['und'][0]['product_id'];
+$product = commerce_product_load($product_id);
+$status = $product->status;
+
+$aviable_class = '';
+
+if ($status == 0) {
+  $aviable_class = ' not-aviable';
+}
+
 ?>
-<article id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
+<article id="node-<?php print $node->nid; ?>" class="<?php print $classes; print $aviable_class; ?> clearfix"<?php print $attributes; ?>>
   <?php if ((!$page && !empty($title)) || !empty($title_prefix) || !empty($title_suffix) || $display_submitted): ?>
   <header>
     <?php print render($title_prefix); ?>
@@ -108,5 +119,14 @@
       print render($content['field_bookbox_rec']);
     ?>
   </a>
+  <?php
+    print render($content['links']);
+
+    if ($status == 0) {
+      print '<div class="not-aviable-mark">Не доступно</div>';
+    }
+
+  ?>
+
 
 </article>

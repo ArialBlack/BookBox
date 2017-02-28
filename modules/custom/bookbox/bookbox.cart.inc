@@ -27,35 +27,19 @@ function bookbox_mini_cart_block($form, &$form_state) {
             if ($product_display->nid) {
                 $cart_count = $cart_count + 1;
 
-                if ($product_display->field_nni) {
-                    $fid = $product_display->field_nni['und']['0']['fid'];
-                    $file = file_load($fid);
-
-                    if ($file) {
-                        $uri = $file->uri;
-                        $img = '<div class="cart-book"><img src=\'' . image_style_url("bookcover", $uri) . '\' />';
-
-                        $form['book_cover' . $cart_count] = array(
-                            '#type' => 'markup',
-                            '#markup' => $img,
-                        );
-                    }
-                }
+                $node = node_load($product_display->nid);
+                $node_view = node_view($node, 'teaser');
+                $rendered_teaser = render($node_view);
 
                 $form['book_' . $cart_count] = array(
                     '#type' => 'markup',
-                    '#markup' => '<h4 class="book-title">' . $product_display->title . '</h4>',
+                    '#markup' => $rendered_teaser,
                 );
 
                 $form['del_from_cart_submit' . $cart_count] = array(
                     '#type' => 'submit',
                     '#submit' => array('bookbox_delete_bookfromcart' . $cart_count),
-                    '#value' => t('delete from box'),
-                );
-
-                $form['book_m_' . $cart_count] = array(
-                    '#type' => 'markup',
-                    '#markup' => '</div>',
+                    '#value' => 'видалити',
                 );
             }
         }
@@ -101,7 +85,7 @@ function bookbox_mini_cart_block($form, &$form_state) {
                 '#type' => 'submit',
                 '#submit' => array('bookbox_confirm_box'),
                 '#weight' => 10,
-                '#value' => t('Підтвердити замовлення'), //todo
+                '#value' => 'Підтвердити замовлення', //todo
             );
         }
 
