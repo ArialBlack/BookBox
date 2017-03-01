@@ -9,7 +9,7 @@ function bookbox_mini_cart_block($form, &$form_state) {
     if(current_period() == 1) {
         $form['ftitle'] = array(
             '#type' => 'markup',
-            '#markup' => '<h3>Замовлення ' . ua_month() . '</h3><h6>Оберіть дві книги до <span>21-го ' .  ua_month() . '</span></h6>',
+            '#markup' => '(корзина) <h3>Замовлення ' . ua_month() . '</h3><h6>Оберіть дві книги до <span>21-го ' .  ua_month() . '</span></h6>',
         );
     }
 

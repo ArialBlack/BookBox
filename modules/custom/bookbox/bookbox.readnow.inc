@@ -9,7 +9,7 @@ function bookbox_reading_now_block ($form, &$form_state) {
     $destination = request_path();
 
     //$title = variable_get('readingNow_title');
-    $title = 'Замовлення підтверджено';
+    $title = '(Читаю зараз) Читаю зараз';
 
     $result = bookbox_get_in_reading_now();
     //dsm($result);

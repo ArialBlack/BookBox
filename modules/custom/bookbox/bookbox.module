@@ -63,7 +63,7 @@ function bookbox_block_info() {
   );
 
   $blocks['MonthOrder'] = array(
-      'info' => t('Reading now'),
+      'info' => t('Month orders'),
   );
 
   $blocks['ReadingNow'] = array(
@@ -90,7 +90,15 @@ function bookbox_block_view($delta = '') {
 
   //todo
   $show_cart = true;
+  if( current_period() == 2 || bookbox_count_in_confirm_this_month() > 0 ) {
+    $show_cart = false;
+  }
+
   $show_order = true;
+  if( bookbox_count_in_confirm_this_month() < 1 ) {
+    $show_order = false;
+  }
+
   $show_reading_now = true;
 
   switch ($delta) {
@@ -156,6 +164,7 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state)
 
   //dsm(   bookbox_count_in_confirm_this_month(), 'this ' );
   //dsm(   bookbox_count_in_confirm_prev_month(), 'prev ' );
+  //dsm( bookbox_in_confirm_this_month() );
 
   $form['submit']['#value'] = 'Замовити';
 
