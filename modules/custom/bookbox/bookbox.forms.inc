@@ -8,6 +8,13 @@ function bookbox_form_alter(&$form, &$form_state, $form_id){
         $form['field_bookfields']['und']['form']['commerce_price']['und'][0]['amount']['#default_value'] = 0;
         $form['field_bookfields']['und']['form']['commerce_price']['#access'] = false;
     }
+
+    if ($form['#id'] == 'views-exposed-form-booksearch-page') {
+        $form['search-trigger'] = array(
+            '#type' => 'markup',
+            '#markup' => '<i class="fa fa-search" aria-hidden="true"></i>',
+        );
+    }
 }
 
 function bookbox_registeruser_validate($form, &$form_state) {
