@@ -1,0 +1,21 @@
+.btn {
+  color: @light-color;
+  background-color: @primary-color;
+  transition: all .3s;
+  text-transform: uppercase;
+  padding: 10px;
+
+  &:hover, &:focus {
+    text-decoration: none;
+    background-color: darken(@primary-color, 20);
+  }
+
+  &-red {
+    background-color: @secondary-color;
+
+    &:hover, &:focus {
+      text-decoration: none;
+      background-color: darken(@secondary-color, 20);
+    }
+  }
+}

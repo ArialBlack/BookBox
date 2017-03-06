@@ -1,0 +1,44 @@
+#block-views-similarterms-block {
+  .views-row {
+    .col(4);
+  }
+}
+
+#views-exposed-form-booksearch-page {
+  #edit-searchtext-wrapper,
+  .views-submit-button button {
+    display: none;
+  }
+
+  .fa-search {
+    cursor: pointer;
+  }
+}
+
+.open-search {
+  #views-exposed-form-booksearch-page {
+    #edit-searchtext-wrapper,
+    .views-submit-button button {
+      display: block;
+    }
+
+    .fa-search {
+      display: none;
+    }
+  }
+
+  .search-block {
+    background: @primary-color;
+  }
+
+  .menu,
+  .navbar-header,
+  .user-fav-nav{
+    visibility: hidden;
+  }
+
+  .main-container,
+  .footer {
+    opacity: 0.5;
+  }
+}

@@ -24,6 +24,10 @@ function bookbox_ui_preprocess_node(&$vars) {
 
 function bookbox_ui_preprocess_page(&$vars) {
 
+  if(!$vars['user']->uid && arg(0)!='user' && arg(1)!='login') {
+    drupal_goto('user/login');
+  }
+
   // Do we have a node?
   if (isset($vars['node'])) {
 
@@ -87,6 +91,7 @@ function bookbox_ui_preprocess(&$variables) {
 
   $variables['u_flag'] = $count;
 }
+
 
 /*function dostupno_ui_menu_link__main_menu($variables)
 {

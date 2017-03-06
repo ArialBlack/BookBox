@@ -1,0 +1,131 @@
+.page-node-852 {
+
+  .main-container {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+  }
+
+  .row {
+    margin: 0;
+
+    .col-sm-12 {
+      padding: 0;
+    }
+  }
+
+  #node-852 {
+    position: relative;
+
+    .field-name-field-header-cover {
+      img {
+        width: 100%;
+      }
+    }
+
+    .field-name-field-header-text {
+      position: absolute;
+      z-index: 1;
+      top: 15%;
+      right: 15%;
+      max-width: 500px;
+
+      p {
+        font-size: 40px;
+        color: @bb-darkblue;
+        font-weight: 600;
+        line-height: 1;
+
+        a {
+          display: inline-block;
+          margin-top: 20px;
+          color: @light-color;
+          background-color: @secondary-color;
+          transition: all .3s;
+          text-transform: uppercase;
+          padding: 20px;
+          font-size: 14px;
+
+            &:hover, &:focus {
+              text-decoration: none;
+              background-color: darken(@secondary-color, 20);
+            }
+          }
+        }
+      }
+    }
+
+  #block-views-main-recomend-block-1 {
+    .block-title {
+      margin: 20px;
+      color: @bb-darkblue;
+      border-bottom: 2px solid @bb-darkblue;
+      text-transform: uppercase;
+      display: inline-block;
+      font-size: 24px;
+    }
+  }
+
+  .view-main-recomend {
+    margin-top: 25px;
+
+    .view-content {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .views-row {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 25px;
+
+      .book-card {
+        display: block;
+        height: 100%;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+        transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+        padding: 20px;
+
+        &:hover, &:focus {
+          box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+          text-decoration: none;
+        }
+      }
+
+      .field-name-field-nni {
+        img {
+          display: inline-block;
+        }
+      }
+
+      h4 {
+        color: @bb-darkblue;
+        font-weight: 600;
+      }
+
+      .field-name-field-book-author {
+        color: @bb-darkblue;
+
+        &:hover, &:focus {
+          text-decoration: none;
+        }
+      }
+
+      .field-name-field-bookbox-rec:extend(.btn) {
+        margin-top: 10px;
+      }
+    }
+
+    .more-link {
+      text-align: center;
+
+      a{
+        text-transform: uppercase;
+        color: @bb-darkblue;
+        font-size: 18px;
+        letter-spacing: 1px;
+      }
+    }
+
+  }
+}
