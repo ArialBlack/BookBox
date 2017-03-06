@@ -114,9 +114,9 @@ if ($status == 0) {
       print render($content['field_nni']);
       print '<h4>' . $title . '</h4>';
       print render($content['field_book_author']);
-      print render($content['field_isnew']);
-      print render($content['field_hit']);
-      print render($content['field_bookbox_rec']);
+      if(isset($content['field_isnew'])) { print render($content['field_isnew']);}
+      if(isset($content['field_hit'])) { print render($content['field_hit']);}
+      if(isset($content['field_bookbox_rec'])) { print render($content['field_bookbox_rec']);}
     ?>
   </a>
   <?php
