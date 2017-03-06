@@ -1,10 +1,48 @@
 .node-book.node-teaser {
-  .node-readmore {
-    display: none;
+  width: 100%;
+
+  .book-card {
+    display: block;
+    height: 100%;
+    //box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    padding: 20px;
+    color: @bb-darkblue;
+    text-decoration: none;
+
+    &:hover, &:focus {
+      box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+      text-decoration: none;
+    }
+
+    .field-name-field-nni {
+      img {
+        display: inline-block;
+        width: 100%;
+      }
+    }
+
+    h4 {
+      .font-size(14);
+      color: @bb-darkblue;
+      font-weight: 600;
+    }
+
+    .field-name-field-book-author {
+      color: @bb-darkblue;
+
+      &:hover, &:focus {
+        text-decoration: none;
+      }
+    }
+
+    .field-name-field-bookbox-rec:extend(.btn) {
+      margin-top: 10px;
+    }
   }
 
-  img {
-    width: 100%;
+  .node-readmore {
+    display: none;
   }
 
   &.not-aviable {
@@ -14,14 +52,5 @@
   ul.links,
   .not-aviable-mark {
     display: none;
-  }
-}
-
-.book-card {
-  color: @bb-darkblue;
-  text-decoration: none;
-
-  h4 {
-    .font-size(14);
   }
 }
