@@ -8,14 +8,39 @@
   &:hover, &:focus {
     text-decoration: none;
     background-color: darken(@primary-color, 20);
+    color: @light-color;
   }
 
   &-red {
     background-color: @secondary-color;
 
     &:hover, &:focus {
+      color: @light-color;
       text-decoration: none;
       background-color: darken(@secondary-color, 20);
     }
   }
+}
+
+.field-name-field-isnew {
+  background: #12ab99;
+  width: 75px;
+  text-align: center;
+  line-height: 36px;
+  color: @light-color;
+  display: inline-block;
+  margin-right: 10px;
+  float: left;
+  margin-bottom:8%;
+}
+
+.field-name-field-hit {
+  display: inline-block;
+  text-align: center;
+  width: 35px;
+  line-height: 36px;
+  background-color: @secondary-color;
+  color: @light-color;
+  float:left;
+  margin-bottom:8%;
 }

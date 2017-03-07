@@ -1,0 +1,66 @@
+.page-taxonomy-term {
+  .views-row {
+    .col(4);
+  }
+  .text-center,
+  .tabs--primary,
+  .region-precontent #views-exposed-form-booksearch-page,
+  .breadcrumb {
+    display: none;
+  }
+
+ .main-container {
+   width: 100%;
+   margin: 0;
+   padding: 0;
+   padding-top:30px;
+   padding-right: 15px;
+   .page-header {
+     margin: 20px 0 20px 0;
+     color: @bb-darkblue;
+     text-transform: uppercase;
+     display: inline-block;
+     font-size: 24px;
+     border:none;
+     &:before {
+       content: " ";
+       width: 30px;
+       height: 2px;
+       background: #12ab99;
+       position: relative;
+       display: inline-block;
+       margin-bottom: 7px;
+       margin-right: 4px;
+       margin-left: 0;
+       padding: 0;
+     }
+   }
+   #block-system-main {
+     .view-content {
+       display: flex;
+       flex-direction: row;
+       flex-wrap: wrap;
+       .views-row {
+         flex-grow:1;
+         max-width: 33.333333%;
+         article {
+           height:100%;
+           .field-name-field-bookbox-rec {
+             font-size: 70%;
+             padding: 0;
+             height: auto;
+             width: 100%;
+             border: none;
+             line-height: 4em;
+             margin-top: 0;
+             padding-left: 2em;
+             padding-right: 2em;
+             position: relative;
+           }
+         }
+       }
+     }
+   }
+ }
+
+}

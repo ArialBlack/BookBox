@@ -1,0 +1,38 @@
+aside.col-sm-4 {
+  padding-left: 5vw;
+  #block-bookbox-minicart, #block-bookbox-readingnow {
+    color: @bb-darkblue;
+    article{
+      max-width: 200px;
+    }
+    h6 {
+      span {
+        color: @primary-color;
+      }
+    }
+    .book-card {
+      text-decoration: none;
+      color: @bb-darkblue;
+      .field-name-field-book-author {
+        font-size: 12px;
+      }
+      .field-name-field-bookbox-rec {
+        font-size: 70%;
+        padding: 0;
+        height: auto;
+        width: auto;
+        border: none;
+        line-height: 4em;
+        padding-left: 2em;
+        padding-right: 2em;
+      }
+      &:hover {
+        text-decoration: none !important;
+        color: @bb-darkblue;
+      }
+    }
+  }
+  .add_some_book {
+    display: none;
+  }
+}
