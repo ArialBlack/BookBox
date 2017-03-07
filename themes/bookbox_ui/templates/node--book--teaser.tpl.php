@@ -114,9 +114,11 @@ if ($status == 0) {
       print render($content['field_nni']);
       print '<h4>' . $title . '</h4>';
       print render($content['field_book_author']);
+      print '<div class="book-labels">';
       if($node->field_isnew['und']['0']['value'] == 1) { print render($content['field_isnew']);}
       if($node->field_hit['und']['0']['value'] == 1) { print render($content['field_hit']);}
       if($node->field_bookbox_rec['und']['0']['value'] == 1) { print render($content['field_bookbox_rec']);}
+      print '</div>';
     //dsm($node);
     ?>
   </a>

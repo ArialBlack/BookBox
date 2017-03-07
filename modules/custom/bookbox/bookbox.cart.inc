@@ -2,11 +2,6 @@
 
 // Блок корзины
 function bookbox_mini_cart_block($form, &$form_state) {
-    $form['now'] = array(
-        '#type' => 'markup',
-        '#markup' => '<h2>Зараз: ' . d() . '.' . m() . '.' . date("Y") . '</h2>',
-    );
-
     $form['title'] = array(
         '#type' => 'markup',
         '#markup' => '<h3>Замовлення ' . ua_month() . '</h3><h6>Оберіть дві книги до <span>20-го ' .  ua_month() . '</span></h6>',
@@ -31,6 +26,11 @@ function bookbox_mini_cart_block($form, &$form_state) {
                 $node_view = node_view($node, 'teaser');
                 $rendered_teaser = render($node_view);
 
+                $form['bms' . $cart_count] = array(
+                    '#type' => 'markup',
+                    '#markup' => '<div class="book-container">',
+                );
+
                 $form['book_' . $cart_count] = array(
                     '#type' => 'markup',
                     '#markup' => $rendered_teaser,
@@ -41,6 +41,13 @@ function bookbox_mini_cart_block($form, &$form_state) {
                     '#submit' => array('bookbox_delete_bookfromcart' . $cart_count),
                     '#value' => 'видалити',
                 );
+
+                $form['bme' . $cart_count] = array(
+                    '#type' => 'markup',
+                    '#markup' => '</div>',
+                );
+
+
             }
         }
     }
