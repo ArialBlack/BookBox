@@ -144,7 +144,6 @@
 
   <div class="row">
     <div class="col-sm-12">
-      <?php print $messages; ?>
       <?php print render($page['precontent']); ?>
     </div>
  
@@ -180,6 +179,7 @@
     <footer class="footer">
         <div class="container">
             <?php print render($page['footer']); ?>
+            <?php print $messages; ?>
         </div>
     </footer>
 <?php endif; ?>
