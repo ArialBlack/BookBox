@@ -3,7 +3,11 @@
   border: 0 none;
   background-color: @gray-bg;
   color: @bb-darkblue;
-
+  font-weight: 600;
+  @media (min-width: 1024px) and (max-width: 1300px) {
+    font-weight: 300;
+  }
+  padding-left: 2%;
   .container {
     padding: 0 !important;
     width: 100% !important;
@@ -13,11 +17,24 @@
     display: inline-block;
   }
 
+  #block-block-2, #block-block-3 {
+    margin-right: 3vw;
+    @media (min-width: 1024px) and (max-width: 1300px) {
+      margin-right: 0vw;
+    }
+  }
+
   #block-menu-menu-footer-menu {
     display: inline-block;
     text-align: right;
     .menu {
       list-style: none;
+      li {
+        margin-right: 2vw;
+        @media (min-width: 1024px) and (max-width: 1300px) {
+          margin-right: 0vw;
+        }
+      }
       .leaf {
         display: inline-block;
 
@@ -43,6 +60,9 @@
     ul {
       list-style: none;
       margin: 0;
+      @media (min-width: 1024px) and (max-width: 1300px) {
+        padding: 0;
+      }
       li {
         a{
           color: @bb-darkblue;

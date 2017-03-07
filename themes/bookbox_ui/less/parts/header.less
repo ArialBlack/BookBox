@@ -1,0 +1,58 @@
+#navbar {
+	width: 100%;
+	max-width: none !important;
+	border: none;
+	background: @primary-color;
+	padding: 10px 4vw;
+	margin-bottom: 0;
+	margin-top: 0;
+  @media (min-width:1024px) and (max-weidth:1100px) {
+    padding: 10px 2vw;
+  }
+	.navbar-header {
+		padding-top: 6px;
+		padding-right: 3%;
+	}
+
+	.navbar-nav {
+		li{
+			a {
+				text-transform: uppercase;
+				color: @light-color;
+        background: none;
+        transition: background-color 2s;
+        transition: color 2s;
+				&:hover, &:active, &:focus {
+					color:  @bb-darkblue;
+					background-color: @light-color;
+				}
+        @media (min-width:1024px) and (max-weidth:1100px) {
+          padding: 11px 1px;
+        }
+			}
+		}
+		.dropdown-menu {
+			a, a:active, a:focus, a:hover {
+				color: @bb-darkblue;
+			}
+		}
+
+	}
+
+	.search-block {
+		margin-left: 3%;
+		display: inline-block;
+		.views-submit-button i {
+      padding-top: 2px;
+      font-size:2em;
+      color: @light-color;
+      transition: color 2s;
+      &:hover {
+        color: @bb-darkblue;
+      }
+    }
+	}
+	.user-fav-nav {
+		display: none;
+	}
+}

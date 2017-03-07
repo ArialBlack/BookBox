@@ -1,4 +1,16 @@
 .front {
+  div.col-sm-12 {
+    display: none;
+  }
+
+  .nav-tabs {
+    display: none;
+  }
+
+  section.col-sm-8 {
+    padding:0;
+  }
+
   h1 {
     display: none;
   }
@@ -7,6 +19,9 @@
     width: 100%;
     padding: 0;
     margin: 0;
+    #views-exposed-form-booksearch-page {
+      display: none;
+    }
   }
 
   .row {
@@ -30,9 +45,8 @@
       position: absolute;
       z-index: 1;
       top: 15%;
-      right: 15%;
+      left:38%;
       max-width: 500px;
-
       p {
         font-size: 40px;
         color: @bb-darkblue;
@@ -49,28 +63,47 @@
           padding: 20px;
           font-size: 14px;
 
-            &:hover, &:focus {
-              text-decoration: none;
-              background-color: darken(@secondary-color, 20);
-            }
+          &:hover, &:focus {
+            text-decoration: none;
+            background-color: darken(@secondary-color, 20);
           }
         }
       }
+      @media (min-width:1024px) and (max-width:1250px) {
+        left:25%;
+      }
     }
+  }
 
   #block-views-main-recomend-block-1 {
     .block-title {
       margin: 20px;
+      margin-left:0;
       color: @bb-darkblue;
-      border-bottom: 2px solid @bb-darkblue;
       text-transform: uppercase;
       display: inline-block;
       font-size: 24px;
+      &:before {
+        content: " ";
+        width: 4.6vw;
+        height: 2px;
+        background: #12ab99;
+        position: relative;
+        display: inline-block;
+        margin-bottom: 7px;
+        margin-right: 4px;
+        margin-left: 0;
+        padding: 0;
+      }
     }
   }
 
   .view-main-recomend {
     margin-top: 25px;
+    padding-left:3vw;
+    .field-name-field-bookbox-rec {
+      display: none !important;
+    }
 
     .view-content {
       display: flex;
@@ -81,7 +114,37 @@
       display: flex;
       justify-content: center;
       margin-bottom: 25px;
+      max-width: 33.33333%;
       .col(4);
+      padding-top: 15px;
+      .book-card {
+        .field-name-field-book-author {
+          margin: 10px 0;
+        }
+
+        //.field-name-field-isnew {
+        //  background: #12ab99;
+        //  width: 75px;
+        //  text-align: center;
+        //  line-height: 36px;
+        //  color: @light-color;
+        //  display: inline-block;
+        //  margin-right: 10px;
+        //}
+        //
+        //.field-name-field-hit {
+        //  display: inline-block;
+        //  text-align: center;
+        //  width: 35px;
+        //  line-height: 36px;
+        //  background-color: @secondary-color;
+        //  color: @light-color;
+        //}
+        &:hover {
+          text-decoration: none;
+          color: inherit;
+        }
+      }
     }
 
     .more-link {
