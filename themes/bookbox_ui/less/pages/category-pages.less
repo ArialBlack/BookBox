@@ -40,11 +40,10 @@
    width: 100%;
    margin: 0;
    padding: 0;
-   padding-top:30px;
    padding-right: 15px;
 
    .page-header {
-     margin: 20px 0 20px 0;
+     margin: 60px 0 20px 0;
      color: @bb-darkblue;
      text-transform: uppercase;
      display: inline-block;
@@ -53,9 +52,9 @@
 
      &:before {
        content: " ";
-       width: 30px;
+       width: 70px;
        height: 2px;
-       background: #12ab99;
+       background: @primary-color;
        position: relative;
        display: inline-block;
        margin-bottom: 7px;
@@ -66,17 +65,15 @@
    }
 
    #block-system-main {
-     .view-content {
        display: flex;
        flex-direction: row;
        flex-wrap: wrap;
-
-       .views-row {
-         flex-grow:1;
-         max-width: 33.333333%;
+       padding-left: 50px;
 
          article {
            height:100%;
+           flex-grow:1;
+           max-width: 33.333333%;
 
            .field-name-field-bookbox-rec {
              font-size: 70%;
@@ -91,8 +88,6 @@
              position: relative;
            }
          }
-       }
-     }
    }
  }
 
