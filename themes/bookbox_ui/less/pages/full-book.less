@@ -1,0 +1,170 @@
+.node-type-book {
+
+  .main-container {
+    width:100%;
+
+    .col-sm-8{
+      padding:0;
+    }
+  }
+
+  .col-sm-12, .tabs--primary, .links .list-inline {
+    display: none;
+  }
+
+  #block-system-main {
+    article {
+      padding: 60px 0 60px 85px;
+
+      p{
+        color: @bb-darkblue;
+      }
+
+      header {
+        float: right; //todo
+        width: 50%;
+        padding-bottom: 50px;
+        border-bottom: 1px solid #d5d6d8;
+        color: @bb-darkblue;
+
+        h1 {
+          margin-top: 0;
+        }
+
+        .field-name-field-book-author {
+          margin: 20px 0;
+
+          a {
+            color: @bb-darkblue;
+            font-size: 18px;
+            opacity:.8;
+
+            &:hover {
+              color: @bb-darkblue;
+            }
+          }
+        }
+
+        .list-inline,
+        .field-type-commerce-product-reference {
+          display: inline-block;
+        }
+      }
+
+      .cover-description {
+        color: @bb-darkblue;
+        float: left; //todo
+        width: 50%;
+        padding-right: 5em;
+
+        .field-type-text,
+        .field-type-taxonomy-term-reference{
+          margin: 14px 0;
+
+          .field-items {
+            opacity: .8;
+
+            .field-item {
+              display: inline-block;
+
+              a {
+                color: @bb-darkblue;
+              }
+            }
+          }
+        }
+      }
+
+      .description-tabs {
+        padding-top: 50px;
+        float: right; //todo
+        width: 50%;
+
+        .nav-tabs {
+          border: none;
+          margin-bottom: 40px;
+
+          .active {
+            a,
+            a:hover {
+              color: @dirty-blue;
+              border-bottom: 2px solid;
+            }
+          }
+
+          a {
+            color: @primary-color;
+            border: none;
+            padding: 0 2px;
+
+            &:hover{
+              color: darken(@primary-color, 20);
+              background: none;
+            }
+          }
+        }
+
+        #author {
+          div {
+            float: left;
+            max-width:120px;
+            margin:0 25px 10px 0;
+          }
+        }
+      }
+    }
+  }
+
+  #block-views-similarterms-block {
+    .block-title {
+      margin: 20px;
+      margin-left:0;
+      color: @bb-darkblue;
+      text-transform: uppercase;
+      display: inline-block;
+      font-size: 24px;
+      &:before {
+        content: " ";
+        width: 70px;
+        height: 2px;
+        background: @primary-color;
+        position: relative;
+        display: inline-block;
+        margin-bottom: 7px;
+        margin-right: 4px;
+        margin-left: 0;
+        padding: 0;
+      }
+    }
+
+    .view-similarterms {
+      padding-left: 50px;
+
+      .view-content {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+
+        .views-row {
+          flex-grow:1;
+
+          .node-teaser {
+            height:100%;
+          }
+          .field-name-field-bookbox-rec {
+            font-size: 70%;
+            padding: 0;
+            height: auto;
+            width: 100%;
+            border: none;
+            line-height: 4em;
+            margin-top: 0;
+            padding-left: 2em;
+            padding-right: 2em;
+            position: relative;
+          }
+        }
+      }
+    }
+  }
+}
