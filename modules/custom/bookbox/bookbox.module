@@ -67,6 +67,8 @@ function bookbox_block_view($delta = '') {
 function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state) {
   // можно добавить максимум 2
 
+  $form['submit']['#value'] = 'Замовити';
+
   $in_cart = 0;
 
   if (isset($form['product_id'])) {

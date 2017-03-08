@@ -1,12 +1,39 @@
 .page-taxonomy-term {
-  .views-row {
-    .col(4);
+  #block-system-main {
+    article.node-book {
+      .col(12);
+
+      @media (min-width: @screen-sm-min) {
+        .col(6);
+
+        &:nth-of-type(odd) {
+          clear: both;
+        }
+      }
+
+      @media (min-width: @screen-md-min) {
+        .col(4);
+
+        &:nth-of-type(odd) {
+          clear: none;
+        }
+
+        &:nth-of-type(3n+1) {
+          clear: both;
+        }
+      }
+    }
+
+    .text-center {
+      clear: both;
+    }
   }
+
   .text-center,
   .tabs--primary,
   .region-precontent #views-exposed-form-booksearch-page,
   .breadcrumb {
-    display: none;
+    //display: none;
   }
 
  .main-container {
@@ -14,6 +41,7 @@
    margin: 0;
    padding: 0;
    padding-right: 15px;
+
    .page-header {
      margin: 60px 0 20px 0;
      color: @bb-darkblue;
@@ -21,6 +49,7 @@
      display: inline-block;
      font-size: 24px;
      border:none;
+
      &:before {
        content: " ";
        width: 70px;
@@ -34,16 +63,18 @@
        padding: 0;
      }
    }
+
    #block-system-main {
        display: flex;
        flex-direction: row;
        flex-wrap: wrap;
-     padding-left: 50px;
+       padding-left: 50px;
 
          article {
            height:100%;
            flex-grow:1;
            max-width: 33.333333%;
+
            .field-name-field-bookbox-rec {
              font-size: 70%;
              padding: 0;

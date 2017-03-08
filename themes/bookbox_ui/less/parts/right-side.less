@@ -1,38 +1,121 @@
 aside.col-sm-4 {
   padding: 40px 0 0 5vw;
+  padding-left: 5vw;
+
   #block-bookbox-minicart, #block-bookbox-readingnow {
     color: @bb-darkblue;
-    article{
-      max-width: 200px;
+
+    h3 {
+      text-transform: uppercase;
     }
+
     h6 {
       span {
         color: @primary-color;
       }
     }
+
+    .tip_message {
+      display: block;
+      clear: both;
+    }
+
+    .book-container {
+      position: relative;
+      margin-bottom: 20px;
+
+      @media (min-width: @screen-md-min) {
+        width: 50%;
+        float: left;
+        padding-right: 22px;
+        box-sizing: border-box;
+
+        &:nth-of-type(odd) {
+          //margin-right: 5%;
+        }
+      }
+
+      article{
+        max-width: 200px;
+      }
+    }
+
     .book-card {
       text-decoration: none;
-      color: @bb-darkblue;
+      //color: @bb-darkblue;
+      padding: 5px;
+
       .field-name-field-book-author {
         font-size: 12px;
       }
-      .field-name-field-bookbox-rec {
-        font-size: 70%;
-        padding: 0;
-        height: auto;
-        width: auto;
-        border: none;
-        line-height: 4em;
-        padding-left: 2em;
-        padding-right: 2em;
+
+      .book-labels {
+        display: none !important;
       }
+
       &:hover {
         text-decoration: none !important;
         color: @bb-darkblue;
       }
     }
   }
+
   .add_some_book {
-    display: none;
+    //display: none;
+    display: block;
+    background: white;
+    border: @line 1px dashed;
+    min-height: 230px;
+    text-indent: -9999px;
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    margin-bottom: 20px;
+
+    &:hover {
+      box-shadow: 0 0px 49px rgba(0, 0, 0, 0.15), 0 2px 20px rgba(0, 0, 0, 0.62);
+    }
+
+    @media (min-width: @screen-md-min) {
+      width: 45%;
+      float: left;
+
+      &:nth-of-type(odd) {
+        margin-right: 5%;
+      }
+    }
   }
+}
+
+#block-bookbox-minicart {
+  .book-container {
+    button {
+      text-indent: -9999px;
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 13px;
+      width: 13px;
+      background: url('../images/close.png') no-repeat center center;
+      border: none;
+    }
+  }
+
+  #edit-submit-box {
+    border: none;
+    background: @secondary-color;
+    padding: 15px;
+  }
+}
+
+#block-bookbox-readingnow {
+  .book-container {
+    button {
+      white-space: normal;
+      border: none;
+      background-color: @secondary-color;
+
+      span {
+        display: none;
+      }
+    }
+    }
 }

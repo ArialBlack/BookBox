@@ -20,6 +20,7 @@
       img {
         display: inline-block;
         width: 100%;
+        border: @line 1px solid;
       }
     }
 
@@ -31,15 +32,41 @@
 
     .field-name-field-book-author {
       color: @bb-darkblue;
+      margin-bottom: 5px;
 
       &:hover, &:focus {
         text-decoration: none;
       }
     }
 
-    .field-name-field-bookbox-rec:extend(.btn) {
-      margin-top: 10px;
+    .book-labels {
+      overflow: hidden;
+
+      .field {
+        text-transform: uppercase;
+      }
+
+      .field + .field {
+        margin-left: 5px;
+      }
+
     }
+
+    .field-name-field-bookbox-rec:extend(.btn) {
+      //margin-top: 10px;
+     // margin-left: 5px;
+    }
+
+    .field-name-field-hit {
+      //margin-top: 10px;
+    }
+
+    .field-name-field-bookbox-rec,
+    .ield-name-field-isnew,
+    .field-name-field-hit {
+      .font-size(10);
+    }
+
   }
 
   .node-readmore {

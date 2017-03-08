@@ -1,0 +1,106 @@
+.node-type-book {
+  article {
+    header {
+      float: right; //todo
+      width: 50%;
+    }
+
+    h1 {
+      margin-top: 0;
+      .font-size(24);
+      text-transform: uppercase;
+    }
+
+    .field-name-field-book-author {
+      a {
+        color: #65677b;
+        .font-size(18);
+        margin-bottom: 40px;
+        text-decoration: none;
+        display: block
+      }
+    }
+
+    .cover-description {
+      float: left; //todo
+      width: 50%;
+      padding-right: 40px;
+
+      .field-label {
+        font-weight: normal;
+        .font-size(18);
+        margin-top: 25px;
+        margin-bottom: 10px;
+      }
+
+      .field-items {
+        a {
+          text-decoration: none;
+          color: @text;
+        }
+      }
+    }
+
+    .field-name-field-nni {
+      img {
+        border: @line 1px solid;
+      }
+    }
+
+    .book-dids {
+      .field-name-field-bookfields,
+      .links {
+        float: left;
+      }
+
+      .links {
+        margin-left: 30px;
+
+        a {
+          padding: 15px;
+          display: inline-block;
+          text-transform: uppercase;
+          margin-top: 15px;
+          text-decoration: none;
+
+          &:before {
+            .fa();
+            content: '\f08a';
+            display: inline;
+            margin-right: 10px;
+          }
+        }
+      }
+    }
+
+    #edit-submit {
+      border: none;
+      background-color: @secondary-color;
+      padding: 15px;
+    }
+
+    .description-tabs {
+      float: right; //todo
+      width: 50%;
+      padding-top: 40px;
+      margin-top: 40px;
+      border-top: @line 1px solid;
+
+      .nav-tabs {
+        border: none;
+
+        li {
+          a {
+            border: none;
+          }
+        }
+      }
+
+      #author {
+        img {
+          margin-bottom: 20px;
+        }
+      }
+    }
+  }
+}

@@ -76,8 +76,13 @@
 
 <!--(bake parts/header.php)-->
 
-<div class="main-container <?php print $container_class; ?>">
+<?php if (!empty($page['sidebar_filters'])): ?>
+  <div class="sidebar-filters">
+    <?php print render($page['sidebar_filters']); ?>
+  </div>
+<?php endif; ?>
 
+<div class="main-container <?php print $container_class; ?>">
   <header role="banner" id="page-header">
     <?php if (!empty($site_slogan)): ?>
       <p class="lead"><?php print $site_slogan; ?></p>
@@ -87,9 +92,7 @@
   </header> <!-- /#page-header -->
 
   <div class="row">
-
     <div class="col-sm-12">
-      <?php print $messages; ?>
       <?php print render($page['precontent']); ?>
     </div>
 
