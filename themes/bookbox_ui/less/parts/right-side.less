@@ -4,12 +4,19 @@ aside.col-sm-4 {
   #block-bookbox-minicart, #block-bookbox-readingnow {
     color: @bb-darkblue;
 
-
+    h3 {
+      text-transform: uppercase;
+    }
 
     h6 {
       span {
         color: @primary-color;
       }
+    }
+
+    .tip_message {
+      display: block;
+      clear: both;
     }
 
     .book-container {
@@ -29,17 +36,6 @@ aside.col-sm-4 {
 
       article{
         max-width: 200px;
-      }
-
-      button {
-        text-indent: -9999px;
-        position: absolute;
-        right: 0;
-        top: 0;
-        height: 13px;
-        width: 13px;
-        background: url('../images/close.png') no-repeat center center;
-        border: none;
       }
     }
 
@@ -86,4 +82,39 @@ aside.col-sm-4 {
       }
     }
   }
+}
+
+#block-bookbox-minicart {
+  .book-container {
+    button {
+      text-indent: -9999px;
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 13px;
+      width: 13px;
+      background: url('../images/close.png') no-repeat center center;
+      border: none;
+    }
+  }
+
+  #edit-submit-box {
+    border: none;
+    background: @secondary-color;
+    padding: 15px;
+  }
+}
+
+#block-bookbox-readingnow {
+  .book-container {
+    button {
+      white-space: normal;
+      border: none;
+      background-color: @secondary-color;
+
+      span {
+        display: none;
+      }
+    }
+    }
 }

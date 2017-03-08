@@ -38,9 +38,40 @@
 
 .open-search {
   #views-exposed-form-booksearch-page {
+
+    .views-exposed-widgets {
+      position: relative;
+
+      .views-submit-button {
+        position: absolute;
+        right: 0;
+        top: 0;
+
+        button {
+          text-indent: -9999px;
+          margin: 0;
+          line-height: 0;
+          border: 0;
+          padding: 5px;
+
+          &:after {
+            .fa();
+            content: '\f002';
+            .font-size(22);
+          }
+        }
+      }
+    }
+
     #edit-searchtext-wrapper,
     .views-submit-button button {
       display: block;
+    }
+
+    #edit-searchtext-wrapper {
+      width: 100%;
+      padding-right: 60px;
+      box-sizing: border-box;
     }
 
     .fa-search {
@@ -50,12 +81,14 @@
 
   .search-block {
     background: @primary-color;
+    width: 100%;
+    margin-left: 0 !important;
   }
 
   .menu,
   .navbar-header,
   .user-fav-nav{
-    visibility: hidden;
+    display: none;
   }
 
   .main-container,
