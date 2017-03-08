@@ -134,6 +134,37 @@ function bookbox_cron() {
             ->execute();
       }
     }
+
+    $result = db_select('users', 'u')
+        ->fields('u', array('uid', 'mail'))
+        ->condition('u.send1', 0)
+        ->execute()->fetchAll();
+
+    foreach ($result as $item) {
+      //dsm($item);
+      drupal_mail('system', 'mail', $item->mail, language_default(), array(
+          'context' => array(
+              'subject' => 'Ви підтвердили книги',
+              'message' => 'Hello, its 1 day of month',
+          )));
+
+      db_update('users')
+          ->fields(array('send1' => 1))
+          ->condition('uid', $item->uid)
+          ->execute();
+      
+    }
+  }
+
+  if(intval(d()) == 2) {
+    db_update('users')
+        ->fields(array('send1' => 1))
+        //->condition('send1', $item->uid)
+        ->execute();
+  }
+
+  if(intval(d()) == 19) {
+
   }
 
   //Мейл рассылка:
