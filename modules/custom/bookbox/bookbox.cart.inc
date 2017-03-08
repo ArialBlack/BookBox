@@ -2,11 +2,6 @@
 
 // Блок корзины
 function bookbox_mini_cart_block($form, &$form_state) {
-    $form['now'] = array(
-        '#type' => 'markup',
-        '#markup' => '<h2>Зараз: ' . d() . '.' . m() . '.' . date("Y") . '</h2>',
-    );
-
     $form['title'] = array(
         '#type' => 'markup',
         '#markup' => '<h3>Замовлення ' . ua_month() . '</h3><h6>Оберіть дві книги до <span>20-го ' .  ua_month() . '</span></h6>',
@@ -31,6 +26,11 @@ function bookbox_mini_cart_block($form, &$form_state) {
                 $node_view = node_view($node, 'teaser');
                 $rendered_teaser = render($node_view);
 
+                $form['bms' . $cart_count] = array(
+                    '#type' => 'markup',
+                    '#markup' => '<div class="book-container">',
+                );
+
                 $form['book_' . $cart_count] = array(
                     '#type' => 'markup',
                     '#markup' => $rendered_teaser,
@@ -39,8 +39,15 @@ function bookbox_mini_cart_block($form, &$form_state) {
                 $form['del_from_cart_submit' . $cart_count] = array(
                     '#type' => 'submit',
                     '#submit' => array('bookbox_delete_bookfromcart' . $cart_count),
-                    '#value' => 'видалити',
+                    '#value' => 'видалити' . $cart_count,
                 );
+
+                $form['bme' . $cart_count] = array(
+                    '#type' => 'markup',
+                    '#markup' => '</div>',
+                );
+
+
             }
         }
     }
@@ -129,6 +136,7 @@ function bookbox_mini_cart_block($form, &$form_state) {
 
 
 function bookbox_delete_bookfromcart1 ($form, &$form_state) {
+    //dsm('-1');
     global $user;
     $order = commerce_cart_order_load($user->uid);
     $line_item = $order->commerce_line_items['und'][0]['line_item_id'];
@@ -139,6 +147,7 @@ function bookbox_delete_bookfromcart1 ($form, &$form_state) {
 
 
 function bookbox_delete_bookfromcart2 ($form, &$form_state) {
+    dsm('-2');
     global $user;
     $order = commerce_cart_order_load($user->uid);
     $line_item = $order->commerce_line_items['und'][1]['line_item_id'];

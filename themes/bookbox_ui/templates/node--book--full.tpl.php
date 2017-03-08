@@ -112,10 +112,13 @@ if ($status == 0) {
     <h1<?php print $title_attributes; ?>><?php print $title; ?></h1>
 
     <?php print render($content['field_book_author']); ?>
-    <?php print $node->body['und'][0]['summary']; ?>
+    <?php print $node->body['und'][0]['safe_value']; ?>
 
-    <?php print render($content['links']); ?>
-    <?php print render($content['field_bookfields']); ?>
+    <div class="book-dids">
+      <?php print render($content['field_bookfields']); ?>
+      <?php print render($content['links']); ?>
+    </div>
+
 
   </header>
 
@@ -134,7 +137,7 @@ if ($status == 0) {
     </ul>
     <div class="tab-content">
       <div role="tabpanel" class="tab-pane active" id="book">
-        <?php print render($content['body']); ?>
+        <?php print render($content['field_about']); ?>
       </div>
       <div role="tabpanel" class="tab-pane" id="author">
         <?php

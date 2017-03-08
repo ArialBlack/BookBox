@@ -36,11 +36,21 @@
         $(document).mouseup(function (e) {
             var container = $(".search-block");
 
-            if (!container.is(e.target) // if the target of the click isn't the container...
-                && container.has(e.target).length === 0) // ... nor a descendant of the container
-            {
+            if (!container.is(e.target)
+                && container.has(e.target).length === 0) {
                 $('body').removeClass('open-search');
             }
+            ////
+            var filters = $('.sidebar-filters');
+
+            if (!filters.is(e.target)
+                && filters.has(e.target).length === 0) {
+                $('body').removeClass('open-filters');
+            }
+        });
+
+        $('#show-filters').click(function() {
+            $('body').toggleClass('open-filters');
         });
          
     });

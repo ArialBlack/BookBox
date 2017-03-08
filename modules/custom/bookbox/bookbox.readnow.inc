@@ -35,6 +35,11 @@ function bookbox_reading_now_block ($form, &$form_state) {
                 $node_view = node_view($node, 'teaser');
                 $rendered_teaser = render($node_view);
 
+                $form['bms' . $box_count] = array(
+                    '#type' => 'markup',
+                    '#markup' => '<div class="book-container">',
+                );
+
                 $form['book_' . $box_count] = array(
                     '#type' => 'markup',
                     '#markup' => $rendered_teaser,
@@ -47,7 +52,7 @@ function bookbox_reading_now_block ($form, &$form_state) {
                             $form['prolong_book' . $box_count] = array(
                                 '#type' => 'submit',
                                 '#submit' => array('bookbox_prolongbook' . $box_count),
-                                '#value' => 'Подовжии на місяць ' . $box_count,
+                                '#value' => 'Подовжии на місяць <span>' . $box_count . '</span>',
                             );
 
                         }
@@ -56,11 +61,16 @@ function bookbox_reading_now_block ($form, &$form_state) {
                         $form['prolong_book' . $box_count] = array(
                             '#type' => 'submit',
                             //'#submit' => array('bookbox_prolongbook' . $box_count),
-                            '#value' => 'Подовжено ' . $box_count,
+                            '#value' => 'Подовжено <span>' . $box_count . '</span>',
                         );
                         $form['prolong_book' . $box_count]['#attributes']['disabled'] = TRUE;
                         break;
                 }
+
+                $form['bme' . $box_count] = array(
+                    '#type' => 'markup',
+                    '#markup' => '</div>',
+                );
             }
         }
     }
