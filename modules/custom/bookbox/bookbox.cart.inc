@@ -147,7 +147,7 @@ function bookbox_delete_bookfromcart1 ($form, &$form_state) {
 
 
 function bookbox_delete_bookfromcart2 ($form, &$form_state) {
-    dsm('-2');
+    //dsm('-2');
     global $user;
     $order = commerce_cart_order_load($user->uid);
     $line_item = $order->commerce_line_items['und'][1]['line_item_id'];
