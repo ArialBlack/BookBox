@@ -2,7 +2,26 @@
     $(function() {
 
         var resizeTimer;
-        
+
+
+        var $label = $('.book-labels .field');
+        $label.each(function( index ) {
+            var $text = $(this).find('.field-item').text();
+            if ($text.length < 3) {
+                $(this).remove();
+            }
+        });
+
+        $(document).ajaxStop(function() {
+            var $label = $('.book-labels .field');
+            $label.each(function( index ) {
+                var $text = $(this).find('.field-item').text();
+                if ($text.length < 3) {
+                    $(this).remove();
+                }
+            });
+        })
+
         $( document ).ready(function() {
             console.log('--------------run');
             /////////////////////////////////////
@@ -19,6 +38,9 @@
                 }
             };
             /////////////////////////////////////
+
+
+
         });
 
         $(window).on('resize', function() {

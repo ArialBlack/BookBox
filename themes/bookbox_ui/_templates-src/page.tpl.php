@@ -72,6 +72,7 @@
  *
  * @ingroup templates
  */
+
 ?>
 
 <!--(bake parts/header.php)-->
@@ -136,5 +137,6 @@
 </div>
 
 <!--(bake parts/footer.php)-->
+
 
 
