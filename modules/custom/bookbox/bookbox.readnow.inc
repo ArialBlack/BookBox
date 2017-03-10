@@ -84,11 +84,11 @@ function bookbox_reading_now_block ($form, &$form_state) {
 
                             ///////////
                             //скроем временно
-                            /*
+
                             $form['prolongmarkup' . $box_count] = array(
                                 '#type' => 'markup',
                                 '#markup' => $modal,
-                            );*/
+                            );
 
                         }
                         break;

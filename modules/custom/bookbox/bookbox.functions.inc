@@ -48,7 +48,7 @@ function ua_month_original($m = null) {
 function current_period() {
   $current_date = d();
 
-  if ($current_date >=1 && $current_date <=21) {
+  if ($current_date >=1 && $current_date <=19) {
     $period = 1;
   } else {
     $period = 2;
