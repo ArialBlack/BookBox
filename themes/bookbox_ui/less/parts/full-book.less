@@ -57,11 +57,19 @@
         margin-left: 30px;
 
         a {
-          padding: 15px;
+          padding: 10px;
           display: inline-block;
           text-transform: uppercase;
           margin-top: 15px;
           text-decoration: none;
+
+          &.unflag-action {
+            color: @secondary-color;
+
+            &:before {
+              color: @secondary-color;
+            }
+          }
 
           &:before {
             .fa();
@@ -69,6 +77,8 @@
             display: inline;
             margin-right: 10px;
           }
+
+
         }
       }
     }
@@ -99,6 +109,8 @@
       #author {
         img {
           margin-bottom: 20px;
+          width: 110px;
+          height: auto;
         }
       }
     }

@@ -159,6 +159,7 @@
     <?php endif; ?>
 
     <section<?php print $content_column_class; ?>>
+      <?php print $messages; ?>
       <?php if (!empty($page['highlighted'])): ?>
         <div class="highlighted jumbotron"><?php print render($page['highlighted']); ?></div>
       <?php endif; ?>
@@ -193,7 +194,6 @@
 <?php if (!empty($page['footer'])): ?>
     <footer class="footer">
         <div class="container">
-            <?php print $messages; ?>
             <?php print render($page['footer']); ?>
         </div>
     </footer>

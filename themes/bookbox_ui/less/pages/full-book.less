@@ -1,168 +1,104 @@
 .node-type-book {
-
-  .main-container {
-    width:100%;
-
-    .col-sm-8{
-      padding:0;
+  article {
+    header {
+      float: right; //todo
+      width: 50%;
     }
-  }
 
-  .col-sm-12, .tabs--primary, .links .list-inline {
-    display: none;
-  }
-
-  #block-system-main {
-    article {
-      padding: 60px 0 60px 85px;
-
-      p{
-        color: @bb-darkblue;
-      }
-
-      header {
-        float: right; //todo
-        width: 50%;
-        padding-bottom: 50px;
-        border-bottom: 1px solid #d5d6d8;
-        color: @bb-darkblue;
-
-        h1 {
-          margin-top: 0;
-        }
-
-        .field-name-field-book-author {
-          margin: 20px 0;
-
-          a {
-            color: @bb-darkblue;
-            font-size: 18px;
-            opacity:.8;
-
-            &:hover {
-              color: @bb-darkblue;
-            }
-          }
-        }
-
-        .list-inline,
-        .field-type-commerce-product-reference {
-          display: inline-block;
-        }
-      }
-
-      .cover-description {
-        color: @bb-darkblue;
-        float: left; //todo
-        width: 50%;
-        padding-right: 5em;
-
-        .field-type-text,
-        .field-type-taxonomy-term-reference{
-          margin: 14px 0;
-
-          .field-items {
-            opacity: .8;
-
-            .field-item {
-              display: inline-block;
-
-              a {
-                color: @bb-darkblue;
-              }
-            }
-          }
-        }
-      }
-
-      .description-tabs {
-        padding-top: 50px;
-        float: right; //todo
-        width: 50%;
-
-        .nav-tabs {
-          border: none;
-          margin-bottom: 40px;
-
-          .active {
-            a,
-            a:hover {
-              color: @dirty-blue;
-              border-bottom: 2px solid;
-            }
-          }
-
-          a {
-            color: @primary-color;
-            border: none;
-            padding: 0 2px;
-
-            &:hover{
-              color: darken(@primary-color, 20);
-              background: none;
-            }
-          }
-        }
-
-        #author {
-          div {
-            float: left;
-            max-width:120px;
-            margin:0 25px 10px 0;
-          }
-        }
-      }
-    }
-  }
-
-  #block-views-similarterms-block {
-    .block-title {
-      margin: 20px;
-      margin-left:0;
-      color: @bb-darkblue;
+    h1 {
+      margin-top: 0;
+      .font-size(24);
       text-transform: uppercase;
-      display: inline-block;
-      font-size: 24px;
-      &:before {
-        content: " ";
-        width: 70px;
-        height: 2px;
-        background: @primary-color;
-        position: relative;
-        display: inline-block;
-        margin-bottom: 7px;
-        margin-right: 4px;
-        margin-left: 0;
-        padding: 0;
+    }
+
+    .field-name-field-book-author {
+      a {
+        color: #65677b;
+        .font-size(18);
+        margin-bottom: 40px;
+        text-decoration: none;
+        display: block
       }
     }
 
-    .view-similarterms {
-      padding-left: 50px;
+    .cover-description {
+      float: left; //todo
+      width: 50%;
+      padding-right: 40px;
 
-      .view-content {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
+      .field-label {
+        font-weight: normal;
+        .font-size(18);
+        margin-top: 25px;
+        margin-bottom: 10px;
+      }
 
-        .views-row {
-          flex-grow:1;
+      .field-items {
+        a {
+          text-decoration: none;
+          color: @text;
+        }
+      }
+    }
 
-          .node-teaser {
-            height:100%;
+    .field-name-field-nni {
+      img {
+        border: @line 1px solid;
+      }
+    }
+
+    .book-dids {
+      .field-name-field-bookfields,
+      .links {
+        float: left;
+      }
+
+      .links {
+        margin-left: 30px;
+
+        a {
+          padding: 15px;
+          display: inline-block;
+          text-transform: uppercase;
+          margin-top: 15px;
+          text-decoration: none;
+
+          &:before {
+            .fa();
+            content: '\f08a';
+            display: inline;
+            margin-right: 10px;
           }
-          .field-name-field-bookbox-rec {
-            font-size: 70%;
-            padding: 0;
-            height: auto;
-            width: 100%;
+        }
+      }
+    }
+
+    #edit-submit {
+      border: none;
+      background-color: @secondary-color;
+      padding: 15px;
+    }
+
+    .description-tabs {
+      float: right; //todo
+      width: 50%;
+      padding-top: 40px;
+      margin-top: 40px;
+      border-top: @line 1px solid;
+
+      .nav-tabs {
+        border: none;
+
+        li {
+          a {
             border: none;
-            line-height: 4em;
-            margin-top: 0;
-            padding-left: 2em;
-            padding-right: 2em;
-            position: relative;
           }
+        }
+      }
+
+      #author {
+        img {
+          margin-bottom: 20px;
         }
       }
     }

@@ -4,7 +4,7 @@ function m() {
   $month = date("m");
 
   //hack month for testing
-  $month = variable_get('testMonth_title');
+  //$month = variable_get('testMonth_title');
 
   return $month;
 }
@@ -14,7 +14,7 @@ function d() {
   $day = date("d");
 
   //hack day for testing
-  $day = variable_get('testDay_title');
+  //$day = variable_get('testDay_title');
 
   return $day;
 }
