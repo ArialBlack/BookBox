@@ -44,8 +44,6 @@ function bookbox_form_alter(&$form, &$form_state, $form_id){
     }
 
     if ($form['#id'] == 'user-login') {
-
-
         $form['submitзфіі'] = array(
             '#type' => 'markup',
             '#markup' => '<a id="userlostpass" href="/user/password">Забули пароль?</a>',
@@ -57,8 +55,6 @@ function bookbox_form_alter(&$form, &$form_state, $form_id){
             '#markup' => '<a id="userreglink btn" href="/user/register">Зарееструватись</a>',
             '#weight' => 9
         );
-
-
     }
 }
 
