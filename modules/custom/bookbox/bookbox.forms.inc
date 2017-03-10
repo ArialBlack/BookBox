@@ -15,6 +15,51 @@ function bookbox_form_alter(&$form, &$form_state, $form_id){
             '#markup' => '<i class="fa fa-search" aria-hidden="true"></i>',
         );
     }
+
+    //dsm($form);
+
+    if ($form['#id'] == 'user-register-form') {
+       // $form['name'] = $form['field_name'];
+       // $form['email'] = $form['account']['mail'];
+        //unset($form['field_name']);
+       // unset($form['account']['mail']);
+
+        $form['field_name']['#weight'] = -10;
+        $form['field_sirname']['#weight'] = -9;
+        //$form['email']['#weight'] = -8;
+
+        $form['mail'] = $form['account']['mail'];
+        unset($form['account']['mail']);
+        $form['mail']['#weight'] = -8;
+        $form['mail']['#title'] = 'Email <span>(Ваш Email буде вашим логіном)</span>';
+        $form['mail']['#description'] = '';
+
+
+        $form['pass'] = $form['account']['pass'];
+        unset($form['account']['pass']);
+        $form['field_company']['#weight'] = -7;
+        $form['pass']['#weight'] = -6;
+
+        //dsm($form);
+    }
+
+    if ($form['#id'] == 'user-login') {
+
+
+        $form['submitзфіі'] = array(
+            '#type' => 'markup',
+            '#markup' => '<a id="userlostpass" href="/user/password">Забули пароль?</a>',
+            '#weight' => 8
+        );
+
+        $form['submitlogin'] = array(
+            '#type' => 'markup',
+            '#markup' => '<a id="userreglink btn" href="/user/register">Зарееструватись</a>',
+            '#weight' => 9
+        );
+
+
+    }
 }
 
 function bookbox_registeruser_validate($form, &$form_state) {

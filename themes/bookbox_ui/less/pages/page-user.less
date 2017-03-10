@@ -31,3 +31,27 @@
     }
   }
 }
+
+.page-user {
+  &.not-logged-in {
+    #reg_mes1 {
+      display: none;
+    }
+
+    &.page-user-register {
+      #reg_mes1 {
+        display: block;
+      }
+    }
+
+    .tabs--primary {
+      li {
+        display: none;
+
+        &.active {
+          display: block;
+        }
+      }
+    }
+  }
+}
