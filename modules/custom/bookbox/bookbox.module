@@ -271,41 +271,98 @@ function bookbox_cron() {
 
           db_update('commerce_order')
               ->fields(array('changed' => $timestamp ))
-               ->fields(array('status' => 'completed'))
-               ->condition('order_id', $item->order_id)
+              ->fields(array('status' => 'completed'))
+              ->condition('order_id', $item->order_id)
               ->execute();
         }
       }
 
-      ///$result = db_select('users', 'u')
-      ///     ->fields('u', array('uid', 'mail'))
-      ///    ->condition('u.send1', 0)
-      ///     ->execute()->fetchAll();
+      /*$result = db_select('users', 'u')
+              ->fields('u', array('uid', 'mail'))
+              ->condition('u.send1', 0)
+              ->execute()->fetchAll();*/
 
-      ///foreach ($result as $item) {
-      //dsm($item);
-      /// drupal_mail('system', 'mail', $item->mail, language_default(), array(
-      ///     'context' => array(
-      ///         'subject' => 'Ви підтвердили книги',
-      ///         'message' => 'Hello, its 1 day of month',
-      ///     )));
+      $query = new EntityFieldQuery();
+      $result = $query
+          ->entityCondition('entity_type', 'user')
+          ->propertyCondition('send1', 0, '=')  // Where u.send1 = 0
+          ->execute();
 
-      ///  db_update('users')
-      ///      ->fields(array('send1' => 1))
-      ///     ->condition('uid', $item->uid)
-      ///      ->execute();
-      ///
+      $uids = array();
+      foreach($result['user'] as $user) {
+        $uids[] = $user->uid;
+      }
+      $result = entity_load('user', $uids);
+      //$result = entity_load('user');
 
-    }
+      foreach ($result as $item) {
+        if($item->uid != 0){
+          //  if($item->uid == 1){ //for testing
 
-    ///if(intval(d()) == 2) {
-    ///  db_update('users')
-    ///      ->fields(array('send1' => 1))
-    //->condition('send1', $item->uid)
-    ///      ->execute();
+          //відправляємо мейл геть усім абсолютно юзерам згідно шаблону "лист на 1е число"
+          $params['name'] = $item->field_name['und'][0]['value'];
+          bookbox_mail_send('bookbox', 'bookbox', $item->mail, $params);
+
+          db_update('users')
+              ->fields(array('send1' => 1))
+              ->condition('uid', $item->uid)
+              ->execute();
+        }
+      }
+    }//1
+
+    if(intval(d()) == 2) {
+      db_update('users')
+          ->fields(array('send1' => 1))
+          //->condition('send1', $item->uid)
+          ->execute();
+    }//2
 
     if(intval(d()) == 19) {
 
+      /* $result = db_select('users', 'u')
+           ->fields('u', array('uid', 'mail', 'field_name'))
+           ->condition('u.send19', 0)
+           ->execute()->fetchAll();*/
+      $query = new EntityFieldQuery();
+      $result = $query
+          ->entityCondition('entity_type', 'user')
+          ->propertyCondition('send19', 0, '=')  // Where u.send19 = 0
+          ->execute();
+
+      $uids = array();
+      foreach($result['user'] as $user) {
+        $uids[] = $user->uid;
+      }
+      $result = entity_load('user', $uids);
+
+      //dpm($result);
+      foreach ($result as $item) {
+
+        if($item->uid != 0) {
+          // if($item->uid == 1){ //for testing
+          //todo emails
+          //лист юзерам які не додовжили не підтвердили
+          //я ще зуточню вибірку. а поки для тесту - всім
+          $params['name'] = $item->field_name['und'][0]['value'];
+          bookbox_mail_send('bookbox', 'bookbox_19', $item->mail, $params);
+
+          //помітимо після відправки що листи відсилались
+          //after testing change ->fields(array('send19' => 0)) to ->fields(array('send19' => 1))
+          db_update('users')
+              ->fields(array('send19' => 1))
+              ->condition('uid', $item->uid)
+              ->execute();
+        }
+      }
+    }//19
+
+    //проапдейтимо поле 20го числа, щоб не відсилати знову листи
+    if(intval(d()) == 20) {
+      db_update('users')
+          ->fields(array('send1' => 1))
+          //->condition('send1', $item->uid)
+          ->execute();
     }
 
     //Мейл рассылка:

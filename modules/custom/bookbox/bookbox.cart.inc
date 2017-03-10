@@ -259,6 +259,8 @@ function bookbox_confirm_box($arg0) {
     $mail_body = $mail_body . 'Деталі щодо доставки буде надіслано окремо. </br>Команда Book Box </br>Це автоматичне повідомлення, будь ласка, не відповідайте на нього.';
 
     //6. Пошлем емейл
+    //todo emails:
+    //переписать це використавши шаблон
     drupal_mail('system', 'mail', $user->mail, language_default(), array(
         'context' => array(
         'subject' => 'Ваше замовлення ' . ua_month($m = null),
