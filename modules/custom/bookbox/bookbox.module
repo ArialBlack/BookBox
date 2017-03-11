@@ -94,13 +94,18 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state)
     }
   }
 
-  if ($in_cart == 2) {
+  $reading_now = count(bookbox_get_in_reading_now());
+
+  if ($in_cart == 2 || $reading_now + $in_cart > 1) {
     $can_add2cart = false;
   }
 
   if (!$can_add2cart) {
     $form['submit']['#attributes']['disabled'] = TRUE;
   }
+
+  //dsm('inc ', bookbox_count_in_confirm_this_month());
+  //dsm('pro  ', bookbox_count_in_prolong_this_month());
 }
 
 // Крон работы
@@ -178,28 +183,37 @@ function bookbox_user_orders_history() {
       ->fields('o', array('order_id', 'changed'))
       ->condition('o.uid', $user->uid)
       ->condition('o.status', 'archive')
-      ->orderBy('o.order_id', 'DESC')
+      ->orderBy('o.changed', 'DESC')
       ->execute()->fetchAll();
 
-  foreach ($result as $res) {
-    $order = commerce_order_load($res->order_id);
-    $line_item_id = $order->commerce_line_items['und'][0]['line_item_id'];
-    $line_item = commerce_line_item_load($line_item_id);
-    $product_id =  $line_item->commerce_product['und'][0]['product_id'];
-    $product_display = _bookbox_get_product_display_by_product_id($product_id);
+  $newOrder = [];
 
-    if ($product_display->nid) {
+  foreach ($result as $res) {
       setlocale(LC_TIME, 'uk_UA');
       $dateM = ua_month_original(intval(date('m', $res->changed))-1);
       $dateY = date('Y', $res->changed);
-      $content = $content . '<h2>' . $dateM . ' ' . $dateY . '</h2>';
-
-      $node = node_load($product_display->nid);
-      $node_view = node_view($node, 'teaser');
-      $rendered_teaser = render($node_view);
-      $content = $content . $rendered_teaser;
-    }
+      $res->changed = $dateM . ' ' . $dateY;
+      $newOrder[$res->changed][] = $res->order_id;
   }
 
+  while ($keyname = current($newOrder)) {
+      $content = $content . '<h2>' . key($newOrder) . '</h2>';
+      foreach ($newOrder[key($newOrder)] as $res) {
+        $order = commerce_order_load($res);
+        $line_item_id = $order->commerce_line_items['und'][0]['line_item_id'];
+        $line_item = commerce_line_item_load($line_item_id);
+        $product_id =  $line_item->commerce_product['und'][0]['product_id'];
+        $product_display = _bookbox_get_product_display_by_product_id($product_id);
+
+        if ($product_display->nid) {
+          $node = node_load($product_display->nid);
+          $node_view = node_view($node, 'teaser');
+          $rendered_teaser = render($node_view);
+          $content = $content . $rendered_teaser;
+        }
+      }
+    next($newOrder);
+  }
+  
   return $content;
 }

@@ -99,7 +99,7 @@ if ($status == 0) {
   //print render($content);
 
   $author_count = count($node->field_book_author['und']);
-  dsm($author_count);
+  //dsm($author_count);
 
   if ($author_count > 1) {
     $tab_title = 'Про авторів';

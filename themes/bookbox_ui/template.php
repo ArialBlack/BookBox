@@ -19,7 +19,6 @@ function bookbox_ui_preprocess_node(&$vars) {
     $vars['theme_hook_suggestions'][] = 'node__' . $vars['node']->type . '__full';  // node--[type|nodeid]--full.tpl.php
     $vars['theme_hook_suggestions'][] = 'node__' . $vars['node']->nid . '__full';
   }
-
 }
 
 function bookbox_ui_preprocess_page(&$vars) {
@@ -30,6 +29,35 @@ function bookbox_ui_preprocess_page(&$vars) {
 
   // Do we have a node?
   if (isset($vars['node'])) {
+
+    ///////////////
+    $breadcrumb = array();
+    $breadcrumb[] = l('Головна', '<front>');
+    $tid = null;
+
+    $urlparams = drupal_get_query_parameters();
+    if(isset($urlparams['term'])) {
+      $tid = $urlparams['term'];
+    } else {
+      if ($vars['node']->type == 'book') {
+        $nid = $vars['node']->nid;
+        $node = node_load($nid);
+        $tid = $node->field_book_category['und'][1]['tid'];
+      }
+    }
+
+    if(isset($tid)) {
+      $term = taxonomy_term_load($tid);
+      $parent = taxonomy_get_parents_all($tid);
+      $parent = array_reverse($parent);
+
+      foreach ($parent as $item) {
+        $breadcrumb[] = l($item->name, 'taxonomy/term/' . $item->tid);
+      }
+    }
+
+    drupal_set_breadcrumb($breadcrumb);
+    ////////////////
 
     // Ref suggestions cuz it's stupid long.
     $suggests = &$vars['theme_hook_suggestions'];

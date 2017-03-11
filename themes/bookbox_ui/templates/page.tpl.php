@@ -72,6 +72,7 @@
  *
  * @ingroup templates
  */
+
 ?>
 
 <?php global $user; ?>
@@ -198,5 +199,6 @@
         </div>
     </footer>
 <?php endif; ?>
+
 
 

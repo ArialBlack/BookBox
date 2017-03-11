@@ -2,7 +2,26 @@
     $(function() {
 
         var resizeTimer;
-        
+
+
+        var $label = $('.book-labels .field');
+        $label.each(function( index ) {
+            var $text = $(this).find('.field-item').text();
+            if ($text.length < 3) {
+                $(this).remove();
+            }
+        });
+
+        $(document).ajaxStop(function() {
+            var $label = $('.book-labels .field');
+            $label.each(function( index ) {
+                var $text = $(this).find('.field-item').text();
+                if ($text.length < 3) {
+                    $(this).remove();
+                }
+            });
+        })
+
         $( document ).ready(function() {
             console.log('--------------run');
             /////////////////////////////////////
@@ -19,6 +38,9 @@
                 }
             };
             /////////////////////////////////////
+
+
+
         });
 
         $(window).on('resize', function() {
@@ -28,8 +50,8 @@
             }, 250);
         });
 
-        $('#views-exposed-form-booksearch-page .fa-search').click(function() {
-            console.log('--------------c');
+        $('#views-exposed-form-booksearch-page .icon-search').click(function() {
+            //console.log('--------------c');
            $('body').addClass('open-search');
         });
 

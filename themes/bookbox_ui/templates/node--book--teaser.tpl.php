@@ -122,6 +122,7 @@ if ($status == 0) {
     //dsm($node);
     ?>
   </a>
+  
   <?php
     print render($content['links']);
 

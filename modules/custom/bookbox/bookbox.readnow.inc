@@ -12,7 +12,7 @@ function bookbox_reading_now_block ($form, &$form_state) {
     if ($result) {
         $form['title'] = array(
             '#type' => 'markup',
-            '#markup' => '<h3>' . $title . ' </h3><h6>Повернення книг до <span>20-го' .  ua_month() . '</span></h6>', //todo
+            '#markup' => '<h3>' . $title . ' </h3><h6>Повернення книг до <span>20-го ' .  ua_month(intval(m())) . '</span></h6>', //todo
         );
 
         $box_count = 0;
@@ -80,10 +80,12 @@ function bookbox_reading_now_block ($form, &$form_state) {
 
 function bookbox_prolongbook1($form, &$form_state) {
     $result = bookbox_get_in_reading_now();
+   // dsm($result);
 
     if ($result) {
         $order_id = $result[0]->order_id;
         $order = commerce_order_load($order_id);
+        //dsm($order);
         commerce_order_status_update($order, 'prolong', $skip_save = FALSE, $revision = NULL, $log = '');
     }
 }
