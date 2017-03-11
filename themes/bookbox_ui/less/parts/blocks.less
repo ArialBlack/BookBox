@@ -91,3 +91,33 @@
     opacity: 0.5;
   }
 }
+
+#block-bookbox-catbiz,
+#block-bookbox-catsamo,
+#block-bookbox-catkrug {
+  .books-row {
+    .node-book {
+      .col(12);
+
+      @media (min-width: @screen-sm-min) {
+        .col(6);
+
+        &:nth-of-type(odd) {
+          clear: both;
+        }
+      }
+
+      @media (min-width: @screen-md-min) {
+        .col(4);
+
+        &:nth-of-type(odd) {
+          clear: none;
+        }
+
+        &:nth-of-type(3n+1) {
+          clear: both;
+        }
+      }
+    }
+  }
+}
