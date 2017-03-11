@@ -1,0 +1,72 @@
+.page-user-login {
+  #navbar,
+  .footer,
+  .breadcrumb,
+  .tabs--primary,
+  .help-block {
+    display: none;
+  }
+
+  .main-container {
+    padding-top: 20vh;
+    color: @bb-darkblue;
+
+    #block-block-7 {
+      text-align: center;
+
+      a {
+        text-transform: uppercase;
+        color: @primary-color;
+      }
+    }
+
+    #block-block-8 {
+      text-align: center;
+    }
+
+    .page-header {
+      text-align: center;
+      border:none;
+      text-transform: uppercase;
+    }
+
+    .form-item-name {
+      margin: 40px 0;
+    }
+
+    #userlostpass {
+      color: @dirty-blue;
+    }
+
+    #user-login {
+      margin:auto;
+      width:30%;
+
+      .form-actions {
+        button {
+          margin:40px 0;
+          float: left;
+          width:45%;
+          color: @primary-color;
+          border:2px solid;
+          background: none;
+
+          &:hover {
+            background: @primary-color;
+            color: @light-color;
+          }
+        }
+      }
+
+      #edit-actions {
+        text-align: center;
+      }
+    }
+  }
+}
+
+.not-logged-in.page-user {
+  h1 {
+    display: none;
+  }
+}
