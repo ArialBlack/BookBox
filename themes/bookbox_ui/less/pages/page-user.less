@@ -78,9 +78,25 @@
     }
   }
 
-  #edit-timezone {
-    display: none;
+  &.page-user-edit {
+    #edit-account {
+      .form-item-mail {
+        display: none;
+      }
+    }
+
+    #edit-timezone,
+    .field-name-field-name,
+    .field-name-field-sirname,
+    //.field-name-field-position,
+    //.field-name-field-tel,
+    .field-name-field-company,
+    .field-type-list-boolean {
+      display: none;
+    }
   }
+
+
 }
 
 .page-user-orders {
