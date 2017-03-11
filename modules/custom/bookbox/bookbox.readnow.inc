@@ -52,7 +52,7 @@ function bookbox_reading_now_block ($form, &$form_state) {
                             $form['prolong_book' . $box_count] = array(
                                 '#type' => 'submit',
                                 '#submit' => array('bookbox_prolongbook' . $box_count),
-                                '#value' => 'Подовжии на місяць <span>' . $box_count . '</span>',
+                                '#value' => 'Подовжити на місяць <span>' . $box_count . '</span>',
                             );
 
                         }
