@@ -197,7 +197,7 @@ function bookbox_user_orders_history() {
   }
 
   while ($keyname = current($newOrder)) {
-      $content = $content . '<h2>' . key($newOrder) . '</h2>';
+      $content = $content . '<div class="row"><h2>' . key($newOrder) . '</h2>';
       foreach ($newOrder[key($newOrder)] as $res) {
         $order = commerce_order_load($res);
         $line_item_id = $order->commerce_line_items['und'][0]['line_item_id'];
@@ -212,6 +212,7 @@ function bookbox_user_orders_history() {
           $content = $content . $rendered_teaser;
         }
       }
+    $content = $content . '</div>';
     next($newOrder);
   }
   

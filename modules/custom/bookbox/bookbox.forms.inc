@@ -1,5 +1,7 @@
 <?php
 function bookbox_form_alter(&$form, &$form_state, $form_id){
+    //dsm($form);
+
     if ($form['#id'] == 'user-register-form') {
         $form['#validate'][] = 'bookbox_registeruser_validate';
     }
@@ -28,23 +30,23 @@ function bookbox_form_alter(&$form, &$form_state, $form_id){
         $form['field_sirname']['#weight'] = -9;
         //$form['email']['#weight'] = -8;
 
-        $form['mail'] = $form['account']['mail'];
-        unset($form['account']['mail']);
-        $form['mail']['#weight'] = -8;
-        $form['mail']['#title'] = 'Email <span>(Ваш Email буде вашим логіном)</span>';
-        $form['mail']['#description'] = '';
-
-
         $form['pass'] = $form['account']['pass'];
         unset($form['account']['pass']);
-        $form['field_company']['#weight'] = -7;
+        $form['field_company']['#weight'] = -8;
+
+        $form['mail'] = $form['account']['mail'];
+        unset($form['account']['mail']);
+        $form['mail']['#weight'] = -7;
+        $form['mail']['#title'] = 'Email <span>(Робочий email)</span>';
+        $form['mail']['#description'] = '';
+
         $form['pass']['#weight'] = -6;
 
         //dsm($form);
     }
 
     if ($form['#id'] == 'user-login') {
-        $form['submitзфіі'] = array(
+        $form['submitpass'] = array(
             '#type' => 'markup',
             '#markup' => '<a id="userlostpass" href="/user/password">Забули пароль?</a>',
             '#weight' => 8
@@ -56,6 +58,11 @@ function bookbox_form_alter(&$form, &$form_state, $form_id){
             '#weight' => 9
         );
     }
+
+    if ($form['#id'] == 'user-pass') {
+        $form['actions']['submit']['#value'] = 'Відновити пароль';
+    }
+
 }
 
 function bookbox_registeruser_validate($form, &$form_state) {
