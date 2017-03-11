@@ -23,36 +23,52 @@
 }
 
 .field-name-field-isnew,
+.field-name-field-bookbox-rec,
+.field-name-field-hit {
+  .font-size(10) !important;
+  float: left;
+  margin-bottom: 5px;
+  .line-height(28) !important;
+  text-align: center;
+  display: inline-block;
+  padding: 0 10px !important;
+  white-space: nowrap;
+  margin-right: 5px;
+  border: none !important;
+}
+
+.field-name-field-isnew,
 .field-name-field-bookbox-rec {
   background: @primary-color;
-  width: 75px;
-  text-align: center;
-  line-height: 36px;
   color: @light-color;
-  display: inline-block;
-  margin-right: 10px;
-  float: left;
-  margin-bottom:8%;
 }
 
 .field-name-field-bookbox-rec {
-  white-space: nowrap;
-  width: auto;
-  padding-left: 10px;
-  padding-right: 10px;
+  position: absolute;
+  top: 45%;
+  left: 10px;
+  margin-left: 0 !important;
+
+  &:after {
+    content: '';
+    display: block;
+    position: absolute;
+    -webkit-transform:rotate(360deg);
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 11px 14px 0;
+    border-color: transparent #10766a transparent transparent;
+    left: 0;
+  }
 }
+
 
 .field-name-field-isnew {
   background-color: @bb-darkblue;
 }
 
 .field-name-field-hit {
-  display: inline-block;
-  text-align: center;
-  width: 35px;
-  line-height: 36px;
   background-color: @secondary-color;
   color: @light-color;
-  float:left;
-  margin-bottom:8%;
 }

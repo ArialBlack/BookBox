@@ -69,7 +69,7 @@ function bookbox_mini_cart_block($form, &$form_state) {
     if ($cart_count < 2) {
         $in_prolong = bookbox_count_in_prolong();
         //dsm($in_prolong);
-        $empty_cells = 2 - $cart_count - $reading_now;
+        $empty_cells = 2 - $cart_count - $in_prolong;
 
         for($i=0; $i <$empty_cells;$i++) {
             $form['add_book_link_'.$i] = array(

@@ -52,6 +52,9 @@
         color: @bb-darkblue;
         font-weight: 600;
         line-height: 1;
+        @media (min-width:1024px) and (max-width:1250px) {
+          margin-bottom: 5px;
+        }
 
         a {
           display: inline-block;
@@ -70,7 +73,8 @@
         }
       }
       @media (min-width:1024px) and (max-width:1250px) {
-        left:25%;
+        left:30%;
+        top: 8%;
       }
     }
   }
@@ -85,7 +89,7 @@
       font-size: 24px;
       &:before {
         content: " ";
-        width: 4.6vw;
+        width: 70px;
         height: 2px;
         background: @primary-color;
         position: relative;
@@ -100,7 +104,7 @@
 
   .view-main-recomend {
     margin-top: 25px;
-    padding-left:3vw;
+    padding-left:40px;
     .field-name-field-bookbox-rec {
       display: none !important;
     }

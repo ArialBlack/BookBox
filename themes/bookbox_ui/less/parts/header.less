@@ -4,10 +4,10 @@
 	border: none;
 	background: @primary-color;
 	padding: 10px 4vw;
-	margin-bottom: 40px;
+	margin-bottom: 0;
 	margin-top: 0;
 
-  @media (min-width:1024px) and (max-weidth:1100px) {
+  @media (min-width:1024px) and (max-width:1100px) {
     padding: 10px 2vw;
   }
 	.navbar-header {
@@ -21,16 +21,15 @@
 				text-transform: uppercase;
 				color: @light-color;
         		background: none;
-        		transition: background-color 2s;
-        		transition: color 2s;
 
 				&:hover, &:active, &:focus {
 					color:  @bb-darkblue;
 					background-color: @light-color;
+          transition: background-color .5s ease, color .5s ease;
 				}
 
-                @media (min-width:1024px) and (max-width:1100px) {
-                  padding: 11px 1px;
+                @media (min-width:1024px) and (max-width:1130px) {
+                  padding: 11px 3px;
                 }
 			}
 		}
@@ -54,6 +53,7 @@
         	padding-top: 2px;
 			cursor: pointer;
       	}
+
 	}
 
 	.user-fav-nav {
