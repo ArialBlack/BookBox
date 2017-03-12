@@ -21,6 +21,20 @@
       background-color: darken(@secondary-color, 20);
     }
   }
+
+  &.outline {
+    background: none;
+
+    &.red {
+      color: @secondary-color;
+      border-color: @secondary-color;
+
+      &:hover {
+        background: @secondary-color;
+        color: white;
+      }
+    }
+  }
 }
 
 .field-name-field-isnew,

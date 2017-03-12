@@ -27,6 +27,22 @@ function bookbox_menu(){
       'type' => MENU_LOCAL_TASK,
   );
 
+  $items['confirm/%/prolong1'] = array(
+      'title' => 'Buy',
+      'page callback' => 'bookbox_prolongbook1',
+      'page arguments' => array(1),
+      'access arguments' => array('access content'), // whatever see above
+      'type' => MENU_CALLBACK
+  );
+
+  $items['confirm/%/prolong2'] = array(
+      'title' => 'Buy',
+      'page callback' => 'bookbox_prolongbook2',
+      'page arguments' => array(1),
+      'access arguments' => array('access content'), // whatever see above
+      'type' => MENU_CALLBACK
+  );
+
   return $items;
 }
 
@@ -39,6 +55,18 @@ function bookbox_block_info() {
 
   $blocks['ReadingNow'] = array(
       'info' => t('Reading now'),
+  );
+
+  $blocks['CatBiz'] = array(
+      'info' => t('cat biz'),
+  );
+
+  $blocks['CatKrug'] = array(
+      'info' => t('cat krug'),
+  );
+
+  $blocks['CatSamo'] = array(
+      'info' => t('cat samo'),
   );
 
   return $blocks;
@@ -58,6 +86,21 @@ function bookbox_block_view($delta = '') {
       $block['subject'] = '';
       $form = drupal_get_form('bookbox_reading_now_block');
       $block['content'] = drupal_render($form);
+      break;
+
+    case 'CatBiz':
+      $block['subject'] = '';
+      $block['content'] = bookbox_cat_biz_block();
+      break;
+
+    case 'CatKrug':
+      $block['subject'] = '';
+      $block['content'] = bookbox_cat_krug_block();
+      break;
+
+    case 'CatSamo':
+      $block['subject'] = '';
+      $block['content'] = bookbox_cat_samo_block();
       break;
   }
 
@@ -197,7 +240,7 @@ function bookbox_user_orders_history() {
   }
 
   while ($keyname = current($newOrder)) {
-      $content = $content . '<h2>' . key($newOrder) . '</h2>';
+      $content = $content . '<div class="row"><h2>' . key($newOrder) . '</h2>';
       foreach ($newOrder[key($newOrder)] as $res) {
         $order = commerce_order_load($res);
         $line_item_id = $order->commerce_line_items['und'][0]['line_item_id'];
@@ -212,8 +255,50 @@ function bookbox_user_orders_history() {
           $content = $content . $rendered_teaser;
         }
       }
+    $content = $content . '</div>';
     next($newOrder);
   }
   
   return $content;
 }
+
+function bookbox_cat_biz_block() {
+  $content = _bookbox_catblock(7);
+  return $content;
+}
+
+function bookbox_cat_krug_block() {
+  $content = _bookbox_catblock(18);
+  return $content;
+}
+
+function bookbox_cat_samo_block() {
+  $content = _bookbox_catblock(13);
+  return $content;
+}
+
+function _bookbox_catblock($parent_tid) {
+  $content = '';
+  $childrens = taxonomy_get_children($parent_tid);
+
+  foreach ($childrens as $subcategory) {
+    $content = $content . '<div class="books-row"><h2>' . $subcategory->name . '</h2>';
+    $content = $content . '<a class="know-more" href="/taxonomy/term/' . $subcategory->tid . '">Дізнатись більше</a>';
+    $nodes = taxonomy_select_nodes($subcategory->tid, $pager = FALSE, $limit = 3, $order = array('t.sticky' => 'DESC', 't.created' => 'DESC'));
+
+    $content = $content . '<div class="books-row">';
+    foreach ($nodes as $nid) {
+      $node = node_load($nid);
+      $node_view = node_view($node, 'teaser');
+      $rendered_teaser = render($node_view);
+      $content = $content . $rendered_teaser;
+    }
+
+    $content = $content . '</div></div>';
+  }
+
+  return $content;
+}
+
+
+

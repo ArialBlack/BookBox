@@ -84,3 +84,56 @@
     display: none;
   }
 }
+
+.menu.secondary {
+  .dropdown-toggle {
+    text-transform: capitalize !important;
+    .font-size(18);
+
+    .caret {
+      background: transparent url('../icons-svg/burger.svg') no-repeat center center;
+      background-size: contain;
+      width: 33px;
+      height: 36px;
+      border: none;
+      margin-left: 40px;
+    }
+  }
+}
+
+.navbar-toggle {
+  background: transparent url('../icons-svg/burger.svg') no-repeat center center;
+  background-size: contain;
+  width: 33px;
+  height: 36px;
+  border: none;
+
+  &:hover {
+    background: transparent url('../icons-svg/burger.svg') no-repeat center center;
+    background-size: contain;
+  }
+}
+
+.primary-nav {
+  li .dropdown-toggle {
+    float: left;
+
+    .caret {
+      display: none;
+    }
+  }
+
+  .new-dropdown-toggle {
+    background: transparent url('../icons-svg/dropdown.svg') no-repeat center center !important;
+    background-size: contain !important;
+    display: inline-block;
+    width: 16px;
+    height: 11px;
+    padding: 0 !important;
+    float: right;
+    position: relative;
+    margin-top: 20px;
+    margin-right: 20px;
+    cursor: pointer;
+  }
+}
