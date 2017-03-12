@@ -46,14 +46,14 @@ $edit_link = '/user/' . $user->uid .'/edit';
     if(isset($user_profile['field_position'])) {
       $pos = $user_profile['field_position'][0]['#markup'];
       if(isset($pos)) {
-        print '<div class="field field-name-field-position field-type-text field-label-above"><div class="field-label">Посада <a href="' . $edit_link . '">Змінити</a></div><div class="field-items"><div class="field-item even">' . $pos . '</div></div></div>';
+        print '<div class="field field-name-field-position field-type-text field-label-above"><div class="field-label">Посада <a href="' . $edit_link . '"> (Змінити) </a></div><div class="field-items"><div class="field-item even">' . $pos . '</div></div></div>';
       }
     }
 
     if(isset($user_profile['field_tel'])) {
       $tel = $user_profile['field_tel'][0]['#markup'];
       if(isset($tel)) {
-        print '<div class="field field-name-field-tel field-type-text field-label-above"><div class="field-label">Телефон <a href="' . $edit_link . '">Змінити</a></div><div class="field-items"><div class="field-item even">' . $tel . '</div></div></div>';
+        print '<div class="field field-name-field-tel field-type-text field-label-above"><div class="field-label">Телефон <a href="' . $edit_link . '"> (Змінити) </a></div><div class="field-items"><div class="field-item even">' . $tel . '</div></div></div>';
       }
     }
 

@@ -22,7 +22,11 @@
     }
 
     #block-block-8 {
-      text-align: center;
+      h2 {
+        &.label-login {
+          display: block;
+        }
+      }
     }
 
     .page-header {
@@ -46,8 +50,9 @@
       width:30vw;
 
       .form-actions {
-        button {
-          margin:40px 0;
+        button,
+        .btn {
+          margin: 40px 0;
           float: left;
           width:45%;
           color: @primary-color;
@@ -58,6 +63,11 @@
             background: @primary-color;
             color: @light-color;
           }
+        }
+
+        #userreglink {
+          width: auto;
+          margin-left: 10px !important;
         }
       }
 

@@ -27,13 +27,15 @@
           color: @light-color;
           background: none;
         }
+
         .new-dropdown-toggle {
           position: absolute !important;
           top: 19px;
           right: -5px;
           width: 17px;
           height: 17px;
-          margin: 0;
+          margin: 0 0 0 10px;
+
           &:hover, &:active, &:focus {
             color:  @bb-darkblue;
             background-color: @light-color;
@@ -68,10 +70,6 @@
       padding-top: 2px;
       cursor: pointer;
     }
-  }
-
-  .user-fav-nav {
-    display: none;
   }
 }
 
@@ -145,5 +143,43 @@
     margin-top: 20px;
     margin-right: 20px;
     cursor: pointer;
+  }
+}
+
+.user-fav-nav {
+  margin-top: 10px;
+
+  a {
+    color: white;
+    position: relative;
+    display: block;
+
+    .icon-heart {
+      height: 32px;
+      width: 24px;
+      fill: white;
+    }
+
+    .counter_container {
+      position: absolute;
+      top: 0;
+      right: -10px;
+
+      .counter {
+        background: @secondary-color;
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+        border-radius: 100%;
+        position: relative;
+
+        span {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%,-50%);
+        }
+      }
+    }
   }
 }
