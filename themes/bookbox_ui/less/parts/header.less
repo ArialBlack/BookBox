@@ -26,16 +26,19 @@
           text-transform: uppercase;
           color: @light-color;
           background: none;
-
+        }
+        .new-dropdown-toggle {
+          position: absolute !important;
+          top: 19px;
+          right: -5px;
+          width: 17px;
+          height: 17px;
+          margin: 0;
           &:hover, &:active, &:focus {
             color:  @bb-darkblue;
             background-color: @light-color;
             transition: background-color .5s ease, color .5s ease;
           }
-
-          //@media (min-width:1024px) and (max-width:1130px) {
-          //  padding: 11px 3px;
-          //}
         }
       }
 
@@ -46,31 +49,18 @@
       }
     }
 
-  //.navbar-nav .secondary {
-  //  .first .last .expanded .dropdown {
-  //    margin-right:0;
-  //  }
-  //}
-
-  //.navbar-nav {
-  //  .first .expanded .dropdown {
-  //    @media (min-width: 1650px ) {
-  //      margin: auto 5vw;
-  //    }
-  //  }
-  //
-  //  .last .expanded .dropdown {
-  //    @media (min-width: 1650px ) {
-  //      margin-left: 5vw;
-  //    }
-  //  }
-  //}
 
   .search-block {
     display: inline-block;
-    @media (min-width:1600px) {
+
+    @media (min-width: 1400px) {
       margin-left: -100px;
-    };
+    }
+
+    @media (min-width: 1024px) {
+      margin-left: -50px;
+    }
+
     .views-submit-button .svg-icon {
       height: 32px;
       width: 24px;
@@ -93,8 +83,8 @@
     .caret {
       background: transparent url('../icons-svg/burger.svg') no-repeat center center;
       background-size: contain;
-      width: 33px;
-      height: 36px;
+      width: 28px;
+      height: 22px;
       border: none;
       margin-left: 40px;
     }
@@ -115,6 +105,26 @@
 }
 
 .primary-nav {
+  .first.dropdown {
+    @media (min-width:1024px) {
+    margin: 0 2vw;
+    }
+
+    @media (min-width: 1400px) {
+      margin: 0 5vw;
+    }
+  }
+
+  .last.dropdown {
+    @media (min-width: 1024px) {
+      margin-left: 1vw;
+    }
+
+    @media (min-width: 1400px) {
+      margin-left: 5vw;
+    }
+  }
+
   li .dropdown-toggle {
     float: left;
 

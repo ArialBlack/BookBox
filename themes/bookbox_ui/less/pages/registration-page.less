@@ -44,9 +44,10 @@
     }
 
     .form-type-password-confirm {
-      .password-help {
-        left:66.33333333%;
-        top:0;
+      .password-help,
+      .label-danger,
+      .form-control-feedback {
+        display: none !important;
       }
 
       .form-type-password {
@@ -54,6 +55,7 @@
         margin: auto;
         width:30vw;
         padding:0;
+        padding-bottom: 40px;
       }
 
       .help-block {
@@ -82,6 +84,7 @@
 
         a {
           color: @primary-color;
+          text-decoration: underline;
         }
       }
     }
@@ -99,8 +102,10 @@
         margin-top: 15px;
         margin-bottom: 60px;
 
+
         a {
           color: @primary-color;
+          text-decoration: underline;
         }
       }
 
@@ -108,6 +113,7 @@
         font-size: 14px;
         text-transform: uppercase;
         margin-bottom: 120px;
+        text-decoration: underline;
 
         a {
           color: @primary-color;
