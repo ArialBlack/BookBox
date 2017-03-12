@@ -3,60 +3,84 @@
 	max-width: none !important;
 	border: none;
 	background: @primary-color;
-	padding: 10px 4vw;
+	padding: 0 65px 0 85px;
 	margin-bottom: 0;
 	margin-top: 0;
 
   @media (min-width:1024px) and (max-width:1100px) {
     padding: 10px 2vw;
   }
+
 	.navbar-header {
 		padding-top: 6px;
 		padding-right: 3%;
 	}
 
-	.navbar-nav {
-		li{
-			a {
-				text-transform: uppercase;
-				color: @light-color;
-        		background: none;
+  nav {
+    display: flex;
+    flex-direction:row;
+    justify-content: space-between;
 
-				&:hover, &:active, &:focus {
-					color:  @bb-darkblue;
-					background-color: @light-color;
-          transition: background-color .5s ease, color .5s ease;
-				}
+      li{
+        a {
+          text-transform: uppercase;
+          color: @light-color;
+          background: none;
 
-                @media (min-width:1024px) and (max-width:1130px) {
-                  padding: 11px 3px;
-                }
-			}
-		}
+          &:hover, &:active, &:focus {
+            color:  @bb-darkblue;
+            background-color: @light-color;
+            transition: background-color .5s ease, color .5s ease;
+          }
 
-		.dropdown-menu {
-			a, a:active, a:focus, a:hover {
-				color: @bb-darkblue;
-			}
-		}
+          //@media (min-width:1024px) and (max-width:1130px) {
+          //  padding: 11px 3px;
+          //}
+        }
+      }
 
-	}
+      .dropdown-menu {
+        a, a:active, a:focus, a:hover {
+          color: @bb-darkblue;
+        }
+      }
+    }
 
-	.search-block {
-		margin-left: 3%;
-		display: inline-block;
+  //.navbar-nav .secondary {
+  //  .first .last .expanded .dropdown {
+  //    margin-right:0;
+  //  }
+  //}
 
-		.views-submit-button .svg-icon {
-			height: 32px;
-			width: 24px;
-			fill: white;
-        	padding-top: 2px;
-			cursor: pointer;
-      	}
+  //.navbar-nav {
+  //  .first .expanded .dropdown {
+  //    @media (min-width: 1650px ) {
+  //      margin: auto 5vw;
+  //    }
+  //  }
+  //
+  //  .last .expanded .dropdown {
+  //    @media (min-width: 1650px ) {
+  //      margin-left: 5vw;
+  //    }
+  //  }
+  //}
 
-	}
+  .search-block {
+    display: inline-block;
+    @media (min-width:1600px) {
+      margin-left: -100px;
+    };
+    .views-submit-button .svg-icon {
+      height: 32px;
+      width: 24px;
+      fill: white;
+      padding-top: 2px;
+      cursor: pointer;
+    }
+  }
 
-	.user-fav-nav {
-		display: none;
-	}
+  .user-fav-nav {
+    display: none;
+  }
 }

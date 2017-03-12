@@ -1,11 +1,12 @@
 .front {
+
+  .breadcrumb,
+  .page-header,
+  .nav-tabs,
   div.col-sm-12 {
     display: none;
   }
 
-  .nav-tabs {
-    display: none;
-  }
 
   section.col-sm-8 {
     padding:0;
@@ -45,15 +46,17 @@
       position: absolute;
       z-index: 1;
       top: 15%;
-      left:38%;
-      max-width: 500px;
+      left:45%;
+      max-width: 340px;
       p {
-        font-size: 40px;
+        font-size: 48px;
         color: @bb-darkblue;
         font-weight: 600;
         line-height: 1;
-        @media (min-width:1024px) and (max-width:1250px) {
-          margin-bottom: 5px;
+        &:nth-child(2) {
+          font-size: 18px;
+          font-weight: 300;
+          line-height:1.2;
         }
 
         a {
@@ -63,7 +66,7 @@
           background-color: @secondary-color;
           transition: all .3s;
           text-transform: uppercase;
-          padding: 20px;
+          padding: 23px;
           font-size: 14px;
 
           &:hover, &:focus {
@@ -73,8 +76,7 @@
         }
       }
       @media (min-width:1024px) and (max-width:1250px) {
-        left:30%;
-        top: 8%;
+        left:41%;
       }
     }
   }
@@ -89,7 +91,7 @@
       font-size: 24px;
       &:before {
         content: " ";
-        width: 70px;
+        width:90px;
         height: 2px;
         background: @primary-color;
         position: relative;
@@ -103,8 +105,8 @@
   }
 
   .view-main-recomend {
-    margin-top: 25px;
-    padding-left:40px;
+    margin-top: 15px;
+    padding-left:60px;
     .field-name-field-bookbox-rec {
       display: none !important;
     }
