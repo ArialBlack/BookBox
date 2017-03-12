@@ -1,11 +1,12 @@
 .page-node-881 {
   .tabs--primary,
-  .col-sm-12 {
+  .col-sm-12,
+  .breadcrumb {
     display: none;
   }
 
   .field-type-text-with-summary {
-    margin-left: 34px;
+    margin-left: 90px;
     color: @light-grey;
     margin-bottom: 0;
 
@@ -38,7 +39,7 @@
 
       &:before {
         content: " ";
-        width: 30px;
+        width: 90px;
         height: 2px;
         background: @primary-color;
         position: relative;
@@ -49,25 +50,17 @@
         padding: 0;
       }
     }
+
+    #node-881 {
+      ul {
+        padding-left: 0;
+        li {
+          display: inline-block;
+          list-style: none;
+          margin-right: 18px;
+        }
+      }
+    }
   }
 
-  #block-views-page-404-block {
-    padding-left: 15px;
-    padding-top:10px;
-
-     .view-content {
-       display: flex;
-       flex-direction: row;
-       flex-wrap: wrap;
-
-       .views-row {
-         flex-grow:1;
-         max-width: 33.333333%;
-
-         article {
-           height:100%;
-         }
-       }
-     }
-   }
 }

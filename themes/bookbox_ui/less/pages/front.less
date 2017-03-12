@@ -1,16 +1,11 @@
 .front {
-
-  .breadcrumb {
+  .breadcrumb,
+  .page-header,
+  .nav-tabs,
+   div.col-sm-12 {
     display: none;
   }
 
-  div.col-sm-12 {
-    display: none;
-  }
-
-  .nav-tabs {
-    display: none;
-  }
 
   section.col-sm-8 {
     padding:0;
@@ -70,7 +65,7 @@
           background-color: @secondary-color;
           transition: all .3s;
           text-transform: uppercase;
-          padding: 20px;
+          padding: 23px;
           font-size: 14px;
 
           &:hover, &:focus {
@@ -95,7 +90,7 @@
       font-size: 24px;
       &:before {
         content: " ";
-        width:100px;
+        width:90px;
         height: 2px;
         background: @primary-color;
         position: relative;
@@ -109,8 +104,9 @@
   }
 
   .view-main-recomend {
-    margin-top: 25px;
-    padding-left:70px;
+    margin-top: 15px;
+    padding-left:60px;
+
     .field-name-field-bookbox-rec {
       display: none !important;
     }
@@ -130,5 +126,15 @@
       }
     }
 
+  }
+
+  .pager-next a {
+    border:none;
+    background: none;
+    text-transform: uppercase;
+    color: @bb-darkblue;
+    &:hover {
+      background: none;
+    }
   }
 }

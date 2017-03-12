@@ -3,7 +3,6 @@
 
         var resizeTimer;
 
-
         var $label = $('.book-labels .field');
         $label.each(function( index ) {
             var $text = $(this).find('.field-item').text();
@@ -20,7 +19,8 @@
                     $(this).remove();
                 }
             });
-        })
+        });
+
 
         $( document ).ready(function() {
             console.log('--------------run');
@@ -39,9 +39,10 @@
             };
             /////////////////////////////////////
 
-
+            $(".modal").appendTo("body");
 
         });
+
 
         $(window).on('resize', function() {
             clearTimeout(resizeTimer);
@@ -74,6 +75,22 @@
         $('#show-filters').click(function() {
             $('body').toggleClass('open-filters');
         });
+
+        $('.primary-nav .dropdown-toggle').click(function() {
+            var $url = $(this).attr('href');
+            window.location.href = $url;
+        });
+
+        var $primaryDropdowns = $('.primary-nav .dropdown-toggle');
+        $primaryDropdowns.each(function( index ) {
+            var $this = $(this);
+            $('<a data-target="#" class="new-dropdown-toggle" data-toggle="dropdown"></a>').insertAfter($this);
+        });
+
+        //NICESCROLL
+        var nice = $("html").niceScroll({cursorcolor:"#999"});  // The document page (body)
+
+        $(".col-sm-4").niceScroll({cursorcolor:"#999"}); // end of nicescroll
          
     });
 }(jQuery));
