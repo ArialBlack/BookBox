@@ -1,124 +1,183 @@
 .node-type-book {
-  article {
-    header {
-      float: right; //todo
-      width: 50%;
-    }
+  .tabs--primary {
+    display: none;
+  }
 
-    h1 {
-      margin-top: 0;
-      .font-size(24);
+  .breadcrumb {
+    background: none;
+    opacity: .8;
+    padding-left: 92px;
+    a {
+      color: @light-grey-2;
+    }
+  }
+  .main-container {
+    width:100%;
+    padding:0;
+    padding-right: 15px;
+
+    .block-title {
+      margin: 20px;
+      margin-left:0;
+      color: @bb-darkblue;
       text-transform: uppercase;
-    }
-
-    .field-name-field-book-author {
-      a {
-        color: #65677b;
-        .font-size(18);
-        margin-bottom: 40px;
-        text-decoration: none;
-        display: block
+      display: inline-block;
+      font-size: 24px;
+      &:before {
+        content: " ";
+        width:83px;
+        height: 2px;
+        background: @primary-color;
+        position: relative;
+        display: inline-block;
+        margin-bottom: 7px;
+        margin-right: 0;
+        margin-left: 0;
+        padding: 0;
       }
     }
 
-    .cover-description {
-      float: left; //todo
-      width: 50%;
-      padding-right: 40px;
+    #block-system-main {
+      padding-left: 92px;
+    }
 
-      .field-label {
-        font-weight: normal;
-        .font-size(18);
-        margin-top: 25px;
-        margin-bottom: 10px;
+    article {
+      header {
+        float: right; //todo
+        width: 60%;
       }
 
-      .field-items {
+      h1 {
+        margin-top: 0;
+        .font-size(24);
+        text-transform: uppercase;
+        margin-bottom: 15px;
+      }
+
+      .field-name-field-book-author {
         a {
+          color: #65677b;
+          .font-size(18);
+          margin-bottom: 40px;
           text-decoration: none;
-          color: @text;
+          display: block
         }
       }
-    }
 
-    .field-name-field-nni {
-      img {
-        border: @line 1px solid;
-      }
-    }
+      .cover-description {
+        float: left; //todo
+        width: 40%;
+        padding-right: 40px;
 
-    .book-dids {
-      .field-name-field-bookfields,
-      .links {
-        float: left;
-      }
+        .field-label {
+          font-weight: normal;
+          .font-size(18);
+          margin-top: 25px;
+          margin-bottom: 10px;
+        }
 
-      .links {
-        margin-left: 30px;
-
-        a {
-          padding: 15px;
-          display: inline-block;
-          text-transform: uppercase;
-          margin-top: 15px;
-          text-decoration: none;
-          color: white;
-          text-decoration: none;
-          visibility: hidden;
-
-          &:before {
-            content: '';
-            margin-right: 10px;
-            display: inline-block;
-            width: 15px;
-            height: 15px;
-            background: url('/sites/all/themes/bookbox_ui/img-svg/heart.svg') no-repeat center center;
-            background-size: contain;
-            visibility: visible;
+        .field-items {
+          a {
+            text-decoration: none;
+            color: @text;
           }
+        }
+      }
 
-          &.unflag-action {
+      .field-name-field-nni {
+        img {
+          border: @line 1px solid;
+        }
+      }
+
+      .book-dids {
+        .field-name-field-bookfields,
+        .links {
+          float: left;
+        }
+
+
+        .links {
+          margin-left: 30px;
+
+          a {
+            padding: 15px;
+            display: inline-block;
+
+            text-transform: uppercase;
+            margin-top: 15px;
+            text-decoration: none;
+
             &:before {
-              background: url('/sites/all/themes/bookbox_ui/img-svg/heart-filled.svg') no-repeat center center;
+              content: '';
+              margin-right: 10px;
+              display: inline-block;
+              width: 15px;
+              height: 15px;
+              background: url('/sites/all/themes/bookbox_ui/img-svg/heart.svg') no-repeat center center;
               background-size: contain;
+            }
+
+            &.unflag-action {
+              &:before {
+                background: url('/sites/all/themes/bookbox_ui/img-svg/heart-filled.svg') no-repeat center center;
+                background-size: contain;
+              }
+            }
+
+
+          }
+        }
+      }
+
+      #edit-submit {
+        border: none;
+        background-color: @secondary-color;
+        padding: 15px;
+      }
+
+      .description-tabs {
+        padding-top: 50px;
+        float: right; //todo
+        width: 60%;
+
+        .nav-tabs {
+          border: none;
+          margin-bottom: 40px;
+
+          .active {
+            a,
+            a:hover {
+              color: @dirty-blue;
+              border-bottom: 2px solid;
             }
           }
 
-
-        }
-      }
-    }
-
-    #edit-submit {
-      border: none;
-      background-color: @secondary-color;
-      padding: 15px;
-    }
-
-    .description-tabs {
-      float: right; //todo
-      width: 50%;
-      padding-top: 40px;
-      margin-top: 40px;
-      border-top: @line 1px solid;
-
-      .nav-tabs {
-        border: none;
-
-        li {
           a {
+            color: @primary-color;
             border: none;
+            padding: 0 2px;
+            margin-right: 5px;
+            &:hover{
+              color: darken(@primary-color, 20);
+              background: none;
+            }
+          }
+        }
+
+        #author {
+          div {
+            float: left;
+            max-width:120px;
+            margin:0 25px 10px 0;
           }
         }
       }
-
-      #author {
-        img {
-          margin-bottom: 20px;
-          width: 110px;
-          height: auto;
-        }
-      }
+    }
+    .view-similarterms {
+      padding-left: 57px;
     }
   }
+
+
 }
