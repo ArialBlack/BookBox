@@ -54,7 +54,7 @@ function bookbox_form_alter(&$form, &$form_state, $form_id){
 
         $form['submitlogin'] = array(
             '#type' => 'markup',
-            '#markup' => '<a id="userreglink btn" href="/user/register">Зарееструватись</a>',
+            '#markup' => '<a id="userreglink" class="btn" href="/user/register">Зарееструватись</a>',
             '#weight' => 9
         );
     }

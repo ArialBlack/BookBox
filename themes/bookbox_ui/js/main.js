@@ -21,6 +21,7 @@
             });
         });
 
+        $('#userreglink').appendTo("#edit-actions"); //todo in backend
 
         $( document ).ready(function() {
             console.log('--------------run');

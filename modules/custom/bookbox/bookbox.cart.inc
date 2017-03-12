@@ -173,7 +173,7 @@ function bookbox_delete_bookfromcart2 ($form, &$form_state) {
 
 
 function bookbox_confirm_box($form, &$form_state) {
-    drupal_set_message('confirm');
+    drupal_set_message('Дякуємо! Ви щойно підтвердили замовлення місяця.');
     global $user;
     $mail_body = '';
 

@@ -300,5 +300,12 @@ function _bookbox_catblock($parent_tid) {
   return $content;
 }
 
+function bookbox_menu_site_status_alter(&$menu_site_status, $path) {
+  if (user_is_anonymous()) {
+    if ($path == 'user') {
+      drupal_goto('user/login');
+    }
+  }
+}
 
 
