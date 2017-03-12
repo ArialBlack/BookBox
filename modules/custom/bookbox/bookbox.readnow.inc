@@ -49,10 +49,37 @@ function bookbox_reading_now_block ($form, &$form_state) {
                 switch ($res->status) {
                     case 'completed':
                         if(current_period() == 1) {
-                            $form['prolong_book' . $box_count] = array(
+                           /* $form['prolong_book' . $box_count] = array(
                                 '#type' => 'submit',
                                 '#submit' => array('bookbox_prolongbook' . $box_count),
                                 '#value' => 'Подовжити на місяць <span>' . $box_count . '</span>',
+                            );*/
+
+
+
+
+                            $modal = '<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#confirm-prolong' . $box_count . '">Подовжити на місяць</button>
+                            <div class="modal fade" tabindex="-1" role="dialog" id="confirm-prolong' . $box_count . '">
+                                      <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                          </div>
+                                          <div class="modal-body">
+                                            <p>Ви підтверджуєте подовження книг на місяць?</p>
+                                          </div>
+                                          <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger">Так</button>
+                                            <button type="button" class="btn btn-outline" data-dismiss="modal">Ні</button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>';
+
+
+                            $form['prolongmarkup' . $box_count] = array(
+                                '#type' => 'markup',
+                                '#markup' => $modal,
                             );
 
                         }
