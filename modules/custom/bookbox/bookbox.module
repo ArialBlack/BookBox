@@ -107,6 +107,12 @@ function bookbox_block_view($delta = '') {
   return $block;
 }
 
+function bookbox_block_view_alter(&$data, $block) {
+  if ($block->delta == 'client-block-892' && current_path() == 'faq') {
+    $block->title = 'Маєте додаткове питання?';
+  }
+}
+
 function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state) {
   // можно добавить максимум 2
 
