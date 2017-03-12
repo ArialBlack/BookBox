@@ -62,7 +62,7 @@ function bookbox_reading_now_block ($form, &$form_state) {
 
 
 
-                            $modal = '<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#confirm-prolong' . $box_count . '">Подовжити на місяць</button>
+                            $modal = '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirm-prolong' . $box_count . '">Подовжити на місяць</button>
                             <div class="modal fade" tabindex="-1" role="dialog" id="confirm-prolong' . $box_count . '">
                                       <div class="modal-dialog" role="document">
                                         <div class="modal-content">
@@ -73,8 +73,8 @@ function bookbox_reading_now_block ($form, &$form_state) {
                                             <p>Ви підтверджуєте подовження книг на місяць?</p>
                                           </div>
                                           <div class="modal-footer">
-                                            <a class="btn btn-danger" href="/confirm/' . $uid . '/prolong' . $box_count . '?destination=' . $destination . '">Так</a>
-                                            <button type="button" class="btn btn-outline" data-dismiss="modal">Ні</button>
+                                            <a class="btn btn-outline red" href="/confirm/' . $uid . '/prolong' . $box_count . '?destination=' . $destination . '">Так</a>
+                                            <button type="button" class="btn btn-outline red" data-dismiss="modal">Ні</button>
                                           </div>
                                         </div>
                                       </div>
