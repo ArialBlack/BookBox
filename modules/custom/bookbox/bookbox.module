@@ -27,10 +27,18 @@ function bookbox_menu(){
       'type' => MENU_LOCAL_TASK,
   );
 
-  $items['user/%/%/%/recive/yes'] = array(
+  $items['confirm/%/prolong1'] = array(
       'title' => 'Buy',
-      'page callback' => 'proposeitem_recive_yes',
-      'page arguments' => array(1,2,3),
+      'page callback' => 'bookbox_prolongbook1',
+      'page arguments' => array(1),
+      'access arguments' => array('access content'), // whatever see above
+      'type' => MENU_CALLBACK
+  );
+
+  $items['confirm/%/prolong2'] = array(
+      'title' => 'Buy',
+      'page callback' => 'bookbox_prolongbook2',
+      'page arguments' => array(1),
       'access arguments' => array('access content'), // whatever see above
       'type' => MENU_CALLBACK
   );

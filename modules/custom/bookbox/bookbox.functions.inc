@@ -172,3 +172,21 @@ function bookbox_get_in_reading_now() {
 
   return $result;
 }
+
+function bookbox_get_in_reading_now_by_user($uid) {
+  //global $user;
+
+  $result = db_select('commerce_order', 'o')
+      ->fields('o', array('order_id', 'status'))
+      ->condition('o.uid', $uid)
+      ->condition(
+          db_or()
+              ->condition('o.status', 'completed')
+              ->condition('o.status', 'prolong')
+      )
+      ->orderBy('o.order_id', 'DESC')
+      ->range(0,2)
+      ->execute()->fetchAll();
+
+  return $result;
+}
