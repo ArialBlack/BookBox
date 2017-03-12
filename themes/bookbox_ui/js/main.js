@@ -20,7 +20,7 @@
                     $(this).remove();
                 }
             });
-        })
+        });
 
         $( document ).ready(function() {
             console.log('--------------run');
@@ -74,6 +74,11 @@
         $('#show-filters').click(function() {
             $('body').toggleClass('open-filters');
         });
+
+        //NICESCROLL
+        var nice = $("html").niceScroll({cursorcolor:"#999"});  // The document page (body)
+
+        $(".col-sm-4").niceScroll({cursorcolor:"#999"}); // end of nicescroll
          
     });
 }(jQuery));
