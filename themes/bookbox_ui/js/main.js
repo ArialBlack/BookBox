@@ -41,9 +41,12 @@
             /////////////////////////////////////
 
             $(".modal").appendTo("body");
-
         });
 
+
+        $('.page-user-register .field-name-field-agree label').bind("DOMSubtreeModified",function(){
+            $(this).find('div.error').appendTo(".page-user-register .field-name-field-agree .form-item");
+        });
 
         $(window).on('resize', function() {
             clearTimeout(resizeTimer);
