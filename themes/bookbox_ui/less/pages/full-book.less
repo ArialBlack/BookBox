@@ -14,6 +14,7 @@
 
     .block-title {
       margin: 20px;
+      margin-bottom:30px;
       margin-left:0;
       color: @bb-darkblue;
       text-transform: uppercase;
@@ -161,6 +162,7 @@
             border: none;
             padding: 0 2px;
             margin-right: 5px;
+
             &:hover{
               color: darken(@primary-color, 20);
               background: none;
@@ -177,9 +179,14 @@
         }
       }
     }
+
     .view-similarterms {
       padding-left: 57px;
       padding-right: 15px;
+
+      .node-teaser>header {
+        display: none;
+      }
     }
   }
 
