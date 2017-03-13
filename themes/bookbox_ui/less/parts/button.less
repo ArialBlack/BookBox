@@ -92,8 +92,22 @@
   .pager-next a {
     border:none;
     background: none;
+    opacity:.8;
     text-transform: uppercase;
     color: @bb-darkblue;
+    &:after {
+      content: '';
+      display: inline-block;
+      text-indent: -9999px;
+      width: 15px;
+      height: 15px;
+      background: url(../icons-svg/down-black.svg);
+      background-size:15px;
+      margin-left: 9px;
+      margin-bottom: -3px;
+      opacity:.8;
+    }
+
     &:hover {
       background: none;
     }
