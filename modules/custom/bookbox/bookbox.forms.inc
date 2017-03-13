@@ -21,6 +21,31 @@ function bookbox_form_alter(&$form, &$form_state, $form_id){
     //dsm($form); <svg preserveAspectRatio="xMaxYMax"><use xlink:href="/sites/all/themes/bookbox_ui/images/svg-icons-sprite.svg#icon-search"></use></svg>
 
     if ($form['#id'] == 'user-register-form') {
+        $query = db_select('node', 'n');
+        $query->fields('n', array('nid', 'title'));
+        $query->condition('n.type', 'company');
+        $result = $query->execute();
+
+        $domainslist = '<ul id="clist" class="hidden">';
+        foreach ($result as $node) {
+            $query2 = db_select('field_data_field_maildomain', 'm');
+            $query2->fields('m', array('field_maildomain_value'));
+            $query2->condition('m.entity_id', $node->nid);
+            $result2 = $query2->execute();
+
+            $domainslist = $domainslist . '<li data-d="';
+            foreach ($result2 as $d) {
+                $domainslist = $domainslist . $d->field_maildomain_value . '; ';
+            }
+            $domainslist = $domainslist .'">' . $node->nid . '</li>';
+        }
+        $domainslist = $domainslist . '</ul>';
+
+        $form['clist'] = array(
+            '#type' => 'markup',
+            '#markup' => $domainslist,
+        );
+
        // $form['name'] = $form['field_name'];
        // $form['email'] = $form['account']['mail'];
         //unset($form['field_name']);
@@ -42,7 +67,6 @@ function bookbox_form_alter(&$form, &$form_state, $form_id){
 
         $form['pass']['#weight'] = -6;
 
-        //dsm($form);
     }
 
     if ($form['#id'] == 'user-login') {
@@ -82,6 +106,7 @@ function bookbox_registeruser_validate($form, &$form_state) {
         }
 
         if (!$in_list) {
+            ife_errors('set', 'edit-mail--2', 'Ваш email не співпадає з обранною компанією');
             form_set_error('mail', 'Ваш email не співпадає з обранною компанією');
         }
     }

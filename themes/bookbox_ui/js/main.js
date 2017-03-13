@@ -43,10 +43,18 @@
             $(".modal").appendTo("body");
         });
 
-
         $('.page-user-register .field-name-field-agree label').bind("DOMSubtreeModified",function(){
             $(this).find('div.error').appendTo(".page-user-register .field-name-field-agree .form-item");
         });
+
+        $(".page-user-register #edit-field-company-und").change(function () {
+                $( "select option:selected" ).each(function() {
+                    var cid = $(this).val(),
+                        tiptext = $( "#clist li:contains(" + cid + ")" ).data('d');
+
+                    $(".page-user-register #edit-mail--2").attr('placeholder', tiptext);
+                });
+            }).change();
 
         $(window).on('resize', function() {
             clearTimeout(resizeTimer);

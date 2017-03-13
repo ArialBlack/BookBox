@@ -84,5 +84,36 @@ img {
         a {
             color: @light-grey-2;
         }
+
+        .delimiter {
+            display: none;
+        }
+
+        .inline {
+            &:after {
+                content: '/';
+                color: @light-grey-2;
+                margin-left: 10px;
+            }
+
+            &.last {
+                &:after {
+                    display: none;
+                }
+            }
+        }
     }
+}
+
+div.error,
+table tr.error {
+    background: none;
+    color: @secondary-color;
+    font-family: 'MyriadPro-Regular';
+}
+
+.alert-success {
+    background-color: #82d3c9;
+    border: #0c7165 1px solid;
+    color: #0c7165;
 }
