@@ -107,7 +107,7 @@ function bookbox_registeruser_validate($form, &$form_state) {
 
         if (!$in_list) {
             ife_errors('set', 'edit-mail--2', 'Ваш email не співпадає з обранною компанією');
-            //form_set_error('mail', 'Ваш email не співпадає з обранною компанією');
+            form_set_error('mail', 'Ваш email не співпадає з обранною компанією');
         }
     }
 }
