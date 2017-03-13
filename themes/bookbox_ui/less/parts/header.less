@@ -8,13 +8,17 @@
   margin-top: 0;
   z-index: 2;
 
-  @media (min-width:1024px) and (max-width:1100px) {
-    padding: 10px 2vw;
-  }
+  //@media (min-width:1024px) and (max-width:1100px) {
+  //  padding: 10px 2vw;
+  //}
 
 	.navbar-header {
-		padding-top: 6px;
-		padding-right: 3%;
+      @media (max-width: 1210px) {
+        padding-right: 0;
+      }
+
+      padding-top: 6px;
+      padding-right: 3%;
 	}
 
   nav {
@@ -106,13 +110,20 @@
 .primary-nav {
   .first.dropdown {
     @media (min-width:1024px) {
+      margin: 0 .5vw;
+    }
+
+    @media (min-width:1080px) {
     margin: 0 2vw;
-  }
+    }
+
     @media (min-width: 1400px) {
       margin: 0 5vw;
     }
 
-
+    @media (min-width: 1850px) {
+      margin-left: 5.5vw;
+    }
   }
 
   .last.dropdown {
@@ -122,6 +133,10 @@
 
     @media (min-width: 1400px) {
       margin-left: 5vw;
+    }
+
+    @media (min-width: 1850px) {
+      margin-left: 5.5vw;
     }
   }
 
@@ -149,7 +164,9 @@
 }
 
 .user-fav-nav {
+  position: absolute;
   margin-top: 10px;
+  right:310px;
 
   a {
     color: white;

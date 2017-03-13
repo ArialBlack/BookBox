@@ -3,37 +3,38 @@
     display: none;
   }
   .main-container {
-  width:100%;
-  padding:0;
-  padding-right: 15px;
+    width: 100%;
+    padding: 0;
+    padding-right: 15px;
+    padding-bottom: 200px;
   }
   .page-header {
-      margin: 60px 0 20px 0;
-      color: @bb-darkblue;
-      text-transform: uppercase;
+    margin: 60px 0 20px 0;
+    color: @bb-darkblue;
+    text-transform: uppercase;
+    display: inline-block;
+    font-size: 24px;
+    border: none;
+    &:before {
+      content: " ";
+      width: 90px;
+      height: 2px;
+      background: @primary-color;
+      position: relative;
       display: inline-block;
-      font-size: 24px;
-      border: none;
-      &:before {
-        content: " ";
-        width: 7vw;
-        height: 2px;
-        background: @primary-color;
-        position: relative;
-        display: inline-block;
-        margin-bottom: 7px;
-        margin-right: 4px;
-        margin-left: 0;
-        padding: 0;
-      }
+      margin-bottom: 7px;
+      margin-right: 4px;
+      margin-left: 0;
+      padding: 0;
     }
+  }
   #block-system-main {
-    padding: 0 11%;
+    padding: 0 96px;
     .view-id-faq {
       .nav-tabs {
-        border:none;
+        border: none;
         li {
-          margin-right:2%;
+          margin-right: 2%;
           a {
             padding: 0;
             margin-bottom: 15%;
@@ -52,7 +53,7 @@
       }
       .views-field-body {
         p {
-          font-size:17px;
+          font-size: 17px;
           color: @light-grey;
           strong {
             text-transform: uppercase;
@@ -61,6 +62,33 @@
           }
         }
       }
+    }
+  }
+
+  #block-webform-client-block-892 {
+    .block-title {
+      margin: 60px 0 20px 0;
+      color: @bb-darkblue;
+      text-transform: uppercase;
+      display: inline-block;
+      font-size: 24px;
+      border: none;
+      &:before {
+        content: " ";
+        width: 90px;
+        height: 2px;
+        background: @primary-color;
+        position: relative;
+        display: inline-block;
+        margin-bottom: 7px;
+        margin-right: 4px;
+        margin-left: 0;
+        padding: 0;
+      }
+    }
+    .webform-client-form {
+      padding-left: 96px;
+      padding-right: 96px;
     }
   }
 }
