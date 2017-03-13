@@ -23,7 +23,9 @@ function bookbox_ui_preprocess_node(&$vars) {
 
 function bookbox_ui_preprocess_page(&$vars) {
 
-  if(!$vars['user']->uid && arg(0)!='user' && arg(1)!='login') {
+  $url  = request_path();
+
+  if(!$vars['user']->uid && arg(0) != 'user' && arg(1) != 'login' && $url != 'terms') {
     drupal_goto('user/login');
   }
 

@@ -27,6 +27,14 @@ function bookbox_menu(){
       'type' => MENU_LOCAL_TASK,
   );
 
+  $items['confirm/%/orders'] = array(
+      'title' => 'Buy',
+      'page callback' => 'bookbox_confirm_box',
+      'page arguments' => array(1),
+      'access arguments' => array('access content'), // whatever see above
+      'type' => MENU_CALLBACK
+  );
+
   $items['confirm/%/prolong1'] = array(
       'title' => 'Buy',
       'page callback' => 'bookbox_prolongbook1',
@@ -309,9 +317,13 @@ function _bookbox_catblock($parent_tid) {
 function bookbox_menu_site_status_alter(&$menu_site_status, $path) {
   if (user_is_anonymous()) {
     if ($path == 'user') {
-      drupal_goto('user/login');
+    //  drupal_goto('user/login');
     }
   }
+}
+
+function bookbox_user_insert(&$edit, $account, $category) {
+  drupal_set_message(t('Дякуємо за реєстрацію! Підтвердьте електронну пошту, щоб розпочати користування Book Box.'), 'status');
 }
 
 
