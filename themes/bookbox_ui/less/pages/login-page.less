@@ -1,4 +1,8 @@
 .page-user-login {
+  display: table;
+  min-height: 100%;
+  min-width:100%;
+
   #navbar,
   .footer,
   .breadcrumb,
@@ -6,10 +10,11 @@
   .help-block {
     display: none;
   }
-
+    
   .main-container {
-    padding-top: 20vh;
     color: @bb-darkblue;
+    display: table-cell;
+    vertical-align: middle;
 
     #block-block-7 {
       text-align: center;
@@ -58,12 +63,17 @@
           border:2px solid;
           background: none;
 
-          @media (min-width:1024px) {
-            width:31%;
-          }
+          &.form-submit {
+            background: @primary-color;
+            color: @light-color;
 
-          @media (min-width:1281px) {
-            width:45%;
+            @media (min-width:1024px) {
+              width:31%;
+            }
+
+            @media (min-width:1281px) {
+              width:45%;
+            }
           }
 
           &:hover {

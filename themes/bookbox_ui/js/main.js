@@ -101,9 +101,9 @@
         });
 
         //NICESCROLL
-        var nice = $("html").niceScroll({cursorcolor:"#999"});  // The document page (body)
+        var nice = $("html").niceScroll({cursorcolor:"#999", mousescrollstep:60});  // The document page (body)
 
-        $(".col-sm-4").niceScroll({cursorcolor:"#999"}); // end of nicescroll
-         
+        $(".col-sm-4").niceScroll({cursorcolor:"#999", mousescrollstep:60}); // end of nicescroll
+
     });
 }(jQuery));
