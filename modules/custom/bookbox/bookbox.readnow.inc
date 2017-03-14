@@ -8,7 +8,8 @@ function bookbox_reading_now_block ($form, &$form_state) {
     $uid = $user->uid;
     $destination = request_path();
 
-    $title = variable_get('readingNow_title');
+    //$title = variable_get('readingNow_title');
+    $title = 'Замовлення підтверджено';
 
     $result = bookbox_get_in_reading_now();
     //dsm($result);
@@ -16,7 +17,7 @@ function bookbox_reading_now_block ($form, &$form_state) {
     if ($result) {
         $form['title'] = array(
             '#type' => 'markup',
-            '#markup' => '<h3>' . $title . ' </h3><h6>Повернення книг до <span>20-го ' .  ua_month(intval(m())) . '</span></h6>', //todo
+            '#markup' => '<h3>' . $title . ' </h3><h6>Доставка книг - в кінці<span> ' .  ua_month(intval(m()-1)) . '</span></h6>', //todo
         );
 
         $box_count = 0;
@@ -81,10 +82,13 @@ function bookbox_reading_now_block ($form, &$form_state) {
                                     </div>';
 
 
+                            ///////////
+                            //скроем временно
+                            /*
                             $form['prolongmarkup' . $box_count] = array(
                                 '#type' => 'markup',
                                 '#markup' => $modal,
-                            );
+                            );*/
 
                         }
                         break;

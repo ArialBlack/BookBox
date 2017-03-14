@@ -39,6 +39,12 @@ $email = $user->mail;
 $edit_link = '/user/' . $user->uid .'/edit';
 
 ?>
+
+<ul class="user-profile-hot-links">
+  <li><a href="/user/<?php print $user->uid; ?>/favorites">Список бажань</a></li>
+  <li><a href="/user/<?php print $user->uid; ?>/orders">Історія замовлень</a></li>
+</ul>
+
 <div class="profile"<?php print $attributes; ?>>
 
   <?php
