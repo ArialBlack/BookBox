@@ -328,7 +328,7 @@ function bookbox_menu_site_status_alter(&$menu_site_status, $path) {
 }
 
 function bookbox_user_insert(&$edit, $account, $category) {
-  drupal_set_message(t('Дякуємо за реєстрацію! Підтвердьте електронну пошту, щоб розпочати користування Book Box.'), 'status');
+  //drupal_set_message(t('Дякуємо за реєстрацію! Підтвердьте електронну пошту, щоб розпочати користування Book Box.'), 'status');
 }
 
 
