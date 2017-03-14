@@ -1,28 +1,7 @@
 module.exports = function(grunt) {
 
-    grunt.registerTask('svgmin_icons', 'Optimiser for SVG Icons', function() {
-        grunt.config.set('svgmin', grunt.config.get('svgmin_icons'));
-        grunt.task.run('svgmin');
-    });
-
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
-
-        svgmin_icons: {
-            options: {
-                plugins: [
-                    { removeDimensions: true },
-                    { removeTitle: true },
-                    { removeAttrs: { attrs: 'fill' } }
-                ]
-            },
-            base: {
-                expand: true,
-                cwd: '../themes/bookbox_ui/icons-svg',
-                src: ['*.svg'],
-                dest: '../themes/bookbox_ui/icons-svg/compressed'
-            }
-        },
 
         svgstore: {
             icons: {
@@ -30,7 +9,7 @@ module.exports = function(grunt) {
                     prefix : 'icon-',
                 },
                 files: {
-                    '../themes/bookbox_ui/images/svg-icons-sprite.svg': ['../themes/bookbox_ui/icons-svg/compressed/*.svg']
+                    '../themes/bookbox_ui/images/svg-icons-sprite.svg': ['../themes/bookbox_ui/icons-svg/*.svg']
                 },
             },
             logos: {
@@ -78,7 +57,7 @@ module.exports = function(grunt) {
                     '../themes/bookbox_ui/icons-svg/*.svg',
                     '../themes/bookbox_ui/img-svg/*.svg'
                 ],
-                tasks: ['svgmin_icons', 'svgstore']
+                tasks: ['svgstore']
             },
 
             less: {
@@ -112,13 +91,12 @@ module.exports = function(grunt) {
 
     // load npm modules
     grunt.loadNpmTasks('grunt-bake');
-    grunt.loadNpmTasks('grunt-svgmin');
     grunt.loadNpmTasks('grunt-svgstore');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-postcss');
 
-    grunt.registerTask('default', ['bake',  'svgmin_icons', 'svgstore',  'less', 'postcss', 'watch']);
-    grunt.registerTask('jenkins', ['bake',  'svgmin_icons', 'svgstore',   'less', 'postcss']);
+    grunt.registerTask('default', ['bake', 'svgstore',  'less', 'postcss', 'watch']);
+    grunt.registerTask('jenkins', ['bake',  'svgstore',   'less', 'postcss']);
 };

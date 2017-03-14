@@ -119,7 +119,7 @@
                     <?php if ($u_flag > 0): ?>
                         <div class="user-fav-nav">
                             <a href="/user/<?php print $user->uid;?>/favorites">
-                                <svg class="svg-icon icon-heart" preserveAspectRatio="xMaxYMax"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/sites/all/themes/bookbox_ui/images/svg-icons-sprite.svg#icon-heart"></use></svg>
+                                <svg class="svg-icon icon-heart" preserveAspectRatio="xMaxYMax"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/sites/all/themes/bookbox_ui/images/svg-icons-sprite.svg#icon-fav"></use></svg>
                                 <span class="counter_container"><span class="counter"><span><?php print $u_flag; ?></span></span></span>
                             </a>
                         </div>
