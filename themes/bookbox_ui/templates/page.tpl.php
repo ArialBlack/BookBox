@@ -109,14 +109,8 @@
                         ?>
                     </div>
 
-                    <?php if (!empty($secondary_nav) && $user->uid != 0): ?>
-                        <?php print render($secondary_nav); ?>
-                    <?php endif; ?>
-                    <?php if (!empty($page['navigation']) && $user->uid != 0): ?>
-                        <?php print render($page['navigation']); ?>
-                    <?php endif; ?>
-
                     <?php if ($u_flag > 0): ?>
+                      <div>
                         <div class="user-fav-nav">
                             <a href="/user/<?php print $user->uid;?>/favorites">
                                 <svg class="svg-icon icon-heart" preserveAspectRatio="xMaxYMax"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/sites/all/themes/bookbox_ui/images/svg-icons-sprite.svg#icon-fav"></use></svg>
@@ -124,6 +118,15 @@
                             </a>
                         </div>
                     <?php endif; ?>
+
+                    <?php if (!empty($secondary_nav) && $user->uid != 0): ?>
+                        <?php print render($secondary_nav); ?>
+                        </div>
+                    <?php endif; ?>
+                    <?php if (!empty($page['navigation']) && $user->uid != 0): ?>
+                        <?php print render($page['navigation']); ?>
+                    <?php endif; ?>
+
                 </nav>
             </div>
         <?php endif; ?>
