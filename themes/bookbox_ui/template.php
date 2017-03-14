@@ -122,6 +122,15 @@ function bookbox_ui_preprocess(&$variables) {
   $variables['u_flag'] = $count;
 }
 
+function bookbox_ui_preprocess_html(&$vars, $hook) {
+  if ($vars['user']) {
+    foreach($vars['user']->roles as $key => $role){
+      $role_class = 'role-' . drupal_clean_css_identifier($role);
+      $vars['classes_array'][] = $role_class;
+    }
+  }
+}
+
 
 /*function dostupno_ui_menu_link__main_menu($variables)
 {
