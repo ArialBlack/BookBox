@@ -41,6 +41,7 @@
             /////////////////////////////////////
 
             $(".modal").appendTo("body");
+            $('.user-profile-hot-links').insertAfter(".page-header");
         });
 
         $('.page-user-register .field-name-field-agree label').bind("DOMSubtreeModified",function(){

@@ -85,9 +85,14 @@ function bookbox_block_view($delta = '') {
 
   switch ($delta) {
     case 'MiniCart':
-      $block['subject'] = '';
-      $form = drupal_get_form('bookbox_mini_cart_block');
-      $block['content'] = drupal_render($form);
+      if (count(bookbox_get_in_reading_now()) == 0) {
+        $block['subject'] = '';
+        $form = drupal_get_form('bookbox_mini_cart_block');
+        $block['content'] = drupal_render($form);
+      } else {
+        $block['subject'] = null;
+        $block['content'] = null;
+      }
       break;
 
     case 'ReadingNow':
@@ -296,7 +301,7 @@ function _bookbox_catblock($parent_tid) {
   $childrens = taxonomy_get_children($parent_tid);
 
   foreach ($childrens as $subcategory) {
-    $content = $content . '<div class="books-row"><h2>' . $subcategory->name . '</h2>';
+    $content = $content . '<div class="books-row"><h2><a href="/taxonomy/term/' . $subcategory->tid . '">' . $subcategory->name . '</a></h2>';
     $content = $content . '<a class="know-more" href="/taxonomy/term/' . $subcategory->tid . '">дивитись більше</a>';
     $nodes = taxonomy_select_nodes($subcategory->tid, $pager = FALSE, $limit = 3, $order = array('t.sticky' => 'DESC', 't.created' => 'DESC'));
 
@@ -317,7 +322,7 @@ function _bookbox_catblock($parent_tid) {
 function bookbox_menu_site_status_alter(&$menu_site_status, $path) {
   if (user_is_anonymous()) {
     if ($path == 'user') {
-    //  drupal_goto('user/login');
+      drupal_goto('user/login');
     }
   }
 }

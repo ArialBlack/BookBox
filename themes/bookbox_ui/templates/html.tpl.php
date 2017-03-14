@@ -69,7 +69,7 @@
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
   <?php print $scripts; ?>
-  <script src="http://bookbox.dev/sites/all/themes/bookbox_ui/js/jquery.nicescroll.min.js"></script>
+  <script src="/sites/all/themes/bookbox_ui/js/jquery.nicescroll.min.js"></script>
 </head>
 <body<?php print $body_attributes; ?>>
   <div id="skip-link">

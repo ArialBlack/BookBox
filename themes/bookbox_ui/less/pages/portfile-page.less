@@ -60,3 +60,32 @@
     }
   }
 }
+
+.user-profile-hot-links {
+  padding-left: 0;
+  display: inline-block;
+  float: right;
+  margin-left: 40px;
+  margin-top: 60px;
+
+  li {
+    list-style: none;
+    display: inline;
+    margin-left: 10px;
+
+    a {
+      color: @light-grey-2;
+      text-transform: uppercase;
+      text-decoration: underline;
+      font-weight: bold;
+      .font-size(12);
+    }
+  }
+}
+
+.logged-in.page-user {
+  .profile {
+    clear: both;
+  }
+}
+
