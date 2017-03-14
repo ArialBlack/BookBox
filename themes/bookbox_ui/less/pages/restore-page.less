@@ -1,8 +1,6 @@
 .page-user-password {
-  display: table;
-  min-height: 100%;
-  min-width:100%;
-
+  height:100%;
+  width:100%;
   #reg_mes1,
   #navbar,
   .footer,
@@ -13,8 +11,10 @@
   }
 
   .main-container {
-    display: table-cell;
-    vertical-align: middle;
+    position: absolute;
+    top: 50%;
+    left:50%;
+    transform:translate(-50%, -50%);
     color: @bb-darkblue;
 
     #block-block-7 {
