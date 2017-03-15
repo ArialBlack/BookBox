@@ -85,6 +85,26 @@
         }
       }
 
+      .term-tree-list {
+        ul {
+          margin-left: 0;
+          padding-left: 0;
+
+          li {
+            list-style: none;
+            font-weight: normal;
+          }
+
+          > li > a {
+            display: none;
+          }
+
+          > li > ul > li > a {
+            display: block;
+          }
+        }
+      }
+
       .field-name-field-nni {
         img {
           border: @line 1px solid;
