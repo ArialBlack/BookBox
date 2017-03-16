@@ -62,7 +62,7 @@ function bookbox_form_alter(&$form, &$form_state, $form_id){
         $form['mail'] = $form['account']['mail'];
         unset($form['account']['mail']);
         $form['mail']['#weight'] = -7;
-        $form['mail']['#title'] = 'Email <span>(Робочий email)</span>';
+        $form['mail']['#title'] = 'Email <span>(Корпоративний email)</span>';
         $form['mail']['#description'] = '';
 
         $form['pass']['#weight'] = -6;
