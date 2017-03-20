@@ -17,7 +17,7 @@ function bookbox_reading_now_block ($form, &$form_state) {
     if ($result) {
         $form['title'] = array(
             '#type' => 'markup',
-            '#markup' => '<h3>' . $title . ' </h3><h6>Доставка книг відбудеться <span>27-28 ' .  ua_month(intval(m()-1)) . '</span></h6>', //todo
+            '#markup' => '<h3>' . $title . ' </h3><h6>Доставка книг відбудеться <span>27 ' .  ua_month(intval(m()-1)) . '</span></h6>', //todo
         );
 
         $box_count = 0;

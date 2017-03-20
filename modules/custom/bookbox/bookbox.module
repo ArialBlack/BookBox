@@ -158,7 +158,7 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state)
 
   $reading_now = count(bookbox_get_in_reading_now());
 
-  if ($in_cart == 2 || $reading_now + $in_cart > 1) {
+  if ($in_cart == 2 || $reading_now + $in_cart > 1 || current_period() == 2) {
     $can_add2cart = false;
   }
 
