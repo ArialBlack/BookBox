@@ -16,7 +16,7 @@ function bookbox_mini_cart_block($form, &$form_state) {
     if(current_period() == 2) {
         $form['ftitle'] = array(
             '#type' => 'markup',
-            '#markup' => '<h3>Замовлення ' . ua_month(intval(m())) . '</h3><h6>Оберіть дві книги до <span>21-го ' .  ua_month(intval(m())) . '</span></h6>',
+            '#markup' => '<h3>Замовлення поточного місяця</h3><h6>Робіть замовлення з <span>1-го ' .  ua_month(intval(m())) . '</span></h6>',
         );
     }
 
