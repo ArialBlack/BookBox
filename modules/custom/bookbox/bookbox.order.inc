@@ -1,0 +1,57 @@
+<?php
+
+// Блок Заказ месяца
+function bookbox_month_order_block ($form, &$form_state) {
+    global $user;
+    $uid = $user->uid;
+    $destination = request_path();
+
+    $title = 'Замовлення підтверджено';
+
+    $result =  bookbox_in_confirm_this_month($uid);
+
+    if ($result) {
+        $form['title'] = array(
+            '#type' => 'markup',
+            '#markup' => '<h3>' . $title . ' </h3><h6>Очікуйте доставку в кінці <span>' .  ua_month(intval(m()-1)) . '</span></h6>', //todo
+        );
+
+        $box_count = 0;
+
+        foreach ($result as $res) {
+            $order = commerce_order_load($res->order_id);
+
+            $line_item_id = $order->commerce_line_items['und'][0]['line_item_id'];
+            $line_item = commerce_line_item_load($line_item_id);
+            $product_id =  $line_item->commerce_product['und'][0]['product_id'];
+            $product_display = _bookbox_get_product_display_by_product_id($product_id);
+
+            if ($product_display->nid) {
+                $box_count = $box_count + 1;
+
+                $node = node_load($product_display->nid);
+                $node_view = node_view($node, 'teaser');
+                $rendered_teaser = render($node_view);
+
+                $form['bms' . $box_count] = array(
+                    '#type' => 'markup',
+                    '#markup' => '<div class="book-container">',
+                );
+
+                $form['book_' . $box_count] = array(
+                    '#type' => 'markup',
+                    '#markup' => $rendered_teaser,
+                );
+
+                $form['bme' . $box_count] = array(
+                    '#type' => 'markup',
+                    '#markup' => '</div>',
+                );
+            }
+        }
+    }
+
+    return $form;
+}
+
+
