@@ -36,18 +36,18 @@ function bookbox_menu(){
       'type' => MENU_CALLBACK
   );
 
-  $items['confirm/%/prolong1'] = array(
+  $items['confirm/%/%/prolong1'] = array(
       'title' => 'Buy',
       'page callback' => 'bookbox_prolongbook1',
-      'page arguments' => array(1),
+      'page arguments' => array(1,2),
       'access arguments' => array('access content'), // whatever see above
       'type' => MENU_CALLBACK
   );
 
-  $items['confirm/%/prolong2'] = array(
+  $items['confirm/%/%/prolong2'] = array(
       'title' => 'Buy',
       'page callback' => 'bookbox_prolongbook2',
-      'page arguments' => array(1),
+      'page arguments' => array(1,2),
       'access arguments' => array('access content'), // whatever see above
       'type' => MENU_CALLBACK
   );
@@ -93,7 +93,7 @@ function bookbox_block_view($delta = '') {
 
   //todo
   $show_cart = true;
-  if( current_period() == 2 || bookbox_count_in_confirm_this_month($uid) > 0 ) {
+  if( /*current_period() == 2 || */ bookbox_count_in_confirm_this_month($uid) > 0 ) {
     $show_cart = false;
   }
 

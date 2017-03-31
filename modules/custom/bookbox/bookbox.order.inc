@@ -6,14 +6,14 @@ function bookbox_month_order_block ($form, &$form_state) {
     $uid = $user->uid;
     $destination = request_path();
 
-    $title = '(замовлення місяця) Замовлення підтверджено';
+    $title = 'Замовлення підтверджено';
 
     $result =  bookbox_in_confirm_this_month($uid);
 
     if ($result) {
         $form['title'] = array(
             '#type' => 'markup',
-            '#markup' => '<h3>' . $title . ' </h3><h6>Доставка книг відбудеться <span>27 ' .  ua_month(intval(m()-1)) . '</span></h6>', //todo
+            '#markup' => '<h3>' . $title . ' </h3><h6>Очікуйте доставку в кінці <span>' .  ua_month(intval(m()-1)) . '</span></h6>', //todo
         );
 
         $box_count = 0;

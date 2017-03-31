@@ -9,7 +9,7 @@ function bookbox_reading_now_block ($form, &$form_state) {
     $destination = request_path();
 
     //$title = variable_get('readingNow_title');
-    $title = '(Читаю зараз) Читаю зараз';
+    $title = 'Зараз читаю';
 
     $result = bookbox_get_in_reading_now($uid);
     //dsm($result);
@@ -18,7 +18,8 @@ function bookbox_reading_now_block ($form, &$form_state) {
     if ($result) {
         $form['title'] = array(
             '#type' => 'markup',
-            '#markup' => '<h3>' . $title . ' </h3><h6>Доставка книг відбудеться <span>27 ' .  ua_month(intval(m()-1)) . '</span></h6>', //todo
+            //'#markup' => '<h3>' . $title . ' </h3><h6>Доставка книг відбудеться <span>27 ' .  ua_month(intval(m()-1)) . '</span></h6>', //todo
+            '#markup' => '<h3>' . $title . ' </h3><h6>Поверніть книжки в стелаж до <span>25 ' . ua_month(intval(m()-1)) . '</span> або подовжіть ще на місяць</h6>',
         );
 
         $box_count = 0;
@@ -27,7 +28,7 @@ function bookbox_reading_now_block ($form, &$form_state) {
             //
             $order = commerce_order_load($res->order_id);
 
-            //dsm($order);
+
 
             $line_item_id = $order->commerce_line_items['und'][0]['line_item_id'];
             $line_item = commerce_line_item_load($line_item_id);
@@ -75,7 +76,7 @@ function bookbox_reading_now_block ($form, &$form_state) {
                                             <p>Ви підтверджуєте подовження книг на місяць?</p>
                                           </div>
                                           <div class="modal-footer">
-                                            <a class="btn btn-outline red" href="/confirm/' . $uid . '/prolong' . $box_count . '?destination=' . $destination . '">Так</a>
+                                            <a class="btn btn-outline red" href="/confirm/' . $uid . '/' . $res->order_id .'/prolong' . $box_count . '?destination=' . $destination . '">Так</a>
                                             <button type="button" class="btn btn-outline red" data-dismiss="modal">Ні</button>
                                           </div>
                                         </div>
@@ -110,35 +111,43 @@ function bookbox_reading_now_block ($form, &$form_state) {
             }
         }
     }
+    //dsm($form);
 
     return $form;
 }
 
-function bookbox_prolongbook1($arg0) {
-    $result = bookbox_get_in_reading_now($arg0);
-   // dsm($result);
+function bookbox_prolongbook1($arg0, $arg1) {
+    $order_id = $arg1;
+    $order = commerce_order_load($order_id);
+    //dsm(time());
 
-    if ($result) {
-        $order_id = $result[0]->order_id;
-        $order = commerce_order_load($order_id);
-        //dsm($order);
-        commerce_order_status_update($order, 'prolong', $skip_save = FALSE, $revision = NULL, $log = '');
-    }
+    /*db_update('commerce_order')
+        ->fields(array('changed' => time() ))
+        ->fields(array('status' => 'prolong'))
+        ->condition('order_id', $order_id)
+        ->execute();*/
+
+    commerce_order_status_update($order, 'prolong', $skip_save = FALSE, $revision = NULL, $log = '');
+    commerce_order_save($order);
 
     $dest = drupal_get_destination();
     drupal_goto($dest);
 }
 
-function bookbox_prolongbook2($arg0) {
-    $result = bookbox_get_in_reading_now($arg0);
+function bookbox_prolongbook2($arg0, $arg1) {
+    $order_id = $arg1;
+    $order = commerce_order_load($order_id);
+    //dsm(time()); // 1498889721
 
-    if ($result && count($result) > 1) {
-        $order_id = $result[1]->order_id;
-        $order = commerce_order_load($order_id);
-        commerce_order_status_update($order, 'prolong', $skip_save = FALSE, $revision = NULL, $log = '');
-    }
+    /*db_update('commerce_order')
+        ->fields(array('changed' => time() ))
+        ->fields(array('status' => 'prolong'))
+        ->condition('order_id', $order_id)
+        ->execute();*/
+
+    commerce_order_status_update($order, 'prolong', $skip_save = FALSE, $revision = NULL, $log = '');
+    commerce_order_save($order);
 
     $dest = drupal_get_destination();
     drupal_goto($dest);
-
 }
