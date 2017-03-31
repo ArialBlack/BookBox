@@ -222,6 +222,8 @@ function bookbox_cron() {
   if ( date('y-m-d', $cron_last) != date('y-md-', time())) {
 
     if(intval(d()) == 1) {
+      bookbox_equal_stocks();
+
       $result = db_select('commerce_order', 'o')
           ->fields('o', array('order_id', 'status', 'changed'))
           ->condition(
@@ -309,6 +311,7 @@ function bookbox_cron() {
     //Мейл рассылка:
 
     variable_set('cron_last', date('y-m-d', time()));
+    drupal_flush_all_caches();
   }
 
 }
@@ -407,4 +410,21 @@ function bookbox_user_insert(&$edit, $account, $category) {
   //drupal_set_message(t('Дякуємо за реєстрацію! Підтвердьте електронну пошту, щоб розпочати користування Book Box.'), 'status');
 }
 
+function bookbox_equal_stocks() {
+  $result = db_select('field_data_field_absolute_stock', 'a')
+      ->fields('a', array('entity_id', 'field_absolute_stock_value'))
+      ->execute()->fetchAll();
+
+  foreach ($result as $absolute_stock_record) {
+    db_update('field_data_commerce_stock')
+        ->fields(array('commerce_stock_value' => $absolute_stock_record->field_absolute_stock_value ))
+        ->condition('entity_id', $absolute_stock_record->entity_id)
+        ->execute();
+
+    db_update('field_revision_commerce_stock')
+        ->fields(array('commerce_stock_value' => $absolute_stock_record->field_absolute_stock_value ))
+        ->condition('entity_id', $absolute_stock_record->entity_id)
+        ->execute();
+  }
+}
 

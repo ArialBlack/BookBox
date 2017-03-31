@@ -96,9 +96,9 @@ function bookbox_reading_now_block ($form, &$form_state) {
                                 }
                             }
 
-                            $reading_now_count = count(bookbox_get_in_reading_now($uid));
+                            //$reading_now_count = count(bookbox_get_in_reading_now($uid));
 
-                            if ($cart_count + $reading_now_count > 2) {
+                            if ((count(bookbox_in_prolong_this_month($uid)) == 0  && $cart_count > 1) || (count(bookbox_in_prolong_this_month($uid)) == 1  && $cart_count > 0) ) {
                                 $modal = '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirm-prolong' . $box_count . '">Подовжити на місяць</button>
                             <div class="modal fade" tabindex="-1" role="dialog" id="confirm-prolong' . $box_count . '">
                                       <div class="modal-dialog" role="document">

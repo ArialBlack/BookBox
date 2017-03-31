@@ -9,14 +9,14 @@ function bookbox_mini_cart_block($form, &$form_state) {
     if(current_period() == 1) {
         $form['ftitle'] = array(
             '#type' => 'markup',
-            '#markup' => '<h3>Замовлення ' . ua_month() . '</h3><h6>Оберіть дві книги до <span>20-го ' .  ua_month() . '</span> включно</h6>',
+            '#markup' => '<h3>Замовлення ' . ua_month() . '</h3><h6>Оберіть дві книги до <span>20 ' .  ua_month() . '</span> включно</h6>',
         );
     }
 
     if(current_period() == 2) {
         $form['ftitle'] = array(
             '#type' => 'markup',
-            '#markup' => '<h3>Замовлення ' . ua_month() . ' не підтверджено</h3><h6>Робіть замовлення з <span>1-го ' .  ua_month(intval(m())) . '</span></h6>',
+            '#markup' => '<h3>Замовлення ' . ua_month() . ' не підтверджено</h3><h6>Робіть замовлення з <span>1 ' .  ua_month(intval(m())) . '</span></h6>',
         );
     }
 
@@ -156,7 +156,7 @@ function bookbox_mini_cart_block($form, &$form_state) {
         if ($cart_count + bookbox_count_in_prolong_this_month($uid) > 3) {
             $form['submit_box_markup'] = array(
                 '#type' => 'markup',
-                '#markup' => '<p class="tip_message">Підтвердьте замовлення з 1-го числа наступного місяця</p>'
+                '#markup' => '<p class="tip_message">Підтвердьте замовлення з 1 числа наступного місяця</p>'
             );
         }
     } else {
