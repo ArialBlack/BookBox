@@ -28,8 +28,8 @@
             }, 250);
         });
 
-        $('#views-exposed-form-booksearch-page .fa-search').click(function() {
-            console.log('--------------c');
+        $('#views-exposed-form-booksearch-page .icon-search').click(function() {
+            //console.log('--------------c');
            $('body').addClass('open-search');
         });
 

@@ -2,10 +2,20 @@
 
 // Блок корзины
 function bookbox_mini_cart_block($form, &$form_state) {
-    $form['title'] = array(
-        '#type' => 'markup',
-        '#markup' => '<h3>Замовлення ' . ua_month() . '</h3><h6>Оберіть дві книги до <span>20-го ' .  ua_month() . '</span></h6>',
-    );
+    if(current_period() == 1) {
+        $form['ftitle'] = array(
+            '#type' => 'markup',
+            '#markup' => '<h3>Замовлення ' . ua_month() . '</h3><h6>Оберіть дві книги до <span>20-го ' .  ua_month() . '</span></h6>',
+        );
+    }
+
+    if(current_period() == 2) {
+        $form['ftitle'] = array(
+            '#type' => 'markup',
+            '#markup' => '<h3>Замовлення ' . ua_month(intval(m())) . '</h3><h6>Оберіть дві книги до <span>20-го ' .  ua_month(intval(m())) . '</span></h6>',
+        );
+    }
+
 
     //todo
     // если у нас есть книжки их прошлого месяца то тогда что?
@@ -46,27 +56,32 @@ function bookbox_mini_cart_block($form, &$form_state) {
                     '#type' => 'markup',
                     '#markup' => '</div>',
                 );
-
-
             }
         }
     }
-    
-    $in_prolong = bookbox_count_in_prolong();
-    $in_confirm = bookbox_get_in_confirm();
 
+    //$in_prolong = bookbox_count_in_prolong();
+    //$in_confirm = bookbox_get_in_confirm();
+    
+    $reading_now = count(bookbox_get_in_reading_now());
+    //dsm($reading_now);
 
     if ($cart_count < 2) {
         $in_prolong = bookbox_count_in_prolong();
         //dsm($in_prolong);
-        $empty_cells = 2 - $cart_count;
+        $empty_cells = 2 - $cart_count - $reading_now;
 
         for($i=0; $i <$empty_cells;$i++) {
             $form['add_book_link_'.$i] = array(
                 '#type' => 'markup',
-                '#markup' => '<a class="add_some_book" href="/books">Оберіть книгу</a>',
+                '#markup' => '<div class="add_some_book">Оберіть книгу</div>',
             );
 
+        }
+
+        if ($empty_cells < 1) {
+            //dsm($form);
+            unset($form['ftitle']);
         }
         //todo можно один сабмитить если 1 книга в продлении :TRUE
         //$form['submit_box']['#attributes']['disabled'] = FALSE;
@@ -84,10 +99,11 @@ function bookbox_mini_cart_block($form, &$form_state) {
     // 3. если он уже подтверждал выбор в этом мес (полтв в этом мес > 0)
     // писать вы уже какбе того
     //dsm('this', bookbox_count_in_confirm_this_month());
+//dsm(current_period());
 
     if(current_period() == 1 && bookbox_count_in_confirm_this_month() == 0 && $cart_count > 0) {
         //может быть кнопка. 1-20 число и еще не потверждал и что-то есть в корзине
-        if ($cart_count + bookbox_count_in_prolong() == 2) {
+        if ($cart_count + $reading_now == 2) {
             $form['submit_box'] = array(
                 '#type' => 'submit',
                 '#submit' => array('bookbox_confirm_box'),
@@ -110,10 +126,10 @@ function bookbox_mini_cart_block($form, &$form_state) {
             );
         }
     } else {
-        $form['submit_box_markup'] = array(
-            '#type' => 'markup',
-            '#markup' => '<p class="tip_message">Підтвердьте замовлення з 1-го числа наступного місяця</p>'
-        );
+       // $form['submit_box_markup'] = array(
+       //     '#type' => 'markup',
+       //     '#markup' => '<p class="tip_message">Підтвердьте замовлення з 1-го числа наступного місяця</p>'
+       // );
     }
 
 

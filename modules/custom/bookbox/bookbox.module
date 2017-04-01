@@ -94,13 +94,18 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state)
     }
   }
 
-  if ($in_cart == 2) {
+  $reading_now = count(bookbox_get_in_reading_now());
+
+  if ($in_cart == 2 || $reading_now + $in_cart > 1) {
     $can_add2cart = false;
   }
 
   if (!$can_add2cart) {
     $form['submit']['#attributes']['disabled'] = TRUE;
   }
+
+  //dsm('inc ', bookbox_count_in_confirm_this_month());
+  //dsm('pro  ', bookbox_count_in_prolong_this_month());
 }
 
 // Крон работы

@@ -12,11 +12,11 @@ function bookbox_form_alter(&$form, &$form_state, $form_id){
     if ($form['#id'] == 'views-exposed-form-booksearch-page') {
         $form['search-trigger'] = array(
             '#type' => 'markup',
-            '#markup' => '<i class="fa fa-search" aria-hidden="true"></i>',
+            '#markup' => '<svg class="svg-icon icon-search" preserveAspectRatio="xMaxYMax"><use xlink:href="/sites/all/themes/bookbox_ui/images/svg-icons-sprite.svg#icon-search"></use></svg>',
         );
     }
 
-    //dsm($form);
+    //dsm($form); <svg preserveAspectRatio="xMaxYMax"><use xlink:href="/sites/all/themes/bookbox_ui/images/svg-icons-sprite.svg#icon-search"></use></svg>
 
     if ($form['#id'] == 'user-register-form') {
        // $form['name'] = $form['field_name'];

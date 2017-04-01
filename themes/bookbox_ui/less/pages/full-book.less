@@ -64,11 +64,23 @@
           text-decoration: none;
 
           &:before {
-            .fa();
-            content: '\f08a';
-            display: inline;
+            content: '';
             margin-right: 10px;
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            background: url('/sites/all/themes/bookbox_ui/img-svg/heart.svg') no-repeat center center;
+            background-size: contain;
           }
+
+          &.unflag-action {
+            &:before {
+              background: url('/sites/all/themes/bookbox_ui/img-svg/heart-filled.svg') no-repeat center center;
+              background-size: contain;
+            }
+          }
+
+
         }
       }
     }
@@ -99,6 +111,8 @@
       #author {
         img {
           margin-bottom: 20px;
+          width: 110px;
+          height: auto;
         }
       }
     }

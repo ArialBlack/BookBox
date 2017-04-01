@@ -47,7 +47,6 @@ function ua_month_original($m = null) {
 
 function current_period() {
   $current_date = d();
-  $period = 0;
 
   if ($current_date >=1 && $current_date <=20) {
     $period = 1;
@@ -84,12 +83,18 @@ function _bookbox_get_product_display_by_product_id($product_id, $bundle = 'prod
   }
 }
 
+
+
+///////////////////
+//Продлено в этом месяце
+
 function bookbox_count_in_prolong() {
   return count(bookbox_get_in_prolong());
 }
 
 function bookbox_count_in_prolong_this_month() {
   $in_prolong_this_month = 0;
+  //dsm(bookbox_get_in_prolong());
 
   foreach(bookbox_get_in_prolong() as $item) {
     if (date("m", $item->changed) == date("m")) {
@@ -104,13 +109,8 @@ function bookbox_get_in_prolong() {
   global $user;
 
   $result = db_select('commerce_order', 'o')
-      ->fields('o', array('order_id', 'status'))
+      ->fields('o', array('order_id', 'status', 'changed'))
       ->condition('o.uid', $user->uid)
-      //->condition(
-      //    db_or()
-      //        ->condition('o.status', 'completed')
-      //        ->condition('o.status', 'prolong')
-      //)
       ->condition('o.status', 'prolong')
       ->orderBy('o.order_id', 'DESC')
       ->range(0,2)
@@ -119,6 +119,10 @@ function bookbox_get_in_prolong() {
   return $result;
 }
 
+
+
+/////////////////////
+//Подтвержено = читаю щас
 function bookbox_count_in_confirm() {
   return count(bookbox_get_in_confirm());
 }
@@ -141,11 +145,6 @@ function bookbox_get_in_confirm() {
   $result = db_select('commerce_order', 'o')
       ->fields('o', array('order_id', 'status', 'changed'))
       ->condition('o.uid', $user->uid)
-      //->condition(
-      //    db_or()
-      //        ->condition('o.status', 'completed')
-      //        ->condition('o.status', 'prolong')
-      //)
       ->condition('o.status', 'completed')
       ->orderBy('o.order_id', 'DESC')
       ->range(0,2)
@@ -153,6 +152,8 @@ function bookbox_get_in_confirm() {
 
   return $result;
 }
+
+
 
 function bookbox_get_in_reading_now() {
   global $user;
