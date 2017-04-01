@@ -2,8 +2,9 @@
 
 module_load_include('inc', 'bookbox', 'bookbox.functions');
 module_load_include('inc', 'bookbox', 'bookbox.forms');
-module_load_include('inc', 'bookbox', 'bookbox.cart');
-module_load_include('inc', 'bookbox', 'bookbox.readnow');
+module_load_include('inc', 'bookbox', 'bookbox.cart');          //Корзина
+module_load_include('inc', 'bookbox', 'bookbox.order');         //Заказ месяца
+module_load_include('inc', 'bookbox', 'bookbox.readnow');       //Читаю сейчас
 module_load_include('inc', 'bookbox', 'bookbox.adminmessages');
 
 function bookbox_menu(){
@@ -61,6 +62,10 @@ function bookbox_block_info() {
     'info' => t('Mini cart'),
   );
 
+  $blocks['MonthOrder'] = array(
+      'info' => t('Reading now'),
+  );
+
   $blocks['ReadingNow'] = array(
       'info' => t('Reading now'),
   );
@@ -83,9 +88,14 @@ function bookbox_block_info() {
 function bookbox_block_view($delta = '') {
   $block = array();
 
+  //todo
+  $show_cart = true;
+  $show_order = true;
+  $show_reading_now = true;
+
   switch ($delta) {
     case 'MiniCart':
-      if (count(bookbox_get_in_reading_now()) == 0) {
+      if ($show_cart) {
         $block['subject'] = '';
         $form = drupal_get_form('bookbox_mini_cart_block');
         $block['content'] = drupal_render($form);
@@ -95,10 +105,26 @@ function bookbox_block_view($delta = '') {
       }
       break;
 
+    case 'MonthOrder':
+      if ($show_order) {
+        $block['subject'] = '';
+        $form = drupal_get_form('bookbox_month_order_block');
+        $block['content'] = drupal_render($form);
+      } else {
+        $block['subject'] = null;
+        $block['content'] = null;
+      }
+      break;
+
     case 'ReadingNow':
-      $block['subject'] = '';
-      $form = drupal_get_form('bookbox_reading_now_block');
-      $block['content'] = drupal_render($form);
+      if ($show_reading_now) {
+        $block['subject'] = '';
+        $form = drupal_get_form('bookbox_reading_now_block');
+        $block['content'] = drupal_render($form);
+      } else {
+        $block['subject'] = null;
+        $block['content'] = null;
+      }
       break;
 
     case 'CatBiz':
@@ -116,7 +142,6 @@ function bookbox_block_view($delta = '') {
       $block['content'] = bookbox_cat_samo_block();
       break;
   }
-
   return $block;
 }
 
@@ -128,6 +153,9 @@ function bookbox_block_view_alter(&$data, $block) {
 
 function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state) {
   // можно добавить максимум 2
+
+  //dsm(   bookbox_count_in_confirm_this_month(), 'this ' );
+  //dsm(   bookbox_count_in_confirm_prev_month(), 'prev ' );
 
   $form['submit']['#value'] = 'Замовити';
 

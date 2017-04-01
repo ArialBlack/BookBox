@@ -71,7 +71,7 @@ function bookbox_mini_cart_block($form, &$form_state) {
     //dsm($reading_now);
 
     if ($cart_count < 2) {
-        $in_prolong = bookbox_count_in_prolong();
+        $in_prolong = bookbox_count_in_prolong_this_month();
         //dsm($in_prolong);
         $empty_cells = 2 - $cart_count - $in_prolong;
 
@@ -146,14 +146,14 @@ function bookbox_mini_cart_block($form, &$form_state) {
         }
 
 
-        if ($cart_count + bookbox_count_in_prolong() == 3 && bookbox_count_in_prolong() == 1) {
+        if ($cart_count + bookbox_count_in_prolong_this_month() == 3 && bookbox_count_in_prolong_this_month() == 1) {
             $form['submit_box_markup'] = array(
                 '#type' => 'markup',
                 '#markup' => '<p class="tip_message">Видаліть одну книгу для підтвердження замовлення</p>'
             );
         }
 
-        if ($cart_count + bookbox_count_in_prolong() > 3) {
+        if ($cart_count + bookbox_count_in_prolong_this_month() > 3) {
             $form['submit_box_markup'] = array(
                 '#type' => 'markup',
                 '#markup' => '<p class="tip_message">Підтвердьте замовлення з 1-го числа наступного місяця</p>'

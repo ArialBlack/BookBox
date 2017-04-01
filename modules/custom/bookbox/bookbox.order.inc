@@ -1,9 +1,7 @@
 <?php
 
-
-// Блок ЧИТАЮ СЕЙЧАС
-//
-function bookbox_reading_now_block ($form, &$form_state) {
+// Блок Заказ месяца
+function bookbox_month_order_block ($form, &$form_state) {
     global $user;
     $uid = $user->uid;
     $destination = request_path();
@@ -113,31 +111,4 @@ function bookbox_reading_now_block ($form, &$form_state) {
     return $form;
 }
 
-function bookbox_prolongbook1($arg0) {
-    $result = bookbox_get_in_reading_now_by_user($arg0);
-   // dsm($result);
 
-    if ($result) {
-        $order_id = $result[0]->order_id;
-        $order = commerce_order_load($order_id);
-        //dsm($order);
-        commerce_order_status_update($order, 'prolong', $skip_save = FALSE, $revision = NULL, $log = '');
-    }
-
-    $dest = drupal_get_destination();
-    drupal_goto($dest);
-}
-
-function bookbox_prolongbook2($arg0) {
-    $result = bookbox_get_in_reading_now_by_user($arg0);
-
-    if ($result && count($result) > 1) {
-        $order_id = $result[1]->order_id;
-        $order = commerce_order_load($order_id);
-        commerce_order_status_update($order, 'prolong', $skip_save = FALSE, $revision = NULL, $log = '');
-    }
-
-    $dest = drupal_get_destination();
-    drupal_goto($dest);
-
-}

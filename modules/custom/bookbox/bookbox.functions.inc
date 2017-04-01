@@ -1,29 +1,23 @@
 <?php
 
+//Получить номер текущего месяца
 function m() {
   $month = date("m");
-
-  //hack month for testing
-  //$month = variable_get('testMonth_title');
-
   return $month;
 }
 
-
+//Получить текущий день
 function d() {
   $day = date("d");
-
-  //hack day for testing
-  //$day = variable_get('testDay_title');
-
   return $day;
 }
 
-
-
+//Получить укр.месяц в склонении
+//Если пусто то возвращает текущий
+//иначе нужно передать n-1, то есть ua_month(2) = 'березня'
 function ua_month($m = null) {
   if(!$m) {
-    $current_date = intval(m()) - 1;
+    $current_date = intval(m()) - 1; 
   } else {
     $current_date = $m;
   }
@@ -33,6 +27,9 @@ function ua_month($m = null) {
   return $ua_monthes[$current_date];
 }
 
+//Получить укр.месяц без склонения
+//Если пусто то возвращает текущий
+//иначе нужно передать n-1, то есть ua_month(2) = 'березень'
 function ua_month_original($m = null) {
   if(!$m) {
     $current_date = intval(m()) - 1;
@@ -45,10 +42,13 @@ function ua_month_original($m = null) {
   return $ua_monthes[$current_date];
 }
 
+//Получить Текущий период
+//1-20 включительно = 1
+//21 - 31 = 2
 function current_period() {
   $current_date = d();
 
-  if ($current_date >=1 && $current_date <=21) {
+  if ($current_date >=1 && $current_date <=20) {
     $period = 1;
   } else {
     $period = 2;
@@ -57,6 +57,7 @@ function current_period() {
   return $period;
 }
 
+//Получить товары в корзине
 function _bookbox_get_cart_items() {
   global $user;
   $can_add2cart = true;
@@ -70,6 +71,7 @@ function _bookbox_get_cart_items() {
   }
 }
 
+//Получить Дисплей книги по айдишнику ее продукта
 function _bookbox_get_product_display_by_product_id($product_id, $bundle = 'product_display', $field_name = 'field_bookfields') {
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', 'node');
@@ -83,21 +85,12 @@ function _bookbox_get_product_display_by_product_id($product_id, $bundle = 'prod
   }
 }
 
-
-
-///////////////////
 //Продлено в этом месяце
-
-function bookbox_count_in_prolong() {
-  return count(bookbox_get_in_prolong());
-}
-
 function bookbox_count_in_prolong_this_month() {
   $in_prolong_this_month = 0;
-  //dsm(bookbox_get_in_prolong());
 
   foreach(bookbox_get_in_prolong() as $item) {
-    if (date("m", $item->changed) == date("m")) {
+    if (date("m-Y", $item->changed) == date("m-Y")) {
       $in_prolong_this_month = $in_prolong_this_month + 1;
     }
   }
@@ -105,6 +98,34 @@ function bookbox_count_in_prolong_this_month() {
   return $in_prolong_this_month;
 }
 
+//Продлено в прошлом месяце
+function bookbox_count_in_prolong_prev_month() {
+  $in_prolong_prev_month = 0;
+
+  foreach(bookbox_get_in_prolong() as $item) {
+    $year = date("Y");
+    $prev_month = intval(date("m")) - 1;
+
+    if($prev_month < 1) {
+      $prev_month = 12;
+      $year = intval(date("Y")) - 1;
+      $prev_date = $prev_month . "-" . $year;
+    } else {
+      if ($prev_month < 10) {
+        $prev_date =  "0" . $prev_month  . "-" . $year;
+      } else {
+        $prev_date =  $prev_month  . "-" . $year;
+      }
+    }
+
+    if (date("m-Y", $item->changed) == $prev_date) {
+      $in_prolong_prev_month = $in_prolong_prev_month + 1;
+    }
+  }
+  return $in_prolong_prev_month;
+}
+
+//Выборка из базы - продлено юзером
 function bookbox_get_in_prolong() {
   global $user;
 
@@ -113,20 +134,14 @@ function bookbox_get_in_prolong() {
       ->condition('o.uid', $user->uid)
       ->condition('o.status', 'prolong')
       ->orderBy('o.order_id', 'DESC')
-      ->range(0,2)
+      //->range(0,2)
       ->execute()->fetchAll();
 
   return $result;
 }
 
-
-
 /////////////////////
-//Подтвержено = читаю щас
-function bookbox_count_in_confirm() {
-  return count(bookbox_get_in_confirm());
-}
-
+//Подтвержено в этом месяце
 function bookbox_count_in_confirm_this_month() {
   $in_confirm_this_month = 0;
 
@@ -135,10 +150,37 @@ function bookbox_count_in_confirm_this_month() {
       $in_confirm_this_month = $in_confirm_this_month + 1;
     }
   }
-
   return $in_confirm_this_month;
 }
 
+//Подтверждено в прошлом месяце
+function bookbox_count_in_confirm_prev_month() {
+  $in_confirm_prev_month = 0;
+
+  foreach(bookbox_get_in_confirm() as $item) {
+    $year = date("Y");
+    $prev_month = intval(date("m")) - 1;
+
+    if($prev_month < 1) {
+      $prev_month = 12;
+      $year = intval(date("Y")) - 1;
+      $prev_date = $prev_month . "-" . $year;
+    } else {
+      if ($prev_month < 10) {
+        $prev_date =  "0" . $prev_month  . "-" . $year;
+      } else {
+        $prev_date =  $prev_month  . "-" . $year;
+      }
+    }
+
+    if (date("m-Y", $item->changed) == $prev_date) {
+      $in_confirm_prev_month = $in_confirm_prev_month + 1;
+    }
+  }
+  return $in_confirm_prev_month;
+}
+
+//Выборка из базы - подтверждено юзером
 function bookbox_get_in_confirm() {
   global $user;
 
@@ -153,8 +195,7 @@ function bookbox_get_in_confirm() {
   return $result;
 }
 
-
-
+//По сути бесполезная штука. Выборка продлено и заказы
 function bookbox_get_in_reading_now() {
   global $user;
 
@@ -173,6 +214,7 @@ function bookbox_get_in_reading_now() {
   return $result;
 }
 
+//По сути бесполезная штука. Выборка продлено и заказы юзера
 function bookbox_get_in_reading_now_by_user($uid) {
   //global $user;
 
