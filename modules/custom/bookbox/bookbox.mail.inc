@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 function bookbox_mail($key, &$message, $params) {
   $message['headers']['Content-Type'] = 'text/html; charset=UTF-8';
