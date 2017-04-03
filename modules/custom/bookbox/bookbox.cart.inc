@@ -67,7 +67,7 @@ function bookbox_mini_cart_block($form, &$form_state) {
 
     //$in_prolong = bookbox_count_in_prolong();
     //$in_confirm = bookbox_get_in_confirm();
-    
+
     $reading_now = count(bookbox_get_in_reading_now());
     //dsm($reading_now);
 
@@ -161,22 +161,22 @@ function bookbox_mini_cart_block($form, &$form_state) {
             );
         }
     } else {
-       // $form['submit_box_markup'] = array(
-       //     '#type' => 'markup',
-       //     '#markup' => '<p class="tip_message">Підтвердьте замовлення з 1-го числа наступного місяця</p>'
-       // );
+        // $form['submit_box_markup'] = array(
+        //     '#type' => 'markup',
+        //     '#markup' => '<p class="tip_message">Підтвердьте замовлення з 1-го числа наступного місяця</p>'
+        // );
     }
 
 
-/*
-    if ($cart_count > 0) {
-        $form['submit_box'] = array(
-            '#type' => 'submit',
-            '#submit' => array('bookbox_confirm_box'),
-            '#weight' => 10,
-            '#value' => t('Підтвердити замовлення'), //todo
-        );
-    }*/
+    /*
+        if ($cart_count > 0) {
+            $form['submit_box'] = array(
+                '#type' => 'submit',
+                '#submit' => array('bookbox_confirm_box'),
+                '#weight' => 10,
+                '#value' => t('Підтвердити замовлення'), //todo
+            );
+        }*/
 
     //dsm('c', $cart_count);
 
@@ -228,7 +228,7 @@ function bookbox_confirm_box($arg0) {
         $file = file_load($book2->field_nni['und'][0]['fid']);
         $uri = $file->uri;
         $url = file_create_url($uri);
-        
+
         $tid = $book2->field_book_author['und'][0]['tid'];
         $author = taxonomy_term_load($tid);
         $mail_body = $mail_body . '<div style="display:inline-block; width:200px; margin-top:20px; margin-bottom:20px;">' . '<a href="'.$GLOBALS['base_root'].'/node/' . $book2->nid .'">

@@ -9,7 +9,7 @@ module_load_include('inc', 'bookbox', 'bookbox.mail');
 
 function bookbox_menu(){
   $items=array();
-  
+
   $items['admin/bookbox/labels'] = array(
       'title' => 'Адмін-тексти',
       'description' => 'Admin labels',
@@ -59,7 +59,7 @@ function bookbox_block_info() {
   $blocks = array();
 
   $blocks['MiniCart'] = array(
-    'info' => t('Mini cart'),
+      'info' => t('Mini cart'),
   );
 
   $blocks['ReadingNow'] = array(
@@ -201,7 +201,7 @@ function bookbox_cron() {
         )
         ->orderBy('o.order_id', 'DESC')
         ->execute()->fetchAll();
-    
+
     foreach ($result as $item) {
       $order_month = intval(date('m', $item->changed));
       //1-го числа мы удаляем все книги из "я читаю" если они были заказаны в прошлом месяце - меняем статус на архив
@@ -241,7 +241,7 @@ function bookbox_cron() {
 
     foreach ($result as $item) {
       if($item->uid != 0){
-    //  if($item->uid == 1){ //for testing
+        //  if($item->uid == 1){ //for testing
 
         //відправляємо мейл геть усім абсолютно юзерам згідно шаблону "лист на 1е число"
         $params['name'] = $item->field_name['und'][0]['value'];
@@ -251,7 +251,7 @@ function bookbox_cron() {
             ->fields(array('send1' => 1))
             ->condition('uid', $item->uid)
             ->execute();
-        }
+      }
     }
   }
 
@@ -266,10 +266,10 @@ function bookbox_cron() {
 
   if(intval(d()) == 19) {
 
-   /* $result = db_select('users', 'u')
-        ->fields('u', array('uid', 'mail', 'field_name'))
-        ->condition('u.send19', 0)
-        ->execute()->fetchAll();*/
+    /* $result = db_select('users', 'u')
+         ->fields('u', array('uid', 'mail', 'field_name'))
+         ->condition('u.send19', 0)
+         ->execute()->fetchAll();*/
     $query = new EntityFieldQuery();
     $result = $query
         ->entityCondition('entity_type', 'user')
@@ -285,8 +285,8 @@ function bookbox_cron() {
     //dpm($result);
     foreach ($result as $item) {
 
-     if($item->uid != 0) {
-     // if($item->uid == 1){ //for testing
+      if($item->uid != 0) {
+        // if($item->uid == 1){ //for testing
         //todo emails
         //лист юзерам які не додовжили не підтвердили
         //я ще зуточню вибірку. а поки для тесту - всім
@@ -311,7 +311,7 @@ function bookbox_cron() {
         ->execute();
   }
 
- 
+
 }
 
 
@@ -330,33 +330,33 @@ function bookbox_user_orders_history() {
   $newOrder = [];
 
   foreach ($result as $res) {
-      setlocale(LC_TIME, 'uk_UA');
-      $dateM = ua_month_original(intval(date('m', $res->changed))-1);
-      $dateY = date('Y', $res->changed);
-      $res->changed = $dateM . ' ' . $dateY;
-      $newOrder[$res->changed][] = $res->order_id;
+    setlocale(LC_TIME, 'uk_UA');
+    $dateM = ua_month_original(intval(date('m', $res->changed))-1);
+    $dateY = date('Y', $res->changed);
+    $res->changed = $dateM . ' ' . $dateY;
+    $newOrder[$res->changed][] = $res->order_id;
   }
 
   while ($keyname = current($newOrder)) {
-      $content = $content . '<div class="row"><h2>' . key($newOrder) . '</h2>';
-      foreach ($newOrder[key($newOrder)] as $res) {
-        $order = commerce_order_load($res);
-        $line_item_id = $order->commerce_line_items['und'][0]['line_item_id'];
-        $line_item = commerce_line_item_load($line_item_id);
-        $product_id =  $line_item->commerce_product['und'][0]['product_id'];
-        $product_display = _bookbox_get_product_display_by_product_id($product_id);
+    $content = $content . '<div class="row"><h2>' . key($newOrder) . '</h2>';
+    foreach ($newOrder[key($newOrder)] as $res) {
+      $order = commerce_order_load($res);
+      $line_item_id = $order->commerce_line_items['und'][0]['line_item_id'];
+      $line_item = commerce_line_item_load($line_item_id);
+      $product_id =  $line_item->commerce_product['und'][0]['product_id'];
+      $product_display = _bookbox_get_product_display_by_product_id($product_id);
 
-        if ($product_display->nid) {
-          $node = node_load($product_display->nid);
-          $node_view = node_view($node, 'teaser');
-          $rendered_teaser = render($node_view);
-          $content = $content . $rendered_teaser;
-        }
+      if ($product_display->nid) {
+        $node = node_load($product_display->nid);
+        $node_view = node_view($node, 'teaser');
+        $rendered_teaser = render($node_view);
+        $content = $content . $rendered_teaser;
       }
+    }
     $content = $content . '</div>';
     next($newOrder);
   }
-  
+
   return $content;
 }
 
