@@ -1,5 +1,6 @@
 <?php
 
+module_load_include('inc', 'bookbox', 'bookbox.mail');
 // Блок корзины
 function bookbox_mini_cart_block($form, &$form_state) {
     global $user;
@@ -9,14 +10,14 @@ function bookbox_mini_cart_block($form, &$form_state) {
     if(current_period() == 1) {
         $form['ftitle'] = array(
             '#type' => 'markup',
-            '#markup' => '<h3>Замовлення ' . ua_month() . '</h3><h6>Оберіть дві книги до <span>20 ' .  ua_month() . '</span> включно</h6>',
+            '#markup' => '<h3>Замовлення ' . ua_month() . '</h3><h6>Оберіть дві книги до <span>21-го ' .  ua_month() . '</span></h6>',
         );
     }
 
     if(current_period() == 2) {
         $form['ftitle'] = array(
             '#type' => 'markup',
-            '#markup' => '<h3>Замовлення ' . ua_month() . ' не підтверджено</h3><h6>Робіть замовлення з <span>1 ' .  ua_month(intval(m())) . '</span></h6>',
+            '#markup' => '<h3>Замовлення поточного місяця</h3><h6>Робіть замовлення з <span>1-го ' .  ua_month(intval(m())) . '</span></h6>',
         );
     }
 
@@ -67,11 +68,11 @@ function bookbox_mini_cart_block($form, &$form_state) {
     //$in_prolong = bookbox_count_in_prolong();
     //$in_confirm = bookbox_get_in_confirm();
     
-    //$reading_now = count(bookbox_get_in_reading_now($uid));
+    $reading_now = count(bookbox_get_in_reading_now());
     //dsm($reading_now);
 
     if ($cart_count < 2) {
-        $in_prolong = bookbox_count_in_prolong_this_month($uid);
+        $in_prolong = bookbox_count_in_prolong();
         //dsm($in_prolong);
         $empty_cells = 2 - $cart_count - $in_prolong;
 
@@ -105,7 +106,7 @@ function bookbox_mini_cart_block($form, &$form_state) {
     //dsm('this', bookbox_count_in_confirm_this_month());
 //dsm(current_period());
 
-    if(current_period() == 1 && bookbox_count_in_confirm_this_month($uid) == 0 && $cart_count > 0) {
+    if(current_period() == 1 && bookbox_count_in_confirm_this_month() == 0 && $cart_count > 0) {
         //может быть кнопка. 1-20 число и еще не потверждал и что-то есть в корзине
 
 
@@ -118,7 +119,7 @@ function bookbox_mini_cart_block($form, &$form_state) {
             );
         }*/
 
-        if ($cart_count + bookbox_count_in_prolong_this_month($uid) == 2) {
+        if ($cart_count + $reading_now == 2) {
 
             $modal = '<button type="button" id="edit-submit-box" class="btn btn-primary" data-toggle="modal" data-target="#confirm-orders">Підтвердити замовлення</button>
                             <div class="modal fade" tabindex="-1" role="dialog" id="confirm-orders">
@@ -128,8 +129,7 @@ function bookbox_mini_cart_block($form, &$form_state) {
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                           </div>
                                           <div class="modal-body">
-                                            <p>Бажаєте підтвердити замовлення?</p>
-                                            <p class="smaller">Змінити замовлення після підтвердження буде неможливо.</p>
+                                            <p>Ви підтверджуєте замовлення місяця?</p>
                                           </div>
                                           <div class="modal-footer">
                                             <a class="btn btn-outline red" href="/confirm/' . $uid . '/orders?destination=' . $destination . '">Так</a>
@@ -147,17 +147,17 @@ function bookbox_mini_cart_block($form, &$form_state) {
         }
 
 
-        if ($cart_count + bookbox_count_in_prolong_this_month($uid) > 2 && bookbox_count_in_prolong_this_month($uid) == 1) {
+        if ($cart_count + bookbox_count_in_prolong() == 3 && bookbox_count_in_prolong() == 1) {
             $form['submit_box_markup'] = array(
                 '#type' => 'markup',
                 '#markup' => '<p class="tip_message">Видаліть одну книгу для підтвердження замовлення</p>'
             );
         }
 
-        if ($cart_count + bookbox_count_in_prolong_this_month($uid) > 3) {
+        if ($cart_count + bookbox_count_in_prolong() > 3) {
             $form['submit_box_markup'] = array(
                 '#type' => 'markup',
-                '#markup' => '<p class="tip_message">Підтвердьте замовлення з 1 числа наступного місяця</p>'
+                '#markup' => '<p class="tip_message">Підтвердьте замовлення з 1-го числа наступного місяця</p>'
             );
         }
     } else {
@@ -210,7 +210,7 @@ function bookbox_delete_bookfromcart2 ($form, &$form_state) {
 function bookbox_confirm_box($arg0) {
     //drupal_set_message('Дякуємо! Ви щойно підтвердили замовлення місяця.');
     $user = user_load($arg0);
-    $mail_body = $user->field_name['und'][0]['value'] . ' ' . $user->field_sirname['und'][0]['value'] . ', вітання!</br>';
+    $mail_body = $user->field_name['und'][0]['value'] . ' ' . $user->field_sirname['und'][0]['value'] . ', вітання! ';
     $mail_body = $mail_body . 'Замовлення місяця успішно підтверджено.</br>';
 
     $order = commerce_cart_order_load($user->uid);
@@ -224,7 +224,16 @@ function bookbox_confirm_box($arg0) {
         $line_item2 = commerce_line_item_load($line_item_id2); // второй товар
         $product_id2 = $line_item2->commerce_product['und']['0']['product_id'];
         $book2 = _bookbox_get_product_display_by_product_id($product_id2, $bundle = 'product_display', $field_name = 'field_bookfields');
-        $mail_body = $mail_body . ' Книга : ' . '<a href="http://lib.bookbox.ua/node/' . $book2->nid .'">' . $book2->title . '</a> </br>'; //todo domain
+
+        $file = file_load($book2->field_nni['und'][0]['fid']);
+        $uri = $file->uri;
+        $url = file_create_url($uri);
+        
+        $tid = $book2->field_book_author['und'][0]['tid'];
+        $author = taxonomy_term_load($tid);
+        $mail_body = $mail_body . '<div style="display:inline-block; width:200px; margin-top:20px; margin-bottom:20px;">' . '<a href="'.$GLOBALS['base_root'].'/node/' . $book2->nid .'">
+        <img src = "' . $url . '" width="167" height="250" style="display:block; />'
+            . $book2->title . '<br/>' . $author->name .'</a> </div>'; //todo domain
 
         //2. удалим второй товар
         commerce_cart_order_product_line_item_delete($order, $line_item_id2);
@@ -235,7 +244,18 @@ function bookbox_confirm_box($arg0) {
     $line_item1 = commerce_line_item_load($line_item_id1); // второй товар
     $product_id1 = $line_item1->commerce_product['und']['0']['product_id'];
     $book1 = _bookbox_get_product_display_by_product_id($product_id1, $bundle = 'product_display', $field_name = 'field_bookfields');
-    $mail_body = $mail_body . ' Книга : ' . '<a href="http://lib.bookbox.ua/node/' . $book1->nid .'">' . $book1->title . '</a> </br>'; //todo domain
+
+    $file = file_load($book1->field_nni['und'][0]['fid']);
+    $uri = $file->uri;
+    $url = file_create_url($uri);
+
+    $tid = $book1->field_book_author['und'][0]['tid'];
+    $author = taxonomy_term_load($tid);
+
+    $mail_body = $mail_body . '<div style="display:inline-block; width:200px; margin-top:20px; margin-bottom:20px;">' . '<a href="'.$GLOBALS['base_root'].'/node/' . $book1->nid .'">
+    <img src = "' . $url . '" width="167" height="250" style="display:block;" />'
+        . $book1->title . '<br/>' . $author->name .
+        '</a> </div>'; //todo domain
 
     commerce_order_status_update($order, 'completed', $skip_save = FALSE, $revision = NULL, $log = '');
 
@@ -256,16 +276,21 @@ function bookbox_confirm_box($arg0) {
         commerce_order_status_update($order, 'completed', $skip_save = FALSE, $revision = NULL, $log = '');
     }
 
-    $mail_body = $mail_body . 'Деталі щодо доставки буде надіслано окремо. </br>Команда Book Box </br>Це автоматичне повідомлення, будь ласка, не відповідайте на нього.';
+    $mail_body = '<div>' . $mail_body . '<div style="clear:both;"></div>Деталі щодо доставки буде надіслано окремо. <br /><br />Команда Book Box. <br /><br /><span style="font-size:12px;">Це автоматичне повідомлення, будь ласка, не відповідайте на нього.</span>' . '</div>';
 
     //6. Пошлем емейл
     //todo emails:
     //переписать це використавши шаблон
-    drupal_mail('system', 'mail', $user->mail, language_default(), array(
-        'context' => array(
-        'subject' => 'Ваше замовлення ' . ua_month($m = null),
-        'message' => $mail_body,
-        )));
+
+//    drupal_mail('system', 'mail', $user->mail, language_default(), array(
+//        'context' => array(
+//        'subject' => 'Ваше замовлення ' . ua_month($m = null),
+//        'message' => $mail_body,
+//        )));
+    $params['subject'] = 'Ваше замовлення |' . ua_month_original();
+    $params['content'] = $mail_body;
+    $params['name'] = $user->field_name['und']['0']['value'];
+    bookbox_mail_send('bookbox', 'book_box_order', $user->mail, $params);
 
     $dest = drupal_get_destination();
     drupal_goto($dest);
