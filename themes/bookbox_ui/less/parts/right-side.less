@@ -1,0 +1,153 @@
+aside.col-sm-4 {
+  padding:0;
+  padding-top: 73px;
+  border-left: #ebecee 1px solid;
+  position: fixed;
+  right:0;
+  top: 0;
+
+  height:100%;
+  overflow: auto;
+
+  #block-bookbox-minicart,
+  #block-bookbox-readingnow,
+  #block-bookbox-monthorder {
+
+    .node-teaser {
+      header {
+        display: none;
+      }
+    }
+    color: @bb-darkblue;
+
+    h3 {
+      text-transform: uppercase;
+    }
+
+    h6 {
+      span {
+        color: @primary-color;
+      }
+    }
+
+    .tip_message {
+      display: block;
+      clear: both;
+    }
+
+    .book-container {
+      position: relative;
+      margin-bottom: 0;
+
+      @media (min-width: @screen-md-min) {
+        width: 50%;
+        float: left;
+        padding-right: 22px;
+        box-sizing: border-box;
+
+        &:nth-of-type(odd) {
+          //margin-right: 5%;
+        }
+      }
+
+      article{
+        max-width: 200px;
+
+        .flag-bookmarks {
+          display: none;
+        }
+      }
+    }
+
+    .book-card {
+      text-decoration: none;
+      //color: @bb-darkblue;
+      padding: 5px;
+
+      h4 {
+        min-height: 26px;
+      }
+
+      .field-name-field-book-author {
+        font-size: 12px;
+      }
+
+      .book-labels {
+        display: none !important;
+      }
+
+      &:hover {
+        text-decoration: none !important;
+        color: @bb-darkblue;
+      }
+    }
+  }
+
+  .add_some_book {
+    //display: none;
+    display: block;
+    background: white;
+    border: @line 1px dashed;
+    min-height: 230px;
+    text-indent: -9999px;
+    //transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    margin-bottom: 20px;
+
+
+    @media (min-width: @screen-md-min) {
+      width: 45%;
+      float: left;
+
+      &:nth-of-type(odd) {
+        margin-right: 5%;
+      }
+    }
+  }
+}
+
+#block-bookbox-minicart {
+  padding: 40px 75px 10px 4.9vw;
+
+  .book-container {
+    button {
+      text-indent: -9999px;
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 13px;
+      width: 13px;
+      background: url('../images/close.png') no-repeat center center;
+      border: none;
+    }
+  }
+
+  #edit-submit-box {
+    border: none;
+    background: @secondary-color;
+    padding: 20px;
+    display: block;
+    margin:auto;
+
+    &:hover {
+      background: darken(@secondary-color, 20);
+    }
+  }
+}
+
+#block-bookbox-readingnow,
+#block-bookbox-monthorder {
+  //padding: 0 75px 130px 4.9vw;
+  padding: 40px 75px 10px 4.9vw;
+
+  .book-container {
+    button {
+      white-space: normal;
+      border: none;
+      background-color: @secondary-color;
+
+      span {
+        display: none;
+      }
+    }
+  }
+}

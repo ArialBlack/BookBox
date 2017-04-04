@@ -1,0 +1,38 @@
+.font-size(@mysizeValue) {
+  @sizeValue: @mysizeValue / @basefontsize;
+  @remValue: @sizeValue;
+  @pxValue: (@sizeValue * 10);
+  font-size: ~"@{pxValue}px"; 
+  font-size: ~"@{remValue}rem";
+}
+
+.line-height(@mysizeValue) {
+  @sizeValue: @mysizeValue / @basefontsize;
+  @remValue: @sizeValue;
+  @pxValue: (@sizeValue * 10);
+  line-height: ~"@{pxValue}px"; 
+  line-height: ~"@{remValue}rem";
+}
+
+.c() {
+  .container();
+
+  @media (min-width: @min-xl) {
+    width: @min-xl - 30;
+  }
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.fa() {
+  //content: '\f002';
+  display: block;
+  font-family: FontAwesome;
+  .font-size(18);
+  text-indent: 0;
+  line-height: initial;
+}
+
+.tracking( @tracking ) {
+  letter-spacing: ( @tracking / 1000 ) * 1em;
+}

@@ -196,7 +196,6 @@ $RECYCLE.BIN/
 dist/
 build/
 eggs/
-parts/
 var/
 sdist/
 develop-eggs/
@@ -228,3 +227,8 @@ node_modules/
 .sass-cache/
 
 
+themes/bookbox_ui/templates/page--type-book.tpl.php
+themes/bookbox_ui/templates/page.tpl.php
+themes/bookbox_ui/icons-svg/compressed/
+themes/bookbox_ui/images/svg-icons-sprite.svg
+themes/bookbox_ui/images/svg-images-sprite.svg

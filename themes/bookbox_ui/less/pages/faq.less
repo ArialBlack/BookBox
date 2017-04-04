@@ -1,0 +1,93 @@
+.page-faq {
+  .col-sm-12 {
+    display: none;
+  }
+  .main-container {
+    width: 100%;
+    padding: 0;
+    padding-right: 15px;
+  }
+  .page-header {
+    margin: 60px 0 20px 0;
+    color: @bb-darkblue;
+    text-transform: uppercase;
+    display: inline-block;
+    font-size: 24px;
+    border: none;
+    &:before {
+      content: " ";
+      width: 90px;
+      height: 2px;
+      background: @primary-color;
+      position: relative;
+      display: inline-block;
+      margin-bottom: 7px;
+      margin-right: 4px;
+      margin-left: 0;
+      padding: 0;
+    }
+  }
+  #block-system-main {
+    padding: 0 96px;
+    .view-id-faq {
+      .nav-tabs {
+        border: none;
+        li {
+          margin-right: 2%;
+          a {
+            padding: 0;
+            margin-bottom: 15%;
+            text-transform: uppercase;
+            color: @light-grey-2;
+            border: none;
+            border-bottom-color: inherit;
+            border-bottom: 3px solid;
+          }
+          &.active {
+            a {
+              color: @primary-color;
+            }
+          }
+        }
+      }
+      .views-field-body {
+        p {
+          font-size: 17px;
+          color: @light-grey;
+          strong {
+            text-transform: uppercase;
+            color: @bb-darkblue;
+
+          }
+        }
+      }
+    }
+  }
+
+  #block-webform-client-block-892 {
+    .block-title {
+      margin: 60px 0 20px 0;
+      color: @bb-darkblue;
+      text-transform: uppercase;
+      display: inline-block;
+      font-size: 24px;
+      border: none;
+      &:before {
+        content: " ";
+        width: 90px;
+        height: 2px;
+        background: @primary-color;
+        position: relative;
+        display: inline-block;
+        margin-bottom: 7px;
+        margin-right: 4px;
+        margin-left: 0;
+        padding: 0;
+      }
+    }
+    .webform-client-form {
+      padding-left: 96px;
+      padding-right: 96px;
+    }
+  }
+}

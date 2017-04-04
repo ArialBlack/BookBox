@@ -1,0 +1,132 @@
+.front {
+  .breadcrumb,
+  .page-header,
+  .nav-tabs,
+   div.col-sm-12 {
+    display: none;
+  }
+
+
+  section.col-sm-8 {
+    padding:0;
+  }
+
+  h1 {
+    display: none;
+  }
+
+  .main-container {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    min-height:90vh;
+    #views-exposed-form-booksearch-page {
+      display: none;
+    }
+  }
+
+  .row {
+    margin: 0;
+
+    .col-sm-12 {
+      padding: 0;
+    }
+  }
+
+  #block-system-main article{
+    position: relative;
+
+    .field-name-field-header-cover {
+      img {
+        width: 100%;
+      }
+    }
+
+    .field-name-field-header-text {
+      position: absolute;
+      z-index: 1;
+      top: 15%;
+      left: 60%;
+      max-width: 340px;
+
+      p {
+        font-size: 48px;
+        color: @bb-darkblue;
+        font-weight: 600;
+        line-height: 1;
+        &:nth-child(2) {
+          font-size: 18px;
+          font-weight: 300;
+          line-height:1.2;
+        }
+
+        a {
+          display: inline-block;
+          margin-top: 20px;
+          color: @light-color;
+          background-color: @secondary-color;
+          transition: all .3s;
+          text-transform: uppercase;
+          padding: 23px;
+          font-size: 14px;
+
+          &:hover, &:focus {
+            text-decoration: none;
+            background-color: darken(@secondary-color, 20);
+          }
+        }
+      }
+      @media (min-width:1024px) and (max-width:1250px) {
+        left:41%;
+      }
+    }
+  }
+
+  #block-views-main-recomend-block-1 {
+    .block-title {
+      margin: 20px;
+      margin-left:0;
+      color: @bb-darkblue;
+      text-transform: uppercase;
+      display: inline-block;
+      font-size: 24px;
+      &:before {
+        content: " ";
+        width:90px;
+        height: 2px;
+        background: @primary-color;
+        position: relative;
+        display: inline-block;
+        margin-bottom: 7px;
+        margin-right: 4px;
+        margin-left: 0;
+        padding: 0;
+      }
+    }
+  }
+
+  .view-main-recomend {
+    margin-top: 15px;
+    padding-left:60px;
+
+    .field-name-field-bookbox-rec {
+      display: none !important;
+    }
+
+    .field-name-field-bookbox-rec {
+      display: none !important;
+    }
+
+    .more-link {
+      text-align: center;
+
+      a {
+        text-transform: uppercase;
+        color: @bb-darkblue;
+        font-size: 18px;
+        letter-spacing: 1px;
+      }
+    }
+
+  }
+}

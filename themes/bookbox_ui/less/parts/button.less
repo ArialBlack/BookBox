@@ -1,0 +1,100 @@
+.btn {
+  color: @light-color;
+  background-color: @primary-color;
+  transition: all .3s;
+  text-transform: uppercase;
+  padding: 20px;
+  letter-spacing: 1px;
+
+  &:hover, &:focus {
+    text-decoration: none;
+    background-color: darken(@primary-color, 20);
+    color: @light-color;
+  }
+
+  &-red {
+    background-color: @secondary-color;
+
+    &:hover, &:focus {
+      color: @light-color;
+      text-decoration: none;
+      background-color: darken(@secondary-color, 20);
+    }
+  }
+
+  &.outline {
+    background: none;
+
+    &.red {
+      color: @secondary-color;
+      border-color: @secondary-color;
+
+      &:hover {
+        background: @secondary-color;
+        color: white;
+      }
+    }
+  }
+}
+
+.field-name-field-isnew,
+.field-name-field-bookbox-rec,
+.field-name-field-hit {
+  .font-size(9) !important;
+  .line-height(24) !important;
+  float: left;
+  margin-bottom: 5px;
+  text-align: center;
+  display: inline-block;
+  padding: 0 5px !important;
+  white-space: nowrap;
+  margin-right: 5px;
+  border: none !important;
+  letter-spacing: normal;
+}
+
+.field-name-field-isnew,
+.field-name-field-bookbox-rec {
+  background: @primary-color;
+  color: @light-color;
+}
+
+.field-name-field-bookbox-rec {
+
+}
+
+
+.field-name-field-isnew {
+  background-color: @bb-darkblue;
+}
+
+.field-name-field-hit {
+  background-color: @secondary-color;
+  color: @light-color;
+}
+
+.pager.pager-load-more {
+  .pager-next a {
+    border:none;
+    background: none;
+    opacity:.8;
+    text-transform: uppercase;
+    color: @bb-darkblue;
+    &:after {
+      content: '';
+      display: inline-block;
+      text-indent: -9999px;
+      width: 15px;
+      height: 15px;
+      background: url(../icons-svg/down-black.svg);
+      background-size:15px;
+      margin-left: 9px;
+      margin-bottom: -3px;
+      opacity:.8;
+    }
+
+    &:hover {
+      background: none;
+    }
+  }
+}

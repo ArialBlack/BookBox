@@ -1,0 +1,91 @@
+.html.not-front.logged-in.one-sidebar.sidebar-second.page-user.page-user-{
+  .main-container {
+    width: 100%;
+    padding: 0;
+    padding-right: 15px;
+
+    .page-header,
+    .block-title {
+      border-bottom: none;
+      margin-top:60px;
+      margin-left:0;
+      margin-bottom:25px;
+      color: @bb-darkblue;
+      text-transform: uppercase;
+      display: inline-block;
+      font-size: 24px;
+
+      &:before {
+        content: " ";
+        width: 90px;
+        height: 2px;
+        background: @primary-color;
+        position: relative;
+        display: inline-block;
+        margin-bottom: 7px;
+        margin-right: 4px;
+        margin-left: 0;
+        padding: 0;
+      }
+    }
+
+    .webform-component-textarea{
+      width:55%;
+    }
+
+    .form-textarea {
+      overflow: hidden;
+      min-height: 200px;
+    }
+
+    .profile {
+      width:47%;
+      max-width:520px;
+      .user-change-pass{
+        text-decoration: underline;
+      }
+
+      .field-name-field-email {
+        margin-bottom: 30px !important;
+      }
+
+      .field-items>.field-item {
+        margin-top:15px;
+      }
+    }
+
+    .profile,
+    .webform-client-form{
+      padding-left: 95px;
+    }
+  }
+}
+
+.user-profile-hot-links {
+  padding-left: 0;
+  display: inline-block;
+  float: right;
+  margin-left: 40px;
+  margin-top: 60px;
+
+  li {
+    list-style: none;
+    display: inline;
+    margin-left: 10px;
+
+    a {
+      color: @light-grey-2;
+      text-transform: uppercase;
+      text-decoration: underline;
+      font-weight: bold;
+      .font-size(12);
+    }
+  }
+}
+
+.logged-in.page-user {
+  .profile {
+    clear: both;
+  }
+}
+

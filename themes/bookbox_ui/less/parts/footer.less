@@ -1,0 +1,130 @@
+.footer {
+  padding: 18px 95px;
+  border: 0 none;
+  background-color: @gray-bg;
+  color: @bb-darkblue;
+  font-weight: 600;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+
+  //@media (min-width: 1024px) and (max-width: 1300px) {
+  //  font-weight: 300;
+  //}
+
+  iframe {
+    display: none;
+  }
+
+  #block-block-5 {
+    display: none;
+  }
+
+  .container {
+    padding: 0 !important;
+    width: 100% !important;
+  }
+
+  .region-footer {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  #block-block-2 {
+    display: inline-block;
+  }
+
+  #block-menu-menu-footer-menu {
+    display: inline-block;
+    text-align: right;
+    margin-left: 3vw;
+
+    .menu {
+      list-style: none;
+
+      li {
+        //@media (min-width: 1024px) and (max-width: 1300px) {
+        //  margin-right: 0;
+        //}
+        //
+        //@media (min-width: 1300px) and (max-width: 1469px) {
+        //  margin-right: 1vw;
+        //}
+        //
+        //@media (min-width: 1470px) and (max-width: 1779px) {
+        //  margin-right: 3vw;
+        //}
+        //
+        //@media (min-width: 1780px) and (max-width: 1920px) {
+        //  margin-right: 5vw;
+        //}
+        @media (min-width: 1240px) {
+          margin-right: 0;
+        }
+
+        @media (min-width: 1380px) {
+          margin-right: 3vw;
+        }
+
+        @media (min-width: 1520px) {
+          margin-right: 5vw;
+        }
+      }
+
+      .leaf {
+        display: inline-block;
+
+        a {
+          color: @bb-darkblue;
+          text-transform: uppercase;
+          padding: 0 10px;
+          transition: all, .3s;
+
+          &:hover, &:focus {
+            text-decoration: none;
+            color: lighten(@bb-darkblue, 10%);
+            background: transparent;
+            font-weight: 600;
+          }
+
+          //@media (min-width: 1024px) and (max-width: 1300px) {
+          //  padding: 5px 3px;
+          //}
+        }
+      }
+    }
+  }
+
+  #block-block-3 {
+    display: inline-block;
+
+    ul {
+      list-style: none;
+      margin: 0;
+
+      li {
+        a {
+          text-indent: -9999px;
+          width: 25px;
+          height: 25px;
+          background: url('../img-svg/facebook-icon-5.svg');
+          background-size: contain;
+          display: inline-block;
+
+          //color: @bb-darkblue;
+          //text-transform: uppercase;
+          //padding: 5px 0;
+          //display: none;
+          //
+          //&:hover, &:focus {
+          //  text-decoration: none;
+          //  color: lighten(@bb-darkblue, 10%);
+          }
+        }
+      }
+    }
+  #block-block-4 {
+    display: none;
+  }
+}
+

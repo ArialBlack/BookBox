@@ -1,0 +1,81 @@
+.page-user-password {
+  height:100%;
+  width:100%;
+  #reg_mes1,
+  #navbar,
+  .footer,
+  .breadcrumb,
+  .tabs--primary,
+  .help-block {
+    display: none;
+  }
+
+  .alert-success {
+    width: 50% !important;
+    margin:auto !important;
+
+    li {
+      list-style-type: none !important;
+    }
+  }
+
+  .main-container {
+    position: absolute;
+    top: 50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+    color: @bb-darkblue;
+
+    #block-block-7 {
+      text-align: center;
+
+      a {
+        text-transform: uppercase;
+        color: @primary-color;
+        text-decoration: underline;
+      }
+    }
+
+    #block-block-8 {
+      h2 {
+        &.label-pass {
+          display: block;
+        }
+      }
+    }
+
+    #user-pass {
+      width:40vw;
+      margin:auto;
+      margin-top: 40px;
+
+      #edit-actions {
+        margin: 40px 0;
+        text-align: center;
+
+        button {
+          color: @primary-color;
+          border:2px solid;
+          background: none;
+
+          &:hover {
+            background: @primary-color;
+            color: @light-color;
+          }
+        }
+      }
+    }
+  }
+}
+
+.page-user-reset {
+  #block-block-8 {
+    img {
+      display: none;
+    }
+  }
+
+  #block-system-main {
+    margin-top: 60px;
+  }
+}

@@ -1,0 +1,117 @@
+.page-user {
+  &.not-logged-in {
+    #reg_mes1 {
+      display: none;
+    }
+
+    &.page-user-register {
+      #reg_mes1 {
+        display: block;
+      }
+    }
+
+    #block-block-8 {
+      text-align: center;
+
+      h2 {
+        display: none;
+        text-transform: uppercase;
+        .font-size(20);
+        margin-top: 40px;
+      }
+    }
+  }
+
+  .tabs--primary {
+    display: none;
+  }
+
+  &.page-user-edit {
+    #edit-account {
+      .form-item-mail {
+        display: none;
+      }
+    }
+
+    #edit-timezone,
+    .field-name-field-name,
+    .field-name-field-sirname,
+      //.field-name-field-position,
+      //.field-name-field-tel,
+    .field-name-field-company,
+    .field-type-list-boolean {
+      display: none;
+    }
+  }
+
+  &.logged-in {
+    .nav-tabs {
+      display: none;
+    }
+
+    #block-system-main {
+      .profile {
+        .field {
+          margin-bottom: 40px;
+
+          .field-label {
+            a {
+              color: @light-grey-2;
+              opacity: 0.5;
+            }
+          }
+
+          .field-item {
+            padding: 20px;
+            margin-top: 20px;
+            border: @border-color 1px solid;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+//.page-user {
+//  .breadcrumb,
+//  .tabs--primary {
+//    display: none;
+//  }
+//
+//  .main-container {
+//    width: 100%;
+//    padding: 0;
+//    padding-right: 15px;
+//
+//    .page-header {
+//      border-bottom: none;
+//      margin-top: 60px;
+//      margin-left: 0;
+//      margin-bottom: 25px;
+//      color: @bb-darkblue;
+//      text-transform: uppercase;
+//      display: inline-block;
+//      font-size: 24px;
+//
+//      &:before {
+//        content: " ";
+//        width: 90px;
+//        height: 2px;
+//        background: @primary-color;
+//        position: relative;
+//        display: inline-block;
+//        margin-bottom: 7px;
+//        margin-right: 4px;
+//        margin-left: 0;
+//        padding: 0;
+//      }
+//    }
+//
+//    #block-system-main,
+//    #block-webform-client-block-892 {
+//      padding-left: 92px;
+//    }
+//  }
+//
+//}
