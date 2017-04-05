@@ -289,17 +289,18 @@ function bookbox_cron() {
           ->propertyCondition('send1', 0, '=')  // Where u.send1 = 0
           ->execute();
 
-      $uids = array();
-      foreach($result['user'] as $user) {
-        $uids[] = $user->uid;
-      }
-      $result = entity_load('user', $uids);
-      //$result = entity_load('user');
+      if(null != $result){
+        $uids = array();
+        foreach($result['user'] as $user) {
+          //if($user->uid == 1){ //for testing
+          if($user->uid != 0){
+            $uids[] = $user->uid;
+          }
+        }
+        $result = entity_load('user', $uids);
+        //$result = entity_load('user');
 
-      foreach ($result as $item) {
-        if($item->uid != 0){
-          //  if($item->uid == 1){ //for testing
-
+        foreach ($result as $item) {
           //відправляємо мейл геть усім абсолютно юзерам згідно шаблону "лист на 1е число"
           $params['name'] = $item->field_name['und'][0]['value'];
           bookbox_mail_send('bookbox', 'bookbox', $item->mail, $params);
@@ -332,18 +333,16 @@ function bookbox_cron() {
           ->entityCondition('entity_type', 'user')
           ->propertyCondition('send19', 0, '=')  // Where u.send19 = 0
           ->execute();
-
-      $uids = array();
-      foreach($result['user'] as $user) {
-        $uids[] = $user->uid;
-      }
-      $result = entity_load('user', $uids);
-
-      //dpm($result);
-      foreach ($result as $item) {
-
-        if($item->uid != 0) {
-          // if($item->uid == 1){ //for testing
+      if(null != $result){
+        $uids = array();
+        foreach($result['user'] as $user) {
+          // if($user->uid == 1){ //for testing
+          if($user->uid != 0) {
+            $uids[] = $user->uid;
+          }
+        }
+        $result = entity_load('user', $uids);
+        foreach ($result as $item) {
           //todo emails
           //лист юзерам які не додовжили не підтвердили
           //я ще зуточню вибірку. а поки для тесту - всім
