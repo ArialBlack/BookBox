@@ -6,6 +6,7 @@ module_load_include('inc', 'bookbox', 'bookbox.cart');          //Корзина
 module_load_include('inc', 'bookbox', 'bookbox.order');         //Заказ месяца
 module_load_include('inc', 'bookbox', 'bookbox.readnow');       //Читаю сейчас
 module_load_include('inc', 'bookbox', 'bookbox.adminmessages');
+module_load_include('inc', 'bookbox', 'bookbox.mail');
 
 function bookbox_menu(){
   $items=array();
@@ -59,7 +60,7 @@ function bookbox_block_info() {
   $blocks = array();
 
   $blocks['MiniCart'] = array(
-    'info' => t('Mini cart'),
+      'info' => t('Mini cart'),
   );
 
   $blocks['MonthOrder'] = array(
@@ -271,50 +272,108 @@ function bookbox_cron() {
 
           db_update('commerce_order')
               ->fields(array('changed' => $timestamp ))
-               ->fields(array('status' => 'completed'))
-               ->condition('order_id', $item->order_id)
+              ->fields(array('status' => 'completed'))
+              ->condition('order_id', $item->order_id)
               ->execute();
         }
       }
 
-      ///$result = db_select('users', 'u')
-      ///     ->fields('u', array('uid', 'mail'))
-      ///    ->condition('u.send1', 0)
-      ///     ->execute()->fetchAll();
+      /*$result = db_select('users', 'u')
+          ->fields('u', array('uid', 'mail'))
+          ->condition('u.send1', 0)
+          ->execute()->fetchAll();*/
 
-      ///foreach ($result as $item) {
-      //dsm($item);
-      /// drupal_mail('system', 'mail', $item->mail, language_default(), array(
-      ///     'context' => array(
-      ///         'subject' => 'Ви підтвердили книги',
-      ///         'message' => 'Hello, its 1 day of month',
-      ///     )));
+      $query = new EntityFieldQuery();
+      $result = $query
+          ->entityCondition('entity_type', 'user')
+          ->propertyCondition('send1', 0, '=')  // Where u.send1 = 0
+          ->execute();
 
-      ///  db_update('users')
-      ///      ->fields(array('send1' => 1))
-      ///     ->condition('uid', $item->uid)
-      ///      ->execute();
-      ///
+      if(null != $result){
+        $uids = array();
+        foreach($result['user'] as $user) {
+          //if($user->uid == 1){ //for testing
+          if($user->uid != 0){
+            $uids[] = $user->uid;
+          }
+        }
+        $result = entity_load('user', $uids);
+        //$result = entity_load('user');
 
+        foreach ($result as $item) {
+          //відправляємо мейл геть усім абсолютно юзерам згідно шаблону "лист на 1е число"
+          $params['name'] = $item->field_name['und'][0]['value'];
+          bookbox_mail_send('bookbox', 'bookbox', $item->mail, $params);
+
+          db_update('users')
+              ->fields(array('send1' => 1))
+              ->condition('uid', $item->uid)
+              ->execute();
+        }
+      }
     }
 
-    ///if(intval(d()) == 2) {
-    ///  db_update('users')
-    ///      ->fields(array('send1' => 1))
-    //->condition('send1', $item->uid)
-    ///      ->execute();
+    if(intval(d()) == 2) {
+      db_update('users')
+          ->fields(array('send1' => 1))
+          //->condition('send1', $item->uid)
+          ->execute();
+    }
+
+    //чкщо сьогодні 19-те і листи не відсилались
 
     if(intval(d()) == 19) {
 
+      /* $result = db_select('users', 'u')
+           ->fields('u', array('uid', 'mail', 'field_name'))
+           ->condition('u.send19', 0)
+           ->execute()->fetchAll();*/
+      $query = new EntityFieldQuery();
+      $result = $query
+          ->entityCondition('entity_type', 'user')
+          ->propertyCondition('send19', 0, '=')  // Where u.send19 = 0
+          ->execute();
+      if(null != $result){
+        $uids = array();
+        foreach($result['user'] as $user) {
+          // if($user->uid == 1){ //for testing
+          if($user->uid != 0) {
+            $uids[] = $user->uid;
+          }
+        }
+        $result = entity_load('user', $uids);
+        foreach ($result as $item) {
+          //todo emails
+          //лист юзерам які не додовжили не підтвердили
+          //я ще зуточню вибірку. а поки для тесту - всім
+          $params['name'] = $item->field_name['und'][0]['value'];
+          bookbox_mail_send('bookbox', 'bookbox_19', $item->mail, $params);
+
+          //помітимо після відправки що листи відсилались
+          //after testing change ->fields(array('send19' => 0)) to ->fields(array('send19' => 1))
+          db_update('users')
+              ->fields(array('send19' => 1))
+              ->condition('uid', $item->uid)
+              ->execute();
+        }
+      }
     }
 
-    //Мейл рассылка:
+    //проапдейтимо поле 20го числа, щоб не відсилати знову листи
+    if(intval(d()) == 20) {
+      db_update('users')
+          ->fields(array('send1' => 1))
+          //->condition('send1', $item->uid)
+          ->execute();
+    }
+
 
     variable_set('cron_last', date('y-m-d', time()));
     drupal_flush_all_caches();
   }
 
 }
+
 
 function bookbox_user_orders_history() {
   global $user;
@@ -406,8 +465,69 @@ function bookbox_menu_site_status_alter(&$menu_site_status, $path) {
   }
 }
 
-function bookbox_user_insert(&$edit, $account, $category) {
-  //drupal_set_message(t('Дякуємо за реєстрацію! Підтвердьте електронну пошту, щоб розпочати користування Book Box.'), 'status');
+//insert user to mailchimp company list after register
+function bookbox_user_insert(&$edit, $account, $category)
+{
+  $nid = (int)$account->field_company['und'][0]['target_id'];
+  $node = node_load($nid);
+  $company_name = $node->title;
+
+  $user_mail = $account->mail;
+  $user_name = $account->field_name['und'][0]['value'];
+  $user_last_name = $account->field_sirname['und'][0]['value'];
+
+  $mailchimp_user_data = array(
+      'EMAIL' => $user_mail,
+      'FNAME' => $user_name, // fields in mailchimp list
+      'LNAME' => $user_last_name,
+  );
+
+  $mail_chimp_lists = mailchimp_get_lists();
+
+  foreach ($mail_chimp_lists as $mail_chimp_list) {
+    if ($mail_chimp_list->name == $company_name) {
+      $list_id = $mail_chimp_list->id;
+
+      if (mailchimp_subscribe(
+          $list_id,
+          $user_mail,
+          $mailchimp_user_data,
+          false,
+          false
+      )) {
+        drupal_set_message(t('Thank you. From now you will receive our promo materials'));
+      } else {
+        drupal_set_message('Error occurred while adding your email to subscribe list', 'error');
+      }
+    }
+  }
+  //drupal_set_message(t('Дякуємо за реєстрацію! Підтвердьте електронну пошту, щоб розпочати користування Book Box.'), 'status');}
+}
+
+//delete user from mailchimp company list after delete in drupal
+function bookbox_user_delete($account)
+{
+  $nid = (int)$account->field_company['und'][0]['target_id'];
+  $node = node_load($nid);
+  $company_name = $node->title;
+
+  $user_mail = $account->mail;
+
+  $mail_chimp_lists = mailchimp_get_lists();
+
+  foreach ($mail_chimp_lists as $mail_chimp_list) {
+    if ($mail_chimp_list->name == $company_name) {
+      $list_id = $mail_chimp_list->id;
+
+      if(true === mailchimp_is_subscribed($list_id, $user_mail)){
+        mailchimp_unsubscribe_member(
+            $list_id,
+            $user_mail
+        );
+
+      }
+    }
+  }
 }
 
 function bookbox_equal_stocks() {
@@ -427,4 +547,5 @@ function bookbox_equal_stocks() {
         ->execute();
   }
 }
+
 
