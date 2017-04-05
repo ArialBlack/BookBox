@@ -2,14 +2,15 @@
 
 module_load_include('inc', 'bookbox', 'bookbox.functions');
 module_load_include('inc', 'bookbox', 'bookbox.forms');
-module_load_include('inc', 'bookbox', 'bookbox.cart');
-module_load_include('inc', 'bookbox', 'bookbox.readnow');
+module_load_include('inc', 'bookbox', 'bookbox.cart');          //Корзина
+module_load_include('inc', 'bookbox', 'bookbox.order');         //Заказ месяца
+module_load_include('inc', 'bookbox', 'bookbox.readnow');       //Читаю сейчас
 module_load_include('inc', 'bookbox', 'bookbox.adminmessages');
 module_load_include('inc', 'bookbox', 'bookbox.mail');
 
 function bookbox_menu(){
   $items=array();
-
+  
   $items['admin/bookbox/labels'] = array(
       'title' => 'Адмін-тексти',
       'description' => 'Admin labels',
@@ -36,18 +37,18 @@ function bookbox_menu(){
       'type' => MENU_CALLBACK
   );
 
-  $items['confirm/%/prolong1'] = array(
+  $items['confirm/%/%/prolong1'] = array(
       'title' => 'Buy',
       'page callback' => 'bookbox_prolongbook1',
-      'page arguments' => array(1),
+      'page arguments' => array(1,2),
       'access arguments' => array('access content'), // whatever see above
       'type' => MENU_CALLBACK
   );
 
-  $items['confirm/%/prolong2'] = array(
+  $items['confirm/%/%/prolong2'] = array(
       'title' => 'Buy',
       'page callback' => 'bookbox_prolongbook2',
-      'page arguments' => array(1),
+      'page arguments' => array(1,2),
       'access arguments' => array('access content'), // whatever see above
       'type' => MENU_CALLBACK
   );
@@ -60,6 +61,10 @@ function bookbox_block_info() {
 
   $blocks['MiniCart'] = array(
       'info' => t('Mini cart'),
+  );
+
+  $blocks['MonthOrder'] = array(
+      'info' => t('Month orders'),
   );
 
   $blocks['ReadingNow'] = array(
@@ -82,11 +87,30 @@ function bookbox_block_info() {
 }
 
 function bookbox_block_view($delta = '') {
+  global $user;
+  $uid = $user->uid;
+
   $block = array();
+
+  //todo
+  $show_cart = true;
+  if( /*current_period() == 2 || */ bookbox_count_in_confirm_this_month($uid) > 0 ) {
+    $show_cart = false;
+  }
+
+  $show_order = true;
+  if( bookbox_count_in_confirm_this_month($uid) < 1 ) {
+    $show_order = false;
+  }
+
+  $show_reading_now = true;
+  if( count(bookbox_get_in_reading_now($uid)) < 1) {
+    $show_reading_now = false;
+  }
 
   switch ($delta) {
     case 'MiniCart':
-      if (count(bookbox_get_in_reading_now()) == 0) {
+      if ($show_cart) {
         $block['subject'] = '';
         $form = drupal_get_form('bookbox_mini_cart_block');
         $block['content'] = drupal_render($form);
@@ -96,10 +120,26 @@ function bookbox_block_view($delta = '') {
       }
       break;
 
+    case 'MonthOrder':
+      if ($show_order) {
+        $block['subject'] = '';
+        $form = drupal_get_form('bookbox_month_order_block');
+        $block['content'] = drupal_render($form);
+      } else {
+        $block['subject'] = null;
+        $block['content'] = null;
+      }
+      break;
+
     case 'ReadingNow':
-      $block['subject'] = '';
-      $form = drupal_get_form('bookbox_reading_now_block');
-      $block['content'] = drupal_render($form);
+      if ($show_reading_now) {
+        $block['subject'] = '';
+        $form = drupal_get_form('bookbox_reading_now_block');
+        $block['content'] = drupal_render($form);
+      } else {
+        $block['subject'] = null;
+        $block['content'] = null;
+      }
       break;
 
     case 'CatBiz':
@@ -117,7 +157,6 @@ function bookbox_block_view($delta = '') {
       $block['content'] = bookbox_cat_samo_block();
       break;
   }
-
   return $block;
 }
 
@@ -126,25 +165,15 @@ function bookbox_block_view_alter(&$data, $block) {
     $block->title = 'Маєте додаткове питання?';
   }
 }
-function bookbox_form_commerce_cart_mail_submit($form, &$form_state){
 
-  $language = isset($values['lang']) ? $values['lang'] : language_default();
-
-  var_dump($form_state);
-  exit;
-}
-
-function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state, $form_id) {
-
-  $regular = '/([\w_]+)_\d+$/';
-
-//  if ('commerce_cart_add_to_cart_form' === preg_replace($regular, '$1', $form_id)) {
-  if ( $form_id == 'bookbox_mini_cart_block') {
-    array_unshift($form['#submit'], 'bookbox_form_commerce_cart_mail_submit');
-//    $form['#submit'][] = 'bookbox_form_commerce_cart_mail_submit';
-
-  }
+function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state) {
+  global $user;
+  $uid = $user->uid;
   // можно добавить максимум 2
+
+  //dsm(   bookbox_count_in_confirm_this_month(), 'this ' );
+  //dsm(   bookbox_count_in_confirm_prev_month(), 'prev ' );
+  //dsm( bookbox_in_confirm_this_month() );
 
   $form['submit']['#value'] = 'Замовити';
 
@@ -173,9 +202,9 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state,
     }
   }
 
-  $reading_now = count(bookbox_get_in_reading_now());
+  $in_confirm_this_month = bookbox_count_in_confirm_this_month($uid);
 
-  if ($in_cart == 2 || $reading_now + $in_cart > 1 || current_period() == 2) {
+  if ($in_cart == 2 || $in_confirm_this_month > 0 || current_period() == 2 || bookbox_count_in_prolong_prev_month($uid) + $in_cart > 1) {
     $can_add2cart = false;
   }
 
@@ -189,131 +218,162 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state,
 
 // Крон работы
 function bookbox_cron() {
+  $cron_last = variable_get('cron_last');
 
-  //Перше число
-  if(intval(d()) == 1) {
-    $result = db_select('commerce_order', 'o')
-        ->fields('o', array('order_id', 'status', 'changed'))
-        ->condition(
-            db_or()
-                ->condition('o.status', 'completed')
-                ->condition('o.status', 'prolong')
-        )
-        ->orderBy('o.order_id', 'DESC')
-        ->execute()->fetchAll();
+  if ( date('y-m-d', $cron_last) != date('y-md-', time())) {
 
-    foreach ($result as $item) {
-      $order_month = intval(date('m', $item->changed));
-      //1-го числа мы удаляем все книги из "я читаю" если они были заказаны в прошлом месяце - меняем статус на архив
-      if($item->status == 'completed' && $order_month < intval(m())) {
-        //dsm('в архив!');
-        $order = commerce_order_load($item->order_id);
-        commerce_order_status_update($order, 'archive', $skip_save = FALSE, $revision = NULL, $log = '');
+    if(intval(d()) == 1) {
+      bookbox_equal_stocks();
+
+      $result = db_select('commerce_order', 'o')
+          ->fields('o', array('order_id', 'status', 'changed'))
+          ->condition(
+              db_or()
+                  ->condition('o.status', 'completed')
+                  ->condition('o.status', 'prolong')
+          )
+          ->orderBy('o.order_id', 'DESC')
+          ->execute()->fetchAll();
+
+      foreach ($result as $item) {
+
+        $order_month = intval(date('m', $item->changed));
+
+        //1-го числа мы меняем статусы всех книг которые в статусе комлитед и были заказаны в пред-предудущем месяце
+        //если щас 1е мая, то мы ищем заказ марта
+        if ($item->status == 'completed' &&  intval(m()) - $order_month >=2 ) {
+          //dsm('в архив!');
+          $order = commerce_order_load($item->order_id);
+          commerce_order_status_update($order, 'archive', $skip_save = FALSE, $revision = NULL, $log = '');
+        }
+
+        //1-го числа мы меняем статус всех книг "пролонг" на "подтверждено" и меняем дату так как будто они были подтверждены в прошлом месяце
+        if ($item->status == 'prolong') {
+          $order = commerce_order_load($item->order_id);
+
+          $old_changed = $item->changed;
+          $old_changed_day = intval(date("d", $old_changed));
+          $old_changed_month = intval(date("m", $old_changed));
+          $old_changed_year = intval(date("Y", $old_changed));
+
+          $prev_date_month = $old_changed_month - 1;
+          $prev_date_year = $old_changed_year;
+          if ($prev_date_month < 1) {
+            $prev_date_month = 12;
+            $prev_date_year = $prev_date_year - 1;
+          }
+
+          $prev_date = $prev_date_month . '/' . $old_changed_day . '/' . $prev_date_year;
+          $date = date("Y-m-d H:i:s", strtotime($prev_date));
+          $timestamp = strtotime($date);
+
+          //commerce_order_status_update($order, 'completed', $skip_save = FALSE, $revision = NULL, $log = '');
+          //commerce_order_save($order);
+
+          db_update('commerce_order')
+              ->fields(array('changed' => $timestamp ))
+              ->fields(array('status' => 'completed'))
+              ->condition('order_id', $item->order_id)
+              ->execute();
+        }
       }
 
-      //1-го числа мы меняем статус всех книг "пролонг" из "я читаю" на "подтверждено" и меняем дату так как будто они были подтверждены в этом месяце
-      if($item->status == 'prolong' && $order_month < intval(m())) {
-        db_update('commerce_order')
-            ->fields(array('changed' => time ()))
-            ->fields(array('status' => 'completed'))
-            ->condition('order_id', $item->order_id)
-            ->execute();
+      /*$result = db_select('users', 'u')
+          ->fields('u', array('uid', 'mail'))
+          ->condition('u.send1', 0)
+          ->execute()->fetchAll();*/
+
+      $query = new EntityFieldQuery();
+      $result = $query
+          ->entityCondition('entity_type', 'user')
+          ->propertyCondition('send1', 0, '=')  // Where u.send1 = 0
+          ->execute();
+
+      $uids = array();
+      foreach($result['user'] as $user) {
+        $uids[] = $user->uid;
+      }
+      $result = entity_load('user', $uids);
+      //$result = entity_load('user');
+
+      foreach ($result as $item) {
+        if($item->uid != 0){
+          //  if($item->uid == 1){ //for testing
+
+          //відправляємо мейл геть усім абсолютно юзерам згідно шаблону "лист на 1е число"
+          $params['name'] = $item->field_name['und'][0]['value'];
+          bookbox_mail_send('bookbox', 'bookbox', $item->mail, $params);
+
+          db_update('users')
+              ->fields(array('send1' => 1))
+              ->condition('uid', $item->uid)
+              ->execute();
+        }
       }
     }
 
-    /*$result = db_select('users', 'u')
-        ->fields('u', array('uid', 'mail'))
-        ->condition('u.send1', 0)
-        ->execute()->fetchAll();*/
-
-    $query = new EntityFieldQuery();
-    $result = $query
-        ->entityCondition('entity_type', 'user')
-        ->propertyCondition('send1', 0, '=')  // Where u.send1 = 0
-        ->execute();
-
-    $uids = array();
-    foreach($result['user'] as $user) {
-      $uids[] = $user->uid;
+    if(intval(d()) == 2) {
+      db_update('users')
+          ->fields(array('send1' => 1))
+          //->condition('send1', $item->uid)
+          ->execute();
     }
-    $result = entity_load('user', $uids);
-    //$result = entity_load('user');
 
-    foreach ($result as $item) {
-      if($item->uid != 0){
-        //  if($item->uid == 1){ //for testing
+    //чкщо сьогодні 19-те і листи не відсилались
 
-        //відправляємо мейл геть усім абсолютно юзерам згідно шаблону "лист на 1е число"
-        $params['name'] = $item->field_name['und'][0]['value'];
-        bookbox_mail_send('bookbox', 'bookbox', $item->mail, $params);
+    if(intval(d()) == 19) {
 
-        db_update('users')
-            ->fields(array('send1' => 1))
-            ->condition('uid', $item->uid)
-            ->execute();
+      /* $result = db_select('users', 'u')
+           ->fields('u', array('uid', 'mail', 'field_name'))
+           ->condition('u.send19', 0)
+           ->execute()->fetchAll();*/
+      $query = new EntityFieldQuery();
+      $result = $query
+          ->entityCondition('entity_type', 'user')
+          ->propertyCondition('send19', 0, '=')  // Where u.send19 = 0
+          ->execute();
+
+      $uids = array();
+      foreach($result['user'] as $user) {
+        $uids[] = $user->uid;
+      }
+      $result = entity_load('user', $uids);
+
+      //dpm($result);
+      foreach ($result as $item) {
+
+        if($item->uid != 0) {
+          // if($item->uid == 1){ //for testing
+          //todo emails
+          //лист юзерам які не додовжили не підтвердили
+          //я ще зуточню вибірку. а поки для тесту - всім
+          $params['name'] = $item->field_name['und'][0]['value'];
+          bookbox_mail_send('bookbox', 'bookbox_19', $item->mail, $params);
+
+          //помітимо після відправки що листи відсилались
+          //after testing change ->fields(array('send19' => 0)) to ->fields(array('send19' => 1))
+          db_update('users')
+              ->fields(array('send19' => 1))
+              ->condition('uid', $item->uid)
+              ->execute();
+        }
       }
     }
-  }
 
-  if(intval(d()) == 2) {
-    db_update('users')
-        ->fields(array('send1' => 1))
-        //->condition('send1', $item->uid)
-        ->execute();
-  }
-
-  //чкщо сьогодні 19-те і листи не відсилались
-
-  if(intval(d()) == 19) {
-
-    /* $result = db_select('users', 'u')
-         ->fields('u', array('uid', 'mail', 'field_name'))
-         ->condition('u.send19', 0)
-         ->execute()->fetchAll();*/
-    $query = new EntityFieldQuery();
-    $result = $query
-        ->entityCondition('entity_type', 'user')
-        ->propertyCondition('send19', 0, '=')  // Where u.send19 = 0
-        ->execute();
-
-    $uids = array();
-    foreach($result['user'] as $user) {
-      $uids[] = $user->uid;
+    //проапдейтимо поле 20го числа, щоб не відсилати знову листи
+    if(intval(d()) == 20) {
+      db_update('users')
+          ->fields(array('send1' => 1))
+          //->condition('send1', $item->uid)
+          ->execute();
     }
-    $result = entity_load('user', $uids);
 
-    //dpm($result);
-    foreach ($result as $item) {
 
-      if($item->uid != 0) {
-        // if($item->uid == 1){ //for testing
-        //todo emails
-        //лист юзерам які не додовжили не підтвердили
-        //я ще зуточню вибірку. а поки для тесту - всім
-        $params['name'] = $item->field_name['und'][0]['value'];
-        bookbox_mail_send('bookbox', 'bookbox_19', $item->mail, $params);
-
-        //помітимо після відправки що листи відсилались
-        //after testing change ->fields(array('send19' => 0)) to ->fields(array('send19' => 1))
-        db_update('users')
-            ->fields(array('send19' => 1))
-            ->condition('uid', $item->uid)
-            ->execute();
-      }
-    }
+    variable_set('cron_last', date('y-m-d', time()));
+    drupal_flush_all_caches();
   }
-
-  //проапдейтимо поле 20го числа, щоб не відсилати знову листи
-  if(intval(d()) == 20) {
-    db_update('users')
-        ->fields(array('send1' => 1))
-        //->condition('send1', $item->uid)
-        ->execute();
-  }
-
 
 }
-
 
 
 function bookbox_user_orders_history() {
@@ -330,33 +390,33 @@ function bookbox_user_orders_history() {
   $newOrder = [];
 
   foreach ($result as $res) {
-    setlocale(LC_TIME, 'uk_UA');
-    $dateM = ua_month_original(intval(date('m', $res->changed))-1);
-    $dateY = date('Y', $res->changed);
-    $res->changed = $dateM . ' ' . $dateY;
-    $newOrder[$res->changed][] = $res->order_id;
+      setlocale(LC_TIME, 'uk_UA');
+      $dateM = ua_month_original(intval(date('m', $res->changed))-1);
+      $dateY = date('Y', $res->changed);
+      $res->changed = $dateM . ' ' . $dateY;
+      $newOrder[$res->changed][] = $res->order_id;
   }
 
   while ($keyname = current($newOrder)) {
-    $content = $content . '<div class="row"><h2>' . key($newOrder) . '</h2>';
-    foreach ($newOrder[key($newOrder)] as $res) {
-      $order = commerce_order_load($res);
-      $line_item_id = $order->commerce_line_items['und'][0]['line_item_id'];
-      $line_item = commerce_line_item_load($line_item_id);
-      $product_id =  $line_item->commerce_product['und'][0]['product_id'];
-      $product_display = _bookbox_get_product_display_by_product_id($product_id);
+      $content = $content . '<div class="row"><h2>' . key($newOrder) . '</h2>';
+      foreach ($newOrder[key($newOrder)] as $res) {
+        $order = commerce_order_load($res);
+        $line_item_id = $order->commerce_line_items['und'][0]['line_item_id'];
+        $line_item = commerce_line_item_load($line_item_id);
+        $product_id =  $line_item->commerce_product['und'][0]['product_id'];
+        $product_display = _bookbox_get_product_display_by_product_id($product_id);
 
-      if ($product_display->nid) {
-        $node = node_load($product_display->nid);
-        $node_view = node_view($node, 'teaser');
-        $rendered_teaser = render($node_view);
-        $content = $content . $rendered_teaser;
+        if ($product_display->nid) {
+          $node = node_load($product_display->nid);
+          $node_view = node_view($node, 'teaser');
+          $rendered_teaser = render($node_view);
+          $content = $content . $rendered_teaser;
+        }
       }
-    }
     $content = $content . '</div>';
     next($newOrder);
   }
-
+  
   return $content;
 }
 
@@ -470,4 +530,23 @@ function bookbox_user_delete($account)
     }
   }
 }
+
+function bookbox_equal_stocks() {
+  $result = db_select('field_data_field_absolute_stock', 'a')
+      ->fields('a', array('entity_id', 'field_absolute_stock_value'))
+      ->execute()->fetchAll();
+
+  foreach ($result as $absolute_stock_record) {
+    db_update('field_data_commerce_stock')
+        ->fields(array('commerce_stock_value' => $absolute_stock_record->field_absolute_stock_value ))
+        ->condition('entity_id', $absolute_stock_record->entity_id)
+        ->execute();
+
+    db_update('field_revision_commerce_stock')
+        ->fields(array('commerce_stock_value' => $absolute_stock_record->field_absolute_stock_value ))
+        ->condition('entity_id', $absolute_stock_record->entity_id)
+        ->execute();
+  }
+}
+
 
