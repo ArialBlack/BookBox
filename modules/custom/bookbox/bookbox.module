@@ -532,9 +532,11 @@ function bookbox_user_delete($account)
 
 function bookbox_user_update(&$edit, $account, $category){
   if(null != ($edit['pass']) && $account->original->pass != $edit['pass']){
-    $mail_to = $account->mail;
-    $params['merge_vars']['FNAME'] =  $account->field_name['und'][0]['value'];
-    bookbox_mail_send('bookbox', 'password_change', $mail_to, $params);
+    if(isset($edit['pass'])) {
+      $mail_to = $account->mail;
+      $params['merge_vars']['FNAME'] = $account->field_name['und'][0]['value'];
+      bookbox_mail_send('bookbox', 'password_change', $mail_to, $params);
+    }
   }
 }
 
