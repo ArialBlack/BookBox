@@ -57,31 +57,6 @@ function bookbox_mail($key, &$message, $params) {
   $message['headers']['Content-Type'] = 'text/html; charset=UTF-8';
 
   switch ($key) {
-    case "bookbox":
-      $message['mandrill_template_content'] = array(
-          array(
-              'name' => 'name',
-              'content' => $params['name']
-          ),
-      );
-      $message['subject'] = isset($params['subject']) ? $params['subject'] : t('Зробіть замовлення | @month', array('@month' => ua_month_original()));
-      if (isset($params['headers']) && is_array($params['headers'])) {
-        $message['headers'] += $params['headers'];
-      }
-      break;
-    case "bookbox_19":
-      $message['mandrill_template_content'] = array(
-          array(
-              'name' => 'name',
-              'content' => $params['name']
-          ),
-      );
-
-      $message['subject'] = isset($params['subject']) ? $params['subject'] : t('Зробіть замовлення | @month', array('@month' => ua_month_original()));
-      if (isset($params['headers']) && is_array($params['headers'])) {
-        $message['headers'] += $params['headers'];
-      }
-      break;
     case "password_change":
       if(!empty($params['merge_vars'])) {
         foreach($params['merge_vars'] as $name => $content) {
