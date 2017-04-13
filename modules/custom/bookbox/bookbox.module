@@ -471,3 +471,23 @@ function bookbox_equal_stocks() {
         ->execute();
   }
 }
+
+function bookbox_node_update($node) {
+  $product_id = $node->field_bookfields['und'][0]['product_id'];
+  $product = commerce_product_load($product_id);
+
+  $absolute_stock = $product->field_absolute_stock['und'][0]['value'];
+  $commerce_stock = $product->commerce_stock['und'][0]['value'];
+
+  $in_orders = bookbox_get_in_orders($node);
+
+  db_update('field_data_commerce_stock')
+      ->fields(array('commerce_stock_value' => $absolute_stock - $in_orders ))
+      ->condition('entity_id', $product_id)
+      ->execute();
+
+  db_update('field_revision_commerce_stock')
+      ->fields(array('commerce_stock_value' => $absolute_stock - $in_orders ))
+      ->condition('entity_id', $product_id)
+      ->execute();
+}
