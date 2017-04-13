@@ -9,7 +9,7 @@ function bookbox_month_order_block ($form, &$form_state) {
     $title = 'Замовлення підтверджено';
 
     $result =  bookbox_in_confirm_this_month($uid);
-    dsm($result);
+    //dsm($result);
 
     if ($result) {
         $form['title'] = array(
