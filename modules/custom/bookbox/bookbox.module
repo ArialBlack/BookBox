@@ -1,12 +1,13 @@
 <?php
 
 module_load_include('inc', 'bookbox', 'bookbox.functions');
+module_load_include('inc', 'bookbox', 'bookbox.mail');          //emails
 module_load_include('inc', 'bookbox', 'bookbox.forms');
 module_load_include('inc', 'bookbox', 'bookbox.cart');          //Корзина
 module_load_include('inc', 'bookbox', 'bookbox.order');         //Заказ месяца
 module_load_include('inc', 'bookbox', 'bookbox.readnow');       //Читаю сейчас
 module_load_include('inc', 'bookbox', 'bookbox.adminmessages');
-module_load_include('inc', 'bookbox', 'bookbox.mail');
+
 
 function bookbox_menu(){
   $items=array();
