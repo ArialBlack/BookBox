@@ -172,6 +172,7 @@ function bookbox_delete_bookfromcart2 ($form, &$form_state) {
 function bookbox_confirm_box($arg0) {
     //drupal_set_message('Дякуємо! Ви щойно підтвердили замовлення місяця.');
     $user = user_load($arg0);
+    $user_name = $user->field_name['und'][0]['value'] . ' ' . $user->field_sirname['und'][0]['value'];
     $mail_body = $user->field_name['und'][0]['value'] . ' ' . $user->field_sirname['und'][0]['value'] . ', вітання! ';
     $mail_body = $mail_body . 'Замовлення місяця успішно підтверджено.</br>';
 
@@ -193,6 +194,13 @@ function bookbox_confirm_box($arg0) {
         
         $tid = $book2->field_book_author['und'][0]['tid'];
         $author = taxonomy_term_load($tid);
+
+        $order_book2 = array();
+        $order_book2['src'] =  $GLOBALS['base_root'].'/node/' . $book2->nid;
+        $order_book2['img_src'] = $url;
+        $order_book2['author'] = $author->name;
+        $order_book2['title'] = $book2->title;
+
         $mail_body = $mail_body . '<div style="display:inline-block; width:200px; margin-top:20px; margin-bottom:20px;">' . '<a href="'.$GLOBALS['base_root'].'/node/' . $book2->nid .'">
         <img src = "' . $url . '" width="167" height="250" style="display:block; />'
             . $book2->title . '<br/>' . $author->name .'</a> </div>'; //todo domain
@@ -213,6 +221,12 @@ function bookbox_confirm_box($arg0) {
 
     $tid = $book1->field_book_author['und'][0]['tid'];
     $author = taxonomy_term_load($tid);
+
+    $order_book1 = array();
+    $order_book1['src'] =  $GLOBALS['base_root'].'/node/' . $book1->nid;
+    $order_book1['img_src'] = $url;
+    $order_book1['author'] = $author->name;
+    $order_book1['title'] = $book1->title;
 
     $mail_body = $mail_body . '<div style="display:inline-block; width:200px; margin-top:20px; margin-bottom:20px;">' . '<a href="'.$GLOBALS['base_root'].'/node/' . $book1->nid .'">
     <img src = "' . $url . '" width="167" height="250" style="display:block;" />'
@@ -251,6 +265,16 @@ function bookbox_confirm_box($arg0) {
 //        )));
     $params['subject'] = 'Ваше замовлення |' . ua_month_original();
     $params['content'] = $mail_body;
+    $params['img1'] = '<a href="'.$order_book1['src'].'"><img alt = "" src = "' . $order_book1['img_src'] . '" style = "max-width:1626px;" class="mcnImage" width = "264" ></a>';
+    $params['img2'] = '<a href="'.$order_book2['src'].'"><img alt = "" src = "' . $order_book2['img_src'] . '" style = "max-width:1626px;" class="mcnImage" width = "264" ></a>';
+    $params['merge_vars']['FNAME'] = $user->field_name['und']['0']['value'];
+    $params['merge_vars']['FULLNAME'] = $user_name;
+    $params['merge_vars']['BTITLE1'] = $book1->title;
+    $params['merge_vars']['BTITLE2'] = $book2->title;
+    $params['merge_vars']['BAUTHOR1'] = $order_book1['author'];
+    $params['merge_vars']['BAUTHOR2'] = $order_book2['author'];
+    $params['merge_vars']['BURL1'] =  $order_book1['src'];
+    $params['merge_vars']['BURL2'] = $order_book2['src'];
     $params['name'] = $user->field_name['und']['0']['value'];
     bookbox_mail_send('bookbox', 'book_box_order', $user->mail, $params);
 
