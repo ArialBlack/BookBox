@@ -301,10 +301,8 @@ function bookbox_cron() {
         //$result = entity_load('user');
 
         foreach ($result as $item) {
-          //відправляємо мейл геть усім абсолютно юзерам згідно шаблону "лист на 1е число"
-          $params['name'] = $item->field_name['und'][0]['value'];
-          bookbox_mail_send('bookbox', 'bookbox', $item->mail, $params);
-
+          //відправляємо мейл геть усім абсолютно юзерам згідно шаблону "лист на 1е число" - вже не треба))
+         
           db_update('users')
               ->fields(array('send1' => 1))
               ->condition('uid', $item->uid)
@@ -343,14 +341,12 @@ function bookbox_cron() {
         }
         $result = entity_load('user', $uids);
         foreach ($result as $item) {
-          //todo emails
+          //todo emails 
           //Якщо потрібно буде надсилати лист юзерам які не додовжили не підтвердили - розкоментувати
-          //я ще зуточню вибірку. а поки для тесту - всім
-//          $params['name'] = $item->field_name['und'][0]['value'];
-//          bookbox_mail_send('bookbox', 'bookbox_19', $item->mail, $params);
+          //я ще зуточню вибірку. а поки для тесту - всім - вже не треба))
 
           //помітимо після відправки що листи відсилались
-          //after testing change ->fields(array('send19' => 0)) to ->fields(array('send19' => 1))
+        
           db_update('users')
               ->fields(array('send19' => 1))
               ->condition('uid', $item->uid)
