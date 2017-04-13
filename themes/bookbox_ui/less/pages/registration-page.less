@@ -55,6 +55,24 @@
         display: none !important;
       }
 
+      label {
+        span {
+          &.form-required {
+            display: none;
+          }
+        }
+      }
+
+      .form-item {
+        label {
+          span {
+            &.form-required {
+              display: inline;
+            }
+          }
+        }
+      }
+
       .form-type-password {
         float: none;
         margin: auto;

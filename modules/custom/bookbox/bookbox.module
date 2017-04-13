@@ -291,6 +291,8 @@ function bookbox_user_orders_history() {
   global $user;
   $content = '<h1>Історія замовлень</h1>';
 
+  drupal_set_title('Історія замовлень | Book Box');
+
   $result = db_select('commerce_order', 'o')
       ->fields('o', array('order_id', 'changed'))
       ->condition('o.uid', $user->uid)

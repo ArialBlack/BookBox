@@ -24,8 +24,6 @@
         $('#userreglink').appendTo("#edit-actions"); //todo in backend
 
         $( document ).ready(function() {
-            console.log('--------------run');
-            /////////////////////////////////////
             var html = document.documentElement;
             var startSize =  parseInt(getComputedStyle(html, '').fontSize);
 
