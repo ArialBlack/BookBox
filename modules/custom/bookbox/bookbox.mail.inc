@@ -171,7 +171,7 @@ function user_mandrill_mail_alter(&$mandrill_params, $message) {
     );
     $global_merge_vars[] = array(
         'name' => 'URL',
-        'content' => $urls[0][0][2],
+        'content' => $urls[0][0][0],
     );
     $mandrill_params['message']['subject'] = 'Підтвердження email';
     $mandrill_params['message']['from_email'] = 'noreply@bookbox.ua';
@@ -240,7 +240,7 @@ function user_mandrill_mail_alter(&$mandrill_params, $message) {
     );
     $global_merge_vars[] = array(
         'name' => 'URL',
-        'content' => $urls[0][0][1],
+        'content' => $urls[0][0][0],
     );
     $mandrill_params['message']['subject'] = 'Відновлення паролю';
     $mandrill_params['args']['template_id'] = 'password-reset-mandrill';
