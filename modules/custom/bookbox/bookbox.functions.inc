@@ -186,3 +186,35 @@ function bookbox_get_in_reading_now($uid) {
   $in_reading_now = array_merge($in_confirm_prev_month,$in_prolong_this_month);
   return $in_reading_now;
 }
+
+function bookbox_get_in_orders($node) {
+  $product_id = $node->field_bookfields['und'][0]['product_id'];
+
+  $query = db_select('field_data_commerce_product', 'p');
+  $query->innerJoin('field_data_commerce_line_items', 'l', 'p.entity_id = l.commerce_line_items_line_item_id');
+  $query->fields('l', array('entity_id'));
+  $query->condition('p.commerce_product_product_id', $product_id);
+  $orders = $query->execute()->fetchAll();
+  $in_orders = 0;
+
+  foreach ($orders as $row) {
+    $order_id = $row->entity_id;
+
+    $result = db_select('commerce_order', 'o')
+        ->fields('o', array('order_id', 'status', 'changed'))
+        ->condition('o.order_id', $order_id)
+        ->condition(
+            db_or()
+                ->condition('o.status', 'completed')
+                ->condition('o.status', 'prolong')
+        )
+        ->execute()->fetchField();
+
+    if($result) {
+      $in_orders = $in_orders + 1;
+    }
+  }
+
+  return $in_orders;
+}
+

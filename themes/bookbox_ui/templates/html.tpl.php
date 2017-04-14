@@ -61,7 +61,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <?php print $head; ?>
   <title><?php print $head_title; ?></title>
-  <link type="text/css" rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" media="all">
+  <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" media="all">
   <?php print $styles; ?>
  
   <!-- HTML5 element support for IE6-8 -->
