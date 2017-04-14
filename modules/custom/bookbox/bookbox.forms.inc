@@ -1,6 +1,5 @@
 <?php
 function bookbox_form_alter(&$form, &$form_state, $form_id){
-    //dsm($form);
 
     if ($form['#id'] == 'user-register-form') {
         $form['#validate'][] = 'bookbox_registeruser_validate';
@@ -90,6 +89,7 @@ function bookbox_form_alter(&$form, &$form_state, $form_id){
 }
 
 function bookbox_registeruser_validate($form, &$form_state) {
+
     $company_id = $form_state['values']['field_company']['und'][0]['target_id'];
     $usermail = $form_state['values']['mail'];
 
@@ -109,5 +109,13 @@ function bookbox_registeruser_validate($form, &$form_state) {
             ife_errors('set', 'edit-mail--2', 'Введіть адресу корпоративної електронної пошти');
             form_set_error('mail', 'Введіть адресу корпоративної електронної пошти');
         }
+    }
+
+    $usertel = $form_state['values']['field_tel']['und'][0]['value'];
+
+    $pattern = "/^\+380\d{3}\d{2}\d{2}\d{2}$/";
+    if(!preg_match($pattern, $usertel))  {
+        ife_errors('set', 'edit-field-tel-und-0-value', 'Номер має бути у форматі +380ххххххххх');
+        form_set_error('tel', 'Номер має бути у форматі +380ххххххххх');
     }
 }
