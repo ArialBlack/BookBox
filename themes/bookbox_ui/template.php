@@ -123,6 +123,13 @@ function bookbox_ui_preprocess(&$variables) {
 }
 
 function bookbox_ui_preprocess_html(&$vars, $hook) {
+  $path = drupal_get_path_alias();
+  $aliases = explode('/', $path);
+
+  foreach($aliases as $alias) {
+    $vars['classes_array'][] = drupal_clean_css_identifier($alias);
+  }
+  
   if ($vars['user']) {
     foreach($vars['user']->roles as $key => $role){
       $role_class = 'role-' . drupal_clean_css_identifier($role);
@@ -158,5 +165,4 @@ function bookbox_ui_preprocess_html(&$vars, $hook) {
   if ($r == 'user') {
     $vars['head_title'] = 'Профіль | Book Box';
   }
-
 }
