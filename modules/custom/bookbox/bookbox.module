@@ -491,3 +491,18 @@ function bookbox_node_update($node) {
       ->condition('entity_id', $product_id)
       ->execute();
 }
+
+function computed_field_field_search_string_compute(&$entity_field, $entity_type, $entity, $field, $instance, $langcode, $items) {
+  $authors = " ";
+
+  $author_count = count($entity->field_book_author['und']);
+
+  for($i = 0; $i < $author_count; $i++) {
+    $tid = $entity->field_book_author['und'][$i]['tid'];
+    $term = taxonomy_term_load($tid);
+    $authors = $authors . " " . $term->name;
+  }
+
+  $entity_field[0]['value'] = $entity->title . " " . $entity->field_origin_name['und'][0]['value'] . $authors;
+
+}

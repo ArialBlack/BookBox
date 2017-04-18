@@ -53,7 +53,7 @@
             }
 
             if (value == '2') {
-                value = "count";
+                value = "field_hit_value";
             }
 
             $select.val(value);
