@@ -166,3 +166,4 @@ function bookbox_ui_preprocess_html(&$vars, $hook) {
     $vars['head_title'] = 'Профіль | Book Box';
   }
 }
+

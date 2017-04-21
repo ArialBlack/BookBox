@@ -108,39 +108,37 @@ if ($status == 0) {
   }
   ?>
 
-  <header>
-    <h1<?php print $title_attributes; ?>><?php print $title; ?></h1>
+  <div class="desktop hidden-xs">
+    <header>
+      <h1<?php print $title_attributes; ?>><?php print $title; ?></h1>
+      <?php print render($content['field_book_author']); ?>
+      <?php print $node->body['und'][0]['safe_value']; ?>
 
-    <?php print render($content['field_book_author']); ?>
-    <?php print $node->body['und'][0]['safe_value']; ?>
+      <div class="book-dids">
+        <?php print render($content['field_bookfields']); ?>
+        <?php print render($content['links']); ?>
+      </div>
+    </header>
 
-    <div class="book-dids">
-      <?php print render($content['field_bookfields']); ?>
-      <?php print render($content['links']); ?>
+    <div class="cover-description">
+      <?php print render($content['field_nni']); ?>
+      <?php print render($content['field_origin_name']); ?>
+      <?php print render($content['field_book_publisher']); ?>
+      <?php print render($content['field_lang']); ?>
+      <?php print render($content['field_book_category']); ?>
     </div>
 
-
-  </header>
-
-  <div class="cover-description">
-    <?php print render($content['field_nni']); ?>
-    <?php print render($content['field_origin_name']); ?>
-    <?php print render($content['field_book_publisher']); ?>
-    <?php print render($content['field_lang']); ?>
-    <?php print render($content['field_book_category']); ?>
-  </div>
-
-  <div class="description-tabs">
-    <ul class="nav nav-tabs" role="tablist">
-      <li role="presentation" class="active"><a href="#book" aria-controls="book" role="tab" data-toggle="tab">Про книгу</a></li>
-      <li role="presentation"><a href="#author" aria-controls="author" role="tab" data-toggle="tab"><?php print $tab_title; ?></a></li>
-    </ul>
-    <div class="tab-content">
-      <div role="tabpanel" class="tab-pane active" id="book">
-        <?php print render($content['field_about']); ?>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="author">
-        <?php
+    <div class="description-tabs">
+      <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#book" aria-controls="book" role="tab" data-toggle="tab">Про книгу</a></li>
+        <li role="presentation"><a href="#author" aria-controls="author" role="tab" data-toggle="tab"><?php print $tab_title; ?></a></li>
+      </ul>
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="book">
+          <?php print render($content['field_about']); ?>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="author">
+          <?php
           for($i = 0; $i < $author_count; $i++) {
             $desc = $node->field_book_author['und'][$i]['taxonomy_term']->description;
             $uri = $node->field_book_author['und'][$i]['taxonomy_term']->field_author_photo['und'][0]['uri'];
@@ -148,9 +146,58 @@ if ($status == 0) {
             print $desc . '</div>';
 
           }
-        ?>
+          ?>
+        </div>
       </div>
     </div>
   </div>
+
+  <div class="mobile visible-xs">
+    <h1<?php print $title_attributes; ?>><?php print $title; ?></h1>
+    <?php print render($content['field_book_author']); ?>
+    <?php print render($content['field_nni']); ?>
+    <?php print $node->body['und'][0]['safe_value']; ?>
+
+    <div class="book-dids">
+      <?php print render($content['field_bookfields']); ?>
+      <?php print render($content['links']); ?>
+    </div>
+
+    <div class="description-tabs-mobile">
+      <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#spec-m" aria-controls="spec-m" role="tab" data-toggle="tab">Характеристики</a></li>
+        <li role="presentation"><a href="#book-m" aria-controls="book-m" role="tab" data-toggle="tab">Про книгу</a></li>
+        <li role="presentation"><a href="#author-m" aria-controls="author-m" role="tab" data-toggle="tab">Про автора</a></li>
+      </ul>
+
+      <div class="tab-content">
+
+        <div role="tabpanel" class="tab-pane active" id="spec-m">
+          <?php print render($content['field_origin_name']); ?>
+          <?php print render($content['field_book_publisher']); ?>
+          <?php print render($content['field_lang']); ?>
+          <?php print render($content['field_book_category']); ?>
+        </div>
+
+        <div role="tabpanel" class="tab-pane" id="book-m">
+          <?php print render($content['field_about']); ?>
+        </div>
+
+        <div role="tabpanel" class="tab-pane" id="author-m">
+          <?php
+          for($i = 0; $i < $author_count; $i++) {
+            $desc = $node->field_book_author['und'][$i]['taxonomy_term']->description;
+            $uri = $node->field_book_author['und'][$i]['taxonomy_term']->field_author_photo['und'][0]['uri'];
+            print '<div class="author-block"><div class="a-img"><img src="' . image_style_url("medium", $uri) . '"/></div>';
+            print $desc . '</div>';
+
+          }
+          ?>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
 
 </article>

@@ -34,12 +34,16 @@
         }
 
         .new-dropdown-toggle {
-          position: absolute !important;
+
           top: 19px;
           right: -5px;
           width: 17px;
           height: 17px;
           margin: 0 0 0 10px;
+
+          @media (min-width: @screen-md-min) {
+            position: absolute !important;
+          }
 
           &:hover, &:active, &:focus {
             color:  @bb-darkblue;
@@ -76,7 +80,7 @@
     .font-size(18);
 
     .caret {
-      background: transparent url('../icons-svg/burger.svg') no-repeat center center;
+      background: transparent url('../icons-svg/user.svg') no-repeat center center;
       background-size: contain;
       width: 28px;
       height: 22px;
@@ -93,10 +97,17 @@
   height: 36px;
   border: none;
 
-  &:hover {
+  /*&:hover {
     background: transparent url('../icons-svg/burger.svg') no-repeat center center;
     background-size: contain;
+  }*/
+
+  &.usermenu-toggle {
+    background: transparent url('../icons-svg/user.svg') no-repeat center center;
+    background-size: contain;
   }
+
+
 }
 
 .primary-nav {
