@@ -144,8 +144,9 @@ if ($status == 0) {
           for($i = 0; $i < $author_count; $i++) {
             $desc = $node->field_book_author['und'][$i]['taxonomy_term']->description;
             $uri = $node->field_book_author['und'][$i]['taxonomy_term']->field_author_photo['und'][0]['uri'];
-            print '<div><img src="' . image_style_url("medium", $uri) . '"/></div>';
-            print $desc;
+            print '<div class="author-block"><div class="a-img"><img src="' . image_style_url("medium", $uri) . '"/></div>';
+            print $desc . '</div>';
+
           }
         ?>
       </div>

@@ -96,6 +96,63 @@
   }
 }
 
+.search-block {
+  #finder-block-content_finder {
+    button,
+    label {
+      display: none;
+    }
+  }
+
+  #finder-block-content_finder-wrapper {
+    display: none;
+  }
+
+  .svg-icon {
+    height: 32px;
+    width: 24px;
+    fill: white;
+    padding-top: 2px;
+    cursor: pointer;
+    margin-top: 7px;
+  }
+}
+
+//finder
+#autocomplete {
+  background: white;
+  border-color: white;
+  box-shadow: 0 0px 49px rgba(0, 0, 0, 0.15), 0 2px 20px rgba(0, 0, 0, 0.62);
+
+  ul {
+    position: relative;
+    display: flex;
+    flex-flow: row wrap;
+  }
+
+  li {
+    white-space: normal;
+    padding-left: 15px;
+    padding-right: 15px;
+    width: 25%;
+
+    p {
+      display: none;
+    }
+  }
+}
+
+.open-search {
+  #finder-block-content_finder-wrapper {
+    display: block;
+  }
+
+  .svg-icon {
+    display: none;
+  }
+}
+
+
 #block-bookbox-catbiz,
 #block-bookbox-catsamo,
 #block-bookbox-catkrug {

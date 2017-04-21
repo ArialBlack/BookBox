@@ -123,43 +123,46 @@ function bookbox_ui_preprocess(&$variables) {
 }
 
 function bookbox_ui_preprocess_html(&$vars, $hook) {
+  $path = drupal_get_path_alias();
+  $aliases = explode('/', $path);
+
+  foreach($aliases as $alias) {
+    $vars['classes_array'][] = drupal_clean_css_identifier($alias);
+  }
+  
   if ($vars['user']) {
     foreach($vars['user']->roles as $key => $role){
       $role_class = 'role-' . drupal_clean_css_identifier($role);
       $vars['classes_array'][] = $role_class;
     }
   }
+
+  $r = request_path();
+
+  //https://lib.bookbox.ua/user/login - Вхід | Book Box
+  //https://lib.bookbox.ua/user/register - Реєстрація | Book Box
+  //https://lib.bookbox.ua/user/password - Відновлення паролю | Book Box
+  //https://lib.bookbox.ua/ - Book Box (не капсом і без рисочки)
+  //https://lib.bookbox.ua/user (сторінка профілю) - Профіль | Book Box
+  //https://lib.bookbox.ua/user/240/orders (історія замовлень) - Історія замовлень | Book Box
+
+  if ($r == 'user/login') {
+    $vars['head_title'] = 'Вхід | Book Box';
+  }
+
+  if ($r == 'user/register') {
+    $vars['head_title'] = 'Реєстрація | Book Box';
+  }
+
+  if ($r == 'user/password') {
+    $vars['head_title'] = 'Відновлення паролю | Book Box';
+  }
+
+  if ($r == 'user/password') {
+    $vars['head_title'] = 'Відновлення паролю | Book Box';
+  }
+
+  if ($r == 'user') {
+    $vars['head_title'] = 'Профіль | Book Box';
+  }
 }
-
-
-/*function dostupno_ui_menu_link__main_menu($variables)
-{
-  $element = $variables['element'];
-  $sub_menu = '';
-  
-  if ($element['#below']) {
-    if (($element['#original_link']['menu_name'] == 'management') && (module_exists('navbar'))) {
-      $sub_menu = drupal_render($element['#below']);
-    } elseif ((!empty($element['#original_link']['depth'])) && $element['#original_link']['depth'] > 1) {
-      unset($element['#below']['#theme_wrappers']);
-      $sub_menu = '<ul class="dropdown-menu">' . drupal_render($element['#below']) . '</ul>';
-      $element['#attributes']['class'][] = 'dropdown-submenu';
-      $element['#localized_options']['html'] = TRUE;
-      $element['#localized_options']['attributes']['class'][] = 'dropdown-toggle';
-      $element['#localized_options']['attributes']['data-toggle'] = 'dropdown';
-    } else {
-      unset($element['#below']['#theme_wrappers']);
-      $sub_menu = '<ul class="dropdown-menu">' . drupal_render($element['#below']) . '</ul>';
-      $element['#title'] .= ' <span class="caret"></span>';
-      $element['#attributes']['class'][] = 'dropdown';
-      $element['#localized_options']['html'] = TRUE;
-      $element['#localized_options']['attributes']['class'][] = 'dropdown-toggle';
-      $element['#localized_options']['attributes']['data-toggle'] = 'dropdown';
-    }
-  }
-  if (($element['#href'] == $_GET['q'] || ($element['#href'] == '<front>' && drupal_is_front_page())) && (empty($element['#localized_options']['language']))) {
-    $element['#attributes']['class'][] = 'active';
-  }
-  $output = l($element['#title'], $element['#href'], $element['#localized_options']);
-  return '<li' . drupal_attributes($element['#attributes']) . '>' . $output . $sub_menu . "</li>\n";
-}*/

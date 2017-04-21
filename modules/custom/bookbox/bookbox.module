@@ -1,11 +1,13 @@
 <?php
 
 module_load_include('inc', 'bookbox', 'bookbox.functions');
+module_load_include('inc', 'bookbox', 'bookbox.mail');          //emails
 module_load_include('inc', 'bookbox', 'bookbox.forms');
 module_load_include('inc', 'bookbox', 'bookbox.cart');          //Корзина
 module_load_include('inc', 'bookbox', 'bookbox.order');         //Заказ месяца
 module_load_include('inc', 'bookbox', 'bookbox.readnow');       //Читаю сейчас
 module_load_include('inc', 'bookbox', 'bookbox.adminmessages');
+
 
 function bookbox_menu(){
   $items=array();
@@ -59,7 +61,7 @@ function bookbox_block_info() {
   $blocks = array();
 
   $blocks['MiniCart'] = array(
-    'info' => t('Mini cart'),
+      'info' => t('Mini cart'),
   );
 
   $blocks['MonthOrder'] = array(
@@ -271,44 +273,12 @@ function bookbox_cron() {
 
           db_update('commerce_order')
               ->fields(array('changed' => $timestamp ))
-               ->fields(array('status' => 'completed'))
-               ->condition('order_id', $item->order_id)
+              ->fields(array('status' => 'completed'))
+              ->condition('order_id', $item->order_id)
               ->execute();
         }
       }
-
-      ///$result = db_select('users', 'u')
-      ///     ->fields('u', array('uid', 'mail'))
-      ///    ->condition('u.send1', 0)
-      ///     ->execute()->fetchAll();
-
-      ///foreach ($result as $item) {
-      //dsm($item);
-      /// drupal_mail('system', 'mail', $item->mail, language_default(), array(
-      ///     'context' => array(
-      ///         'subject' => 'Ви підтвердили книги',
-      ///         'message' => 'Hello, its 1 day of month',
-      ///     )));
-
-      ///  db_update('users')
-      ///      ->fields(array('send1' => 1))
-      ///     ->condition('uid', $item->uid)
-      ///      ->execute();
-      ///
-
     }
-
-    ///if(intval(d()) == 2) {
-    ///  db_update('users')
-    ///      ->fields(array('send1' => 1))
-    //->condition('send1', $item->uid)
-    ///      ->execute();
-
-    if(intval(d()) == 19) {
-
-    }
-
-    //Мейл рассылка:
 
     variable_set('cron_last', date('y-m-d', time()));
     drupal_flush_all_caches();
@@ -316,9 +286,12 @@ function bookbox_cron() {
 
 }
 
+
 function bookbox_user_orders_history() {
   global $user;
   $content = '<h1>Історія замовлень</h1>';
+
+  drupal_set_title('Історія замовлень | Book Box');
 
   $result = db_select('commerce_order', 'o')
       ->fields('o', array('order_id', 'changed'))
@@ -406,8 +379,79 @@ function bookbox_menu_site_status_alter(&$menu_site_status, $path) {
   }
 }
 
-function bookbox_user_insert(&$edit, $account, $category) {
-  //drupal_set_message(t('Дякуємо за реєстрацію! Підтвердьте електронну пошту, щоб розпочати користування Book Box.'), 'status');
+//insert user to mailchimp company list after register
+function bookbox_user_insert(&$edit, $account, $category)
+{
+  $nid = (int)$account->field_company['und'][0]['target_id'];
+  $node = node_load($nid);
+  $company_name = $node->title;
+
+  $user_mail = $account->mail;
+  $user_name = $account->field_name['und'][0]['value'];
+  $user_last_name = $account->field_sirname['und'][0]['value'];
+
+  $mailchimp_user_data = array(
+      'EMAIL' => $user_mail,
+      'FNAME' => $user_name, // fields in mailchimp list
+      'LNAME' => $user_last_name,
+  );
+
+  $mail_chimp_lists = mailchimp_get_lists();
+
+  foreach ($mail_chimp_lists as $mail_chimp_list) {
+    if ($mail_chimp_list->name == $company_name) {
+      $list_id = $mail_chimp_list->id;
+
+      if (mailchimp_subscribe(
+          $list_id,
+          $user_mail,
+          $mailchimp_user_data,
+          false,
+          false
+      )) {
+        drupal_set_message(t('Thank you. From now you will receive our promo materials'));
+      } else {
+        drupal_set_message('Error occurred while adding your email to subscribe list', 'error');
+      }
+    }
+  }
+  //drupal_set_message(t('Дякуємо за реєстрацію! Підтвердьте електронну пошту, щоб розпочати користування Book Box.'), 'status');}
+}
+
+//delete user from mailchimp company list after delete in drupal
+function bookbox_user_delete($account)
+{
+  $nid = (int)$account->field_company['und'][0]['target_id'];
+  $node = node_load($nid);
+  $company_name = $node->title;
+
+  $user_mail = $account->mail;
+
+  $mail_chimp_lists = mailchimp_get_lists();
+
+  foreach ($mail_chimp_lists as $mail_chimp_list) {
+    if ($mail_chimp_list->name == $company_name) {
+      $list_id = $mail_chimp_list->id;
+
+      if(true === mailchimp_is_subscribed($list_id, $user_mail)){
+        mailchimp_unsubscribe_member(
+            $list_id,
+            $user_mail
+        );
+
+      }
+    }
+  }
+}
+
+function bookbox_user_update(&$edit, $account, $category){
+  if(isset($edit['pass'])) {
+    if(null != ($edit['pass']) && $account->original->pass != $edit['pass']){
+      $mail_to = $account->mail;
+      $params['merge_vars']['FNAME'] = $account->field_name['und'][0]['value'];
+      bookbox_mail_send('bookbox', 'password_change', $mail_to, $params);
+    }
+  }
 }
 
 function bookbox_equal_stocks() {
@@ -428,3 +472,39 @@ function bookbox_equal_stocks() {
   }
 }
 
+function bookbox_node_update($node) {
+  $product_id = $node->field_bookfields['und'][0]['product_id'];
+  $product = commerce_product_load($product_id);
+  $absolute_stock = $product->field_absolute_stock['und'][0]['value'];
+  $in_orders = bookbox_get_in_orders($node);
+
+  $product->commerce_stock['und'][0]['value'] = $absolute_stock - $in_orders;
+  commerce_product_save($product);
+}
+
+function bookbox_entity_update($entity, $type) {
+  if(isset($entity->nid)) {
+    $product_id = $entity->field_bookfields['und'][0]['product_id'];
+    $product = commerce_product_load($product_id);
+    $absolute_stock = $product->field_absolute_stock['und'][0]['value'];
+    $in_orders = bookbox_get_in_orders($entity);
+
+    $product->commerce_stock['und'][0]['value'] = $absolute_stock - $in_orders;
+    commerce_product_save($product);
+  }
+}
+
+function computed_field_field_search_string_compute(&$entity_field, $entity_type, $entity, $field, $instance, $langcode, $items) {
+  $authors = " ";
+
+  $author_count = count($entity->field_book_author['und']);
+
+  for($i = 0; $i < $author_count; $i++) {
+    $tid = $entity->field_book_author['und'][$i]['tid'];
+    $term = taxonomy_term_load($tid);
+    $authors = $authors . " " . $term->name;
+  }
+
+  $entity_field[0]['value'] = $entity->title . " " . $entity->field_origin_name['und'][0]['value'] . $authors;
+
+}

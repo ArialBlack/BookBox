@@ -22,10 +22,9 @@
         });
 
         $('#userreglink').appendTo("#edit-actions"); //todo in backend
+        $('.sort-submenu').insertAfter(".page-header");
 
         $( document ).ready(function() {
-            console.log('--------------run');
-            /////////////////////////////////////
             var html = document.documentElement;
             var startSize =  parseInt(getComputedStyle(html, '').fontSize);
 
@@ -42,6 +41,27 @@
 
             $(".modal").appendTo("body");
             $('.user-profile-hot-links').insertAfter(".page-header");
+        });
+
+        $( document ).on( "click", ".sort-submenu a", function() {
+            var $this = $(this),
+                value = $this.data('value'),
+                $select = $('.view-taxonomy-term .views-exposed-form select');
+
+            if (value == '1') {
+                value = "commerce_stock_value";
+            }
+
+            if (value == '2') {
+                value = "field_hit_value";
+            }
+
+            $select.val(value);
+            $('#edit-submit-taxonomy-term').click();
+
+            $('.sort-submenu a').removeClass('active');
+            $this.addClass('active');
+
         });
 
         $('.page-user-register .field-name-field-agree label').bind("DOMSubtreeModified",function(){
@@ -64,10 +84,13 @@
             }, 250);
         });
 
-        $('#views-exposed-form-booksearch-page .icon-search').click(function() {
+        //$('#views-exposed-form-booksearch-page .icon-search').click(function() {
+        $('.search-block .svg-icon').click(function() {
             //console.log('--------------c');
            $('body').addClass('open-search');
         });
+
+
 
         $(document).mouseup(function (e) {
             var container = $(".search-block");

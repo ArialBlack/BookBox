@@ -104,9 +104,10 @@
 
                     <div class="search-block">
                         <?php
-                        $block = module_invoke('views', 'block_view', '-exp-booksearch-page');
+                        $block = module_invoke('finder', 'block_view', 'content_finder');
                         print render($block['content']);
                         ?>
+                        <svg class="svg-icon icon-search" preserveAspectRatio="xMaxYMax"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/sites/all/themes/bookbox_ui/images/svg-icons-sprite.svg#icon-search"></use></svg>
                     </div>
 
                     <?php if ($u_flag > 0): ?>
