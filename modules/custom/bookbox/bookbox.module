@@ -475,19 +475,36 @@ function bookbox_equal_stocks() {
 function bookbox_node_update($node) {
   $product_id = $node->field_bookfields['und'][0]['product_id'];
   $product = commerce_product_load($product_id);
-
   $absolute_stock = $product->field_absolute_stock['und'][0]['value'];
-  $commerce_stock = $product->commerce_stock['und'][0]['value'];
-
   $in_orders = bookbox_get_in_orders($node);
 
-  db_update('field_data_commerce_stock')
-      ->fields(array('commerce_stock_value' => $absolute_stock - $in_orders ))
-      ->condition('entity_id', $product_id)
-      ->execute();
+  $product->commerce_stock['und'][0]['value'] = $absolute_stock - $in_orders;
+  commerce_product_save($product);
+}
 
-  db_update('field_revision_commerce_stock')
-      ->fields(array('commerce_stock_value' => $absolute_stock - $in_orders ))
-      ->condition('entity_id', $product_id)
-      ->execute();
+function bookbox_entity_update($entity, $type) {
+  if(isset($entity->nid)) {
+    $product_id = $entity->field_bookfields['und'][0]['product_id'];
+    $product = commerce_product_load($product_id);
+    $absolute_stock = $product->field_absolute_stock['und'][0]['value'];
+    $in_orders = bookbox_get_in_orders($entity);
+
+    $product->commerce_stock['und'][0]['value'] = $absolute_stock - $in_orders;
+    commerce_product_save($product);
+  }
+}
+
+function computed_field_field_search_string_compute(&$entity_field, $entity_type, $entity, $field, $instance, $langcode, $items) {
+  $authors = " ";
+
+  $author_count = count($entity->field_book_author['und']);
+
+  for($i = 0; $i < $author_count; $i++) {
+    $tid = $entity->field_book_author['und'][$i]['tid'];
+    $term = taxonomy_term_load($tid);
+    $authors = $authors . " " . $term->name;
+  }
+
+  $entity_field[0]['value'] = $entity->title . " " . $entity->field_origin_name['und'][0]['value'] . $authors;
+
 }
