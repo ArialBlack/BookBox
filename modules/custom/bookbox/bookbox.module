@@ -2,14 +2,15 @@
 
 module_load_include('inc', 'bookbox', 'bookbox.functions');
 module_load_include('inc', 'bookbox', 'bookbox.forms');
-module_load_include('inc', 'bookbox', 'bookbox.cart');
-module_load_include('inc', 'bookbox', 'bookbox.readnow');
+module_load_include('inc', 'bookbox', 'bookbox.cart');          //Корзина
+module_load_include('inc', 'bookbox', 'bookbox.order');         //Заказ месяца
+module_load_include('inc', 'bookbox', 'bookbox.readnow');       //Читаю сейчас
 module_load_include('inc', 'bookbox', 'bookbox.adminmessages');
 module_load_include('inc', 'bookbox', 'bookbox.mail');
 
 function bookbox_menu(){
   $items=array();
-  
+
   $items['admin/bookbox/labels'] = array(
       'title' => 'Адмін-тексти',
       'description' => 'Admin labels',
@@ -36,18 +37,18 @@ function bookbox_menu(){
       'type' => MENU_CALLBACK
   );
 
-  $items['confirm/%/prolong1'] = array(
+  $items['confirm/%/%/prolong1'] = array(
       'title' => 'Buy',
       'page callback' => 'bookbox_prolongbook1',
-      'page arguments' => array(1),
+      'page arguments' => array(1,2),
       'access arguments' => array('access content'), // whatever see above
       'type' => MENU_CALLBACK
   );
 
-  $items['confirm/%/prolong2'] = array(
+  $items['confirm/%/%/prolong2'] = array(
       'title' => 'Buy',
       'page callback' => 'bookbox_prolongbook2',
-      'page arguments' => array(1),
+      'page arguments' => array(1,2),
       'access arguments' => array('access content'), // whatever see above
       'type' => MENU_CALLBACK
   );
@@ -59,7 +60,11 @@ function bookbox_block_info() {
   $blocks = array();
 
   $blocks['MiniCart'] = array(
-    'info' => t('Mini cart'),
+      'info' => t('Mini cart'),
+  );
+
+  $blocks['MonthOrder'] = array(
+      'info' => t('Month orders'),
   );
 
   $blocks['ReadingNow'] = array(
@@ -82,11 +87,30 @@ function bookbox_block_info() {
 }
 
 function bookbox_block_view($delta = '') {
+  global $user;
+  $uid = $user->uid;
+
   $block = array();
+
+  //todo
+  $show_cart = true;
+  if( /*current_period() == 2 || */ bookbox_count_in_confirm_this_month($uid) > 0 ) {
+    $show_cart = false;
+  }
+
+  $show_order = true;
+  if( bookbox_count_in_confirm_this_month($uid) < 1 ) {
+    $show_order = false;
+  }
+
+  $show_reading_now = true;
+  if( count(bookbox_get_in_reading_now($uid)) < 1) {
+    $show_reading_now = false;
+  }
 
   switch ($delta) {
     case 'MiniCart':
-      if (count(bookbox_get_in_reading_now()) == 0) {
+      if ($show_cart) {
         $block['subject'] = '';
         $form = drupal_get_form('bookbox_mini_cart_block');
         $block['content'] = drupal_render($form);
@@ -96,10 +120,26 @@ function bookbox_block_view($delta = '') {
       }
       break;
 
+    case 'MonthOrder':
+      if ($show_order) {
+        $block['subject'] = '';
+        $form = drupal_get_form('bookbox_month_order_block');
+        $block['content'] = drupal_render($form);
+      } else {
+        $block['subject'] = null;
+        $block['content'] = null;
+      }
+      break;
+
     case 'ReadingNow':
-      $block['subject'] = '';
-      $form = drupal_get_form('bookbox_reading_now_block');
-      $block['content'] = drupal_render($form);
+      if ($show_reading_now) {
+        $block['subject'] = '';
+        $form = drupal_get_form('bookbox_reading_now_block');
+        $block['content'] = drupal_render($form);
+      } else {
+        $block['subject'] = null;
+        $block['content'] = null;
+      }
       break;
 
     case 'CatBiz':
@@ -117,7 +157,6 @@ function bookbox_block_view($delta = '') {
       $block['content'] = bookbox_cat_samo_block();
       break;
   }
-
   return $block;
 }
 
@@ -126,25 +165,15 @@ function bookbox_block_view_alter(&$data, $block) {
     $block->title = 'Маєте додаткове питання?';
   }
 }
-function bookbox_form_commerce_cart_mail_submit($form, &$form_state){
 
-  $language = isset($values['lang']) ? $values['lang'] : language_default();
-
-  var_dump($form_state);
-  exit;
-}
-
-function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state, $form_id) {
-
-  $regular = '/([\w_]+)_\d+$/';
-
-//  if ('commerce_cart_add_to_cart_form' === preg_replace($regular, '$1', $form_id)) {
-  if ( $form_id == 'bookbox_mini_cart_block') {
-    array_unshift($form['#submit'], 'bookbox_form_commerce_cart_mail_submit');
-//    $form['#submit'][] = 'bookbox_form_commerce_cart_mail_submit';
-
-  }
+function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state) {
+  global $user;
+  $uid = $user->uid;
   // можно добавить максимум 2
+
+  //dsm(   bookbox_count_in_confirm_this_month(), 'this ' );
+  //dsm(   bookbox_count_in_confirm_prev_month(), 'prev ' );
+  //dsm( bookbox_in_confirm_this_month() );
 
   $form['submit']['#value'] = 'Замовити';
 
@@ -173,9 +202,9 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state,
     }
   }
 
-  $reading_now = count(bookbox_get_in_reading_now());
+  $in_confirm_this_month = bookbox_count_in_confirm_this_month($uid);
 
-  if ($in_cart == 2 || $reading_now + $in_cart > 1 || current_period() == 2) {
+  if ($in_cart == 2 || $in_confirm_this_month > 0 || current_period() == 2 || bookbox_count_in_prolong_prev_month($uid) + $in_cart > 1) {
     $can_add2cart = false;
   }
 
@@ -501,4 +530,23 @@ function bookbox_user_delete($account)
     }
   }
 }
+
+function bookbox_equal_stocks() {
+  $result = db_select('field_data_field_absolute_stock', 'a')
+      ->fields('a', array('entity_id', 'field_absolute_stock_value'))
+      ->execute()->fetchAll();
+
+  foreach ($result as $absolute_stock_record) {
+    db_update('field_data_commerce_stock')
+        ->fields(array('commerce_stock_value' => $absolute_stock_record->field_absolute_stock_value ))
+        ->condition('entity_id', $absolute_stock_record->entity_id)
+        ->execute();
+
+    db_update('field_revision_commerce_stock')
+        ->fields(array('commerce_stock_value' => $absolute_stock_record->field_absolute_stock_value ))
+        ->condition('entity_id', $absolute_stock_record->entity_id)
+        ->execute();
+  }
+}
+
 
