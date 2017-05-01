@@ -32,11 +32,29 @@
         margin-left: 0;
         padding: 0;
       }
+
+      @media screen and (max-width: 767px) {
+        text-align: center;
+        display: block;
+        margin: 25px 20px 10px;
+
+        &:before {
+          display: none;
+        }
+      }
     }
 
     #block-system-main {
       padding-bottom: 80px;
       padding-left: 92px;
+
+      @media screen and (max-width: 992px) {
+        padding-left: 35px;
+      }
+
+      @media screen and (max-width: 992px) {
+        padding: 0 25px;
+      }
     }
 
     article {
@@ -46,6 +64,43 @@
         padding-bottom: 40px;
         padding-right: 15px;
         border-bottom: 1px solid #ebecee;
+      }
+
+      .mobile {
+        text-align: center;
+        .field-name-field-book-author a {
+          margin-bottom: 5px;
+        }
+
+        .book-dids .links {
+          margin-left: 0;
+          width: 100%;
+        }
+
+        #edit-submit {
+          width: 250px;
+        }
+
+        .book-dids .field-name-field-bookfields {
+          float: inherit;
+        }
+
+        .tab-content{
+          border-top: 2px solid lightgray;
+          padding: 20px 0 0px;
+          border-bottom: 2px solid lightgray;
+          .field {
+            padding-bottom: 15px;
+          }
+        }
+
+        img {
+          margin: 30px auto;
+        }
+
+        .tab-content {
+          text-align: left;
+        }
       }
 
       h1 {
@@ -235,6 +290,10 @@
     .view-similarterms {
       padding-left: 57px;
       padding-right: 15px;
+
+      @media screen and (max-width: 767px) {
+        padding: 0 20px; 
+      }
 
       .node-teaser > header {
         display: none;

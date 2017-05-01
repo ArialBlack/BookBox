@@ -13,13 +13,26 @@
   //}
 
 	.navbar-header {
-      @media (max-width: 1210px) {
-        padding-right: 0;
-      }
+      position: relative;
+    padding-top: 6px;
+    padding-right: 3%;
+    z-index: 11;
 
-      padding-top: 6px;
-      padding-right: 3%;
-	}
+    @media (max-width: 1210px) {
+      padding-right: 0;
+    }
+  }
+
+  .navbar-collapse.collapse {
+    position: relative;
+    display: inline-block!important;
+    z-index: 10;
+  }
+
+  .user-navbar-collapse {
+    float: right;
+  }
+
 
   nav {
     display: flex;
@@ -62,7 +75,11 @@
 
 
   .search-block {
-    display: inline-block;
+    position: absolute;
+    right: 34%;
+    width: 65%;
+    text-align: right;
+    top: 8px;
 
     .views-submit-button .svg-icon {
       height: 32px;
@@ -86,6 +103,10 @@
       height: 22px;
       border: none;
       margin-left: 40px;
+
+      @media screen and (max-width: 1300px) {
+        margin-left: 15px;
+      }
     }
   }
 }

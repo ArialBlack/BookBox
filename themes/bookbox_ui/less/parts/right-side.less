@@ -43,7 +43,7 @@ aside.col-sm-4 {
       position: relative;
       margin-bottom: 0;
 
-      @media (min-width: @screen-md-min) {
+      @media screen and (min-width: @min-lg) {
         width: 50%;
         float: left;
         padding-right: 22px;
@@ -142,6 +142,11 @@ aside.col-sm-4 {
 #block-bookbox-monthorder {
   //padding: 0 75px 130px 4.9vw;
   padding: 40px 75px 10px 4.9vw;
+
+  @media screen and (max-width: 991px) {
+  	padding: 0;
+    padding-left: 4.9vw;
+  }
 
   .book-container {
     button {
