@@ -224,7 +224,7 @@ function bookbox_cron() {
   if ( date('y-m-d', $cron_last) != date('y-md-', time())) {
 
     if(intval(d()) == 1) {
-      bookbox_equal_stocks();
+      //bookbox_equal_stocks(); //todo
 
       $result = db_select('commerce_order', 'o')
           ->fields('o', array('order_id', 'status', 'changed'))
