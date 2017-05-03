@@ -8,9 +8,9 @@
   bottom: 0;
   width: 100%;
 
-  //@media (min-width: 1024px) and (max-width: 1300px) {
-  //  font-weight: 300;
-  //}
+  @media screen and (max-width:1023px) {
+    padding: 75px 0 35px 0;
+  }
 
   iframe {
     display: none;
@@ -28,10 +28,26 @@
   .region-footer {
     display: flex;
     justify-content: space-between;
+
+    @media (max-width: 1199px) and (min-width: 1024px) {
+      font-size: 0.83em;
+    }
+
+    @media screen and (max-width: 1023px) {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
   }
 
   #block-block-2 {
     display: inline-block;
+
+    @media screen and (max-width: 1023px) {
+      order: 3;
+      font-size: .75rem;
+    }
   }
 
   #block-menu-menu-footer-menu {
@@ -39,25 +55,14 @@
     text-align: right;
     margin-left: 3vw;
 
+    @media screen and (max-width: 1023px) {
+      margin-left: 0;
+    }
+
     .menu {
       list-style: none;
 
       li {
-        //@media (min-width: 1024px) and (max-width: 1300px) {
-        //  margin-right: 0;
-        //}
-        //
-        //@media (min-width: 1300px) and (max-width: 1469px) {
-        //  margin-right: 1vw;
-        //}
-        //
-        //@media (min-width: 1470px) and (max-width: 1779px) {
-        //  margin-right: 3vw;
-        //}
-        //
-        //@media (min-width: 1780px) and (max-width: 1920px) {
-        //  margin-right: 5vw;
-        //}
         @media (min-width: 1240px) {
           margin-right: 0;
         }
@@ -86,11 +91,16 @@
             background: transparent;
             font-weight: 600;
           }
-
-          //@media (min-width: 1024px) and (max-width: 1300px) {
-          //  padding: 5px 3px;
-          //}
         }
+
+        @media screen and (max-width:1023px) {
+          display: block;
+          padding-bottom: 55px;
+        }
+      }
+
+      @media screen and (max-width: 1023px) {
+        text-align: center;
       }
     }
   }
@@ -101,6 +111,7 @@
     ul {
       list-style: none;
       margin: 0;
+      padding-left: 0;
 
       li {
         a {
@@ -111,17 +122,14 @@
           background-size: contain;
           display: inline-block;
 
-          //color: @bb-darkblue;
-          //text-transform: uppercase;
-          //padding: 5px 0;
-          //display: none;
-          //
-          //&:hover, &:focus {
-          //  text-decoration: none;
-          //  color: lighten(@bb-darkblue, 10%);
           }
         }
       }
+    @media screen and (max-width: 1023px) {
+      padding-bottom: 30px;
+    }
+
+
     }
   #block-block-4 {
     display: none;

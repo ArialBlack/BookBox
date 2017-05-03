@@ -11,7 +11,7 @@ module_load_include('inc', 'bookbox', 'bookbox.adminmessages');
 
 function bookbox_menu(){
   $items=array();
-  
+
   $items['admin/bookbox/labels'] = array(
       'title' => 'Адмін-тексти',
       'description' => 'Admin labels',
@@ -54,6 +54,57 @@ function bookbox_menu(){
       'type' => MENU_CALLBACK
   );
 
+  global $user;
+  $uid = $user->uid;
+
+  $show_cart = true;
+  if(bookbox_count_in_confirm_this_month($uid) > 0 ) {
+    $show_cart = false;
+  }
+
+  $show_order = true;
+  if( bookbox_count_in_confirm_this_month($uid) < 1 ) {
+    $show_order = false;
+  }
+
+  $show_reading_now = true;
+  if( count(bookbox_get_in_reading_now($uid)) < 1) {
+    $show_reading_now = false;
+  }
+
+  if ($show_cart) {
+    $items['user/usercart'] = array(
+      //'title' => t('Замовлення місяця'),
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('bookbox_mini_cart_block'),
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+        'menu_name' => 'user-menu',
+    );
+  }
+
+  if ($show_order) {
+    $items['user/userorder'] = array(
+      //'title' => t('Замовлення місяця'),
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('bookbox_month_order_block'),
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+        'menu_name' => 'user-menu',
+    );
+  }
+
+  if($show_reading_now) {
+    $items['user/userreadingnow'] = array(
+      //'title' => t('Замовлення місяця'),
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('bookbox_reading_now_block'),
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+        'menu_name' => 'user-menu',
+    );
+  }
+
   return $items;
 }
 
@@ -84,6 +135,10 @@ function bookbox_block_info() {
       'info' => t('cat samo'),
   );
 
+  $blocks['BBUserMenu'] = array(
+      'info' => t('custom user menu'),
+  );
+
   return $blocks;
 }
 
@@ -95,7 +150,7 @@ function bookbox_block_view($delta = '') {
 
   //todo
   $show_cart = true;
-  if( /*current_period() == 2 || */ bookbox_count_in_confirm_this_month($uid) > 0 ) {
+  if(bookbox_count_in_confirm_this_month($uid) > 0 ) {
     $show_cart = false;
   }
 
@@ -157,8 +212,66 @@ function bookbox_block_view($delta = '') {
       $block['subject'] = '';
       $block['content'] = bookbox_cat_samo_block();
       break;
+
+    case 'BBUserMenu':
+      $block['subject'] = '';
+      $block['content'] = bookbox_custom_usermenu_block();
+      break;
   }
   return $block;
+}
+
+function bookbox_custom_usermenu_block() {
+  $content = "";
+  global $user;
+  $uid = $user->uid;
+  $account = user_load($uid);
+
+  $show_cart = true;
+  if(bookbox_count_in_confirm_this_month($uid) > 0 ) {
+    $show_cart = false;
+  }
+
+  $show_order = true;
+  if( bookbox_count_in_confirm_this_month($uid) < 1 ) {
+    $show_order = false;
+  }
+
+  $show_reading_now = true;
+  if( count(bookbox_get_in_reading_now($uid)) < 1) {
+    $show_reading_now = false;
+  }
+
+  $nanme = $account->field_name['und'][0]['safe_value'];
+  $snanme = $account->field_sirname['und'][0]['safe_value'];
+
+  $content = $content . '<ul class="menu nav navbar-nav secondary">';
+  $content = $content . '<li class="first last expanded dropdown">';
+  $content = $content . '<a href="/user" title="" data-target="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <span class="user-name">' . $nanme . ' ' . $snanme . '</span> <span class="caret"></span></a>';
+  $content = $content . '<ul class="dropdown-menu"><li class="first leaf"><a href="/user" title="">Профіль</a></li>';
+  $content = $content . '<li class="leaf"><a href="/user/' . $uid . '/favorites" title="">Список бажань</a></li>';
+  $content = $content . '<li class="leaf"><a href="/user/' . $uid . '/orders" title="">Історія замовлень</a></li>';
+  $content = $content . '<li class="last leaf"><a href="/user/logout">Вихід</a></li>';
+
+  if($show_cart || $show_order || $show_reading_now ) {
+    $content = $content . '<li role="separator" class="divider visible-sm visible-xs"></li>';
+  }
+
+  if($show_cart) {
+    $content = $content . '<li class="leaf visible-sm visible-xs"><a href="/user/usercart" title="">Замовлення місяця</a></li>';
+  }
+
+  if($show_order) {
+    $content = $content . '<li class="leaf visible-sm visible-xs"><a href="/user/userorder" title="">Замовлення підтверджено</a></li>';
+  }
+
+  if($show_reading_now) {
+    $content = $content . '<li class="leaf visible-sm visible-xs"><a href="/user/userreadingnow" title="">Зараз читаю</a></li>';
+  }
+
+  $content = $content . '</ul></li></ul>';
+
+  return $content;
 }
 
 function bookbox_block_view_alter(&$data, $block) {
@@ -329,7 +442,7 @@ function bookbox_user_orders_history() {
     $content = $content . '</div>';
     next($newOrder);
   }
-  
+
   return $content;
 }
 
