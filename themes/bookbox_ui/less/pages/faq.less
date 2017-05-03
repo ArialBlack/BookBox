@@ -3,7 +3,7 @@
     display: none;
   }
 
-  .contextual-links-region {
+  .col-sm-8 {
     @media screen and (max-width: 767px) {
       overflow: hidden;
     }
@@ -72,6 +72,22 @@
 
       .nav-tabs {
         border: none;
+        position: relative;
+
+        @media screen and (max-width: 767px) {
+          &:after {
+            content: '';
+            position: absolute;
+            left: -15px;
+            right: 0;
+            height: 1px;
+            z-index: 1;
+            width: 125%;
+            background: lightgray;
+            bottom: 0;
+          }
+        }
+
 
         @media (min-width: 767px) and (max-width: 991px) {
           font-size: 12px;
@@ -96,18 +112,6 @@
               background: lightgray;
               top: 0;
             }
-
-            &:last-child:after {
-              content: '';
-              position: absolute;
-              left: -15px;
-              right: 0;
-              height: 1px;
-              z-index: 1;
-              width: 125%;
-              background: lightgray;
-              bottom: 0;
-            }
           }
 
           a {
@@ -130,6 +134,32 @@
           &.active {
             a {
               color: @primary-color;
+            }
+          }
+
+          @media screen and (max-width: 767px) {
+            &:after {
+              content: " ";
+              position: absolute;
+              background: url(../images/down.png);
+              background-size: contain;
+              top:10px;
+              right:0;
+              width:26px;
+              height:26px;
+              -webkit-transition: all .3s ease;
+              -moz-transition: all .3s ease;
+              -ms-transition: all .3s ease;
+              -o-transition: all .3s ease;
+              transition: all .3s ease;
+            }
+
+            &.active:after {
+              -webkit-transform: rotate(180deg);
+              -moz-transform: rotate(180deg);
+              -ms-transform: rotate(180deg);
+              -o-transform: rotate(180deg);
+              transform: rotate(180deg);
             }
           }
         }
