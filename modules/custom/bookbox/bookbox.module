@@ -473,17 +473,18 @@ function bookbox_equal_stocks() {
 }
 
 function bookbox_node_update($node) {
-  $product_id = $node->field_bookfields['und'][0]['product_id'];
-  $product = commerce_product_load($product_id);
-  $absolute_stock = $product->field_absolute_stock['und'][0]['value'];
-  $in_orders = bookbox_get_in_orders($node);
-
-  $product->commerce_stock['und'][0]['value'] = $absolute_stock - $in_orders;
-  commerce_product_save($product);
+  if(isset($node->field_bookfields)) {
+    $product_id = $node->field_bookfields['und'][0]['product_id'];
+    $product = commerce_product_load($product_id);
+    $absolute_stock = $product->field_absolute_stock['und'][0]['value'];
+    $in_orders = bookbox_get_in_orders($node);
+    $product->commerce_stock['und'][0]['value'] = $absolute_stock - $in_orders;
+    commerce_product_save($product);
+  }
 }
 
 function bookbox_entity_update($entity, $type) {
-  if(isset($entity->nid)) {
+  if(isset($entity->nid) && isset($entity->field_bookfields)) {
     $product_id = $entity->field_bookfields['und'][0]['product_id'];
     $product = commerce_product_load($product_id);
     $absolute_stock = $product->field_absolute_stock['und'][0]['value'];
