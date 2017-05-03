@@ -218,3 +218,33 @@ function bookbox_get_in_orders($node) {
   return $in_orders;
 }
 
+function bookbox_get_in_orders_this_month($node) {
+  $product_id = $node->field_bookfields['und'][0]['product_id'];
+
+  $query = db_select('field_data_commerce_product', 'p');
+  $query->innerJoin('field_data_commerce_line_items', 'l', 'p.entity_id = l.commerce_line_items_line_item_id');
+  $query->fields('l', array('entity_id'));
+  $query->condition('p.commerce_product_product_id', $product_id);
+  $orders = $query->execute()->fetchAll();
+  $in_orders = 0;
+
+  foreach ($orders as $row) {
+    $order_id = $row->entity_id;
+
+    $result = db_select('commerce_order', 'o')
+        ->fields('o', array('order_id', 'status', 'created'))
+        ->condition('o.order_id', $order_id)
+        ->condition('o.status', 'completed')
+        ->execute()->fetchAll();
+
+    foreach ($result as $item) {
+      if (date("m-Y", $item->created) == date("m-Y")) {
+        $in_orders = $in_orders + 1;
+        //dsm($result);
+      }
+    }
+  }
+
+  return $in_orders;
+}
+

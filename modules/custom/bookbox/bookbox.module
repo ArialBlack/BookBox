@@ -337,7 +337,6 @@ function bookbox_cron() {
   if ( date('y-m-d', $cron_last) != date('y-md-', time())) {
 
     if(intval(d()) == 1) {
-      bookbox_equal_stocks();
 
       $result = db_select('commerce_order', 'o')
           ->fields('o', array('order_id', 'status', 'changed'))
@@ -393,12 +392,13 @@ function bookbox_cron() {
       }
     }
 
+    bookbox_equal_stocks();
+
     variable_set('cron_last', date('y-m-d', time()));
     drupal_flush_all_caches();
   }
 
 }
-
 
 function bookbox_user_orders_history() {
   global $user;
@@ -568,42 +568,57 @@ function bookbox_user_update(&$edit, $account, $category){
 }
 
 function bookbox_equal_stocks() {
-  $result = db_select('field_data_field_absolute_stock', 'a')
-      ->fields('a', array('entity_id', 'field_absolute_stock_value'))
+  $result = db_select('node', 'n')
+      ->fields('n', array('nid'))
+      ->condition('n.type', 'book')
+      ->condition('n.status', 1)
       ->execute()->fetchAll();
 
-  foreach ($result as $absolute_stock_record) {
-    db_update('field_data_commerce_stock')
-        ->fields(array('commerce_stock_value' => $absolute_stock_record->field_absolute_stock_value ))
-        ->condition('entity_id', $absolute_stock_record->entity_id)
-        ->execute();
+  foreach ($result as $row) {
+    $nid = $row->nid;
+    $node = node_load($nid);
+    if(isset($node->field_bookfields)) {
+      bookbox_node_update($node);
+    }
 
-    db_update('field_revision_commerce_stock')
-        ->fields(array('commerce_stock_value' => $absolute_stock_record->field_absolute_stock_value ))
-        ->condition('entity_id', $absolute_stock_record->entity_id)
-        ->execute();
   }
 }
 
 function bookbox_node_update($node) {
-  $product_id = $node->field_bookfields['und'][0]['product_id'];
-  $product = commerce_product_load($product_id);
-  $absolute_stock = $product->field_absolute_stock['und'][0]['value'];
-  $in_orders = bookbox_get_in_orders($node);
-
-  $product->commerce_stock['und'][0]['value'] = $absolute_stock - $in_orders;
-  commerce_product_save($product);
+  if(isset($node->field_bookfields) && count($node->field_bookfields) > 0 ) {
+    $product_id = $node->field_bookfields['und'][0]['product_id'];
+    $product = commerce_product_load($product_id);
+    $absolute_stock = $product->field_absolute_stock['und'][0]['value'];
+    $in_orders = bookbox_get_in_orders_this_month($node);
+    $product->commerce_stock['und'][0]['value'] = $absolute_stock - $in_orders;
+    commerce_product_save($product);
+  }
 }
 
 function bookbox_entity_update($entity, $type) {
-  if(isset($entity->nid)) {
+  if(isset($entity->nid) && isset($entity->field_bookfields)  && count($entity->field_bookfields) > 0) {
     $product_id = $entity->field_bookfields['und'][0]['product_id'];
     $product = commerce_product_load($product_id);
     $absolute_stock = $product->field_absolute_stock['und'][0]['value'];
-    $in_orders = bookbox_get_in_orders($entity);
-
+    $in_orders = bookbox_get_in_orders_this_month($entity);
     $product->commerce_stock['und'][0]['value'] = $absolute_stock - $in_orders;
     commerce_product_save($product);
+  }
+}
+
+function bookbox_commerce_order_presave($order) {
+  if ($order->status != $order->original->status) {
+
+    if(isset($order->commerce_line_items)) {
+      $line_item = commerce_line_item_load($order->commerce_line_items['und'][0]['line_item_id']);
+
+      if(isset($line_item->commerce_product)) {
+        $node = _bookbox_get_product_display_by_product_id($line_item->commerce_product['und'][0]['product_id']);
+        bookbox_node_update($node);
+      }
+
+    }
+
   }
 }
 
@@ -619,5 +634,4 @@ function computed_field_field_search_string_compute(&$entity_field, $entity_type
   }
 
   $entity_field[0]['value'] = $entity->title . " " . $entity->field_origin_name['und'][0]['value'] . $authors;
-
 }
