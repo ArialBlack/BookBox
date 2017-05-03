@@ -27,10 +27,32 @@
         margin-left: 0;
         padding: 0;
       }
+
+      @media screen and (max-width: 767px) {
+        width: 100%;
+        text-align: center;
+        font-size: 20px;
+
+        &:before {
+          content: none;
+        }
+      }
+
+      @media (min-width: 768px) and (max-width: 992px) {
+        font-size: 21px;
+      }
     }
 
     .webform-component-textarea{
       width:55%;
+
+      @media screen and (max-width: 767px) {
+        width: 100%;
+      }
+
+      @media (min-width: 768px) and (max-width:1023px) {
+        width: 90%;
+      }
     }
 
     .form-textarea {
@@ -41,6 +63,7 @@
     .profile {
       width:47%;
       max-width:520px;
+      overflow: hidden;
       .user-change-pass{
         text-decoration: underline;
       }
@@ -52,11 +75,25 @@
       .field-items>.field-item {
         margin-top:15px;
       }
+
+      @media screen and (max-width: 767px) {
+        width: 100%;
+        max-width: none;
+      }
+
+      @media (min-width: 768px) and (max-width: 1023px) {
+        width: 80%;
+        max-width: none;
+      }
     }
 
     .profile,
     .webform-client-form{
       padding-left: 95px;
+
+      @media screen and (max-width: 767px) {
+        padding-left: 15px;
+      }
     }
   }
 }
@@ -81,11 +118,21 @@
       .font-size(12);
     }
   }
+
+  @media screen and (max-width:767px) {
+    display: none;
+  }
 }
 
 .logged-in.page-user {
   .profile {
     clear: both;
+  }
+
+  .form-actions {
+    @media screen and (max-width:767px) {
+      text-align: center;
+    }
   }
 }
 

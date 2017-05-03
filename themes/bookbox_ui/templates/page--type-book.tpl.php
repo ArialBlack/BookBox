@@ -128,6 +128,7 @@
                     print render($block['content']);
                  ?>
              <?php endif; ?>
+
          </div>
     </div>
 </header>

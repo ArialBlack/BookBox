@@ -85,7 +85,8 @@
         padding:0 15px;
 
         @media screen and (max-width:767px) {
-          max-width: 90%;
+          width: 100%;
+          max-width: none;
           margin: auto;
         }
 
@@ -98,6 +99,11 @@
         display: block;
         padding-left: 0;
       }
+    }
+
+    @media screen and (max-width: 767px) {
+      padding-left: 30px !important;
+      padding-right: 30px !important;
     }
   }
 }

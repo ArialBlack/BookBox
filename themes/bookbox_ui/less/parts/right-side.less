@@ -1,6 +1,7 @@
 aside.col-sm-4 {
   padding:0;
   padding-top: 73px;
+  padding-bottom: 70px;
   border-left: #ebecee 1px solid;
   position: fixed;
   right:0;
@@ -43,7 +44,7 @@ aside.col-sm-4 {
       position: relative;
       margin-bottom: 0;
 
-      @media screen and (min-width: @min-lg) {
+      @media screen and (min-width: 1300px) {
         width: 50%;
         float: left;
         padding-right: 22px;
@@ -59,6 +60,10 @@ aside.col-sm-4 {
 
         .flag-bookmarks {
           display: none;
+        }
+
+        @media screen and (max-width: 1300px) {
+          max-width: none;
         }
       }
     }
@@ -107,6 +112,12 @@ aside.col-sm-4 {
       }
     }
   }
+
+  @media screen and (max-width: 1300px) {
+    padding-right: 15px;
+    padding-top: 115px;
+  }
+
 }
 
 #block-bookbox-minicart {
@@ -135,6 +146,21 @@ aside.col-sm-4 {
     &:hover {
       background: darken(@secondary-color, 20);
     }
+
+    @media screen and (max-width: 992px) {
+      font-size: 10px;
+      margin: 0;
+    }
+  }
+
+  //@media screen and (max-width: 1300px) {
+  //  padding-right: 0;
+  //}
+
+  @media screen and (max-width: 1300px) {
+    padding: 0;
+    padding-left: 1vw;
+    padding-right: 3vw;
   }
 }
 
@@ -143,9 +169,10 @@ aside.col-sm-4 {
   //padding: 0 75px 130px 4.9vw;
   padding: 40px 75px 10px 4.9vw;
 
-  @media screen and (max-width: 991px) {
+  @media screen and (max-width: 1300px) {
   	padding: 0;
-    padding-left: 4.9vw;
+    padding-left: 1vw;
+    padding-right: 3vw;
   }
 
   .book-container {
@@ -156,6 +183,14 @@ aside.col-sm-4 {
 
       span {
         display: none;
+      }
+
+      @media screen and (max-width: 992px) {
+        font-size: 10px;
+      }
+
+      @media screen and (max-width: 1300px) {
+        margin-bottom: 20px;
       }
     }
   }

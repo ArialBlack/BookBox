@@ -11,7 +11,7 @@ module_load_include('inc', 'bookbox', 'bookbox.adminmessages');
 
 function bookbox_menu(){
   $items=array();
-  
+
   $items['admin/bookbox/labels'] = array(
       'title' => 'Адмін-тексти',
       'description' => 'Admin labels',
@@ -134,7 +134,7 @@ function bookbox_block_info() {
   $blocks['CatSamo'] = array(
       'info' => t('cat samo'),
   );
-  
+
   $blocks['BBUserMenu'] = array(
       'info' => t('custom user menu'),
   );
@@ -212,11 +212,11 @@ function bookbox_block_view($delta = '') {
       $block['subject'] = '';
       $block['content'] = bookbox_cat_samo_block();
       break;
-    
+
     case 'BBUserMenu':
       $block['subject'] = '';
       $block['content'] = bookbox_custom_usermenu_block();
-      break;    
+      break;
   }
   return $block;
 }
@@ -247,7 +247,7 @@ function bookbox_custom_usermenu_block() {
 
   $content = $content . '<ul class="menu nav navbar-nav secondary">';
   $content = $content . '<li class="first last expanded dropdown">';
-  $content = $content . '<a href="/user" title="" data-target="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">' . $nanme . ' ' . $snanme . ' <span class="caret"></span></a>';
+  $content = $content . '<a href="/user" title="" data-target="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <span class="user-name">' . $nanme . ' ' . $snanme . '</span> <span class="caret"></span></a>';
   $content = $content . '<ul class="dropdown-menu"><li class="first leaf"><a href="/user" title="">Профіль</a></li>';
   $content = $content . '<li class="leaf"><a href="/user/' . $uid . '/favorites" title="">Список бажань</a></li>';
   $content = $content . '<li class="leaf"><a href="/user/' . $uid . '/orders" title="">Історія замовлень</a></li>';
@@ -270,7 +270,7 @@ function bookbox_custom_usermenu_block() {
   }
 
   $content = $content . '</ul></li></ul>';
-  
+
   return $content;
 }
 
@@ -442,7 +442,7 @@ function bookbox_user_orders_history() {
     $content = $content . '</div>';
     next($newOrder);
   }
-  
+
   return $content;
 }
 

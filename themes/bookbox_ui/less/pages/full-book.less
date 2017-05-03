@@ -49,11 +49,7 @@
       padding-left: 92px;
 
       @media screen and (max-width: 992px) {
-        padding-left: 35px;
-      }
-
-      @media screen and (max-width: 992px) {
-        padding: 0 25px;
+        padding: 35px  25px 0 25px;
       }
     }
 
@@ -292,14 +288,74 @@
       padding-right: 15px;
 
       @media screen and (max-width: 767px) {
-        padding: 0 20px; 
+        padding: 0 20px;
       }
 
       .node-teaser > header {
         display: none;
       }
+
+      .book-card {
+        @media screen and (max-width: 767px) {
+          max-width: 574px;
+          margin: auto;
+        }
+      }
     }
   }
 
+  .mobile.visible-xs {
+    .description-tabs-mobile {
+      .nav-tabs {
+        border: none;
 
+        &>li {
+          display: block;
+          float: left;
+          width:100%;
+          border-top: 2px solid lightgray;
+
+          &>a {
+            text-transform: uppercase;
+            border: none;
+            font-size: 25px;
+            text-align: left;
+          }
+
+          .tab-content {
+            padding-top: 0 0 20px 20px;
+          }
+
+          &:after {
+            content: " ";
+            position: absolute;
+            background: url(../images/down.png);
+            background-size: contain;
+            top:10px;
+            right:0;
+            width:26px;
+            height:26px;
+            -webkit-transition: all .3s ease;
+            -moz-transition: all .3s ease;
+            -ms-transition: all .3s ease;
+            -o-transition: all .3s ease;
+            transition: all .3s ease;
+          }
+
+          &.active:after {
+            -webkit-transform: rotate(180deg);
+            -moz-transform: rotate(180deg);
+            -ms-transform: rotate(180deg);
+            -o-transform: rotate(180deg);
+            transform: rotate(180deg);
+          }
+        }
+      }
+
+      .tab-content {
+        border-top: none;
+        display: none;
+      }
+    }
+  }
 }
