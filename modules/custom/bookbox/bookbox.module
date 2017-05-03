@@ -135,6 +135,14 @@ function bookbox_block_info() {
       'info' => t('cat samo'),
   );
 
+  $blocks['CatZoj'] = array(
+      'info' => t('cat zoj'),
+  );
+
+  $blocks['CatNauch'] = array(
+      'info' => t('cat nauch'),
+  );
+
   $blocks['BBUserMenu'] = array(
       'info' => t('custom user menu'),
   );
@@ -211,6 +219,16 @@ function bookbox_block_view($delta = '') {
     case 'CatSamo':
       $block['subject'] = '';
       $block['content'] = bookbox_cat_samo_block();
+      break;
+
+    case 'CatZoj':
+      $block['subject'] = '';
+      $block['content'] = bookbox_cat_zoj_block();
+      break;
+
+    case 'CatNauch':
+      $block['subject'] = '';
+      $block['content'] = bookbox_cat_nauch_block();
       break;
 
     case 'BBUserMenu':
@@ -458,6 +476,16 @@ function bookbox_cat_krug_block() {
 
 function bookbox_cat_samo_block() {
   $content = _bookbox_catblock(13);
+  return $content;
+}
+
+function bookbox_cat_zoj_block() {
+  $content = _bookbox_catblock(276);
+  return $content;
+}
+
+function bookbox_cat_nauch_block() {
+  $content = _bookbox_catblock(286);
   return $content;
 }
 
