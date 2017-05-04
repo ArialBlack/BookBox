@@ -635,18 +635,13 @@ function bookbox_entity_update($entity, $type) {
 }
 
 function bookbox_commerce_order_presave($order) {
-  if ($order->status != $order->original->status) {
+  if(isset($order->commerce_line_items)) {
+    $line_item = commerce_line_item_load($order->commerce_line_items['und'][0]['line_item_id']);
 
-    if(isset($order->commerce_line_items)) {
-      $line_item = commerce_line_item_load($order->commerce_line_items['und'][0]['line_item_id']);
-
-      if(isset($line_item->commerce_product)) {
+    if(isset($line_item->commerce_product)) {
         $node = _bookbox_get_product_display_by_product_id($line_item->commerce_product['und'][0]['product_id']);
         bookbox_node_update($node);
-      }
-
     }
-
   }
 }
 
