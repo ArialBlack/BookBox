@@ -84,6 +84,7 @@
     <div class="<?php print $container_class; ?>">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".main-nav-collapse"></button>
+            <a href="/" class="home-header"><img src="/sites/all/themes/bookbox_ui/images/home.png"></a>
 
             <?php if ($logo): ?>
                 <a class="logo navbar-btn pull-left" href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>">

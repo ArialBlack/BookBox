@@ -25,6 +25,20 @@
         $('.sort-submenu').insertAfter(".page-header");
 
         $( document ).ready(function() {
+          $('body').append('<div class="scroll-up"></div>');
+
+          $('.scroll-up').click(function() {
+            $('html, body').animate({ scrollTop: 0}, 1000 );
+          });
+
+          $(window).scroll(function(){
+            if ($(this).scrollTop() > 300 && $(this).width() < 768 ) {
+              $('.scroll-up').fadeIn();
+            } else {
+              $('.scroll-up').fadeOut();
+            }
+          });
+
             var html = document.documentElement;
             var startSize =  parseInt(getComputedStyle(html, '').fontSize);
 
@@ -88,7 +102,7 @@
                 $('.node-type-book .mobile.visible-xs .description-tabs-mobile .tab-content').css('display','none');
                 $(this).append($('.node-type-book .mobile.visible-xs .description-tabs-mobile .tab-content'));
                 $('.node-type-book .mobile.visible-xs .description-tabs-mobile .tab-content').slideToggle(300, function(){
-                  var offsetActiveBook = $('.node-type-book .mobile.visible-xs .description-tabs-mobile .tab-pane.active').offset().top;
+                  var offsetActiveBook = $('.node-type-book .mobile.visible-xs .description-tabs-mobile .tab-pane.active').parent().parent().offset().top + 5;
                   $('html, body').animate( { scrollTop: offsetActiveBook }, 300 );
                 });
               } else {

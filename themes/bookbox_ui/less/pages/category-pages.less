@@ -33,6 +33,14 @@
 
 body.books.category .sort-submenu {
   display: block;
+
+  @media (min-width: 851px) and (max-width: 991px) {
+    margin-left: 95px;
+  }
+
+  @media (min-width: 768px) and (max-width: 850px) {
+    margin-left: 50px;
+  }
 }
 
 .view-taxonomy-term {
@@ -135,6 +143,10 @@ body.books.category {
 
           .field + .field {
             margin-left: 5px;
+
+            @media (min-width: 768px) and (max-width: 850px) {
+             margin-left: 0;
+            }
           }
 
         }
@@ -232,6 +244,10 @@ body.books.category {
        @media screen and (max-width: 767px) {
         display: none;
       }
+
+       @media (min-width: 768px) and (max-width: 850px) {
+         width: 45px;
+       }
      }
    }
 
@@ -240,6 +256,10 @@ body.books.category {
        flex-direction: row;
        flex-wrap: wrap;
        padding-left: 60px;
+
+     @media (min-width: 768px) and (max-width: 850px) {
+       padding-left: 15px;
+     }
 
       @media screen and (max-width: 767px) {
         padding-left: 0;
@@ -263,8 +283,6 @@ body.books.category {
       font-size: 14px;
       color: @bb-darkblue;
       text-transform: uppercase;
-      border-bottom: 2px solid;
-      padding-bottom: 2px;
       margin-left: 35px;
       font-weight:600;
 
@@ -272,11 +290,14 @@ body.books.category {
       	display: block;
       	margin: 0 25px;
       	text-align: center;
+        padding-bottom: 10px;
       }
 
       a {
         color: @bb-darkblue;
         text-decoration: none;
+        border-bottom: 2px solid;
+        padding-bottom: 2px;
       }
     }
     .know-more {
@@ -306,5 +327,35 @@ body.books.category {
   	@media screen and (max-width: 767px) {
   		padding-left: 0;
   	}
+
+    @media (min-width: 768px) and (max-width: 850px) {
+      padding-left: 15px;
+    }
+
+    &>.books-row {
+      @media screen and (max-width: 1024px) {
+        display: flex;
+        flex-direction: column;
+
+        .know-more {
+          order: 1;
+          width: 170px;
+          margin: auto;
+          margin-bottom: 50px;
+
+          &:after {
+            content: '';
+            position: relative;
+            background: url(../images/down-2.png) no-repeat bottom;
+            width: 18px;
+            height: 18px;
+            display: inline-block;
+            top: 5px;
+            background-size: contain;
+            margin-left: 2px;
+          }
+        }
+      }
+    }
   }
 }

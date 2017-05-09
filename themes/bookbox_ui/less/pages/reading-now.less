@@ -1,11 +1,6 @@
 .page-user-userreadingnow,
 .page-user-usercart {
   @media screen and (max-width: 767px) {
-
-    #edit-del-from-cart-submit1 {
-      display: none;
-    }
-
     .main-container {
       padding-left: 30px;
       padding-right: 30px;
@@ -42,6 +37,32 @@
     .btn {
       display: block;
       margin:auto;
+    }
+  }
+}
+
+.page-user-usercart {
+  .modal-footer {
+    .btn {
+      display: inline-block;
+      margin:inherit;
+    }
+  }
+
+  .book-container {
+    position: relative;
+
+    .btn-danger.form-submit {
+      position: absolute;
+      overflow: hidden;
+      right: -15px;
+      top: 0;
+      height: 20px;
+      width: 20px;
+      background: url(../images/close.png) no-repeat center center;
+      background-size: cover;
+      border: none;
+      padding: 0;
     }
   }
 
