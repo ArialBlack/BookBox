@@ -117,7 +117,16 @@ aside.col-sm-4 {
     }
   }
 
-  @media screen and (max-width: 1300px) {
+  @media screen and (max-width: 991px) {
+    padding-top: 70px;
+    padding-right: 15px;
+  }
+
+  @media screen and (max-width: 1023px) {
+    padding-bottom: 510px;
+  }
+
+  @media (min-width: 992px) and (max-width: 1300px) {
     padding-right: 15px;
     padding-top: 115px;
   }
@@ -137,6 +146,10 @@ aside.col-sm-4 {
       width: 13px;
       background: url('../images/close.png') no-repeat center center;
       border: none;
+
+      @media screen and (max-width: 1299px) {
+        right: -32px;
+      }
     }
   }
 
@@ -154,6 +167,7 @@ aside.col-sm-4 {
     @media screen and (max-width: 992px) {
       font-size: 10px;
       margin: 0;
+
     }
   }
 

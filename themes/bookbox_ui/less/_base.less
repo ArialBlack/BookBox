@@ -14,7 +14,7 @@
     visibility: visible;
     height: 1px;
     width: 1px;
-    
+
     @media (min-width: 1200px) {
         display: none;
         visibility: hidden;
@@ -41,7 +41,26 @@ body {
     .line-height(22);
     color: @text;
     .tracking(40);
-} 
+  min-height: 100%;
+
+  .scroll-up {
+    display: none;
+    position: fixed;
+    bottom: 50px;
+    right: 15px;
+    height: 30px;
+    width: 30px;
+    background-size: cover;
+    background: url(../images/down-2.png) no-repeat center;
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
+    cursor: pointer;
+  }
+
+}
 
 h1, h2, h3, h4, h5, h6 {
     font-weight: bold;
@@ -102,7 +121,7 @@ img {
                 }
             }
         }
-      
+
       @media screen and (max-width:991px) {
         display: none;
       }

@@ -81,6 +81,7 @@
     <div class="<?php print $container_class; ?>">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".main-nav-collapse"></button>
+            <a href="/" class="home-header"><i class="icon ion-ios-home-outline"></i></a>
 
             <?php if ($logo): ?>
                 <a class="logo navbar-btn pull-left" href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>">
@@ -90,7 +91,6 @@
 
             <button type="button" class="navbar-toggle usermenu-toggle" data-toggle="collapse" data-target=".user-navbar-collapse"></button>
         </div>
-
 
         <div class="navbar-collapse collapse main-nav-collapse">
             <nav role="navigation">

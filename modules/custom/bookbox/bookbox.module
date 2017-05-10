@@ -1,5 +1,4 @@
 <?php
-
 module_load_include('inc', 'bookbox', 'bookbox.functions');
 module_load_include('inc', 'bookbox', 'bookbox.mail');          //emails
 module_load_include('inc', 'bookbox', 'bookbox.forms');
@@ -7,7 +6,6 @@ module_load_include('inc', 'bookbox', 'bookbox.cart');          //Корзина
 module_load_include('inc', 'bookbox', 'bookbox.order');         //Заказ месяца
 module_load_include('inc', 'bookbox', 'bookbox.readnow');       //Читаю сейчас
 module_load_include('inc', 'bookbox', 'bookbox.adminmessages');
-
 
 function bookbox_menu(){
   $items=array();
@@ -74,7 +72,6 @@ function bookbox_menu(){
 
   if ($show_cart) {
     $items['user/usercart'] = array(
-      //'title' => t('Замовлення місяця'),
         'page callback' => 'drupal_get_form',
         'page arguments' => array('bookbox_mini_cart_block'),
         'access callback' => TRUE,
@@ -85,7 +82,6 @@ function bookbox_menu(){
 
   if ($show_order) {
     $items['user/userorder'] = array(
-      //'title' => t('Замовлення місяця'),
         'page callback' => 'drupal_get_form',
         'page arguments' => array('bookbox_month_order_block'),
         'access callback' => TRUE,
@@ -96,7 +92,6 @@ function bookbox_menu(){
 
   if($show_reading_now) {
     $items['user/userreadingnow'] = array(
-      //'title' => t('Замовлення місяця'),
         'page callback' => 'drupal_get_form',
         'page arguments' => array('bookbox_reading_now_block'),
         'access callback' => TRUE,
@@ -303,10 +298,6 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state)
   $uid = $user->uid;
   // можно добавить максимум 2
 
-  //dsm(   bookbox_count_in_confirm_this_month(), 'this ' );
-  //dsm(   bookbox_count_in_confirm_prev_month(), 'prev ' );
-  //dsm( bookbox_in_confirm_this_month() );
-
   $form['submit']['#value'] = 'Замовити';
 
   $in_cart = 0;
@@ -343,9 +334,6 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state)
   if (!$can_add2cart) {
     $form['submit']['#attributes']['disabled'] = TRUE;
   }
-
-  //dsm('inc ', bookbox_count_in_confirm_this_month());
-  //dsm('pro  ', bookbox_count_in_prolong_this_month());
 }
 
 // Крон работы
@@ -398,9 +386,6 @@ function bookbox_cron() {
           $date = date("Y-m-d H:i:s", strtotime($prev_date));
           $timestamp = strtotime($date);
 
-          //commerce_order_status_update($order, 'completed', $skip_save = FALSE, $revision = NULL, $log = '');
-          //commerce_order_save($order);
-
           db_update('commerce_order')
               ->fields(array('changed' => $timestamp ))
               ->fields(array('status' => 'completed'))
@@ -415,7 +400,6 @@ function bookbox_cron() {
     variable_set('cron_last', date('y-m-d', time()));
     drupal_flush_all_caches();
   }
-
 }
 
 function bookbox_user_orders_history() {
@@ -517,7 +501,6 @@ function _bookbox_catblock($parent_tid) {
 
     $content = $content . '</div></div>';
   }
-
   return $content;
 }
 
@@ -530,8 +513,7 @@ function bookbox_menu_site_status_alter(&$menu_site_status, $path) {
 }
 
 //insert user to mailchimp company list after register
-function bookbox_user_insert(&$edit, $account, $category)
-{
+function bookbox_user_insert(&$edit, $account, $category) {
   $nid = (int)$account->field_company['und'][0]['target_id'];
   $node = node_load($nid);
   $company_name = $node->title;
@@ -565,7 +547,6 @@ function bookbox_user_insert(&$edit, $account, $category)
       }
     }
   }
-  //drupal_set_message(t('Дякуємо за реєстрацію! Підтвердьте електронну пошту, щоб розпочати користування Book Box.'), 'status');}
 }
 
 //delete user from mailchimp company list after delete in drupal
@@ -656,7 +637,6 @@ function bookbox_commerce_order_presave($order) {
 
 function computed_field_field_search_string_compute(&$entity_field, $entity_type, $entity, $field, $instance, $langcode, $items) {
   $authors = " ";
-
   $author_count = count($entity->field_book_author['und']);
 
   for($i = 0; $i < $author_count; $i++) {

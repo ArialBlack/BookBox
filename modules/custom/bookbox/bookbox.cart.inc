@@ -16,9 +16,7 @@ function bookbox_mini_cart_block($form, &$form_state) {
             '#markup' => '<h3>Замовлення ' . ua_month() . ' не підтверджено</h3><h6>Робіть замовлення з <span>1 ' .  ua_month(intval(m())) . '</span></h6>',
         );
     }
-    //todo
-    // если у нас есть книжки их прошлого месяца то тогда что?
-    // если 1 из прошлого то показывать 1 свободное место
+
     $wrapper = _bookbox_get_cart_items();
     $cart_count = 0;
     if ($wrapper) {
@@ -50,30 +48,24 @@ function bookbox_mini_cart_block($form, &$form_state) {
             }
         }
     }
-    //$in_prolong = bookbox_count_in_prolong();
-    //$in_confirm = bookbox_get_in_confirm();
 
-    //$reading_now = count(bookbox_get_in_reading_now($uid));
-    //dsm($reading_now);
     if ($cart_count < 2) {
         $in_prolong = bookbox_count_in_prolong_this_month($uid);
-        //dsm($in_prolong);
         $empty_cells = 2 - $cart_count - $in_prolong;
+        
         for($i=0; $i <$empty_cells;$i++) {
             $form['add_book_link_'.$i] = array(
                 '#type' => 'markup',
                 '#markup' => '<div class="add_some_book">Оберіть книгу</div>',
             );
         }
+        
         if ($empty_cells < 1) {
             //dsm($form);
             unset($form['ftitle']);
         }
-        //todo можно один сабмитить если 1 книга в продлении :TRUE
-        //$form['submit_box']['#attributes']['disabled'] = FALSE;
-        //dsm($form, 'form');
     }
-    //dsm(bookbox_count_in_confirm_this_month());
+
     // кнопка подтверждения доступна если
     // 1. число 1- 20
     // и 2.колво выбраных + кол-во в пролонге = 2
@@ -81,17 +73,8 @@ function bookbox_mini_cart_block($form, &$form_state) {
     // 3. если он уже подтверждал выбор в этом мес (полтв в этом мес > 0)
     // писать вы уже какбе того
     //dsm('this', bookbox_count_in_confirm_this_month());
-//dsm(current_period());
+
     if(current_period() == 1 && bookbox_count_in_confirm_this_month($uid) == 0 && $cart_count > 0) {
-        //может быть кнопка. 1-20 число и еще не потверждал и что-то есть в корзине
-        /*if ($cart_count + $reading_now == 2) {
-            $form['submit_box'] = array(
-                '#type' => 'submit',
-                '#submit' => array('bookbox_confirm_box'),
-                '#weight' => 10,
-                '#value' => 'Підтвердити замовлення', //todo
-            );
-        }*/
         if ($cart_count + bookbox_count_in_prolong_this_month($uid) == 2) {
             $modal = '<button type="button" id="edit-submit-box" class="btn btn-primary" data-toggle="modal" data-target="#confirm-orders">Підтвердити замовлення</button>
                             <div class="modal fade" tabindex="-1" role="dialog" id="confirm-orders">
@@ -128,39 +111,20 @@ function bookbox_mini_cart_block($form, &$form_state) {
                 '#markup' => '<p class="tip_message">Підтвердьте замовлення з 1 числа наступного місяця</p>'
             );
         }
-    } else {
-       // $form['submit_box_markup'] = array(
-       //     '#type' => 'markup',
-       //     '#markup' => '<p class="tip_message">Підтвердьте замовлення з 1-го числа наступного місяця</p>'
-       // );
     }
-    /*
-        if ($cart_count > 0) {
-            $form['submit_box'] = array(
-                '#type' => 'submit',
-                '#submit' => array('bookbox_confirm_box'),
-                '#weight' => 10,
-                '#value' => t('Підтвердити замовлення'), //todo
-            );
-        }*/
-    //dsm('c', $cart_count);
     return $form;
 }
 
 
 function bookbox_delete_bookfromcart1 ($form, &$form_state) {
-    //dsm('-1');
     global $user;
     $order = commerce_cart_order_load($user->uid);
     $line_item = $order->commerce_line_items['und'][0]['line_item_id'];
-    //dsm($line_item);
     commerce_cart_order_product_line_item_delete($order, $line_item);
     commerce_cart_order_refresh($order);
 }
 
-
 function bookbox_delete_bookfromcart2 ($form, &$form_state) {
-    //dsm('-2');
     global $user;
     $order = commerce_cart_order_load($user->uid);
     $line_item = $order->commerce_line_items['und'][1]['line_item_id'];
@@ -168,9 +132,7 @@ function bookbox_delete_bookfromcart2 ($form, &$form_state) {
     commerce_cart_order_refresh($order);
 }
 
-
 function bookbox_confirm_box($arg0) {
-    //drupal_set_message('Дякуємо! Ви щойно підтвердили замовлення місяця.');
     $user = user_load($arg0);
     $user_name = $user->field_name['und'][0]['value'] . ' ' . $user->field_sirname['und'][0]['value'];
     $mail_body = $user->field_name['und'][0]['value'] . ' ' . $user->field_sirname['und'][0]['value'] . ', вітання! ';
@@ -203,7 +165,7 @@ function bookbox_confirm_box($arg0) {
 
         $mail_body = $mail_body . '<div style="display:inline-block; width:200px; margin-top:20px; margin-bottom:20px;">' . '<a href="'.$GLOBALS['base_root'].'/node/' . $book2->nid .'">
         <img src = "' . $url . '" width="167" height="250" style="display:block; />'
-            . $book2->title . '<br/>' . $author->name .'</a> </div>'; //todo domain
+            . $book2->title . '<br/>' . $author->name .'</a> </div>';
 
         //2. удалим второй товар
         commerce_cart_order_product_line_item_delete($order, $line_item_id2);
@@ -255,14 +217,7 @@ function bookbox_confirm_box($arg0) {
     $mail_body = '<div>' . $mail_body . '<div style="clear:both;"></div>Деталі щодо доставки буде надіслано окремо. <br /><br />Команда Book Box. <br /><br /><span style="font-size:12px;">Це автоматичне повідомлення, будь ласка, не відповідайте на нього.</span>' . '</div>';
 
     //6. Пошлем емейл
-    //todo emails:
-    //переписать це використавши шаблон
 
-//    drupal_mail('system', 'mail', $user->mail, language_default(), array(
-//        'context' => array(
-//        'subject' => 'Ваше замовлення ' . ua_month($m = null),
-//        'message' => $mail_body,
-//        )));
     $params['subject'] = 'Ваше замовлення |' . ua_month_original();
     $params['content'] = $mail_body;
     $params['img1'] = '<a href="'.$order_book1['src'].'"><img alt = "" src = "' . $order_book1['img_src'] . '" style = "max-width:1626px;" class="mcnImage" width = "264" ></a>';

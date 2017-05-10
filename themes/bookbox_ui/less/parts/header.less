@@ -122,7 +122,7 @@
 
   	@media screen and (max-width: 767px) {
   		.navbar-btn.logo {
-  			display: none;
+          display: none;
   		}
   	}
 
@@ -172,6 +172,10 @@
           text-transform: uppercase;
           color: @light-color;
           background: none;
+
+          @media screen and (max-width: 992px) {
+            letter-spacing: 1.5px;
+          }
         }
 
         .new-dropdown-toggle {
@@ -200,6 +204,11 @@
       .dropdown-menu {
         a, a:active, a:focus, a:hover {
           color: @bb-darkblue;
+
+
+          @media screen and (max-width: 991px) {
+            line-height: 35px !important;
+          }
         }
       }
     }
@@ -228,6 +237,8 @@
     .finder-content_finder {
       #autocomplete {
         li {
+          text-align: left;
+
           @media screen and (max-width: 767px) {
             width: 100%;
           }
@@ -236,6 +247,26 @@
             width: 50%;
           }
         }
+      }
+    }
+  }
+
+  .main-nav-collapse {
+    @media screen and (max-width: 400px) {
+      right: 0;
+    }
+  }
+
+  .home-header {
+    display: none;
+
+    @media screen and (max-width: 767px) {
+      display: inline-block;
+      margin-left: 15px;
+
+      i.icon {
+        font-size: 36px;
+        color: white;
       }
     }
   }
@@ -358,7 +389,6 @@
 }
 
 .primary-nav {
-
 	li {
 		margin: 0 5px;
 
@@ -382,6 +412,11 @@
         padding-right: 2px;
         padding-left: 0;
       }
+    }
+
+    @media screen and (max-width: 991px) {
+      margin-top: 10px;
+      margin-bottom: 10px;
     }
 	}
   .first.dropdown {

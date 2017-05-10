@@ -9,7 +9,7 @@
 
     .links {
       position: absolute;
-      right: 0;
+      right: -15px;
       top: 0;
     }
 
@@ -22,8 +22,13 @@
         height: 13px;
         width: 13px;
         background: url(../images/close.png) no-repeat center center;
+        background-size: cover;
         border: none;
         display: block;
+
+        @media screen and (max-width: 767px) {
+          width: 18px;
+        }
       }
     }
   }
