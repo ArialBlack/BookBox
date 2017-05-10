@@ -17,8 +17,6 @@ function bookbox_form_alter(&$form, &$form_state, $form_id){
         );
     }
 
-    //dsm($form); <svg preserveAspectRatio="xMaxYMax"><use xlink:href="/sites/all/themes/bookbox_ui/images/svg-icons-sprite.svg#icon-search"></use></svg>
-
     if ($form['#id'] == 'user-register-form') {
         $query = db_select('node', 'n');
         $query->fields('n', array('nid', 'title'));
@@ -47,7 +45,6 @@ function bookbox_form_alter(&$form, &$form_state, $form_id){
 
         $form['field_name']['#weight'] = -10;
         $form['field_sirname']['#weight'] = -9;
-        //$form['email']['#weight'] = -8;
 
         $form['pass'] = $form['account']['pass'];
         unset($form['account']['pass']);
@@ -83,7 +80,6 @@ function bookbox_form_alter(&$form, &$form_state, $form_id){
     if ($form['#id'] == 'user-pass') {
         $form['actions']['submit']['#value'] = 'Відновити пароль';
     }
-
 }
 
 function bookbox_registeruser_validate($form, &$form_state) {

@@ -52,7 +52,6 @@ function create_message_vars(&$mandrill_params, $message){
   return $settings;
 }
 
-
 function bookbox_mail($key, &$message, $params) {
   $message['headers']['Content-Type'] = 'text/html; charset=UTF-8';
 
@@ -214,7 +213,6 @@ function user_mandrill_mail_alter(&$mandrill_params, $message) {
     $mandrill_params['message']['html'] = '';
     $mandrill_params['message']['text'] = '';
 
-
     $mandrill_params['message']['global_merge_vars'] = $global_merge_vars;
 
     if (!empty($merge_vars)) {
@@ -283,7 +281,6 @@ function user_mandrill_mail_alter(&$mandrill_params, $message) {
 
 }
 
-
 function bookbox_mail_send($module, $key, $to, $params = array()) {
 
   $language = isset($params['lang']) ? $params['lang'] : language_default();
@@ -301,8 +298,4 @@ function bookbox_mail_send($module, $key, $to, $params = array()) {
     return FALSE;
   }
 }
-
-
-
-
 

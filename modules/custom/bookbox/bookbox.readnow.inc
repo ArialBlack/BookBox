@@ -1,8 +1,5 @@
 <?php
-
-
 // Блок ЧИТАЮ СЕЙЧАС
-//
 function bookbox_reading_now_block ($form, &$form_state) {
     global $user;
     $uid = $user->uid;
@@ -12,20 +9,16 @@ function bookbox_reading_now_block ($form, &$form_state) {
     $title = 'Зараз читаю';
 
     $result = bookbox_get_in_reading_now($uid);
-    //dsm($result);
-    //dsm($result);
 
     if ($result) {
         $form['title'] = array(
             '#type' => 'markup',
-            //'#markup' => '<h3>' . $title . ' </h3><h6>Доставка книг відбудеться <span>27 ' .  ua_month(intval(m()-1)) . '</span></h6>', //todo
             '#markup' => '<h3>' . $title . ' </h3><h6>Поверніть книжки в стелаж до <span>25 ' . ua_month(intval(m()-1)) . '</span> або подовжіть ще на місяць</h6>',
         );
 
         $box_count = 0;
 
         foreach ($result as $res) {
-            //
             $order = commerce_order_load($res->order_id);
 
 
@@ -52,16 +45,9 @@ function bookbox_reading_now_block ($form, &$form_state) {
                     '#markup' => $rendered_teaser,
                 );
 
-                //todo
                 switch ($res->status) {
                     case 'completed':
                         if(current_period() == 1) {
-                           /* $form['prolong_book' . $box_count] = array(
-                                '#type' => 'submit',
-                                '#submit' => array('bookbox_prolongbook' . $box_count),
-                                '#value' => 'Подовжити на місяць <span>' . $box_count . '</span>',
-                            );*/
-                            
                             $modal = '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirm-prolong' . $box_count . '">Подовжити на місяць</button>
                             <div class="modal fade" tabindex="-1" role="dialog" id="confirm-prolong' . $box_count . '">
                                       <div class="modal-dialog" role="document">
@@ -121,9 +107,6 @@ function bookbox_reading_now_block ($form, &$form_state) {
                                 $modal = '';
                             }
 
-                            ///////////
-                            //скроем временно
-
                             $form['prolongmarkup' . $box_count] = array(
                                 '#type' => 'markup',
                                 '#markup' => $modal,
@@ -134,7 +117,6 @@ function bookbox_reading_now_block ($form, &$form_state) {
                     case 'prolong':
                         $form['prolong_book' . $box_count] = array(
                             '#type' => 'submit',
-                            //'#submit' => array('bookbox_prolongbook' . $box_count),
                             '#value' => 'Подовжено <span>' . $box_count . '</span>',
                         );
                         $form['prolong_book' . $box_count]['#attributes']['disabled'] = TRUE;
@@ -148,7 +130,6 @@ function bookbox_reading_now_block ($form, &$form_state) {
             }
         }
     }
-    //dsm($form);
 
     return $form;
 }
@@ -156,13 +137,6 @@ function bookbox_reading_now_block ($form, &$form_state) {
 function bookbox_prolongbook1($arg0, $arg1) {
     $order_id = $arg1;
     $order = commerce_order_load($order_id);
-    //dsm(time());
-
-    /*db_update('commerce_order')
-        ->fields(array('changed' => time() ))
-        ->fields(array('status' => 'prolong'))
-        ->condition('order_id', $order_id)
-        ->execute();*/
 
     commerce_order_status_update($order, 'prolong', $skip_save = FALSE, $revision = NULL, $log = '');
     commerce_order_save($order);
@@ -174,13 +148,6 @@ function bookbox_prolongbook1($arg0, $arg1) {
 function bookbox_prolongbook2($arg0, $arg1) {
     $order_id = $arg1;
     $order = commerce_order_load($order_id);
-    //dsm(time()); // 1498889721
-
-    /*db_update('commerce_order')
-        ->fields(array('changed' => time() ))
-        ->fields(array('status' => 'prolong'))
-        ->condition('order_id', $order_id)
-        ->execute();*/
 
     commerce_order_status_update($order, 'prolong', $skip_save = FALSE, $revision = NULL, $log = '');
     commerce_order_save($order);
