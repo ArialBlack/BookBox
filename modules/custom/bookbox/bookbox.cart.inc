@@ -196,6 +196,8 @@ function bookbox_confirm_box($arg0) {
         '</a> </div>'; //todo domain
 
     commerce_order_status_update($order, 'completed', $skip_save = FALSE, $revision = NULL, $log = '');
+    $node = _bookbox_get_product_display_by_product_id($product_id1);
+    bookbox_node_update($node);
 
     //4. добавим второй товар в корзину
     if($order_count == 2) {
@@ -212,6 +214,8 @@ function bookbox_confirm_box($arg0) {
 
         //5. проапдейтим статус второго товара
         commerce_order_status_update($order, 'completed', $skip_save = FALSE, $revision = NULL, $log = '');
+        $node = _bookbox_get_product_display_by_product_id($product_id2);
+        bookbox_node_update($node);
     }
 
     $mail_body = '<div>' . $mail_body . '<div style="clear:both;"></div>Деталі щодо доставки буде надіслано окремо. <br /><br />Команда Book Box. <br /><br /><span style="font-size:12px;">Це автоматичне повідомлення, будь ласка, не відповідайте на нього.</span>' . '</div>';
