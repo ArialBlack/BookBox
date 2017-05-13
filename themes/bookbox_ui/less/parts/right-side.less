@@ -133,20 +133,24 @@ aside.col-sm-4 {
     padding-top: 73px;
     padding-bottom: 70px;
 
-    @media screen and (max-width: 1300px) {
+    //@media screen and (max-width: 1300px) {
+    //  //padding-right: 15px;
+    //  padding-top: 10px;
+    //}
+
+    @media screen and (max-width: 1024px) {
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+
+    @media (min-width: 1025px) and (max-width: 1300px) {
       //padding-right: 15px;
-      padding-top: 80px;
+      padding-top: 65px;
     }
+  }
 
-    @media screen and (max-width: 1023px) {
-      padding-bottom: 510px;
-    }
-
-
-    @media (min-width: 992px) and (max-width: 1300px) {
-      //padding-right: 15px;
-      padding-top: 115px;
-    }
+  @media screen and (max-width: 1024px) {
+    position: relative;
   }
 
 }

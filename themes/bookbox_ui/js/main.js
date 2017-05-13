@@ -196,7 +196,13 @@
         //NICESCROLL
         var nice = $("html").niceScroll({cursorcolor:"#999", mousescrollstep:60});  // The document page (body)
 
+      if ($(window).width() > 1024) {
         $(".col-sm-4").niceScroll({cursorcolor:"#999", mousescrollstep:60}); // end of nicescroll
+      };
+
+      if ($('.col-sm-8').height() < $('aside.col-sm-4').height() && $(window).width() <= 1024 && $(window).width() > 767) {
+        $('.col-sm-8').css('height', $('aside.col-sm-4').height());
+      };
 
     });
 }(jQuery));
