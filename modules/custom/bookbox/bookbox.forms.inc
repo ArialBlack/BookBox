@@ -55,10 +55,8 @@ function bookbox_form_alter(&$form, &$form_state, $form_id){
         $form['mail']['#weight'] = -6;
         $form['mail']['#title'] = 'Email <span>(Корпоративний email)</span>';
         $form['mail']['#description'] = '';
-
-        $form['tel'] = $form['field_tel'];
-        unset($form['field_tel']);
-        $form['tel']['#weight'] = -7;
+        
+        $form['field_tel']['#weight'] = -7;
 
         $form['pass']['#weight'] = -5;
     }
@@ -105,7 +103,7 @@ function bookbox_registeruser_validate($form, &$form_state) {
         }
     }
 
-    $usertel = $form_state['values']['tel']['und'][0]['value'];
+    $usertel = $form_state['values']['field_tel']['und'][0]['value'];
 
     $pattern = "/^\+380\d{3}\d{2}\d{2}\d{2}$/";
     if(!preg_match($pattern, $usertel))  {
