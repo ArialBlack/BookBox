@@ -80,7 +80,7 @@
   	padding-right: 3%;
   	z-index: 11;
 
-  	@media (max-width: 1400px) {
+  	@media (max-width: 1435px) {
   		padding-right: 0;
 
   		.navbar-btn.logo {
@@ -204,7 +204,10 @@
       .dropdown-menu {
         a, a:active, a:focus, a:hover {
           color: @bb-darkblue;
-
+          font-weight: normal;
+          line-height: 1.42857143;
+          text-transform: capitalize;
+          padding: 3px 20px;
 
           @media screen and (max-width: 991px) {
             line-height: 35px !important;
@@ -321,6 +324,10 @@
     color: white;
     .font-size(18);
 
+    &, &:focus, &:visited, &:active {
+      background: transparent!important;
+    } 
+
     @media screen and (max-width: 1150px) {
     	.font-size(14);
     }
@@ -391,28 +398,69 @@
 .primary-nav {
 	li {
 		margin: 0 5px;
+  }
 
-		a {
-			padding-right: 5px;
+  .collapse-nav-items {
+    cursor: pointer;
 
-      @media screen and (min-width: 1261px) and (max-width: 1330px) {
-        font-size: 12px;
-      }
+    img {
+      cursor: pointer;
+      position: relative;
+      top: 5px;
+      width: 40px;
+      margin-left: 10px;
 
-      @media screen and (min-width: 1151px) and (max-width: 1260px){
-        font-size: 12px;
-        padding-left: 0;
-      }
-      @media screen and (min-width: 1081px) and (max-width: 1150px) {
-        font-size: 10.8px;
-      }
-
-      @media screen and (min-width: 992px) and (max-width: 1080px) {
-        font-size: 10.4px;
-        padding-right: 2px;
-        padding-left: 0;
+      @media screen and (max-width: 1024px) {
+        margin-left: 0;
       }
     }
+
+    &>ul {
+      position: absolute;
+      display: none;
+      top: 64px;
+      padding-left: 0;
+      background: #12ab99;
+
+      li {
+        float: left;
+        padding: 10px;
+        padding-right: 45px;
+
+        .new-dropdown-toggle {
+          position: absolute;
+          right: 15px;
+          top: 13px!important;
+        }
+      }
+    }
+  }
+
+  .nav>li {
+    &>a {
+     padding-right: 5px;
+
+     @media screen and (min-width: 1261px) and (max-width: 1350px) {
+      font-size: 12px;
+    }
+
+    @media screen and (min-width: 1151px) and (max-width: 1270px){
+      font-size: 12px;
+      padding-left: 0;
+    }
+
+    @media screen and (min-width: 1081px) and (max-width: 1160px) {
+      font-size: 10.8px;
+      padding-right: 4px;
+      padding-left: 5px;
+    }
+
+    @media screen and (min-width: 992px) and (max-width: 1080px) {
+      font-size: 10.4px;
+      padding-right: 2px;
+      padding-left: 0;
+    }
+  }
 
     @media screen and (max-width: 991px) {
       margin-top: 10px;
