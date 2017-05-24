@@ -342,8 +342,10 @@
     color: white;
     .font-size(18);
 
-    &, &:focus, &:visited, &:active {
-      background: transparent!important;
+    @media screen and (min-width: 992px) {
+      &, &:focus, &:visited, &:active {
+        background: transparent !important;
+      }
     }
 
     @media screen and (max-width: 1150px) {
