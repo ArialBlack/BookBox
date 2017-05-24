@@ -330,6 +330,7 @@
             border: none;
             font-size: 25px;
             text-align: left;
+            margin-right: 0;
           }
 
           .tab-content {
@@ -339,10 +340,11 @@
           &:after {
             content: " ";
             position: absolute;
+            pointer-events: none;
             background: url(../images/down.png);
             background-size: contain;
             top:10px;
-            right:0;
+            right:10px;
             width:26px;
             height:26px;
             -webkit-transition: all .3s ease;
