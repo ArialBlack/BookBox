@@ -34,7 +34,7 @@
           }
 
           var addCollapseNav = '<li class="collapse-nav-items"><img src="/sites/all/themes/bookbox_ui/images/collapse-nav.png"><ul></ul></li>';
-        if ( $('nav .primary-nav>ul>li').length > 5 && $(window).width() > 992) {
+        if ( $('nav .primary-nav>ul>li').length > 5 && $(window).width() >= 992) {
             $('nav .primary-nav>ul').append(addCollapseNav);
             for (var i = 5; i< $('nav .primary-nav>ul>li').length-1; i++) {
                 var numList = i+1;

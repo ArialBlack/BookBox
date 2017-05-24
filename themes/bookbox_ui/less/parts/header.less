@@ -8,6 +8,10 @@
   margin-top: 0;
   z-index: 2;
 
+  @media (min-width: 992px) and (max-width: 1050px) {
+    padding-left: 55px;
+  }
+
   .user-fav-nav {
   	display: none;
   }
@@ -80,7 +84,7 @@
   	padding-right: 3%;
   	z-index: 11;
 
-  	@media (max-width: 1435px) {
+  	@media (max-width: 1500px) {
   		padding-right: 0;
 
   		.navbar-btn.logo {
@@ -173,7 +177,7 @@
           color: @light-color;
           background: none;
 
-          @media screen and (max-width: 992px) {
+          @media screen and (max-width: 991px) {
             letter-spacing: 1.5px;
           }
         }
@@ -202,6 +206,13 @@
       }
 
       .dropdown-menu {
+
+        li {
+          @media screen and (min-width: 992px) {
+            margin: 0;
+          }
+        }
+
         a, a:active, a:focus, a:hover {
           color: @bb-darkblue;
           font-weight: normal;
@@ -211,6 +222,13 @@
 
           @media screen and (max-width: 991px) {
             line-height: 35px !important;
+            color: white;
+          }
+        }
+
+        a:active, a:focus, a:hover {
+          @media screen and (min-width: 992px) {
+            background: #f5f5f5;
           }
         }
       }
@@ -326,7 +344,7 @@
 
     &, &:focus, &:visited, &:active {
       background: transparent!important;
-    } 
+    }
 
     @media screen and (max-width: 1150px) {
     	.font-size(14);
@@ -406,8 +424,8 @@
     img {
       cursor: pointer;
       position: relative;
-      top: 5px;
-      width: 40px;
+      top: 9px;
+      width: 30px;
       margin-left: 10px;
 
       @media screen and (max-width: 1024px) {
@@ -421,6 +439,8 @@
       top: 64px;
       padding-left: 0;
       background: #12ab99;
+      border: 1px solid white;
+      border-top: 0;
 
       li {
         float: left;
@@ -440,24 +460,24 @@
     &>a {
      padding-right: 5px;
 
-     @media screen and (min-width: 1261px) and (max-width: 1350px) {
+     @media screen and (min-width: 1341px) and (max-width: 1410px) {
       font-size: 12px;
     }
 
-    @media screen and (min-width: 1151px) and (max-width: 1270px){
+    @media screen and (min-width: 1230px) and (max-width: 1340px){
       font-size: 12px;
       padding-left: 0;
     }
 
-    @media screen and (min-width: 1081px) and (max-width: 1160px) {
+    @media screen and (min-width: 1220px) and (max-width: 1230px) {
       font-size: 10.8px;
       padding-right: 4px;
       padding-left: 5px;
     }
 
-    @media screen and (min-width: 992px) and (max-width: 1080px) {
-      font-size: 10.4px;
-      padding-right: 2px;
+    @media screen and (min-width: 992px) and (max-width: 1220px) {
+      font-size: 10px;
+      padding-right: 1px;
       padding-left: 0;
     }
   }
