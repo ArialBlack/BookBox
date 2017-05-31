@@ -11,7 +11,8 @@ function bookbox_reading_now_block ($form, &$form_state) {
     //$title = variable_get('readingNow_title');
     $title = '(Читаю зараз) Читаю зараз';
 
-    $result = bookbox_get_in_reading_now();
+    $result = bookbox_get_in_reading_now($uid);
+    //dsm($result);
     //dsm($result);
 
     if ($result) {
@@ -114,7 +115,7 @@ function bookbox_reading_now_block ($form, &$form_state) {
 }
 
 function bookbox_prolongbook1($arg0) {
-    $result = bookbox_get_in_reading_now_by_user($arg0);
+    $result = bookbox_get_in_reading_now($arg0);
    // dsm($result);
 
     if ($result) {
@@ -129,7 +130,7 @@ function bookbox_prolongbook1($arg0) {
 }
 
 function bookbox_prolongbook2($arg0) {
-    $result = bookbox_get_in_reading_now_by_user($arg0);
+    $result = bookbox_get_in_reading_now($arg0);
 
     if ($result && count($result) > 1) {
         $order_id = $result[1]->order_id;

@@ -86,20 +86,26 @@ function bookbox_block_info() {
 }
 
 function bookbox_block_view($delta = '') {
+  global $user;
+  $uid = $user->uid;
+
   $block = array();
 
   //todo
   $show_cart = true;
-  if( current_period() == 2 || bookbox_count_in_confirm_this_month() > 0 ) {
+  if( current_period() == 2 || bookbox_count_in_confirm_this_month($uid) > 0 ) {
     $show_cart = false;
   }
 
   $show_order = true;
-  if( bookbox_count_in_confirm_this_month() < 1 ) {
+  if( bookbox_count_in_confirm_this_month($uid) < 1 ) {
     $show_order = false;
   }
 
   $show_reading_now = true;
+  if( count(bookbox_get_in_reading_now($uid)) < 1) {
+    $show_reading_now = false;
+  }
 
   switch ($delta) {
     case 'MiniCart':
@@ -160,6 +166,8 @@ function bookbox_block_view_alter(&$data, $block) {
 }
 
 function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state) {
+  global $user;
+  $uid = $user->uid;
   // можно добавить максимум 2
 
   //dsm(   bookbox_count_in_confirm_this_month(), 'this ' );
@@ -193,9 +201,9 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state)
     }
   }
 
-  $reading_now = count(bookbox_get_in_reading_now());
+  $in_confirm_this_month = bookbox_count_in_confirm_this_month($uid);
 
-  if ($in_cart == 2 || $reading_now + $in_cart > 1 || current_period() == 2) {
+  if ($in_cart == 2 || $in_confirm_this_month > 0 || current_period() == 2 || bookbox_count_in_prolong_prev_month($uid) + $in_cart > 1) {
     $can_add2cart = false;
   }
 
@@ -209,69 +217,95 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state)
 
 // Крон работы
 function bookbox_cron() {
-  if(intval(d()) == 1) {
-    $result = db_select('commerce_order', 'o')
-        ->fields('o', array('order_id', 'status', 'changed'))
-        ->condition(
-            db_or()
-                ->condition('o.status', 'completed')
-                ->condition('o.status', 'prolong')
-        )
-        ->orderBy('o.order_id', 'DESC')
-        ->execute()->fetchAll();
-    
-    foreach ($result as $item) {
-      $order_month = intval(date('m', $item->changed));
-      //1-го числа мы удаляем все книги из "я читаю" если они были заказаны в прошлом месяце - меняем статус на архив
-      if($item->status == 'completed' && $order_month < intval(m())) {
-        //dsm('в архив!');
-        $order = commerce_order_load($item->order_id);
-        commerce_order_status_update($order, 'archive', $skip_save = FALSE, $revision = NULL, $log = '');
+  $cron_last = variable_get('cron_last');
+
+  if ( date('y-m-d', $cron_last) != date('y-md-', time())) {
+
+    if(intval(d()) == 1) {
+      $result = db_select('commerce_order', 'o')
+          ->fields('o', array('order_id', 'status', 'changed'))
+          ->condition(
+              db_or()
+                  ->condition('o.status', 'completed')
+                  ->condition('o.status', 'prolong')
+          )
+          ->orderBy('o.order_id', 'DESC')
+          ->execute()->fetchAll();
+
+      foreach ($result as $item) {
+
+        $order_month = intval(date('m', $item->changed));
+
+        //1-го числа мы меняем статусы всех книг которые в статусе комлитед и были заказаны в пред-предудущем месяце
+        //если щас 1е мая, то мы ищем заказ марта
+        if ($item->status == 'completed' &&  intval(m()) - $order_month >=2 ) {
+          //dsm('в архив!');
+          $order = commerce_order_load($item->order_id);
+          commerce_order_status_update($order, 'archive', $skip_save = FALSE, $revision = NULL, $log = '');
+        }
+
+        //1-го числа мы меняем статус всех книг "пролонг" на "подтверждено" и меняем дату так как будто они были подтверждены в прошлом месяце
+        if ($item->status == 'prolong') {
+          $old_changed = $item->changed;
+          $old_changed_day = intval(date("d", $old_changed));
+          $old_changed_month = intval(date("m", $old_changed));
+          $old_changed_year = intval(date("Y", $old_changed));
+
+          $prev_date_month = $old_changed_month - 1;
+          $prev_date_year = $old_changed_year;
+          if ($prev_date_month < 1) {
+            $prev_date_month = 12;
+            $prev_date_year = $prev_date_year - 1;
+          }
+
+          $prev_date = $prev_date_month . '/' . $old_changed_day . '/' . $prev_date_year;
+          $date = date("Y-m-d H:i:s", strtotime($prev_date));
+          $timestamp = strtotime($date);
+
+          db_update('commerce_order')
+              ->fields(array('changed' => $timestamp ))
+               ->fields(array('status' => 'completed'))
+               ->condition('order_id', $item->order_id)
+              ->execute();
+        }
       }
 
-      //1-го числа мы меняем статус всех книг "пролонг" из "я читаю" на "подтверждено" и меняем дату так как будто они были подтверждены в этом месяце
-      if($item->status == 'prolong' && $order_month < intval(m())) {
-        db_update('commerce_order')
-            ->fields(array('changed' => time ()))
-            ->fields(array('status' => 'completed'))
-            ->condition('order_id', $item->order_id)
-            ->execute();
-      }
-    }
+      ///$result = db_select('users', 'u')
+      ///     ->fields('u', array('uid', 'mail'))
+      ///    ->condition('u.send1', 0)
+      ///     ->execute()->fetchAll();
 
-    $result = db_select('users', 'u')
-        ->fields('u', array('uid', 'mail'))
-        ->condition('u.send1', 0)
-        ->execute()->fetchAll();
-
-    foreach ($result as $item) {
+      ///foreach ($result as $item) {
       //dsm($item);
-      drupal_mail('system', 'mail', $item->mail, language_default(), array(
-          'context' => array(
-              'subject' => 'Ви підтвердили книги',
-              'message' => 'Hello, its 1 day of month',
-          )));
+      /// drupal_mail('system', 'mail', $item->mail, language_default(), array(
+      ///     'context' => array(
+      ///         'subject' => 'Ви підтвердили книги',
+      ///         'message' => 'Hello, its 1 day of month',
+      ///     )));
 
-      db_update('users')
-          ->fields(array('send1' => 1))
-          ->condition('uid', $item->uid)
-          ->execute();
-      
+      ///  db_update('users')
+      ///      ->fields(array('send1' => 1))
+      ///     ->condition('uid', $item->uid)
+      ///      ->execute();
+      ///
+
     }
+
+    ///if(intval(d()) == 2) {
+    ///  db_update('users')
+    ///      ->fields(array('send1' => 1))
+    //->condition('send1', $item->uid)
+    ///      ->execute();
+
+    if(intval(d()) == 19) {
+
+    }
+
+    //Мейл рассылка:
+
+    variable_set('cron_last', date('y-m-d', time()));
   }
 
-  if(intval(d()) == 2) {
-    db_update('users')
-        ->fields(array('send1' => 1))
-        //->condition('send1', $item->uid)
-        ->execute();
-  }
-
-  if(intval(d()) == 19) {
-
-  }
-
-  //Мейл рассылка:
 }
 
 function bookbox_user_orders_history() {

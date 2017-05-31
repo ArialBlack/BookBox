@@ -87,20 +87,20 @@ function _bookbox_get_product_display_by_product_id($product_id, $bundle = 'prod
 
 ///////////////////////////////////////////////////////////////////////////
 //Сколько Подтвержено в этом месяце
-function bookbox_count_in_confirm_this_month() {
-  return count( bookbox_in_confirm_this_month() );
+function bookbox_count_in_confirm_this_month($uid) {
+  return count( bookbox_in_confirm_this_month($uid) );
 }
 
 //Сколько Подтверждено в прошлом месяце
-function bookbox_count_in_confirm_prev_month() {
-  return count( bookbox_in_confirm_prev_month() );
+function bookbox_count_in_confirm_prev_month($uid) {
+  return count( bookbox_in_confirm_prev_month($uid) );
 }
 
 //Получить список подтвержденных в этом мес
-function bookbox_in_confirm_this_month() {
+function bookbox_in_confirm_this_month($uid) {
   $in_confirm_this_month = [];
 
-  foreach(bookbox_get_in_confirm() as $item) {
+  foreach(bookbox_get_in_confirm($uid) as $item) {
     if (date("m", $item->changed) == m()) {
       //$in_confirm_this_month = $in_confirm_this_month + 1;
       array_push($in_confirm_this_month, $item);
@@ -110,10 +110,10 @@ function bookbox_in_confirm_this_month() {
 }
 
 //Получить список подтвержденных в прошлом мес
-function bookbox_in_confirm_prev_month() {
+function bookbox_in_confirm_prev_month($uid) {
   $in_confirm_prev_month = [];
 
-  foreach(bookbox_get_in_confirm() as $item) {
+  foreach(bookbox_get_in_confirm($uid) as $item) {
     $year = date("Y");
     $prev_month = intval(date("m")) - 1;
 
@@ -137,12 +137,12 @@ function bookbox_in_confirm_prev_month() {
 }
 
 //Выборка из базы - подтверждено юзером
-function bookbox_get_in_confirm() {
-  global $user;
+function bookbox_get_in_confirm($uid) {
+  //global $user;
 
   $result = db_select('commerce_order', 'o')
       ->fields('o', array('order_id', 'status', 'changed'))
-      ->condition('o.uid', $user->uid)
+      ->condition('o.uid', $uid)
       ->condition('o.status', 'completed')
       ->orderBy('o.order_id', 'DESC')
       //->range(0,2)
@@ -153,20 +153,20 @@ function bookbox_get_in_confirm() {
 /////////////////////////////////////////////////////////////
 
 //Сколько Продлено в этом месяце
-function bookbox_count_in_prolong_this_month() {
-  return count( bookbox_in_prolong_this_month() );
+function bookbox_count_in_prolong_this_month($uid) {
+  return count( bookbox_in_prolong_this_month($uid) );
 }
 
 //Сколько Продлено в прошлом месяце
-function bookbox_count_in_prolong_prev_month() {
-  return count( bookbox_in_prolong_prev_month() );
+function bookbox_count_in_prolong_prev_month($uid) {
+  return count( bookbox_in_prolong_prev_month($uid) );
 }
 
 //Список продленного в этом мес
-function bookbox_in_prolong_this_month() {
+function bookbox_in_prolong_this_month($uid) {
   $in_prolong_this_month = [];
 
-  foreach(bookbox_get_in_prolong() as $item) {
+  foreach(bookbox_get_in_prolong($uid) as $item) {
     if (date("m-Y", $item->changed) == date("m-Y")) {
       array_push($in_prolong_this_month, $item);
     }
@@ -175,10 +175,10 @@ function bookbox_in_prolong_this_month() {
 }
 
 //Список Продлено в прошлом месяце
-function bookbox_in_prolong_prev_month() {
+function bookbox_in_prolong_prev_month($uid) {
   $in_prolong_prev_month = [];
 
-  foreach(bookbox_get_in_prolong() as $item) {
+  foreach(bookbox_get_in_prolong($uid) as $item) {
     $year = date("Y");
     $prev_month = intval(date("m")) - 1;
 
@@ -203,12 +203,10 @@ function bookbox_in_prolong_prev_month() {
 }
 
 //Выборка из базы - продлено юзером
-function bookbox_get_in_prolong() {
-  global $user;
-
+function bookbox_get_in_prolong($uid) {
   $result = db_select('commerce_order', 'o')
       ->fields('o', array('order_id', 'status', 'changed'))
-      ->condition('o.uid', $user->uid)
+      ->condition('o.uid', $uid)
       ->condition('o.status', 'prolong')
       ->orderBy('o.order_id', 'DESC')
       //->range(0,2)
@@ -219,83 +217,10 @@ function bookbox_get_in_prolong() {
 
 
 //Выборка продлено и заказы в прошлом месяце
-function bookbox_get_in_reading_now() {
-  global $user;
-
-  $result = db_select('commerce_order', 'o')
-      ->fields('o', array('order_id', 'status', 'changed'))
-      ->condition('o.uid', $user->uid)
-      ->condition(
-          db_or()
-              ->condition('o.status', 'completed')
-              ->condition('o.status', 'prolong')
-      )
-      ->orderBy('o.order_id', 'DESC')
-     // ->range(0,2)
-      ->execute()->fetchAll();
-
-  $in_reading_now = [];
-
-  foreach($result as $item) {
-    $year = date("Y");
-    $prev_month = intval(date("m")) - 1;
-
-    if($prev_month < 1) {
-      $prev_month = 12;
-      $year = intval(date("Y")) - 1;
-      $prev_date = $prev_month . "-" . $year;
-    } else {
-      if ($prev_month < 10) {
-        $prev_date =  "0" . $prev_month  . "-" . $year;
-      } else {
-        $prev_date =  $prev_month  . "-" . $year;
-      }
-    }
-
-    if (date("m-Y", $item->changed) == $prev_date) {
-      array_push($in_reading_now, $item);
-    }
-  }
-
-  return $in_reading_now;
-}
-
-//Выборка продлено и заказы юзера в прошлом месяце
-function bookbox_get_in_reading_now_by_user($uid) {
-  $result = db_select('commerce_order', 'o')
-      ->fields('o', array('order_id', 'status', 'changed'))
-      ->condition('o.uid', $uid)
-      ->condition(
-          db_or()
-              ->condition('o.status', 'completed')
-              ->condition('o.status', 'prolong')
-      )
-      ->orderBy('o.order_id', 'DESC')
-     // ->range(0,2)
-      ->execute()->fetchAll();
-
-  $in_reading_now = [];
-
-  foreach($result as $item) {
-    $year = date("Y");
-    $prev_month = intval(date("m")) - 1;
-
-    if($prev_month < 1) {
-      $prev_month = 12;
-      $year = intval(date("Y")) - 1;
-      $prev_date = $prev_month . "-" . $year;
-    } else {
-      if ($prev_month < 10) {
-        $prev_date =  "0" . $prev_month  . "-" . $year;
-      } else {
-        $prev_date =  $prev_month  . "-" . $year;
-      }
-    }
-
-    if (date("m-Y", $item->changed) == $prev_date) {
-      array_push($in_reading_now, $item);
-    }
-  }
+function bookbox_get_in_reading_now($uid) {
+  $in_confirm_prev_month = bookbox_in_confirm_prev_month($uid);
+  $in_prolong_this_month = bookbox_in_prolong_this_month($uid);
+  $in_reading_now = array_merge($in_confirm_prev_month,$in_prolong_this_month);
 
   return $in_reading_now;
 }
