@@ -138,6 +138,10 @@ function bookbox_block_info() {
       'info' => t('cat nauch'),
   );
 
+  $blocks['CatHud'] = array(
+      'info' => t('cat hud'),
+  );
+
   $blocks['BBUserMenu'] = array(
       'info' => t('custom user menu'),
   );
@@ -226,6 +230,11 @@ function bookbox_block_view($delta = '') {
       $block['content'] = bookbox_cat_nauch_block();
       break;
 
+    case 'CatHud':
+      $block['subject'] = '';
+      $block['content'] = bookbox_cat_hud_block();
+      break;
+
     case 'BBUserMenu':
       $block['subject'] = '';
       $block['content'] = bookbox_custom_usermenu_block();
@@ -260,7 +269,7 @@ function bookbox_custom_usermenu_block() {
 
   $content = $content . '<ul class="menu nav navbar-nav secondary">';
   $content = $content . '<li class="first last expanded dropdown">';
-  $content = $content . '<a href="/user" title="" data-target="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <span class="user-name">' . $nanme . ' ' . $snanme . '</span> <span class="caret"></span></a>';
+  $content = $content . '<a href="/user" title="" data-target="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <span class="user-name"><span>' . $nanme . '</span> <span>' . $snanme . '</span></span> <span class="caret"></span></a>';
   $content = $content . '<ul class="dropdown-menu"><li class="first leaf"><a href="/user" title="">Профіль</a></li>';
   $content = $content . '<li class="leaf"><a href="/user/' . $uid . '/favorites" title="">Список бажань</a></li>';
   $content = $content . '<li class="leaf"><a href="/user/' . $uid . '/orders" title="">Історія замовлень</a></li>';
@@ -470,6 +479,11 @@ function bookbox_cat_zoj_block() {
 
 function bookbox_cat_nauch_block() {
   $content = _bookbox_catblock(286);
+  return $content;
+}
+
+function bookbox_cat_hud_block() {
+  $content = _bookbox_catblock(317);
   return $content;
 }
 
