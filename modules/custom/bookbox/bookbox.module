@@ -246,6 +246,8 @@ function bookbox_cron() {
 
         //1-го числа мы меняем статус всех книг "пролонг" на "подтверждено" и меняем дату так как будто они были подтверждены в прошлом месяце
         if ($item->status == 'prolong') {
+          $order = commerce_order_load($item->order_id);
+
           $old_changed = $item->changed;
           $old_changed_day = intval(date("d", $old_changed));
           $old_changed_month = intval(date("m", $old_changed));
@@ -261,6 +263,9 @@ function bookbox_cron() {
           $prev_date = $prev_date_month . '/' . $old_changed_day . '/' . $prev_date_year;
           $date = date("Y-m-d H:i:s", strtotime($prev_date));
           $timestamp = strtotime($date);
+
+          //commerce_order_status_update($order, 'completed', $skip_save = FALSE, $revision = NULL, $log = '');
+          //commerce_order_save($order);
 
           db_update('commerce_order')
               ->fields(array('changed' => $timestamp ))

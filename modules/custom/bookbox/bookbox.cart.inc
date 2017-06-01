@@ -146,7 +146,7 @@ function bookbox_mini_cart_block($form, &$form_state) {
         }
 
 
-        if ($cart_count + bookbox_count_in_prolong_this_month($uid) == 3 && bookbox_count_in_prolong_this_month($uid) == 1) {
+        if ($cart_count + bookbox_count_in_prolong_this_month($uid) > 2 && bookbox_count_in_prolong_this_month($uid) == 1) {
             $form['submit_box_markup'] = array(
                 '#type' => 'markup',
                 '#markup' => '<p class="tip_message">Видаліть одну книгу для підтвердження замовлення</p>'

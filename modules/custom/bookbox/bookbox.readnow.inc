@@ -63,8 +63,6 @@ function bookbox_reading_now_block ($form, &$form_state) {
                             );*/
 
 
-
-
                             $modal = '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirm-prolong' . $box_count . '">Подовжити на місяць</button>
                             <div class="modal fade" tabindex="-1" role="dialog" id="confirm-prolong' . $box_count . '">
                                       <div class="modal-dialog" role="document">
@@ -83,6 +81,45 @@ function bookbox_reading_now_block ($form, &$form_state) {
                                       </div>
                                     </div>';
 
+                            $wrapper = _bookbox_get_cart_items();
+                            $cart_count = 0;
+
+                            if ($wrapper) {
+                                foreach ($wrapper->commerce_line_items as $delta => $line_item_wrapper) {
+                                    $cart_product = $line_item_wrapper->commerce_product->value()->product_id;
+
+                                    $product_display1 = _bookbox_get_product_display_by_product_id($cart_product);
+
+                                    if ($product_display1->nid) {
+                                        $cart_count = $cart_count + 1;
+                                    }
+                                }
+                            }
+
+                            $reading_now_count = count(bookbox_get_in_reading_now($uid));
+
+                            if ($cart_count + $reading_now_count > 2) {
+                                $modal = '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirm-prolong' . $box_count . '">Подовжити на місяць</button>
+                            <div class="modal fade" tabindex="-1" role="dialog" id="confirm-prolong' . $box_count . '">
+                                      <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                          </div>
+                                          <div class="modal-body">
+                                            <p>Для успішного подовження видаліть обрану книгу із “Замовлення місяця”.</p>
+                                          </div>
+                                          <div class="modal-footer">
+                                            <button type="button" class="btn btn-outline red" data-dismiss="modal">Зрозуміло</button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>';
+                            }
+
+                            if (bookbox_count_in_confirm_this_month($uid) > 0) {
+                                $modal = '';
+                            }
 
                             ///////////
                             //скроем временно
