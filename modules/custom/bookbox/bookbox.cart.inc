@@ -128,7 +128,8 @@ function bookbox_mini_cart_block($form, &$form_state) {
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                           </div>
                                           <div class="modal-body">
-                                            <p>Ви підтверджуєте замовлення місяця?</p>
+                                            <p>Бажаєте підтвердити замовлення?</p>
+                                            <p class="smaller">Змінити замовлення після підтвердження буде неможливо.</p>
                                           </div>
                                           <div class="modal-footer">
                                             <a class="btn btn-outline red" href="/confirm/' . $uid . '/orders?destination=' . $destination . '">Так</a>

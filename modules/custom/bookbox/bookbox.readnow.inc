@@ -61,8 +61,7 @@ function bookbox_reading_now_block ($form, &$form_state) {
                                 '#submit' => array('bookbox_prolongbook' . $box_count),
                                 '#value' => 'Подовжити на місяць <span>' . $box_count . '</span>',
                             );*/
-
-
+                            
                             $modal = '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirm-prolong' . $box_count . '">Подовжити на місяць</button>
                             <div class="modal fade" tabindex="-1" role="dialog" id="confirm-prolong' . $box_count . '">
                                       <div class="modal-dialog" role="document">
@@ -71,7 +70,8 @@ function bookbox_reading_now_block ($form, &$form_state) {
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                           </div>
                                           <div class="modal-body">
-                                            <p>Ви підтверджуєте подовження книг на місяць?</p>
+                                            <p>Бажаєте подовжити читання цієї книжки ще на місяць?</p>
+                                            <p class="smaller">Відмінити подовження після підтвердження буде неможливо.</p>
                                           </div>
                                           <div class="modal-footer">
                                             <a class="btn btn-outline red" href="/confirm/' . $uid . '/' . $res->order_id .'/prolong' . $box_count . '?destination=' . $destination . '">Так</a>
@@ -97,7 +97,6 @@ function bookbox_reading_now_block ($form, &$form_state) {
                             }
 
                             //$reading_now_count = count(bookbox_get_in_reading_now($uid));
-
                             if ((count(bookbox_in_prolong_this_month($uid)) == 0  && $cart_count > 1) || (count(bookbox_in_prolong_this_month($uid)) == 1  && $cart_count > 0) ) {
                                 $modal = '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirm-prolong' . $box_count . '">Подовжити на місяць</button>
                             <div class="modal fade" tabindex="-1" role="dialog" id="confirm-prolong' . $box_count . '">
@@ -107,7 +106,8 @@ function bookbox_reading_now_block ($form, &$form_state) {
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                           </div>
                                           <div class="modal-body">
-                                            <p>Для успішного подовження видаліть обрану книгу із “Замовлення місяця”.</p>
+                                            <p>Для того, щоб подовжити книжку, необхідно видалити одну книгу з кошика замовлення поточного місяця.</p>
+                                            <p class="smaller">В один момент часу на руках може бути максимум дві книги.</p>
                                           </div>
                                           <div class="modal-footer">
                                             <button type="button" class="btn btn-outline red" data-dismiss="modal">Зрозуміло</button>
