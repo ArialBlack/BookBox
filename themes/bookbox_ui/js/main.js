@@ -33,19 +33,19 @@
             $('.page-content-finder #edit-find').html('Пошук');
           }
 
-          var addCollapseNav = '<li class="collapse-nav-items"><img src="/sites/all/themes/bookbox_ui/images/collapse-nav.png"><ul></ul></li>';
-        if ( $('nav .primary-nav>ul>li').length > 5 && $(window).width() >= 992) {
-            $('nav .primary-nav>ul').append(addCollapseNav);
-            for (var i = 5; i< $('nav .primary-nav>ul>li').length-1; i++) {
-                var numList = i+1;
-                console.log($('nav .primary-nav>ul>li:nth-child(' + i+1 + ')'));
-                $('.collapse-nav-items ul').append($('nav .primary-nav>ul>li:nth-child(' + numList + ')'));
-            }
-        }
+        //   var addCollapseNav = '<li class="collapse-nav-items"><img src="/sites/all/themes/bookbox_ui/images/collapse-nav.png"><ul></ul></li>';
+        // if ( $('nav .primary-nav>ul>li').length > 5 && $(window).width() >= 992) {
+        //     $('nav .primary-nav>ul').append(addCollapseNav);
+        //     for (var i = 5; i< $('nav .primary-nav>ul>li').length-1; i++) {
+        //         var numList = i+1;
+        //         console.log($('nav .primary-nav>ul>li:nth-child(' + i+1 + ')'));
+        //         $('.collapse-nav-items ul').append($('nav .primary-nav>ul>li:nth-child(' + numList + ')'));
+        //     }
+        // }
 
-        $('.collapse-nav-items>img').click(function(){
-            $('.collapse-nav-items>ul').slideToggle();
-        })
+        // $('.collapse-nav-items>img').click(function(){
+        //     $('.collapse-nav-items>ul').slideToggle();
+        // })
 
           $('.scroll-up').click(function() {
             $('html, body').animate({ scrollTop: 0}, 1000 );
@@ -100,10 +100,10 @@
                 $('.page-faq #block-system-main .view-id-faq #views-bootstrap-tab-1').append($('.page-faq #block-system-main .view-id-faq .tab-content'));
                }
 
-               if ( $('.collapse-nav-items').length && $(window).width() < 992) {
-                  $('.primary-nav>ul').append($('.collapse-nav-items>ul>li'));
-                  $('.collapse-nav-items').remove();
-               }
+               // if ( $('.collapse-nav-items').length && $(window).width() < 992) {
+               //    $('.primary-nav>ul').append($('.collapse-nav-items>ul>li'));
+               //    $('.collapse-nav-items').remove();
+               // }
             })
 
             $('.page-faq #block-system-main .view-id-faq .nav-tabs li').click(function(){

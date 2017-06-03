@@ -246,6 +246,10 @@
     text-align: right;
     top: 8px;
 
+    @media (min-width: 768px) and (max-width: 1620px) {
+      right: 29%;
+    }
+
     @media screen and (max-width: 767px) {
     	right: 75px;
     	width: 75%;
@@ -362,11 +366,7 @@
       width: 28px;
       height: 22px;
       border: none;
-      margin-left: 40px;
-
-      @media screen and (max-width: 1300px) {
-        margin-left: 0;
-      }
+      margin-left: 0;
 
       @media screen and (max-width: 991px) {
         margin-left: 20px;
@@ -384,6 +384,12 @@
     	@media screen and (max-width: 767px) {
     		display: none;
     	}
+
+      span:nth-child(2) {
+        @media screen and (max-width: 1620px) {
+          display: none;
+        }
+      }
     }
   }
 
