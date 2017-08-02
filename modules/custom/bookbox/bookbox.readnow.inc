@@ -13,16 +13,14 @@ function bookbox_reading_now_block ($form, &$form_state) {
     if ($result) {
         $form['title'] = array(
             '#type' => 'markup',
-            '#markup' => '<h3>' . $title . ' </h3><h6>Поверніть книжки в стелаж до <span>25 ' . ua_month(intval(m()-1)) . '</span> або подовжіть ще на місяць</h6>',
+            '#markup' => '<h3>' . $title . ' </h3><h6>Поверніть книжки в стелаж до <span>25 ' . ua_month(intval(m()-1)) . '</span></h6>',
         );
 
         $box_count = 0;
 
         foreach ($result as $res) {
             $order = commerce_order_load($res->order_id);
-
-
-
+            
             $line_item_id = $order->commerce_line_items['und'][0]['line_item_id'];
             $line_item = commerce_line_item_load($line_item_id);
             $product_id =  $line_item->commerce_product['und'][0]['product_id'];
@@ -46,6 +44,7 @@ function bookbox_reading_now_block ($form, &$form_state) {
                 );
 
                 switch ($res->status) {
+                    /*
                     case 'completed':
                         if(current_period() == 1) {
                             $modal = '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirm-prolong' . $box_count . '">Подовжити на місяць</button>
@@ -82,7 +81,6 @@ function bookbox_reading_now_block ($form, &$form_state) {
                                 }
                             }
 
-                            //$reading_now_count = count(bookbox_get_in_reading_now($uid));
                             if ((count(bookbox_in_prolong_this_month($uid)) == 0  && $cart_count > 1) || (count(bookbox_in_prolong_this_month($uid)) == 1  && $cart_count > 0) ) {
                                 $modal = '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirm-prolong' . $box_count . '">Подовжити на місяць</button>
                             <div class="modal fade" tabindex="-1" role="dialog" id="confirm-prolong' . $box_count . '">
@@ -114,6 +112,7 @@ function bookbox_reading_now_block ($form, &$form_state) {
 
                         }
                         break;
+                    */
                     case 'prolong':
                         $form['prolong_book' . $box_count] = array(
                             '#type' => 'submit',

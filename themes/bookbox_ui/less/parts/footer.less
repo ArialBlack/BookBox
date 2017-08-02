@@ -29,7 +29,7 @@
     display: flex;
     justify-content: space-between;
 
-    @media (max-width: 1199px) and (min-width: 1024px) {
+    @media (max-width: 1240px) and (min-width: 1024px) {
       font-size: 0.83em;
     }
 
@@ -48,6 +48,12 @@
       order: 3;
       font-size: .75rem;
     }
+
+    @media (min-width: 1024px) and (max-width: 1105px) {
+      p span {
+        display: none;
+      }
+    }
   }
 
   #block-menu-menu-footer-menu {
@@ -64,15 +70,15 @@
 
       li {
         @media (min-width: 1240px) {
-          margin-right: 0;
+          margin-left: 0;
         }
 
         @media (min-width: 1380px) {
-          margin-right: 3vw;
+          margin-left: 1vw;
         }
 
         @media (min-width: 1520px) {
-          margin-right: 5vw;
+          margin-left: 3vw;
         }
       }
 
@@ -131,8 +137,36 @@
 
 
     }
+
+  #block-block-2,
+  #block-menu-menu-footer-menu {
+    margin-top: 20px;
+  }
+
+  #block-block-3 {
+    margin-top: 15px;
+  }
+
   #block-block-4 {
-    display: none;
+    display: inline-block;
+
+    .clogos_slab {
+      display: block;
+      text-indent: -9999px;
+      width: 57px;
+      height: 50px;
+      float: left;
+
+      background: url(../images/slab-logo.png) no-repeat;
+
+      &:hover {
+        background: url(../images/slab-logo-ani.gif) no-repeat;
+      }
+
+      @media (min-width: 1024px) {
+        margin-left: 20px;
+      }
+    }
   }
 }
 
