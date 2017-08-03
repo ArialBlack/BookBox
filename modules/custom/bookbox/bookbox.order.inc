@@ -1,19 +1,19 @@
 <?php
 
 // Блок Заказ месяца
-function bookbox_month_order_block ($form, &$form_state) {
+function bookbox_current_order_block ($form, &$form_state) {
     global $user;
     $uid = $user->uid;
     $destination = request_path();
 
     $title = 'Замовлення підтверджено';
 
-    $result =  bookbox_in_confirm_this_month($uid);
+    $result =  bookbox_get_in_confirm($uid);
 
     if ($result) {
         $form['title'] = array(
             '#type' => 'markup',
-            '#markup' => '<h3>' . $title . ' </h3><h6>Очікуйте доставку в кінці <span>' .  ua_month(intval(m()-1)) . '</span></h6>', //todo
+            '#markup' => '<h3>' . $title . ' </h3><h6>' . verbose_period4order() . '</h6>', //todo
         );
 
         $box_count = 0;

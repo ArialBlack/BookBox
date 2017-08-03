@@ -1,0 +1,286 @@
+<?php
+
+function bookbox_block_info() {
+    $blocks = array();
+
+    $blocks['debug']= array(
+        'info' => t('debuginfo'),
+    );
+
+    $blocks['MiniCart'] = array(
+        'info' => t('Mini cart'),
+    );
+
+    $blocks['MonthOrder'] = array(
+        'info' => t('Current orders'),
+    );
+
+    $blocks['ReadingNow'] = array(
+        'info' => t('Reading now'),
+    );
+
+    $blocks['CatBiz'] = array(
+        'info' => t('cat biz'),
+    );
+
+    $blocks['CatKrug'] = array(
+        'info' => t('cat krug'),
+    );
+
+    $blocks['CatSamo'] = array(
+        'info' => t('cat samo'),
+    );
+
+    $blocks['CatZoj'] = array(
+        'info' => t('cat zoj'),
+    );
+
+    $blocks['CatNauch'] = array(
+        'info' => t('cat nauch'),
+    );
+
+    $blocks['CatHud'] = array(
+        'info' => t('cat hud'),
+    );
+
+    $blocks['BBUserMenu'] = array(
+        'info' => t('custom user menu'),
+    );
+
+    return $blocks;
+}
+
+function bookbox_block_view($delta = '') {
+    global $user;
+    $uid = $user->uid;
+    $max_books = variable_get('varMaxBooks');
+
+    $block = array();
+
+    //todo
+    $show_cart = true;
+    if (bookbox_count_in_confirm($uid) + bookbox_count_in_reading_now($uid) >= $max_books ) {
+        $show_cart = false;
+    }
+
+    $show_order = true;
+    if(bookbox_count_in_confirm($uid) < 1 ) {
+        $show_order = false;
+    }
+
+    $show_reading_now = true;
+    if (bookbox_count_in_reading_now($uid) < 1) {
+        $show_reading_now = false;
+    }
+
+    switch ($delta) {
+        case 'MiniCart':
+            if ($show_cart) {
+                $block['subject'] = '';
+                $form = drupal_get_form('bookbox_mini_cart_block');
+                $block['content'] = drupal_render($form);
+            } else {
+                $block['subject'] = null;
+                $block['content'] = null;
+            }
+            break;
+
+        case 'MonthOrder':
+            if ($show_order) {
+                $block['subject'] = '';
+                $form = drupal_get_form('bookbox_current_order_block');
+                $block['content'] = drupal_render($form);
+            } else {
+                $block['subject'] = null;
+                $block['content'] = null;
+            }
+            break;
+
+        case 'ReadingNow':
+            if ($show_reading_now) {
+                $block['subject'] = '';
+                $form = drupal_get_form('bookbox_reading_now_block');
+                $block['content'] = drupal_render($form);
+            } else {
+                $block['subject'] = null;
+                $block['content'] = null;
+            }
+            break;
+
+        case 'CatBiz':
+            $block['subject'] = '';
+            $block['content'] = bookbox_cat_biz_block();
+            break;
+
+        case 'CatKrug':
+            $block['subject'] = '';
+            $block['content'] = bookbox_cat_krug_block();
+            break;
+
+        case 'CatSamo':
+            $block['subject'] = '';
+            $block['content'] = bookbox_cat_samo_block();
+            break;
+
+        case 'CatZoj':
+            $block['subject'] = '';
+            $block['content'] = bookbox_cat_zoj_block();
+            break;
+
+        case 'CatNauch':
+            $block['subject'] = '';
+            $block['content'] = bookbox_cat_nauch_block();
+            break;
+
+        case 'CatHud':
+            $block['subject'] = '';
+            $block['content'] = bookbox_cat_hud_block();
+            break;
+
+        case 'BBUserMenu':
+            $block['subject'] = '';
+            $block['content'] = bookbox_custom_usermenu_block();
+            break;
+
+        case 'debug':
+            $block['subject'] = '';
+            $block['content'] = bookbox_debug_block();
+            break;
+    }
+    return $block;
+}
+
+function bookbox_debug_block() {
+    global $user;
+    $uid = $user->uid;
+
+    $output = 'тестовый день недели: ' . variable_get('varTestDay') . '<br>';
+    $output = $output  . 'тестовое время: ' . variable_get('varTestTime') . '<br>';
+    $output = $output  . verbose_period4order()  . '<br>';
+    $output = $output  . 'Максимальна кіклькість книжок для замовлень взагалі: ' . variable_get('varMaxBooks')  . '<br>';
+    $output = $output  . 'uid: ' . $uid . '<br>';
+    $output = $output  . 'Я замовив вже: ' . bookbox_count_in_confirm($uid) . '<br>';
+    $output = $output  . 'Я читаю вже: ' . bookbox_count_in_reading_now($uid) . '<br>';
+
+    return $output;
+}
+
+function bookbox_custom_usermenu_block() {
+    $content = "";
+    global $user;
+    $uid = $user->uid;
+    $account = user_load($uid);
+
+    $show_cart = true;
+    if(bookbox_count_in_confirm_this_month($uid) > 0 ) {
+        $show_cart = false;
+    }
+
+    $show_order = true;
+    if( bookbox_count_in_confirm_this_month($uid) < 1 ) {
+        $show_order = false;
+    }
+
+    $show_reading_now = true;
+    if( count(bookbox_get_in_reading_now($uid)) < 1) {
+        $show_reading_now = false;
+    }
+
+    $nanme = $account->field_name['und'][0]['safe_value'];
+    $snanme = $account->field_sirname['und'][0]['safe_value'];
+
+    $content = $content . '<ul class="menu nav navbar-nav secondary">';
+    $content = $content . '<li class="first last expanded dropdown">';
+    $content = $content . '<a href="/user" title="" data-target="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <span class="user-name"><span>' . $nanme . '</span> <span>' . $snanme . '</span></span> <span class="caret"></span></a>';
+    $content = $content . '<ul class="dropdown-menu"><li class="first leaf"><a href="/user" title="">Профіль</a></li>';
+    $content = $content . '<li class="leaf"><a href="/user/' . $uid . '/favorites" title="">Список бажань</a></li>';
+    $content = $content . '<li class="leaf"><a href="/user/' . $uid . '/orders" title="">Історія замовлень</a></li>';
+    $content = $content . '<li class="last leaf"><a href="/user/logout">Вихід</a></li>';
+
+    if($show_cart || $show_order || $show_reading_now ) {
+        $content = $content . '<li role="separator" class="divider visible-sm visible-xs"></li>';
+    }
+
+    if($show_cart) {
+        $content = $content . '<li class="leaf visible-sm visible-xs"><a href="/user/usercart" title="">Замовлення місяця</a></li>';
+    }
+
+    if($show_order) {
+        $content = $content . '<li class="leaf visible-sm visible-xs"><a href="/user/userorder" title="">Замовлення підтверджено</a></li>';
+    }
+
+    if($show_reading_now) {
+        $content = $content . '<li class="leaf visible-sm visible-xs"><a href="/user/userreadingnow" title="">Зараз читаю</a></li>';
+    }
+
+    $content = $content . '</ul></li></ul>';
+
+    return $content;
+}
+
+function bookbox_block_view_alter(&$data, $block) {
+    if ($block->delta == 'client-block-892' && current_path() == 'faq') {
+        $block->title = 'Маєте додаткове питання?';
+    }
+}
+
+function bookbox_cat_biz_block() {
+    $content = _bookbox_catblock(7);
+    return $content;
+}
+
+function bookbox_cat_krug_block() {
+    $content = _bookbox_catblock(18);
+    return $content;
+}
+
+function bookbox_cat_samo_block() {
+    $content = _bookbox_catblock(13);
+    return $content;
+}
+
+function bookbox_cat_zoj_block() {
+    $content = _bookbox_catblock(276);
+    return $content;
+}
+
+function bookbox_cat_nauch_block() {
+    $content = _bookbox_catblock(286);
+    return $content;
+}
+
+function bookbox_cat_hud_block() {
+    $content = _bookbox_catblock(317);
+    return $content;
+}
+
+function _bookbox_catblock($parent_tid) {
+    $content = '';
+    $childrens = taxonomy_get_children($parent_tid);
+
+    foreach ($childrens as $subcategory) {
+        $content = $content . '<div class="books-row"><h2><a href="/taxonomy/term/' . $subcategory->tid . '">' . $subcategory->name . '</a></h2>';
+        $content = $content . '<a class="know-more" href="/taxonomy/term/' . $subcategory->tid . '">дивитись більше</a>';
+        $nodes = taxonomy_select_nodes($subcategory->tid, $pager = FALSE, $limit = 100, $order = array('t.sticky' => 'DESC', 't.created' => 'DESC'));
+        $content = $content . '<div class="books-row">';
+        $good_nodes = 0;
+
+        foreach ($nodes as $nid) {
+            $node = node_load($nid);
+
+            if($node) {
+                $good_nodes = $good_nodes + 1;
+                $node_view = node_view($node, 'teaser');
+                $rendered_teaser = render($node_view);
+                $content = $content . $rendered_teaser;
+            }
+
+            if ($good_nodes == 3) {
+                break;
+            }
+        }
+
+        $content = $content . '</div></div>';
+    }
+    return $content;
+}

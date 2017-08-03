@@ -81,7 +81,6 @@ function bookbox_form_alter(&$form, &$form_state, $form_id){
 }
 
 function bookbox_registeruser_validate($form, &$form_state) {
-
     $company_id = $form_state['values']['field_company']['und'][0]['target_id'];
     $usermail = $form_state['values']['mail'];
 
@@ -110,4 +109,76 @@ function bookbox_registeruser_validate($form, &$form_state) {
         ife_errors('set', 'edit-tel-und-0-value', 'Номер має бути у форматі +380ххххххххх');
         form_set_error('tel', 'Номер має бути у форматі +380ххххххххх');
     }
+}
+
+function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state) {
+    global $user;
+    $uid = $user->uid;
+    $max_books = variable_get('varMaxBooks') - bookbox_count_in_confirm($uid) - bookbox_count_in_reading_now($uid);
+    // можно добавить максимум 3
+
+    $form['submit']['#value'] = 'Замовити';
+
+    $in_cart = 0;
+
+    if (isset($form['product_id'])) {
+        $form_product = $form['product_id']['#value'];
+        $can_add2cart = true;
+    } else {
+        $form_product = null;
+        $can_add2cart = false;
+    }
+
+    $wrapper = _bookbox_get_cart_items();
+
+    //что-то есть в корзине
+    if ($wrapper) {
+        foreach ($wrapper->commerce_line_items as $delta => $line_item_wrapper) {
+            $cart_product = $line_item_wrapper->commerce_product->value()->product_id;
+            $in_cart = $in_cart + 1;
+
+            //todo
+            //если эта книга есть в заказе или читаю сейчас
+            if($form_product == $cart_product) {
+                $can_add2cart = false; // если эта книга уже в корзине, то нечего ее добавлять, ок, да?
+                break;
+            }
+        }
+    }
+
+    if ($in_cart >= $max_books) {
+        $can_add2cart = false;
+    }
+
+    if (!$can_add2cart) {
+        $form['submit']['#attributes']['disabled'] = TRUE;
+    }
+}
+
+function bookbox_admin_delivery_form ($form, &$form_state) {
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => 'Ми все доставили!',
+    );
+    
+    return $form;
+}
+
+function bookbox_admin_delivery_form_submit($form, &$form_state) {
+    $result = db_select('commerce_order', 'o')
+        ->fields('o', array('order_id', 'status', 'changed'))
+        ->condition('o.status', 'completed')
+        ->orderBy('o.order_id', 'DESC')
+        ->execute()->fetchAll();
+
+    foreach ($result as $item) {
+        if ($item->status == 'completed') {
+            $order = commerce_order_load($item->order_id);
+            commerce_order_status_update($order, 'delivered', $skip_save = FALSE, $revision = NULL, $log = '');
+        }
+    }
+
+    bookbox_equal_stocks();
+
+    drupal_set_message(t('Статуси замовлень змінено!'));
 }

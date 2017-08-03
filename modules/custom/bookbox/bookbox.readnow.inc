@@ -13,7 +13,7 @@ function bookbox_reading_now_block ($form, &$form_state) {
     if ($result) {
         $form['title'] = array(
             '#type' => 'markup',
-            '#markup' => '<h3>' . $title . ' </h3><h6>Поверніть книжки в стелаж до <span>25 ' . ua_month(intval(m()-1)) . '</span></h6>',
+            '#markup' => '<h3>' . $title . ' </h3><h6>Прочитані книжки складайте у стелаж у вашому офісі</h6>',
         );
 
         $box_count = 0;
@@ -43,85 +43,6 @@ function bookbox_reading_now_block ($form, &$form_state) {
                     '#markup' => $rendered_teaser,
                 );
 
-                switch ($res->status) {
-                    /*
-                    case 'completed':
-                        if(current_period() == 1) {
-                            $modal = '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirm-prolong' . $box_count . '">Подовжити на місяць</button>
-                            <div class="modal fade" tabindex="-1" role="dialog" id="confirm-prolong' . $box_count . '">
-                                      <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                          <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                          </div>
-                                          <div class="modal-body">
-                                            <p>Бажаєте подовжити читання цієї книжки ще на місяць?</p>
-                                            <p class="smaller">Відмінити подовження після підтвердження буде неможливо.</p>
-                                          </div>
-                                          <div class="modal-footer">
-                                            <a class="btn btn-outline red" href="/confirm/' . $uid . '/' . $res->order_id .'/prolong' . $box_count . '?destination=' . $destination . '">Так</a>
-                                            <button type="button" class="btn btn-outline red" data-dismiss="modal">Ні</button>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>';
-
-                            $wrapper = _bookbox_get_cart_items();
-                            $cart_count = 0;
-
-                            if ($wrapper) {
-                                foreach ($wrapper->commerce_line_items as $delta => $line_item_wrapper) {
-                                    $cart_product = $line_item_wrapper->commerce_product->value()->product_id;
-
-                                    $product_display1 = _bookbox_get_product_display_by_product_id($cart_product);
-
-                                    if ($product_display1->nid) {
-                                        $cart_count = $cart_count + 1;
-                                    }
-                                }
-                            }
-
-                            if ((count(bookbox_in_prolong_this_month($uid)) == 0  && $cart_count > 1) || (count(bookbox_in_prolong_this_month($uid)) == 1  && $cart_count > 0) ) {
-                                $modal = '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirm-prolong' . $box_count . '">Подовжити на місяць</button>
-                            <div class="modal fade" tabindex="-1" role="dialog" id="confirm-prolong' . $box_count . '">
-                                      <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                          <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                          </div>
-                                          <div class="modal-body">
-                                            <p>Для того, щоб подовжити книжку, необхідно видалити одну книгу з кошика замовлення поточного місяця.</p>
-                                            <p class="smaller">В один момент часу на руках може бути максимум дві книги.</p>
-                                          </div>
-                                          <div class="modal-footer">
-                                            <button type="button" class="btn btn-outline red" data-dismiss="modal">Зрозуміло</button>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>';
-                            }
-
-                            if (bookbox_count_in_confirm_this_month($uid) > 0) {
-                                $modal = '';
-                            }
-
-                            $form['prolongmarkup' . $box_count] = array(
-                                '#type' => 'markup',
-                                '#markup' => $modal,
-                            );
-
-                        }
-                        break;
-                    */
-                    case 'prolong':
-                        $form['prolong_book' . $box_count] = array(
-                            '#type' => 'submit',
-                            '#value' => 'Подовжено <span>' . $box_count . '</span>',
-                        );
-                        $form['prolong_book' . $box_count]['#attributes']['disabled'] = TRUE;
-                        break;
-                }
-
                 $form['bme' . $box_count] = array(
                     '#type' => 'markup',
                     '#markup' => '</div>',
@@ -133,24 +54,3 @@ function bookbox_reading_now_block ($form, &$form_state) {
     return $form;
 }
 
-function bookbox_prolongbook1($arg0, $arg1) {
-    $order_id = $arg1;
-    $order = commerce_order_load($order_id);
-
-    commerce_order_status_update($order, 'prolong', $skip_save = FALSE, $revision = NULL, $log = '');
-    commerce_order_save($order);
-
-    $dest = drupal_get_destination();
-    drupal_goto($dest);
-}
-
-function bookbox_prolongbook2($arg0, $arg1) {
-    $order_id = $arg1;
-    $order = commerce_order_load($order_id);
-
-    commerce_order_status_update($order, 'prolong', $skip_save = FALSE, $revision = NULL, $log = '');
-    commerce_order_save($order);
-
-    $dest = drupal_get_destination();
-    drupal_goto($dest);
-}

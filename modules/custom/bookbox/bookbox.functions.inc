@@ -1,11 +1,13 @@
 <?php
 //Получить номер текущего месяца
+//depricated
 function m() {
   $month = date("m");
   return $month;
 }
 
 //Получить текущий день
+//depricated
 function d() {
   $day = date("d");
   return $day;
@@ -41,6 +43,7 @@ function ua_month_original($m = null) {
 //1-20 включительно = 1
 //21 - 31 = 2
 function current_period() {
+  //depricated
   $current_date = d();
   if ($current_date >=1 && $current_date <=20) {
     $period = 1;
@@ -48,6 +51,35 @@ function current_period() {
     $period = 2;
   }
   return $period;
+}
+
+//Функція визначає, в який період замовив юзер
+//3. Замовити на найближчу п’ятницю можна до 18:00 четверга..  = 1
+//3.1 при замовленні після 18:00 четверга, щоб писало дату доставки наступної п’ятниці. = 2
+function period4order () {
+  $day = date('N');
+  $time = date('H:i');
+
+  ///
+  $day = variable_get('varTestDay');
+  $time = variable_get('varTestTime');
+  ///
+
+  if (($day > 5 || $day < 4) || ($day == 4 && $time < '18:00')) {
+    return 1;
+  } else {
+    return 2;
+  }
+}
+
+//Функція формує строку дати доставки
+function verbose_period4order() {
+  if (period4order () == 1) {
+    return "Очікуйте доставку у найближчу п'ятницю: <span>" . date('d.m.Y', strtotime('next friday')) . "</span>";
+  } else {
+    $week_num = date('W');
+    return "Очікуйте доставку у наступну п'ятницю: <span>" . date('d.m.Y', strtotime("+7 day", strtotime('next friday'))) . "</span>";
+  }
 }
 
 //Получить товары в корзине
@@ -79,18 +111,54 @@ function _bookbox_get_product_display_by_product_id($product_id, $bundle = 'prod
   }
 }
 
+//Выборка из базы - подтверждено юзером
+function bookbox_get_in_confirm($uid) {
+  //global $user;
+  $result = db_select('commerce_order', 'o')
+      ->fields('o', array('order_id', 'status', 'changed'))
+      ->condition('o.uid', $uid)
+      ->condition('o.status', 'completed')
+      ->orderBy('o.order_id', 'DESC')
+      //->range(0,2)
+      ->execute()->fetchAll();
+  return $result;
+}
+
+function bookbox_count_in_confirm($uid) {
+  return count(bookbox_get_in_confirm($uid) );
+}
+
+//Выборка читаю сейчас
+function bookbox_get_in_reading_now($uid) {
+  $result = db_select('commerce_order', 'o')
+      ->fields('o', array('order_id', 'status', 'changed'))
+      ->condition('o.uid', $uid)
+      ->condition('o.status', 'delivered')
+      ->orderBy('o.order_id', 'DESC')
+      //->range(0,2)
+      ->execute()->fetchAll();
+  return $result;
+}
+
+function bookbox_count_in_reading_now($uid) {
+  return count(bookbox_get_in_reading_now($uid));
+}
+
 ///////////////////////////////////////////////////////////////////////////
 //Сколько Подтвержено в этом месяце
+//depricated
 function bookbox_count_in_confirm_this_month($uid) {
   return count( bookbox_in_confirm_this_month($uid) );
 }
 
 //Сколько Подтверждено в прошлом месяце
+//depricated
 function bookbox_count_in_confirm_prev_month($uid) {
   return count( bookbox_in_confirm_prev_month($uid) );
 }
 
 //Получить список подтвержденных в этом мес
+//depricated
 function bookbox_in_confirm_this_month($uid) {
   $in_confirm_this_month = [];
   foreach(bookbox_get_in_confirm($uid) as $item) {
@@ -103,6 +171,7 @@ function bookbox_in_confirm_this_month($uid) {
 }
 
 //Получить список подтвержденных в прошлом мес
+//depricated
 function bookbox_in_confirm_prev_month($uid) {
   $in_confirm_prev_month = [];
   foreach(bookbox_get_in_confirm($uid) as $item) {
@@ -126,31 +195,21 @@ function bookbox_in_confirm_prev_month($uid) {
   return $in_confirm_prev_month;
 }
 
-//Выборка из базы - подтверждено юзером
-function bookbox_get_in_confirm($uid) {
-  //global $user;
-  $result = db_select('commerce_order', 'o')
-      ->fields('o', array('order_id', 'status', 'changed'))
-      ->condition('o.uid', $uid)
-      ->condition('o.status', 'completed')
-      ->orderBy('o.order_id', 'DESC')
-      //->range(0,2)
-      ->execute()->fetchAll();
-  return $result;
-}
-
 /////////////////////////////////////////////////////////////
 //Сколько Продлено в этом месяце
+//depricated
 function bookbox_count_in_prolong_this_month($uid) {
   return count( bookbox_in_prolong_this_month($uid) );
 }
 
 //Сколько Продлено в прошлом месяце
+//depricated
 function bookbox_count_in_prolong_prev_month($uid) {
   return count( bookbox_in_prolong_prev_month($uid) );
 }
 
 //Список продленного в этом мес
+//depricated
 function bookbox_in_prolong_this_month($uid) {
   $in_prolong_this_month = [];
   foreach(bookbox_get_in_prolong($uid) as $item) {
@@ -162,6 +221,7 @@ function bookbox_in_prolong_this_month($uid) {
 }
 
 //Список Продлено в прошлом месяце
+//depricated
 function bookbox_in_prolong_prev_month($uid) {
   $in_prolong_prev_month = [];
   foreach(bookbox_get_in_prolong($uid) as $item) {
@@ -187,6 +247,7 @@ function bookbox_in_prolong_prev_month($uid) {
 }
 
 //Выборка из базы - продлено юзером
+//depricated
 function bookbox_get_in_prolong($uid) {
   $result = db_select('commerce_order', 'o')
       ->fields('o', array('order_id', 'status', 'changed'))
@@ -198,14 +259,7 @@ function bookbox_get_in_prolong($uid) {
   return $result;
 }
 
-//Выборка продлено и заказы в прошлом месяце
-function bookbox_get_in_reading_now($uid) {
-  $in_confirm_prev_month = bookbox_in_confirm_prev_month($uid);
-  $in_prolong_this_month = bookbox_in_prolong_this_month($uid);
-  $in_reading_now = array_merge($in_confirm_prev_month,$in_prolong_this_month);
-  return $in_reading_now;
-}
-
+//Сколько заказов этой книги Вообще
 function bookbox_get_in_orders($node) {
   $product_id = $node->field_bookfields['und'][0]['product_id'];
 
@@ -236,6 +290,7 @@ function bookbox_get_in_orders($node) {
   return $in_orders;
 }
 
+//Сколько заказов этой книги в этом месяце
 function bookbox_get_in_orders_this_month($node) {
   $product_id = $node->field_bookfields['und'][0]['product_id'];
 
