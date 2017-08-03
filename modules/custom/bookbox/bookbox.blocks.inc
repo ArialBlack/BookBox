@@ -284,3 +284,51 @@ function _bookbox_catblock($parent_tid) {
     }
     return $content;
 }
+
+function bookbox_user_orders_history() {
+    global $user;
+    $content = '<h1>Історія замовлень</h1><div class="row">';
+
+    drupal_set_title('Архів прочитаного | Book Box');
+
+    $result = db_select('commerce_order', 'o')
+        ->fields('o', array('order_id', 'changed'))
+        ->condition('o.uid', $user->uid)
+        ->condition('o.status', 'archive')
+        ->execute()->fetchAll();
+
+    $user_product_displays = array();
+    $c = 0;
+
+    foreach ($result as $res) {
+        $order = commerce_order_load($res->order_id);
+        $line_item_id = $order->commerce_line_items['und'][0]['line_item_id'];
+        $line_item = commerce_line_item_load($line_item_id);
+        $product_id =  $line_item->commerce_product['und'][0]['product_id'];
+        $product_display = _bookbox_get_product_display_by_product_id($product_id);
+
+        $user_product_displays[$c] = array();
+        $user_product_displays[$c]['title'] = $product_display->title;
+        $user_product_displays[$c]['nid'] = $product_display->nid;
+        $c++;
+    }
+
+    foreach ($user_product_displays as $key => $row) {
+        $title[$key]  = $row['title'];
+        $nid[$key] = $row['nid'];
+    }
+
+    array_multisort($user_product_displays, SORT_ASC, $title);
+
+    foreach ($user_product_displays as $product_display) {
+        if ($product_display['nid']) {
+            $node = node_load($product_display['nid']);
+            $node_view = node_view($node, 'teaser');
+            $rendered_teaser = render($node_view);
+            $content = $content . $rendered_teaser;
+        }
+    }
+
+    $content = $content . '</div>';
+    return $content;
+}

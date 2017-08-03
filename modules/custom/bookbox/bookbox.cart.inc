@@ -186,8 +186,6 @@ function bookbox_confirm_box($arg0) {
     $order = commerce_cart_order_load($user->uid);
     $order_count = count($order->commerce_line_items['und']);
 
-    drupal_set_message($order_count);
-
     $order_products = array ();
 
     for ($i = 0; $i < $order_count; $i++) {
