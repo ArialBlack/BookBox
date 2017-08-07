@@ -179,9 +179,11 @@ function bookbox_delete_bookfromcart10 ($form, &$form_state) {
     commerce_cart_order_refresh($order);
 }
 
+//old code for confirm from cart
 function bookbox_confirm_box($arg0) {
     $user = user_load($arg0);
     $user_name = $user->field_name['und'][0]['value'] . ' ' . $user->field_sirname['und'][0]['value'];
+    $time = variable_get('varTestDayTime'); //todo delete from test
 
     $order = commerce_cart_order_load($user->uid);
     $order_count = count($order->commerce_line_items['und']);
@@ -222,7 +224,6 @@ function bookbox_confirm_box($arg0) {
             . $book->title . '<br/>' . $author->name .'</a> </div>';
 
         $order = commerce_order_new($user->uid, 'checkout_checkout');
-        commerce_order_save($order);
 
         $product = commerce_product_load($order_product);
         $line_item = commerce_product_line_item_new($product, 1, $order->order_id);
@@ -233,6 +234,18 @@ function bookbox_confirm_box($arg0) {
 
         commerce_order_save($order);
         commerce_order_status_update($order, 'completed', $skip_save = FALSE, $revision = NULL, $log = '');
+
+        //todo: delete from test
+        db_update('commerce_order')
+            ->fields(array('created' => $time))
+            ->fields(array('changed' => $time))
+            ->condition('order_id', $order->order_id)
+            ->execute();
+
+        db_update('commerce_order_revision')
+            ->fields(array('revision_timestamp' => $time))
+            ->condition('order_id', $order->order_id)
+            ->execute();
 
         $node = _bookbox_get_product_display_by_product_id($order_product);
         bookbox_node_update($node);

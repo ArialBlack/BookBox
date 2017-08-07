@@ -1,4 +1,17 @@
 <?php
+//Получить номер текущего месяца
+//depricated
+function m() {
+  $month = date("m");
+  return $month;
+}
+
+//Получить текущий день
+//depricated
+function d() {
+  $day = date("d");
+  return $day;
+}
 
 //Получить укр.месяц в склонении
 //Если пусто то возвращает текущий
@@ -24,6 +37,22 @@ function ua_month_original($m = null) {
   }
   $ua_monthes = ['січень', 'лютий', 'березень', 'квітень', 'травень','червень', 'липень', 'серпень', 'вересень', 'жовтень', 'листопад', 'грудень'];
   return $ua_monthes[$current_date];
+}
+
+//Получить Текущий период
+//1-20 включительно = 1
+//21 - 31 = 2
+
+//depricated
+function current_period() {
+  //depricated
+  $current_date = d();
+  if ($current_date >=1 && $current_date <=20) {
+    $period = 1;
+  } else {
+    $period = 2;
+  }
+  return $period;
 }
 
 //Функція визначає, в який період замовив юзер
@@ -81,10 +110,24 @@ function verbose_period4order_short($date) {
   return "Доставка: <span>" . next_friday($date) . "</span>";
 }
 
+//Получить товары в корзине
+function _bookbox_get_cart_items() {
+  global $user;
+  $can_add2cart = true;
+  $order = commerce_cart_order_load($user->uid);
+  if ($order) {
+    $wrapper = entity_metadata_wrapper('commerce_order', $order);
+    return $wrapper;
+  } else {
+    return false;
+  }
+}
+
 //Получить Дисплей книги по айдишнику ее продукта
 function _bookbox_get_product_display_by_product_id($product_id, $bundle = 'product_display', $field_name = 'field_bookfields') {
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', 'node');
+  //$query->propertyCondition('type', $bundle);
   $query->fieldCondition($field_name, 'product_id', $product_id);
   $query->range(0, 1);
   $result = $query->execute();
@@ -98,11 +141,13 @@ function _bookbox_get_product_display_by_product_id($product_id, $bundle = 'prod
 
 //Выборка из базы - подтверждено юзером
 function bookbox_get_in_confirm($uid) {
+  //global $user;
   $result = db_select('commerce_order', 'o')
-      ->fields('o', array('order_id', 'status', 'created'))
+      ->fields('o', array('order_id', 'status', 'changed'))
       ->condition('o.uid', $uid)
       ->condition('o.status', 'completed')
       ->orderBy('o.order_id', 'DESC')
+      //->range(0,2)
       ->execute()->fetchAll();
   return $result;
 }
@@ -114,7 +159,7 @@ function bookbox_count_in_confirm($uid) {
 //Выборка читаю сейчас
 function bookbox_get_in_reading_now($uid) {
   $result = db_select('commerce_order', 'o')
-      ->fields('o', array('order_id', 'status', 'created'))
+      ->fields('o', array('order_id', 'status', 'changed'))
       ->condition('o.uid', $uid)
       ->condition('o.status', 'delivered')
       ->orderBy('o.order_id', 'DESC')
@@ -127,6 +172,116 @@ function bookbox_count_in_reading_now($uid) {
   return count(bookbox_get_in_reading_now($uid));
 }
 
+//Сколько Подтверждено в прошлом месяце
+//depricated
+function bookbox_count_in_confirm_prev_month($uid) {
+  return count( bookbox_in_confirm_prev_month($uid) );
+}
+
+//Получить список подтвержденных в этом мес
+//depricated
+function bookbox_in_confirm_this_month($uid) {
+  $in_confirm_this_month = [];
+  foreach(bookbox_get_in_confirm($uid) as $item) {
+    if (date("m", $item->changed) == m()) {
+      //$in_confirm_this_month = $in_confirm_this_month + 1;
+      array_push($in_confirm_this_month, $item);
+    }
+  }
+  return $in_confirm_this_month;
+}
+
+//Получить список подтвержденных в прошлом мес
+//depricated
+function bookbox_in_confirm_prev_month($uid) {
+  $in_confirm_prev_month = [];
+  foreach(bookbox_get_in_confirm($uid) as $item) {
+    $year = date("Y");
+    $prev_month = intval(date("m")) - 1;
+    if($prev_month < 1) {
+      $prev_month = 12;
+      $year = intval(date("Y")) - 1;
+      $prev_date = $prev_month . "-" . $year;
+    } else {
+      if ($prev_month < 10) {
+        $prev_date =  "0" . $prev_month  . "-" . $year;
+      } else {
+        $prev_date =  $prev_month  . "-" . $year;
+      }
+    }
+    if (date("m-Y", $item->changed) == $prev_date) {
+      array_push($in_confirm_prev_month, $item);
+    }
+  }
+  return $in_confirm_prev_month;
+}
+
+/////////////////////////////////////////////////////////////
+//Сколько Продлено в этом месяце
+//depricated
+function bookbox_count_in_prolong_this_month($uid) {
+  return count( bookbox_in_prolong_this_month($uid) );
+}
+
+//Сколько Продлено в прошлом месяце
+//depricated
+function bookbox_count_in_prolong_prev_month($uid) {
+  return count( bookbox_in_prolong_prev_month($uid) );
+}
+
+//Список продленного в этом мес
+//depricated
+function bookbox_in_prolong_this_month($uid) {
+  $in_prolong_this_month = [];
+  foreach(bookbox_get_in_prolong($uid) as $item) {
+    if (date("m-Y", $item->changed) == date("m-Y")) {
+      array_push($in_prolong_this_month, $item);
+    }
+  }
+  return $in_prolong_this_month;
+}
+
+//Список Продлено в прошлом месяце
+//depricated
+function bookbox_in_prolong_prev_month($uid) {
+  $in_prolong_prev_month = [];
+  foreach(bookbox_get_in_prolong($uid) as $item) {
+    $year = date("Y");
+    $prev_month = intval(date("m")) - 1;
+    if($prev_month < 1) {
+      $prev_month = 12;
+      $year = intval(date("Y")) - 1;
+      $prev_date = $prev_month . "-" . $year;
+    } else {
+      if ($prev_month < 10) {
+        $prev_date =  "0" . $prev_month  . "-" . $year;
+      } else {
+        $prev_date =  $prev_month  . "-" . $year;
+      }
+    }
+    if (date("m-Y", $item->changed) == $prev_date) {
+      array_push($in_prolong_prev_month, $item);
+    }
+  }
+
+  return $in_prolong_prev_month;
+}
+
+//Выборка из базы - продлено юзером
+//depricated
+function bookbox_get_in_prolong($uid) {
+  $result = db_select('commerce_order', 'o')
+      ->fields('o', array('order_id', 'status', 'changed'))
+      ->condition('o.uid', $uid)
+      ->condition('o.status', 'prolong')
+      ->orderBy('o.order_id', 'DESC')
+      //->range(0,2)
+      ->execute()->fetchAll();
+  return $result;
+}
+
+//Сколько заказов этой книги Вообще
+//depricated
 function bookbox_get_in_orders($node) {
   $product_id = $node->field_bookfields['und'][0]['product_id'];
 
@@ -143,7 +298,11 @@ function bookbox_get_in_orders($node) {
     $result = db_select('commerce_order', 'o')
         ->fields('o', array('order_id', 'status', 'changed'))
         ->condition('o.order_id', $order_id)
-        ->condition('o.status', 'delivered')
+        ->condition(
+            db_or()
+                ->condition('o.status', 'completed')
+                ->condition('o.status', 'prolong')
+        )
         ->execute()->fetchField();
 
     if($result) {
@@ -161,6 +320,7 @@ function _is_in_orders($product_id) {
   $orders = $query->execute()->fetchAll();
 
   return $orders;
+
 }
 
 function is_in_order($product_id, $uid) {
@@ -172,7 +332,7 @@ function is_in_order($product_id, $uid) {
     $order_id = $row->entity_id;
 
     $result = db_select('commerce_order', 'o')
-        ->fields('o', array('order_id', 'status', 'created'))
+        ->fields('o', array('order_id', 'status', 'changed'))
         ->condition('o.order_id', $order_id)
         ->condition('o.uid', $uid)
         ->condition('o.status', 'completed')
@@ -194,7 +354,7 @@ function is_in_redingnow($product_id, $uid) {
     $order_id = $row->entity_id;
 
     $result = db_select('commerce_order', 'o')
-        ->fields('o', array('order_id', 'status', 'created'))
+        ->fields('o', array('order_id', 'status', 'changed'))
         ->condition('o.order_id', $order_id)
         ->condition('o.uid', $uid)
         ->condition('o.status', 'delivered')
@@ -207,9 +367,16 @@ function is_in_redingnow($product_id, $uid) {
   return $in_orders;
 }
 
-function is_in_archive($product_id, $uid) {
-  $orders = _is_in_orders($product_id);
+//Сколько заказов этой книги в этом месяце
+//depricated
+function bookbox_get_in_orders_this_month($node) {
+  $product_id = $node->field_bookfields['und'][0]['product_id'];
 
+  $query = db_select('field_data_commerce_product', 'p');
+  $query->innerJoin('field_data_commerce_line_items', 'l', 'p.entity_id = l.commerce_line_items_line_item_id');
+  $query->fields('l', array('entity_id'));
+  $query->condition('p.commerce_product_product_id', $product_id);
+  $orders = $query->execute()->fetchAll();
   $in_orders = 0;
 
   foreach ($orders as $row) {
@@ -218,58 +385,16 @@ function is_in_archive($product_id, $uid) {
     $result = db_select('commerce_order', 'o')
         ->fields('o', array('order_id', 'status', 'created'))
         ->condition('o.order_id', $order_id)
-        ->condition('o.uid', $uid)
-        ->condition('o.status', 'archive')
-        ->execute()->fetchField();
+        ->condition('o.status', 'completed')
+        ->execute()->fetchAll();
 
-    if($result) {
-      $in_orders = $in_orders + 1;
+    foreach ($result as $item) {
+      if (date("m-Y", $item->created) == date("m-Y")) {
+        $in_orders = $in_orders + 1;
+        //dsm($result);
+      }
     }
   }
   return $in_orders;
 }
 
-function taxonomy_get_nested_tree($vid_or_terms = array(), $max_depth = NULL, $parent = 0, $parents_index = array(), $depth = 0) {
-  if (!is_array($vid_or_terms)) {
-    $vid_or_terms = taxonomy_get_tree($vid_or_terms, 0, NULL, TRUE);
-  }
-
-  foreach ($vid_or_terms as $term) {
-    foreach ($term->parents as $term_parent) {
-      if ($term_parent == $parent) {
-        $return[$term->tid] = $term;
-      } else {
-        $parents_index[$term_parent][$term->tid] = $term;
-      }
-    }
-  }
-
-  foreach ($return as &$term) {
-    if (isset($parents_index[$term->tid]) && (is_null($max_depth) || $depth < $max_depth)) {
-      $term->children = taxonomy_get_nested_tree($parents_index[$term->tid], $max_depth, $term->tid, $parents_index, $depth + 1);
-    }
-  }
-
-  return
-
-      $return;
-}
-
-function taxonomy_nested_tree_render($tree, $recurring = FALSE) {
-  $items = array();
-  if (count($tree)) {
-    foreach ($tree as $term) {
-      $item = array('name' => $term->name, 'tid' => $term->tid);
-      if (isset($term->children)) {
-        $item["children"] = taxonomy_nested_tree_render($term->children, TRUE);
-      }
-      $items[] = $item;
-    }
-  }
-
-  if ($recurring) {
-    return $items;
-  }
-
-  return $items;
-}

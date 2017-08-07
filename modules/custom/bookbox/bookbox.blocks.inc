@@ -7,10 +7,6 @@ function bookbox_block_info() {
         'info' => t('debuginfo'),
     );
 
-    $blocks['MiniCart'] = array(
-        'info' => t('Mini cart'),
-    );
-
     $blocks['MonthOrder'] = array(
         'info' => t('Current orders'),
     );
@@ -57,16 +53,7 @@ function bookbox_block_view($delta = '') {
 
     $block = array();
 
-    //todo
-    $show_cart = true;
-    if (bookbox_count_in_confirm($uid) + bookbox_count_in_reading_now($uid) >= $max_books ) {
-        $show_cart = false;
-    }
-
     $show_order = true;
-    if(bookbox_count_in_confirm($uid) < 1 ) {
-        $show_order = false;
-    }
 
     $show_reading_now = true;
     if (bookbox_count_in_reading_now($uid) < 1) {
@@ -74,17 +61,6 @@ function bookbox_block_view($delta = '') {
     }
 
     switch ($delta) {
-        case 'MiniCart':
-            if ($show_cart) {
-                $block['subject'] = '';
-                $form = drupal_get_form('bookbox_mini_cart_block');
-                $block['content'] = drupal_render($form);
-            } else {
-                $block['subject'] = null;
-                $block['content'] = null;
-            }
-            break;
-
         case 'MonthOrder':
             if ($show_order) {
                 $block['subject'] = '';
@@ -154,11 +130,9 @@ function bookbox_debug_block() {
     global $user;
     $uid = $user->uid;
 
-    $output = 'тестовый день недели: ' . variable_get('varTestDay') . '<br>';
-    $output = $output  . 'тестовое время: ' . variable_get('varTestTime') . '<br>';
-    $output = $output  . verbose_period4order()  . '<br>';
+    $output = 'тестовое время: ' . date('d.m.Y H:i', variable_get('varTestDayTime')) . '<br>';
     $output = $output  . 'Максимальна кіклькість книжок для замовлень взагалі: ' . variable_get('varMaxBooks')  . '<br>';
-    $output = $output  . 'uid: ' . $uid . '<br>';
+    //$output = $output  . 'uid: ' . $uid . '<br>';
     $output = $output  . 'Я замовив вже: ' . bookbox_count_in_confirm($uid) . '<br>';
     $output = $output  . 'Я читаю вже: ' . bookbox_count_in_reading_now($uid) . '<br>';
 
@@ -172,12 +146,12 @@ function bookbox_custom_usermenu_block() {
     $account = user_load($uid);
 
     $show_cart = true;
-    if(bookbox_count_in_confirm_this_month($uid) > 0 ) {
+    if(bookbox_count_in_confirm($uid) > 0 ) {
         $show_cart = false;
     }
 
     $show_order = true;
-    if( bookbox_count_in_confirm_this_month($uid) < 1 ) {
+    if( bookbox_count_in_confirm($uid) < 1 ) {
         $show_order = false;
     }
 
@@ -288,11 +262,10 @@ function _bookbox_catblock($parent_tid) {
 function bookbox_user_orders_history() {
     global $user;
     $content = '<h1>Історія замовлень</h1><div class="row">';
-
     drupal_set_title('Архів прочитаного | Book Box');
 
     $result = db_select('commerce_order', 'o')
-        ->fields('o', array('order_id', 'changed'))
+        ->fields('o', array('order_id', 'created'))
         ->condition('o.uid', $user->uid)
         ->condition('o.status', 'archive')
         ->execute()->fetchAll();

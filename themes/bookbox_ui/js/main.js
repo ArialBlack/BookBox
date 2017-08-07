@@ -33,6 +33,10 @@
             $('.page-content-finder #edit-find').html('Пошук');
           }
 
+          if($('.btn-container.with-tip').length > 0) {
+              $('#block-system-main').addClass('with-tip');
+          }
+
         //   var addCollapseNav = '<li class="collapse-nav-items"><img src="/sites/all/themes/bookbox_ui/images/collapse-nav.png"><ul></ul></li>';
         // if ( $('nav .primary-nav>ul>li').length > 5 && $(window).width() >= 992) {
         //     $('nav .primary-nav>ul').append(addCollapseNav);
