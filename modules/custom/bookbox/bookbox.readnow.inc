@@ -13,7 +13,7 @@ function bookbox_reading_now_block ($form, &$form_state) {
     if ($result) {
         $form['title'] = array(
             '#type' => 'markup',
-            '#markup' => '<h3>' . $title . ' </h3><h6>Прочитані книжки складайте у стелаж у вашому офісі</h6>',
+            '#markup' => '<h3>' . $title . ' </h3><h6>Прочитані книжки залишайте у стелажі Book Box</h6>',
         );
 
         $box_count = 0;

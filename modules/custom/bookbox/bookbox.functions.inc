@@ -48,10 +48,10 @@ function next_friday($date) {
   $dt->modify('next friday');
 
   if (period4order ($date) == 1 || period4order($date) == 3) {
-    return $dt->format('d.m.Y');
+    return $dt->format('d.m');
   } else {
     $dt->add(new DateInterval('P7D'));
-    return $dt->format('d.m.Y');
+    return $dt->format('d.m');
   }
 }
 
@@ -99,7 +99,7 @@ function _bookbox_get_product_display_by_product_id($product_id, $bundle = 'prod
 //Выборка из базы - подтверждено юзером
 function bookbox_get_in_confirm($uid) {
   $result = db_select('commerce_order', 'o')
-      ->fields('o', array('order_id', 'status', 'created'))
+      ->fields('o', array('order_id', 'status', 'changed'))
       ->condition('o.uid', $uid)
       ->condition('o.status', 'completed')
       ->orderBy('o.order_id', 'DESC')
@@ -114,7 +114,7 @@ function bookbox_count_in_confirm($uid) {
 //Выборка читаю сейчас
 function bookbox_get_in_reading_now($uid) {
   $result = db_select('commerce_order', 'o')
-      ->fields('o', array('order_id', 'status', 'created'))
+      ->fields('o', array('order_id', 'status', 'changed'))
       ->condition('o.uid', $uid)
       ->condition('o.status', 'delivered')
       ->orderBy('o.order_id', 'DESC')
@@ -143,7 +143,11 @@ function bookbox_get_in_orders($node) {
     $result = db_select('commerce_order', 'o')
         ->fields('o', array('order_id', 'status', 'changed'))
         ->condition('o.order_id', $order_id)
-        ->condition('o.status', 'delivered')
+        ->condition(
+            db_or()
+                ->condition('o.status', 'completed')
+                ->condition('o.status', 'delivered')
+        )
         ->execute()->fetchField();
 
     if($result) {
@@ -172,7 +176,7 @@ function is_in_order($product_id, $uid) {
     $order_id = $row->entity_id;
 
     $result = db_select('commerce_order', 'o')
-        ->fields('o', array('order_id', 'status', 'created'))
+        ->fields('o', array('order_id', 'status', 'changed'))
         ->condition('o.order_id', $order_id)
         ->condition('o.uid', $uid)
         ->condition('o.status', 'completed')
@@ -194,7 +198,7 @@ function is_in_redingnow($product_id, $uid) {
     $order_id = $row->entity_id;
 
     $result = db_select('commerce_order', 'o')
-        ->fields('o', array('order_id', 'status', 'created'))
+        ->fields('o', array('order_id', 'status', 'changed'))
         ->condition('o.order_id', $order_id)
         ->condition('o.uid', $uid)
         ->condition('o.status', 'delivered')
@@ -216,7 +220,7 @@ function is_in_archive($product_id, $uid) {
     $order_id = $row->entity_id;
 
     $result = db_select('commerce_order', 'o')
-        ->fields('o', array('order_id', 'status', 'created'))
+        ->fields('o', array('order_id', 'status', 'changed'))
         ->condition('o.order_id', $order_id)
         ->condition('o.uid', $uid)
         ->condition('o.status', 'archive')

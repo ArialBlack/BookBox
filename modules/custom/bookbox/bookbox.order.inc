@@ -33,12 +33,12 @@ function bookbox_current_order_block ($form, &$form_state) {
     if (bookbox_count_in_confirm($uid) > 0) {
             $form['title'] = array(
                 '#type' => 'markup',
-                '#markup' => '<h3>Замовлені книжки:</h3>',
+                '#markup' => '<h3>Замовлено</h3>',
             );
         } else {
         $form['title'] = array(
                 '#type' => 'markup',
-                '#markup' => '<h3>Зробіть замовленя</h3><h6>Ви можете замовити ' . $can_order_text . '</h6>',
+                '#markup' => '<h3>Замовлено</h3><h6>Замовляйте й отримайте доставку вже найближчої п’ятниці</h6>',
             );
     }
 
@@ -52,7 +52,7 @@ function bookbox_current_order_block ($form, &$form_state) {
             $product_id =  $line_item->commerce_product['und'][0]['product_id'];
             $product_display = _bookbox_get_product_display_by_product_id($product_id);
 
-            $order_date = date('d.m.Y H:i', $order->created);
+            $order_date = date('d.m.Y H:i', $order->changed);
 
             if ($product_display->nid) {
                 $box_count = $box_count + 1;
@@ -65,7 +65,7 @@ function bookbox_current_order_block ($form, &$form_state) {
 
                 $form['bms' . $box_count] = array(
                     '#type' => 'markup',
-                    '#markup' => '<div class="book-container">' . verbose_period4order_short($order->created) . '<br>'  . $order_date ,
+                    '#markup' => '<div class="book-container">' . verbose_period4order_short($order->changed) . '<br>'  . $order_date ,
                 );
 
                 $form['book_' . $box_count] = array(

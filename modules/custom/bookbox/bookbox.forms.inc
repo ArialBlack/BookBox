@@ -78,6 +78,15 @@ function bookbox_form_alter(&$form, &$form_state, $form_id){
     if ($form['#id'] == 'user-pass') {
         $form['actions']['submit']['#value'] = 'Відновити пароль';
     }
+
+    if ($form['form_id']['#id'] == 'edit-book-node-form') {
+        $nid = $form['nid']['#value'];
+        $node = node_load($nid);
+        $in_orders = 'В замовленнях ' . bookbox_get_in_orders($node) . 'шт.';
+
+        $form['field_bookfields']['und']['form']['commerce_stock']['und'][0]['value']['#disabled'] = TRUE;
+        $form['field_bookfields']['und']['form']['commerce_stock']['und'][0]['value']['#attributes']['title'] = $in_orders;
+    }
 }
 
 function bookbox_registeruser_validate($form, &$form_state) {
@@ -122,12 +131,13 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state)
     $form['submit']['#attributes']['disabled'] = TRUE;
     $form['submit']['#type'] = 'hidden';
 
+    $can_order = true;
+
     //todo remove testdate
     $date = variable_get('varTestDayTime');
 
     if (isset($form['product_id'])) {
         $form_product = $form['product_id']['#value'];
-        $can_order = true;
     } else {
         $form_product = null;
         $can_order = false;
@@ -154,6 +164,25 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state)
                                       </div>
                                     </div>';
 
+    $overslots_button = '<button type="button" id="edit-submit-book" class="btn btn-default form-submit" data-toggle="modal" data-target="#over-slots">Замовити</button>';
+    $overslots_modal = '<div class="modal fade" tabindex="-1" role="dialog" id="over-slots">
+                                      <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                          </div>
+                                          <div class="modal-body">
+                                            <p>Три книжки - максимальна кількість на руках в один момент часу.</p>
+                                            <p class="smaller">Коли книга повертається нам - відкривається можливість замовити наступну.</p>
+                                          </div>
+                                          <div class="modal-footer">
+                                            <button type="button" class="btn btn-outline red" data-dismiss="modal">Зрозуміло</button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>';
+
+
     //если я уже читаю или я уже заказал эту книгу, то отключать кнопку.
     // если я уже читаю 3 книги, то отключать кнопку
     //если я читаю + я заказал = 3шт, то отключать кнопку
@@ -163,50 +192,55 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state)
     $is_in_archive = is_in_archive($form_product, $uid);
 
     $product = commerce_product_load($form_product);
-    dsm($product);
-    $stock = $product->commerce_stock['und'][0]['value'];
+    $stock = 0;
+
+    if($product) {
+        $stock = $product->commerce_stock['und'][0]['value'];
+    }
 
     if ($is_in_order > 0 || $is_in_readingnow > 0 || $max_books < 1) {
         $can_order = false;
     }
 
     $disabled_reason = '';
-    $already_read = '';
 
-    if($max_books < 0) {
-        $disabled_reason = 'Не більше ' . variable_get('varMaxBooks') . '-х книг';
-    }
-
-    if($stock < 1) {
-        $disabled_reason = 'Немає на складі';
+    if ($stock < 1) {
+        $disabled_reason = 'Читається зараз';
+        $can_order = false;
     }
 
     if ($is_in_order > 0){
+        $can_order = false;
         $disabled_reason = 'Ви вже замовили цю книгу';
     }
 
     if ($is_in_readingnow > 0) {
+        $can_order = false;
         $disabled_reason = 'Ви вже читаєте цю книгу';
     }
 
-    if ($can_order) {
-        if ($is_in_archive > 0) {
-            $already_read = 'Ви вже читали цю книгу';
-            $form['confirmordersmarkup'] = array(
-                '#type' => 'markup',
-                '#markup' => '<div class="btn-container with-tip"><div class="book-tip">' . $already_read . '</div>' . $button . '</div>' . $modal,
-            );
-        } else {
-            $form['confirmordersmarkup'] = array(
-                '#type' => 'markup',
-                '#markup' => '<div class="btn-container">' . $button . '</div>' . $modal,
-            );
-        }
-
-    } else {
+    if(($stock < 1 || $is_in_order > 0 || $is_in_readingnow > 0) ) {
         $form['confirmordersmarkup'] = array(
             '#type' => 'markup',
             '#markup' => '<div class="btn-container with-tip"><div class="book-tip disabled-tip">' . $disabled_reason . '</div>' . $button_disabled . '</div>',
+        );
+
+        return;
+    }
+
+    if($max_books < 1) {
+        $can_order = false;
+
+        $form['confirmordersmarkup'] = array(
+            '#type' => 'markup',
+            '#markup' => '<div class="btn-container">' . $overslots_button . '</div>' . $overslots_modal,
+        );
+    }
+
+    if ($can_order) {
+        $form['confirmordersmarkup'] = array(
+            '#type' => 'markup',
+            '#markup' => '<div class="btn-container">' . $button . '</div>' . $modal,
         );
     }
 }
@@ -252,6 +286,9 @@ function bookbox_confirm_book($arg0,$arg1) {
 
     commerce_order_save($order);
     commerce_order_status_update($order, 'completed', $skip_save = FALSE, $revision = NULL, $log = '');
+    
+    $node = _bookbox_get_product_display_by_product_id($order_product);
+    bookbox_node_update($node);
 
     //todo: delete from test
     db_update('commerce_order')
@@ -264,9 +301,6 @@ function bookbox_confirm_book($arg0,$arg1) {
         ->fields(array('revision_timestamp' => $time))
         ->condition('order_id', $order->order_id)
         ->execute();
-
-    $node = _bookbox_get_product_display_by_product_id($order_product);
-    bookbox_node_update($node);
 
     $mail_body = '<div>' . $mail_body . '<div style="clear:both;"></div>Деталі щодо доставки буде надіслано окремо. <br /><br />Команда Book Box. <br /><br /><span style="font-size:12px;">Це автоматичне повідомлення, будь ласка, не відповідайте на нього.</span>' . '</div>';
 
@@ -283,8 +317,6 @@ function bookbox_confirm_book($arg0,$arg1) {
 
     bookbox_mail_send('bookbox', 'book_box_order', $user->mail, $params);
 
-
-
     $dest = drupal_get_destination();
     drupal_goto($dest);
 }
@@ -297,7 +329,7 @@ function bookbox_admin_delivery_form ($form, &$form_state) {
     //todo delete
 
     $result = db_select('commerce_order', 'o')
-        ->fields('o', array('order_id', 'status', 'created'))
+        ->fields('o', array('order_id', 'status', 'changed'))
         ->condition('o.status', 'completed')
         ->orderBy('o.order_id', 'DESC')
         ->execute()->fetchAll();
@@ -305,10 +337,13 @@ function bookbox_admin_delivery_form ($form, &$form_state) {
     foreach ($result as $item) {
         if ($item->status == 'completed') {
 
-            $nfo = next_friday_object($item->created);
+            $nfo = next_friday_object($item->changed);
             $script_day = variable_get('varTestDayTime');
 
-            if( ($nfo->format('U') < $script_day) && (period4order ($item->created) == 1 || period4order($item->created) == 3) ) {
+            dsm($nfo->format('U'));
+            dsm($script_day);
+
+            if( ($nfo->format('U') < $script_day) && (period4order ($item->changed) == 1 || period4order($item->changed) == 3) ) {
 
             }
         }
@@ -319,7 +354,7 @@ function bookbox_admin_delivery_form ($form, &$form_state) {
 
 function bookbox_admin_delivery_form_submit($form, &$form_state) {
     $result = db_select('commerce_order', 'o')
-        ->fields('o', array('order_id', 'status', 'created'))
+        ->fields('o', array('order_id', 'status', 'changed'))
         ->condition('o.status', 'completed')
         ->orderBy('o.order_id', 'DESC')
         ->execute()->fetchAll();
@@ -328,10 +363,10 @@ function bookbox_admin_delivery_form_submit($form, &$form_state) {
         if ($item->status == 'completed') {
 
             //todo remove test date
-            $nfo = next_friday_object($item->created);
+            $nfo = next_friday_object($item->changed);
             $script_day = variable_get('varTestDayTime');
 
-            if( ($nfo->format('U') < $script_day) && (period4order ($item->created) == 1 || period4order($item->created) == 3) ) {
+            if( ($nfo->format('U') < $script_day) && (period4order ($item->changed) == 1 || period4order($item->changed) == 3) ) {
                 $order = commerce_order_load($item->order_id);
                 commerce_order_status_update($order, 'delivered', $skip_save = FALSE, $revision = NULL, $log = '');
             }
