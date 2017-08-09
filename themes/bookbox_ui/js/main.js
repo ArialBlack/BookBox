@@ -25,43 +25,55 @@
         $('.sort-submenu').insertAfter(".page-header");
 
         $( document ).ready(function() {
-          $('body').append('<div class="scroll-up"></div>');
+            $('body').append('<div class="scroll-up"></div>');
 
-          if ($('.page-content-finder').length) {
-            $('.page-content-finder .page-header').html('Пошук');
-            $('.page-content-finder .form-autocomplete>label').html('Введіть пошукове слово');
-            $('.page-content-finder #edit-find').html('Пошук');
-          }
+            $( ".region-sidebar-second .block-bookbox" ).each(function( index ) {
+                var $this = $(this),
+                    bookCount = $this.find('.book-container').length;
 
-          if($('.btn-container.with-tip').length > 0) {
-              $('#block-system-main').addClass('with-tip');
-          }
+                if (bookCount > 2) {
+                    $this.addClass('three-books');
+                }
 
-        //   var addCollapseNav = '<li class="collapse-nav-items"><img src="/sites/all/themes/bookbox_ui/images/collapse-nav.png"><ul></ul></li>';
-        // if ( $('nav .primary-nav>ul>li').length > 5 && $(window).width() >= 992) {
-        //     $('nav .primary-nav>ul').append(addCollapseNav);
-        //     for (var i = 5; i< $('nav .primary-nav>ul>li').length-1; i++) {
-        //         var numList = i+1;
-        //         console.log($('nav .primary-nav>ul>li:nth-child(' + i+1 + ')'));
-        //         $('.collapse-nav-items ul').append($('nav .primary-nav>ul>li:nth-child(' + numList + ')'));
-        //     }
-        // }
+            });
 
-        // $('.collapse-nav-items>img').click(function(){
-        //     $('.collapse-nav-items>ul').slideToggle();
-        // })
-
-          $('.scroll-up').click(function() {
-            $('html, body').animate({ scrollTop: 0}, 1000 );
-          });
-
-          $(window).scroll(function(){
-            if ($(this).scrollTop() > 300 && $(this).width() < 768 ) {
-              $('.scroll-up').fadeIn();
-            } else {
-              $('.scroll-up').fadeOut();
+            if ($('.page-content-finder').length) {
+                $('.page-content-finder .page-header').html('Пошук');
+                $('.page-content-finder .form-autocomplete>label').html('Введіть пошукове слово');
+                $('.page-content-finder #edit-find').html('Пошук');
             }
-          });
+
+
+
+            if($('.btn-container.with-tip').length > 0) {
+                $('#block-system-main').addClass('with-tip');
+            }
+
+            //   var addCollapseNav = '<li class="collapse-nav-items"><img src="/sites/all/themes/bookbox_ui/images/collapse-nav.png"><ul></ul></li>';
+            // if ( $('nav .primary-nav>ul>li').length > 5 && $(window).width() >= 992) {
+            //     $('nav .primary-nav>ul').append(addCollapseNav);
+            //     for (var i = 5; i< $('nav .primary-nav>ul>li').length-1; i++) {
+            //         var numList = i+1;
+            //         console.log($('nav .primary-nav>ul>li:nth-child(' + i+1 + ')'));
+            //         $('.collapse-nav-items ul').append($('nav .primary-nav>ul>li:nth-child(' + numList + ')'));
+            //     }
+            // }
+
+            // $('.collapse-nav-items>img').click(function(){
+            //     $('.collapse-nav-items>ul').slideToggle();
+            // })
+
+            $('.scroll-up').click(function() {
+                $('html, body').animate({ scrollTop: 0}, 1000 );
+            });
+
+            $(window).scroll(function(){
+                if ($(this).scrollTop() > 300 && $(this).width() < 768 ) {
+                    $('.scroll-up').fadeIn();
+                } else {
+                    $('.scroll-up').fadeOut();
+                }
+            });
 
             var html = document.documentElement;
             var startSize =  parseInt(getComputedStyle(html, '').fontSize);
@@ -98,16 +110,16 @@
 
             $(window).resize(function(){
                 if ($(this).width() < 768 && $('.page-faq #block-system-main .view-id-faq .nav-tabs li.active').children().length == 1) {
-                   $('.page-faq #block-system-main .view-id-faq .nav-tabs .active').append($('.page-faq #block-system-main .view-id-faq .tab-content'));
-               } else if ( $(this).width() >= 768 ) {
-                $('.page-faq #block-system-main .view-id-faq .tab-content').css('display', 'block');
-                $('.page-faq #block-system-main .view-id-faq #views-bootstrap-tab-1').append($('.page-faq #block-system-main .view-id-faq .tab-content'));
-               }
+                    $('.page-faq #block-system-main .view-id-faq .nav-tabs .active').append($('.page-faq #block-system-main .view-id-faq .tab-content'));
+                } else if ( $(this).width() >= 768 ) {
+                    $('.page-faq #block-system-main .view-id-faq .tab-content').css('display', 'block');
+                    $('.page-faq #block-system-main .view-id-faq #views-bootstrap-tab-1').append($('.page-faq #block-system-main .view-id-faq .tab-content'));
+                }
 
-               // if ( $('.collapse-nav-items').length && $(window).width() < 992) {
-               //    $('.primary-nav>ul').append($('.collapse-nav-items>ul>li'));
-               //    $('.collapse-nav-items').remove();
-               // }
+                // if ( $('.collapse-nav-items').length && $(window).width() < 992) {
+                //    $('.primary-nav>ul').append($('.collapse-nav-items>ul>li'));
+                //    $('.collapse-nav-items').remove();
+                // }
             })
 
             $('.page-faq #block-system-main .view-id-faq .nav-tabs li').click(function(){
@@ -125,20 +137,20 @@
                 }
             });
 
-          $('.node-type-book .mobile.visible-xs .description-tabs-mobile .nav-tabs li').click(function(){
-            if ($(window).width() <768) {
-              if (!$(this).hasClass('active')) {
-                $('.node-type-book .mobile.visible-xs .description-tabs-mobile .tab-content').css('display','none');
-                $(this).append($('.node-type-book .mobile.visible-xs .description-tabs-mobile .tab-content'));
-                $('.node-type-book .mobile.visible-xs .description-tabs-mobile .tab-content').slideToggle(300, function(){
-                  var offsetActiveBook = $('.node-type-book .mobile.visible-xs .description-tabs-mobile .tab-pane.active').parent().parent().offset().top + 5;
-                  $('html, body').animate( { scrollTop: offsetActiveBook }, 300 );
-                });
-              } else {
-                $('.node-type-book .mobile.visible-xs .description-tabs-mobile .tab-content').slideToggle();
-              }
-            }
-          });
+            $('.node-type-book .mobile.visible-xs .description-tabs-mobile .nav-tabs li').click(function(){
+                if ($(window).width() <768) {
+                    if (!$(this).hasClass('active')) {
+                        $('.node-type-book .mobile.visible-xs .description-tabs-mobile .tab-content').css('display','none');
+                        $(this).append($('.node-type-book .mobile.visible-xs .description-tabs-mobile .tab-content'));
+                        $('.node-type-book .mobile.visible-xs .description-tabs-mobile .tab-content').slideToggle(300, function(){
+                            var offsetActiveBook = $('.node-type-book .mobile.visible-xs .description-tabs-mobile .tab-pane.active').parent().parent().offset().top + 5;
+                            $('html, body').animate( { scrollTop: offsetActiveBook }, 300 );
+                        });
+                    } else {
+                        $('.node-type-book .mobile.visible-xs .description-tabs-mobile .tab-content').slideToggle();
+                    }
+                }
+            });
 
         });
 
@@ -168,13 +180,13 @@
         });
 
         $(".page-user-register #edit-field-company-und").change(function () {
-                $( "select option:selected" ).each(function() {
-                    var cid = $(this).val(),
-                        tiptext = $( "#clist li:contains(" + cid + ")" ).data('d');
+            $( "select option:selected" ).each(function() {
+                var cid = $(this).val(),
+                    tiptext = $( "#clist li:contains(" + cid + ")" ).data('d');
 
-                    $(".page-user-register #edit-mail--2").attr('placeholder', tiptext);
-                });
-            }).change();
+                $(".page-user-register #edit-mail--2").attr('placeholder', tiptext);
+            });
+        }).change();
 
         $(window).on('resize', function() {
             clearTimeout(resizeTimer);
@@ -186,7 +198,7 @@
         //$('#views-exposed-form-booksearch-page .icon-search').click(function() {
         $('.search-block .svg-icon').click(function() {
             //console.log('--------------c');
-           $('body').addClass('open-search');
+            $('body').addClass('open-search');
         });
 
 
@@ -225,13 +237,13 @@
         //NICESCROLL
         var nice = $("html").niceScroll({cursorcolor:"#999", mousescrollstep:60});  // The document page (body)
 
-      if ($(window).width() > 1024) {
-        $(".col-sm-4").niceScroll({cursorcolor:"#999", mousescrollstep:60}); // end of nicescroll
-      };
+        if ($(window).width() > 1024) {
+            $(".col-sm-4").niceScroll({cursorcolor:"#999", mousescrollstep:60}); // end of nicescroll
+        };
 
-      if ($('.col-sm-8').height() < $('aside.col-sm-4').height() && $(window).width() <= 1024 && $(window).width() > 767) {
-        $('.col-sm-8').css('height', $('aside.col-sm-4').height());
-      };
+        if ($('.col-sm-8').height() < $('aside.col-sm-4').height() && $(window).width() <= 1024 && $(window).width() > 767) {
+            $('.col-sm-8').css('height', $('aside.col-sm-4').height());
+        };
 
     });
 }(jQuery));

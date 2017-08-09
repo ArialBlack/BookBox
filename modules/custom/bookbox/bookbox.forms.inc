@@ -340,10 +340,12 @@ function bookbox_admin_delivery_form ($form, &$form_state) {
             $nfo = next_friday_object($item->changed);
             $script_day = variable_get('varTestDayTime');
 
-            dsm($nfo->format('U'));
-            dsm($script_day);
+            //dsm($nfo->format('U'), 'u');
+            //dsm($script_day, 'd');
+            //dsm($nfo->format('U') < $script_day, 'less');
+            //dsm('----------');
 
-            if( ($nfo->format('U') < $script_day) && (period4order ($item->changed) == 1 || period4order($item->changed) == 3) ) {
+            if( $nfo->format('U') < $script_day ) {
 
             }
         }
@@ -366,7 +368,7 @@ function bookbox_admin_delivery_form_submit($form, &$form_state) {
             $nfo = next_friday_object($item->changed);
             $script_day = variable_get('varTestDayTime');
 
-            if( ($nfo->format('U') < $script_day) && (period4order ($item->changed) == 1 || period4order($item->changed) == 3) ) {
+            if($nfo->format('U') < $script_day) {
                 $order = commerce_order_load($item->order_id);
                 commerce_order_status_update($order, 'delivered', $skip_save = FALSE, $revision = NULL, $log = '');
             }

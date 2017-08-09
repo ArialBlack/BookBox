@@ -65,7 +65,7 @@ function bookbox_current_order_block ($form, &$form_state) {
 
                 $form['bms' . $box_count] = array(
                     '#type' => 'markup',
-                    '#markup' => '<div class="book-container">' . verbose_period4order_short($order->changed) . '<br>'  . $order_date ,
+                    '#markup' => '<div class="book-container">' . verbose_period4order_short($order->changed),
                 );
 
                 $form['book_' . $box_count] = array(
@@ -75,7 +75,7 @@ function bookbox_current_order_block ($form, &$form_state) {
 
                 $form['bme' . $box_count] = array(
                     '#type' => 'markup',
-                    '#markup' => '</div>',
+                    '#markup' => '<div class="order-date debug-info">' . $order_date . '</div>' . '</div>',
                 );
             }
         }

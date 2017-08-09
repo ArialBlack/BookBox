@@ -70,15 +70,15 @@ function next_friday_object($date) {
 //Функція формує строку дати доставки
 function verbose_period4order($date) {
   if (period4order ($date) == 1 || period4order($date) == 3) {
-    return "Очікуйте доставку у найближчу п'ятницю: <span>" . next_friday($date) . "</span>";
+    return "<div class='order-date'>Очікуйте доставку у п'ятницю: <span>" . next_friday($date) . "</span></div>";
   } else {
-    return "Очікуйте доставку у наступну п'ятницю: <span>" . next_friday($date) . "</span>";
+    return "<div class='order-date'>Очікуйте доставку у п'ятницю: <span>" . next_friday($date) . "</span></div>";
   }
 }
 
 //Функція формує строку дати доставки
 function verbose_period4order_short($date) {
-  return "Доставка: <span>" . next_friday($date) . "</span>";
+  return "<div class='order-date'>Доставка: <span>" . next_friday($date) . "</span></div>";
 }
 
 //Получить Дисплей книги по айдишнику ее продукта
