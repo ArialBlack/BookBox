@@ -11,6 +11,31 @@
             }
         });
 
+        function createCookie(name,value,days) {
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime()+(days*24*60*60*1000));
+                var expires = "; expires="+date.toGMTString();
+            }
+            else var expires = "";
+            document.cookie = name+"="+value+expires+"; path=/";
+        }
+
+        function readCookie(name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for(var i=0;i < ca.length;i++) {
+                var c = ca[i];
+                while (c.charAt(0)==' ') c = c.substring(1,c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+            }
+            return null;
+        }
+
+        function eraseCookie(name) {
+            createCookie(name,"",-1);
+        }
+
         $(document).ajaxStop(function() {
             var $label = $('.book-labels .field');
             $label.each(function( index ) {
@@ -154,6 +179,17 @@
 
         });
 
+        $(window).on('load', function() {
+            if($('.role-authenticated-user #new-changes').length > 0) {
+                var visited = readCookie('visitedBookbox');
+
+                if (!visited || visited !== "true") {
+                    createCookie('visitedBookbox', "true", 30);
+                    $('#new-changes').modal('show');
+                }
+            }
+        });
+
         $( document ).on( "click", ".sort-submenu a", function() {
             var $this = $(this),
                 value = $this.data('value'),
@@ -200,8 +236,6 @@
             //console.log('--------------c');
             $('body').addClass('open-search');
         });
-
-
 
         $(document).mouseup(function (e) {
             var container = $(".search-block");
