@@ -55,6 +55,18 @@ function next_friday($date) {
   }
 }
 
+function next_friday_full($date) {
+  $dt = new DateTime(date('d.m.Y H:i', $date));
+  $dt->modify('next friday');
+
+  if (period4order ($date) == 1 || period4order($date) == 3) {
+    return $dt->format('d.m.Y');
+  } else {
+    $dt->add(new DateInterval('P7D'));
+    return $dt->format('d.m.Y');
+  }
+}
+
 function next_friday_object($date) {
   $dt = new DateTime(date('d.m.Y H:i', $date));
   $dt->modify('next friday');
