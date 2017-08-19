@@ -220,6 +220,7 @@ pip-log.txt
 modules/*
 !modules/custom/
 modules/custom/contrib
+!modules/views_php/
 
 node_modules/
 .ftpauth
