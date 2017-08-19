@@ -351,59 +351,6 @@ function bookbox_cron() {
 
   if ( date('y-m-d', $cron_last) != date('y-md-', time())) {
 
-    if(intval(d()) == 1) {
-
-      $result = db_select('commerce_order', 'o')
-          ->fields('o', array('order_id', 'status', 'changed'))
-          ->condition(
-              db_or()
-                  ->condition('o.status', 'completed')
-                  ->condition('o.status', 'prolong')
-          )
-          ->orderBy('o.order_id', 'DESC')
-          ->execute()->fetchAll();
-
-      foreach ($result as $item) {
-
-        $order_month = intval(date('m', $item->changed));
-
-        //1-го числа мы меняем статусы всех книг которые в статусе комлитед и были заказаны в пред-предудущем месяце
-        //если щас 1е мая, то мы ищем заказ марта
-        if ($item->status == 'completed' &&  intval(m()) - $order_month >=2 ) {
-          //dsm('в архив!');
-          $order = commerce_order_load($item->order_id);
-          commerce_order_status_update($order, 'archive', $skip_save = FALSE, $revision = NULL, $log = '');
-        }
-
-        //1-го числа мы меняем статус всех книг "пролонг" на "подтверждено" и меняем дату так как будто они были подтверждены в прошлом месяце
-        if ($item->status == 'prolong') {
-          $order = commerce_order_load($item->order_id);
-
-          $old_changed = $item->changed;
-          $old_changed_day = intval(date("d", $old_changed));
-          $old_changed_month = intval(date("m", $old_changed));
-          $old_changed_year = intval(date("Y", $old_changed));
-
-          $prev_date_month = $old_changed_month - 1;
-          $prev_date_year = $old_changed_year;
-          if ($prev_date_month < 1) {
-            $prev_date_month = 12;
-            $prev_date_year = $prev_date_year - 1;
-          }
-
-          $prev_date = $prev_date_month . '/' . $old_changed_day . '/' . $prev_date_year;
-          $date = date("Y-m-d H:i:s", strtotime($prev_date));
-          $timestamp = strtotime($date);
-
-          db_update('commerce_order')
-              ->fields(array('changed' => $timestamp ))
-              ->fields(array('status' => 'completed'))
-              ->condition('order_id', $item->order_id)
-              ->execute();
-        }
-      }
-    }
-
     bookbox_equal_stocks();
 
     variable_set('cron_last', date('y-m-d', time()));
