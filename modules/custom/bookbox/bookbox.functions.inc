@@ -265,3 +265,47 @@ function bookbox_get_in_orders_this_month($node) {
   return $in_orders;
 }
 
+function taxonomy_get_nested_tree($vid_or_terms = array(), $max_depth = NULL, $parent = 0, $parents_index = array(), $depth = 0) {
+  if (!is_array($vid_or_terms)) {
+    $vid_or_terms = taxonomy_get_tree($vid_or_terms, 0, NULL, TRUE);
+  }
+
+  foreach ($vid_or_terms as $term) {
+    foreach ($term->parents as $term_parent) {
+      if ($term_parent == $parent) {
+        $return[$term->tid] = $term;
+      } else {
+        $parents_index[$term_parent][$term->tid] = $term;
+      }
+    }
+  }
+
+  foreach ($return as &$term) {
+    if (isset($parents_index[$term->tid]) && (is_null($max_depth) || $depth < $max_depth)) {
+      $term->children = taxonomy_get_nested_tree($parents_index[$term->tid], $max_depth, $term->tid, $parents_index, $depth + 1);
+    }
+  }
+
+  return
+
+      $return;
+}
+
+function taxonomy_nested_tree_render($tree, $recurring = FALSE) {
+  $items = array();
+  if (count($tree)) {
+    foreach ($tree as $term) {
+      $item = array('name' => $term->name, 'tid' => $term->tid);
+      if (isset($term->children)) {
+        $item["children"] = taxonomy_nested_tree_render($term->children, TRUE);
+      }
+      $items[] = $item;
+    }
+  }
+
+  if ($recurring) {
+    return $items;
+  }
+
+  return $items;
+}

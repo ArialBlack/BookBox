@@ -52,6 +52,11 @@ function bookbox_menu(){
       'type' => MENU_CALLBACK
   );
 
+  $items['json/category'] = array(
+      'page callback' => 'bookbox_category_endpoint',
+      'access arguments' => array('access content'),
+  );
+
   global $user;
   $uid = $user->uid;
 
@@ -607,4 +612,10 @@ function computed_field_field_search_string_compute(&$entity_field, $entity_type
   }
 
   $entity_field[0]['value'] = $entity->title . " " . $entity->field_origin_name['und'][0]['value'] . $authors;
+}
+
+function bookbox_category_endpoint() {
+  $tree = taxonomy_get_nested_tree(4);
+  $items = taxonomy_nested_tree_render($tree);
+  drupal_json_output($items);
 }
