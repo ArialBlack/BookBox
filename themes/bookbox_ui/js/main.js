@@ -50,6 +50,8 @@
         $('.sort-submenu').insertAfter(".page-header");
 
         $( document ).ready(function() {
+            //console.log(Drupal.settings.firstLogin);
+
             $('body').append('<div class="scroll-up"></div>');
 
             $( ".region-sidebar-second .block-bookbox" ).each(function( index ) {
@@ -73,20 +75,6 @@
             if($('.btn-container.with-tip').length > 0) {
                 $('#block-system-main').addClass('with-tip');
             }
-
-            //   var addCollapseNav = '<li class="collapse-nav-items"><img src="/sites/all/themes/bookbox_ui/images/collapse-nav.png"><ul></ul></li>';
-            // if ( $('nav .primary-nav>ul>li').length > 5 && $(window).width() >= 992) {
-            //     $('nav .primary-nav>ul').append(addCollapseNav);
-            //     for (var i = 5; i< $('nav .primary-nav>ul>li').length-1; i++) {
-            //         var numList = i+1;
-            //         console.log($('nav .primary-nav>ul>li:nth-child(' + i+1 + ')'));
-            //         $('.collapse-nav-items ul').append($('nav .primary-nav>ul>li:nth-child(' + numList + ')'));
-            //     }
-            // }
-
-            // $('.collapse-nav-items>img').click(function(){
-            //     $('.collapse-nav-items>ul').slideToggle();
-            // })
 
             $('.scroll-up').click(function() {
                 $('html, body').animate({ scrollTop: 0}, 1000 );
@@ -183,7 +171,8 @@
             if($('.role-authenticated-user #new-changes').length > 0) {
                 var visited = readCookie('visitedBookbox');
 
-                if (!visited || visited !== "true") {
+                //user not visited in this month and last login was before changes
+                if ((!visited || visited !== "true") && (lastLoginWasBeforeChanges)){
                     createCookie('visitedBookbox', "true", 30);
                     $('#new-changes').modal('show');
                 }

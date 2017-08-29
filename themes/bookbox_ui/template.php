@@ -107,8 +107,27 @@ function bookbox_ui_preprocess_page(&$vars) {
     // Latter items take precedence.
   }
 
+  global $user;
+  $lastLoginWasBeforeChanges = false;
 
+  $logs = db_select('watchdog', 'w')
+      ->fields('w', array('timestamp'))
+      ->condition('w.uid', $user->uid)
+      ->condition('w.type', 'user')
+      ->condition('w.message', 'Session opened for %name.')
+      ->range(0, 2)
+      ->orderBy('w.wid')
+      ->execute()
+      ->fetchAll();
 
+  if (count($logs) > 1) {
+    $prev_access = $logs[1]->timestamp;
+    if ($prev_access < 1504224000) {
+      $lastLoginWasBeforeChanges = true;
+    }
+  }
+
+  drupal_add_js(array('lastLoginWasBeforeChanges' => $lastLoginWasBeforeChanges), 'setting');
 }
 
 function bookbox_ui_preprocess(&$variables) {
