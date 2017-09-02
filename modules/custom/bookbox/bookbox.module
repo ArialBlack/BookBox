@@ -2,13 +2,24 @@
 module_load_include('inc', 'bookbox', 'bookbox.functions');
 module_load_include('inc', 'bookbox', 'bookbox.mail');          //emails
 module_load_include('inc', 'bookbox', 'bookbox.forms');
-module_load_include('inc', 'bookbox', 'bookbox.cart');          //Корзина
+//module_load_include('inc', 'bookbox', 'bookbox.cart');          //Корзина
 module_load_include('inc', 'bookbox', 'bookbox.order');         //Заказ месяца
 module_load_include('inc', 'bookbox', 'bookbox.readnow');       //Читаю сейчас
 module_load_include('inc', 'bookbox', 'bookbox.adminmessages');
+module_load_include('inc', 'bookbox', 'bookbox.blocks');
 
 function bookbox_menu(){
   $items=array();
+
+  $items['admin/bookbox/delivered'] = array(
+      'title' => 'Сповістити систему про доставку',
+      'description' => 'Admin labels',
+      'type' => MENU_NORMAL_ITEM,
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('bookbox_admin_delivery_form'),
+      'access arguments' => array('access adminstration page'),
+      'access callback' => TRUE,
+  );
 
   $items['admin/bookbox/labels'] = array(
       'title' => 'Адмін-тексти',
@@ -28,25 +39,9 @@ function bookbox_menu(){
       'type' => MENU_LOCAL_TASK,
   );
 
-  $items['confirm/%/orders'] = array(
+  $items['confirm/%/%/book'] = array(
       'title' => 'Buy',
-      'page callback' => 'bookbox_confirm_box',
-      'page arguments' => array(1),
-      'access arguments' => array('access content'), // whatever see above
-      'type' => MENU_CALLBACK
-  );
-
-  $items['confirm/%/%/prolong1'] = array(
-      'title' => 'Buy',
-      'page callback' => 'bookbox_prolongbook1',
-      'page arguments' => array(1,2),
-      'access arguments' => array('access content'), // whatever see above
-      'type' => MENU_CALLBACK
-  );
-
-  $items['confirm/%/%/prolong2'] = array(
-      'title' => 'Buy',
-      'page callback' => 'bookbox_prolongbook2',
+      'page callback' => 'bookbox_confirm_book',
       'page arguments' => array(1,2),
       'access arguments' => array('access content'), // whatever see above
       'type' => MENU_CALLBACK
@@ -61,18 +56,23 @@ function bookbox_menu(){
   $uid = $user->uid;
 
   $show_cart = true;
-  if(bookbox_count_in_confirm_this_month($uid) > 0 ) {
+  //todo
+  if(bookbox_count_in_confirm($uid) > 0 ) {
     $show_cart = false;
   }
 
   $show_order = true;
-  if( bookbox_count_in_confirm_this_month($uid) < 1 ) {
+  if( bookbox_count_in_confirm($uid) < 1 ) {
     $show_order = false;
   }
 
   $show_reading_now = true;
   if( count(bookbox_get_in_reading_now($uid)) < 1) {
     $show_reading_now = false;
+  }
+
+  if ($show_reading_now &&  count(bookbox_get_in_reading_now($uid)) >= variable_get('varMaxBooks')) {
+    $show_order = false;
   }
 
   if ($show_cart) {
@@ -106,368 +106,6 @@ function bookbox_menu(){
   }
 
   return $items;
-}
-
-function bookbox_block_info() {
-  $blocks = array();
-
-  $blocks['MiniCart'] = array(
-      'info' => t('Mini cart'),
-  );
-
-  $blocks['MonthOrder'] = array(
-      'info' => t('Month orders'),
-  );
-
-  $blocks['ReadingNow'] = array(
-      'info' => t('Reading now'),
-  );
-
-  $blocks['CatBiz'] = array(
-      'info' => t('cat biz'),
-  );
-
-  $blocks['CatKrug'] = array(
-      'info' => t('cat krug'),
-  );
-
-  $blocks['CatSamo'] = array(
-      'info' => t('cat samo'),
-  );
-
-  $blocks['CatZoj'] = array(
-      'info' => t('cat zoj'),
-  );
-
-  $blocks['CatNauch'] = array(
-      'info' => t('cat nauch'),
-  );
-
-  $blocks['CatHud'] = array(
-      'info' => t('cat hud'),
-  );
-
-  $blocks['BBUserMenu'] = array(
-      'info' => t('custom user menu'),
-  );
-
-  return $blocks;
-}
-
-function bookbox_block_view($delta = '') {
-  global $user;
-  $uid = $user->uid;
-
-  $block = array();
-
-  //todo
-  $show_cart = true;
-  if(bookbox_count_in_confirm_this_month($uid) > 0 ) {
-    $show_cart = false;
-  }
-
-  $show_order = true;
-  if( bookbox_count_in_confirm_this_month($uid) < 1 ) {
-    $show_order = false;
-  }
-
-  $show_reading_now = true;
-  if( count(bookbox_get_in_reading_now($uid)) < 1) {
-    $show_reading_now = false;
-  }
-
-  switch ($delta) {
-    case 'MiniCart':
-      if ($show_cart) {
-        $block['subject'] = '';
-        $form = drupal_get_form('bookbox_mini_cart_block');
-        $block['content'] = drupal_render($form);
-      } else {
-        $block['subject'] = null;
-        $block['content'] = null;
-      }
-      break;
-
-    case 'MonthOrder':
-      if ($show_order) {
-        $block['subject'] = '';
-        $form = drupal_get_form('bookbox_month_order_block');
-        $block['content'] = drupal_render($form);
-      } else {
-        $block['subject'] = null;
-        $block['content'] = null;
-      }
-      break;
-
-    case 'ReadingNow':
-      if ($show_reading_now) {
-        $block['subject'] = '';
-        $form = drupal_get_form('bookbox_reading_now_block');
-        $block['content'] = drupal_render($form);
-      } else {
-        $block['subject'] = null;
-        $block['content'] = null;
-      }
-      break;
-
-    case 'CatBiz':
-      $block['subject'] = '';
-      $block['content'] = bookbox_cat_biz_block();
-      break;
-
-    case 'CatKrug':
-      $block['subject'] = '';
-      $block['content'] = bookbox_cat_krug_block();
-      break;
-
-    case 'CatSamo':
-      $block['subject'] = '';
-      $block['content'] = bookbox_cat_samo_block();
-      break;
-
-    case 'CatZoj':
-      $block['subject'] = '';
-      $block['content'] = bookbox_cat_zoj_block();
-      break;
-
-    case 'CatNauch':
-      $block['subject'] = '';
-      $block['content'] = bookbox_cat_nauch_block();
-      break;
-
-    case 'CatHud':
-      $block['subject'] = '';
-      $block['content'] = bookbox_cat_hud_block();
-      break;
-
-    case 'BBUserMenu':
-      $block['subject'] = '';
-      $block['content'] = bookbox_custom_usermenu_block();
-      break;
-  }
-  return $block;
-}
-
-function bookbox_custom_usermenu_block() {
-  $content = "";
-  global $user;
-  $uid = $user->uid;
-  $account = user_load($uid);
-
-  $show_cart = true;
-  if(bookbox_count_in_confirm_this_month($uid) > 0 ) {
-    $show_cart = false;
-  }
-
-  $show_order = true;
-  if( bookbox_count_in_confirm_this_month($uid) < 1 ) {
-    $show_order = false;
-  }
-
-  $show_reading_now = true;
-  if( count(bookbox_get_in_reading_now($uid)) < 1) {
-    $show_reading_now = false;
-  }
-
-  $nanme = $account->field_name['und'][0]['safe_value'];
-  $snanme = $account->field_sirname['und'][0]['safe_value'];
-
-  $content = $content . '<ul class="menu nav navbar-nav secondary">';
-  $content = $content . '<li class="first last expanded dropdown">';
-  $content = $content . '<a href="/user" title="" data-target="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <span class="user-name"><span>' . $nanme . '</span> <span>' . $snanme . '</span></span> <span class="caret"></span></a>';
-  $content = $content . '<ul class="dropdown-menu"><li class="first leaf"><a href="/user" title="">Профіль</a></li>';
-  $content = $content . '<li class="leaf"><a href="/user/' . $uid . '/favorites" title="">Список бажань</a></li>';
-  $content = $content . '<li class="leaf"><a href="/user/' . $uid . '/orders" title="">Історія замовлень</a></li>';
-  $content = $content . '<li class="last leaf"><a href="/user/logout">Вихід</a></li>';
-
-  if($show_cart || $show_order || $show_reading_now ) {
-    $content = $content . '<li role="separator" class="divider visible-sm visible-xs"></li>';
-  }
-
-  if($show_cart) {
-    $content = $content . '<li class="leaf visible-sm visible-xs"><a href="/user/usercart" title="">Замовлення місяця</a></li>';
-  }
-
-  if($show_order) {
-    $content = $content . '<li class="leaf visible-sm visible-xs"><a href="/user/userorder" title="">Замовлення підтверджено</a></li>';
-  }
-
-  if($show_reading_now) {
-    $content = $content . '<li class="leaf visible-sm visible-xs"><a href="/user/userreadingnow" title="">Зараз читаю</a></li>';
-  }
-
-  $content = $content . '</ul></li></ul>';
-
-  return $content;
-}
-
-function bookbox_block_view_alter(&$data, $block) {
-  if ($block->delta == 'client-block-892' && current_path() == 'faq') {
-    $block->title = 'Маєте додаткове питання?';
-  }
-}
-
-function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state) {
-  global $user;
-  $uid = $user->uid;
-  // можно добавить максимум 2
-
-  $form['submit']['#value'] = 'Замовити';
-
-  $in_cart = 0;
-
-  if (isset($form['product_id'])) {
-    $form_product = $form['product_id']['#value'];
-    $can_add2cart = true;
-  } else {
-    $form_product = null;
-    $can_add2cart = false;
-  }
-
-  $wrapper = _bookbox_get_cart_items();
-
-  //что-то есть в корзине
-  if ($wrapper) {
-    foreach ($wrapper->commerce_line_items as $delta => $line_item_wrapper) {
-      $cart_product = $line_item_wrapper->commerce_product->value()->product_id;
-      $in_cart = $in_cart + 1;
-
-      if($form_product == $cart_product) {
-        $can_add2cart = false; // если эта книга уже в корзине, то нечего ее добавлять, ок, да?
-        break;
-      }
-    }
-  }
-
-  $in_confirm_this_month = bookbox_count_in_confirm_this_month($uid);
-
-  if ($in_cart == 2 || $in_confirm_this_month > 0 || current_period() == 2 || bookbox_count_in_prolong_prev_month($uid) + $in_cart > 1) {
-    $can_add2cart = false;
-  }
-
-  if (!$can_add2cart) {
-    $form['submit']['#attributes']['disabled'] = TRUE;
-  }
-}
-
-// Крон работы
-function bookbox_cron() {
-  $cron_last = variable_get('cron_last');
-
-  if ( date('y-m-d', $cron_last) != date('y-md-', time())) {
-
-    bookbox_equal_stocks();
-
-    variable_set('cron_last', date('y-m-d', time()));
-    drupal_flush_all_caches();
-  }
-}
-
-function bookbox_user_orders_history() {
-  global $user;
-  $content = '<h1>Історія замовлень</h1>';
-
-  drupal_set_title('Історія замовлень | Book Box');
-
-  $result = db_select('commerce_order', 'o')
-      ->fields('o', array('order_id', 'changed'))
-      ->condition('o.uid', $user->uid)
-      ->condition('o.status', 'archive')
-      ->orderBy('o.changed', 'DESC')
-      ->execute()->fetchAll();
-
-  $newOrder = [];
-
-  foreach ($result as $res) {
-      setlocale(LC_TIME, 'uk_UA');
-      $dateM = ua_month_original(intval(date('m', $res->changed))-1);
-      $dateY = date('Y', $res->changed);
-      $res->changed = $dateM . ' ' . $dateY;
-      $newOrder[$res->changed][] = $res->order_id;
-  }
-
-  while ($keyname = current($newOrder)) {
-      $content = $content . '<div class="row"><h2>' . key($newOrder) . '</h2>';
-      foreach ($newOrder[key($newOrder)] as $res) {
-        $order = commerce_order_load($res);
-        $line_item_id = $order->commerce_line_items['und'][0]['line_item_id'];
-        $line_item = commerce_line_item_load($line_item_id);
-        $product_id =  $line_item->commerce_product['und'][0]['product_id'];
-        $product_display = _bookbox_get_product_display_by_product_id($product_id);
-
-        if ($product_display->nid) {
-          $node = node_load($product_display->nid);
-          $node_view = node_view($node, 'teaser');
-          $rendered_teaser = render($node_view);
-          $content = $content . $rendered_teaser;
-        }
-      }
-    $content = $content . '</div>';
-    next($newOrder);
-  }
-
-  return $content;
-}
-
-function bookbox_cat_biz_block() {
-  $content = _bookbox_catblock(7);
-  return $content;
-}
-
-function bookbox_cat_krug_block() {
-  $content = _bookbox_catblock(18);
-  return $content;
-}
-
-function bookbox_cat_samo_block() {
-  $content = _bookbox_catblock(13);
-  return $content;
-}
-
-function bookbox_cat_zoj_block() {
-  $content = _bookbox_catblock(276);
-  return $content;
-}
-
-function bookbox_cat_nauch_block() {
-  $content = _bookbox_catblock(286);
-  return $content;
-}
-
-function bookbox_cat_hud_block() {
-  $content = _bookbox_catblock(317);
-  return $content;
-}
-
-function _bookbox_catblock($parent_tid) {
-  $content = '';
-  $childrens = taxonomy_get_children($parent_tid);
-
-  foreach ($childrens as $subcategory) {
-    $content = $content . '<div class="books-row"><h2><a href="/taxonomy/term/' . $subcategory->tid . '">' . $subcategory->name . '</a></h2>';
-    $content = $content . '<a class="know-more" href="/taxonomy/term/' . $subcategory->tid . '">дивитись більше</a>';
-    $nodes = taxonomy_select_nodes($subcategory->tid, $pager = FALSE, $limit = 100, $order = array('t.sticky' => 'DESC', 't.created' => 'DESC'));
-    $content = $content . '<div class="books-row">';
-    $good_nodes = 0;
-
-    foreach ($nodes as $nid) {
-      $node = node_load($nid);
-
-      if($node) {
-        $good_nodes = $good_nodes + 1;
-        $node_view = node_view($node, 'teaser');
-        $rendered_teaser = render($node_view);
-        $content = $content . $rendered_teaser;
-      }
-
-      if ($good_nodes == 3) {
-        break;
-      }
-    }
-
-    $content = $content . '</div></div>';
-  }
-  return $content;
 }
 
 function bookbox_menu_site_status_alter(&$menu_site_status, $path) {
@@ -564,7 +202,6 @@ function bookbox_equal_stocks() {
     if(isset($node->field_bookfields)) {
       bookbox_node_update($node);
     }
-
   }
 }
 
@@ -573,7 +210,7 @@ function bookbox_node_update($node) {
     $product_id = $node->field_bookfields['und'][0]['product_id'];
     $product = commerce_product_load($product_id);
     $absolute_stock = $product->field_absolute_stock['und'][0]['value'];
-    $in_orders = bookbox_get_in_orders_this_month($node);
+    $in_orders = bookbox_get_in_orders($node);
     $product->commerce_stock['und'][0]['value'] = $absolute_stock - $in_orders;
     commerce_product_save($product);
   }
@@ -584,7 +221,18 @@ function bookbox_entity_update($entity, $type) {
     $product_id = $entity->field_bookfields['und'][0]['product_id'];
     $product = commerce_product_load($product_id);
     $absolute_stock = $product->field_absolute_stock['und'][0]['value'];
-    $in_orders = bookbox_get_in_orders_this_month($entity);
+    $in_orders = bookbox_get_in_orders($entity);
+    $product->commerce_stock['und'][0]['value'] = $absolute_stock - $in_orders;
+    commerce_product_save($product);
+  }
+
+  if($type == 'commerce_order' && $entity->status == 'archive') {
+    $line_item_id = $entity->commerce_line_items['und'][0]['line_item_id'];
+    $line_item = commerce_line_item_load($line_item_id);
+    $product_id = $line_item->commerce_product['und'][0]['product_id'];
+    $product = commerce_product_load($product_id);
+    $absolute_stock = $product->field_absolute_stock['und'][0]['value'];
+    $in_orders = bookbox_get_in_orders($entity);
     $product->commerce_stock['und'][0]['value'] = $absolute_stock - $in_orders;
     commerce_product_save($product);
   }
@@ -595,8 +243,8 @@ function bookbox_commerce_order_presave($order) {
     $line_item = commerce_line_item_load($order->commerce_line_items['und'][0]['line_item_id']);
 
     if(isset($line_item->commerce_product)) {
-        $node = _bookbox_get_product_display_by_product_id($line_item->commerce_product['und'][0]['product_id']);
-        bookbox_node_update($node);
+      $node = _bookbox_get_product_display_by_product_id($line_item->commerce_product['und'][0]['product_id']);
+      bookbox_node_update($node);
     }
   }
 }

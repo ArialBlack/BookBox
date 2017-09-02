@@ -4,21 +4,43 @@ function bookbox_mini_cart_block($form, &$form_state) {
     global $user;
     $uid = $user->uid;
     $destination = request_path();
-    if(current_period() == 1) {
-        $form['ftitle'] = array(
-            '#type' => 'markup',
-            '#markup' => '<h3>Замовлення ' . ua_month() . '</h3><h6>Оберіть дві книги до <span>20 ' .  ua_month() . '</span> включно</h6>',
-        );
+    $max_books = variable_get('varMaxBooks') - bookbox_count_in_confirm($uid) - bookbox_count_in_reading_now($uid);
+    $can_order_text = '';
+
+    switch ($max_books) {
+        case 1:
+            $can_order_text = $max_books . ' книгу';
+            break;
+        case 2:
+        case 3:
+        case 4:
+            $can_order_text = $max_books . ' книги';
+            break;
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+        case 10:
+            $can_order_text = $max_books . ' книжок';
+            break;
     }
-    if(current_period() == 2) {
+
+    if (bookbox_count_in_confirm($uid) > 0) {
         $form['ftitle'] = array(
             '#type' => 'markup',
-            '#markup' => '<h3>Замовлення ' . ua_month() . ' не підтверджено</h3><h6>Робіть замовлення з <span>1 ' .  ua_month(intval(m())) . '</span></h6>',
+            '#markup' => '<h3>Додайте до замовленя</h3><h6>Ви можете замовити ' . $can_order_text . '</h6>',
+        );
+    } else {
+        $form['ftitle'] = array(
+            '#type' => 'markup',
+            '#markup' => '<h3>Зробіть замовленя</h3><h6>Ви можете замовити ' . $can_order_text . '</h6>',
         );
     }
 
     $wrapper = _bookbox_get_cart_items();
     $cart_count = 0;
+
     if ($wrapper) {
         foreach ($wrapper->commerce_line_items as $delta => $line_item_wrapper) {
             $cart_product = $line_item_wrapper->commerce_product->value()->product_id;
@@ -49,34 +71,8 @@ function bookbox_mini_cart_block($form, &$form_state) {
         }
     }
 
-    if ($cart_count < 2) {
-        $in_prolong = bookbox_count_in_prolong_this_month($uid);
-        $empty_cells = 2 - $cart_count - $in_prolong;
-        
-        for($i=0; $i <$empty_cells;$i++) {
-            $form['add_book_link_'.$i] = array(
-                '#type' => 'markup',
-                '#markup' => '<div class="add_some_book">Оберіть книгу</div>',
-            );
-        }
-        
-        if ($empty_cells < 1) {
-            //dsm($form);
-            unset($form['ftitle']);
-        }
-    }
-
-    // кнопка подтверждения доступна если
-    // 1. число 1- 20
-    // и 2.колво выбраных + кол-во в пролонге = 2
-    /////// если колво выбраных + пролонг > 2 и (1.) писать "удалите одну"
-    // 3. если он уже подтверждал выбор в этом мес (полтв в этом мес > 0)
-    // писать вы уже какбе того
-    //dsm('this', bookbox_count_in_confirm_this_month());
-
-    if(current_period() == 1 && bookbox_count_in_confirm_this_month($uid) == 0 && $cart_count > 0) {
-        if ($cart_count + bookbox_count_in_prolong_this_month($uid) == 2) {
-            $modal = '<button type="button" id="edit-submit-box" class="btn btn-primary" data-toggle="modal" data-target="#confirm-orders">Підтвердити замовлення</button>
+    if ($cart_count > 0 && bookbox_count_in_confirm($uid) + bookbox_count_in_reading_now($uid) < variable_get('varMaxBooks')) {
+        $modal = '<button type="button" id="edit-submit-box" class="btn btn-primary" data-toggle="modal" data-target="#confirm-orders">Підтвердити замовлення</button>
                             <div class="modal fade" tabindex="-1" role="dialog" id="confirm-orders">
                                       <div class="modal-dialog" role="document">
                                         <div class="modal-content">
@@ -94,27 +90,14 @@ function bookbox_mini_cart_block($form, &$form_state) {
                                         </div>
                                       </div>
                                     </div>';
-            $form['confirmordersprolongmarkup'] = array(
-                '#type' => 'markup',
-                '#markup' => $modal,
-            );
-        }
-        if ($cart_count + bookbox_count_in_prolong_this_month($uid) > 2 && bookbox_count_in_prolong_this_month($uid) == 1) {
-            $form['submit_box_markup'] = array(
-                '#type' => 'markup',
-                '#markup' => '<p class="tip_message">Видаліть одну книгу для підтвердження замовлення</p>'
-            );
-        }
-        if ($cart_count + bookbox_count_in_prolong_this_month($uid) > 3) {
-            $form['submit_box_markup'] = array(
-                '#type' => 'markup',
-                '#markup' => '<p class="tip_message">Підтвердьте замовлення з 1 числа наступного місяця</p>'
-            );
-        }
+
+        $form['confirmordersprolongmarkup'] = array(
+            '#type' => 'markup',
+            '#markup' => $modal,
+        );
     }
     return $form;
 }
-
 
 function bookbox_delete_bookfromcart1 ($form, &$form_state) {
     global $user;
@@ -132,11 +115,167 @@ function bookbox_delete_bookfromcart2 ($form, &$form_state) {
     commerce_cart_order_refresh($order);
 }
 
+function bookbox_delete_bookfromcart3 ($form, &$form_state) {
+    global $user;
+    $order = commerce_cart_order_load($user->uid);
+    $line_item = $order->commerce_line_items['und'][2]['line_item_id'];
+    commerce_cart_order_product_line_item_delete($order, $line_item);
+    commerce_cart_order_refresh($order);
+}
+
+function bookbox_delete_bookfromcart4 ($form, &$form_state) {
+    global $user;
+    $order = commerce_cart_order_load($user->uid);
+    $line_item = $order->commerce_line_items['und'][3]['line_item_id'];
+    commerce_cart_order_product_line_item_delete($order, $line_item);
+    commerce_cart_order_refresh($order);
+}
+
+function bookbox_delete_bookfromcart5 ($form, &$form_state) {
+    global $user;
+    $order = commerce_cart_order_load($user->uid);
+    $line_item = $order->commerce_line_items['und'][4]['line_item_id'];
+    commerce_cart_order_product_line_item_delete($order, $line_item);
+    commerce_cart_order_refresh($order);
+}
+
+function bookbox_delete_bookfromcart6 ($form, &$form_state) {
+    global $user;
+    $order = commerce_cart_order_load($user->uid);
+    $line_item = $order->commerce_line_items['und'][5]['line_item_id'];
+    commerce_cart_order_product_line_item_delete($order, $line_item);
+    commerce_cart_order_refresh($order);
+}
+
+function bookbox_delete_bookfromcart7 ($form, &$form_state) {
+    global $user;
+    $order = commerce_cart_order_load($user->uid);
+    $line_item = $order->commerce_line_items['und'][6]['line_item_id'];
+    commerce_cart_order_product_line_item_delete($order, $line_item);
+    commerce_cart_order_refresh($order);
+}
+
+function bookbox_delete_bookfromcart8 ($form, &$form_state) {
+    global $user;
+    $order = commerce_cart_order_load($user->uid);
+    $line_item = $order->commerce_line_items['und'][7]['line_item_id'];
+    commerce_cart_order_product_line_item_delete($order, $line_item);
+    commerce_cart_order_refresh($order);
+}
+
+function bookbox_delete_bookfromcart9 ($form, &$form_state) {
+    global $user;
+    $order = commerce_cart_order_load($user->uid);
+    $line_item = $order->commerce_line_items['und'][8]['line_item_id'];
+    commerce_cart_order_product_line_item_delete($order, $line_item);
+    commerce_cart_order_refresh($order);
+}
+
+function bookbox_delete_bookfromcart10 ($form, &$form_state) {
+    global $user;
+    $order = commerce_cart_order_load($user->uid);
+    $line_item = $order->commerce_line_items['und'][9]['line_item_id'];
+    commerce_cart_order_product_line_item_delete($order, $line_item);
+    commerce_cart_order_refresh($order);
+}
+
+//old code for confirm from cart
 function bookbox_confirm_box($arg0) {
     $user = user_load($arg0);
     $user_name = $user->field_name['und'][0]['value'] . ' ' . $user->field_sirname['und'][0]['value'];
+    $time = variable_get('varTestDayTime'); //todo delete from test
+
+    $order = commerce_cart_order_load($user->uid);
+    $order_count = count($order->commerce_line_items['und']);
+
+    $order_products = array ();
+
+    for ($i = 0; $i < $order_count; $i++) {
+        $line_item_id = $order->commerce_line_items['und'][$i]['line_item_id'];
+        $line_item = commerce_line_item_load($line_item_id);
+        $product_id = $line_item->commerce_product['und']['0']['product_id'];
+
+        array_push($order_products, $product_id);
+    }
+
+    commerce_order_delete($order->order_id);
+
+    foreach ($order_products as $order_product) {
+        $mail_body = $user->field_name['und'][0]['value'] . ' ' . $user->field_sirname['und'][0]['value'] . ', вітання! ';
+        $mail_body = $mail_body . 'Замовлення успішно підтверджено.</br>';
+
+        $book = _bookbox_get_product_display_by_product_id($order_product, $bundle = 'product_display', $field_name = 'field_bookfields');
+
+        $file = file_load($book->field_nni['und'][0]['fid']);
+        $uri = $file->uri;
+        $url = file_create_url($uri);
+
+        $tid = $book->field_book_author['und'][0]['tid'];
+        $author = taxonomy_term_load($tid);
+
+        $order_book = array();
+        $order_book['src'] =  $GLOBALS['base_root'].'/node/' . $book->nid;
+        $order_book['img_src'] = $url;
+        $order_book['author'] = $author->name;
+        $order_book['title'] = $book->title;
+
+        $mail_body = $mail_body . '<div style="display:inline-block; width:200px; margin-top:20px; margin-bottom:20px;">' . '<a href="'.$GLOBALS['base_root'].'/node/' . $book->nid .'">
+        <img src = "' . $url . '" width="167" height="250" style="display:block; />'
+            . $book->title . '<br/>' . $author->name .'</a> </div>';
+
+        $order = commerce_order_new($user->uid, 'checkout_checkout');
+
+        $product = commerce_product_load($order_product);
+        $line_item = commerce_product_line_item_new($product, 1, $order->order_id);
+        commerce_line_item_save($line_item);
+
+        $order_wrapper = entity_metadata_wrapper('commerce_order', $order);
+        $order_wrapper->commerce_line_items[] = $line_item;
+
+        commerce_order_save($order);
+        commerce_order_status_update($order, 'completed', $skip_save = FALSE, $revision = NULL, $log = '');
+
+        //todo: delete from test
+        db_update('commerce_order')
+            ->fields(array('created' => $time))
+            ->fields(array('changed' => $time))
+            ->condition('order_id', $order->order_id)
+            ->execute();
+
+        db_update('commerce_order_revision')
+            ->fields(array('revision_timestamp' => $time))
+            ->condition('order_id', $order->order_id)
+            ->execute();
+
+        $node = _bookbox_get_product_display_by_product_id($order_product);
+        bookbox_node_update($node);
+
+        $mail_body = '<div>' . $mail_body . '<div style="clear:both;"></div>Деталі щодо доставки буде надіслано окремо. <br /><br />Команда Book Box. <br /><br /><span style="font-size:12px;">Це автоматичне повідомлення, будь ласка, не відповідайте на нього.</span>' . '</div>';
+
+        $params['subject'] = 'Ваше замовлення';
+        $params['content'] = $mail_body;
+
+        $params['img1'] = '<a href="'.$order_book['src'].'"><img alt = "" src = "' . $order_book['img_src'] . '" style = "max-width:1626px;" class="mcnImage" width = "264" ></a>';
+        $params['merge_vars']['FNAME'] = $user->field_name['und']['0']['value'];
+        $params['merge_vars']['FULLNAME'] = $user_name;
+        $params['merge_vars']['BTITLE1'] = $book->title;
+        $params['merge_vars']['BAUTHOR1'] = $order_book['author'];
+        $params['merge_vars']['BURL1'] =  $order_book['src'];
+        $params['name'] = $user->field_name['und']['0']['value'];
+
+        bookbox_mail_send('bookbox', 'book_box_order', $user->mail, $params);
+    }
+
+    $dest = drupal_get_destination();
+    drupal_goto($dest);
+}
+
+//
+function bookbox_confirm_box_old($arg0) {
+    $user = user_load($arg0);
+    $user_name = $user->field_name['und'][0]['value'] . ' ' . $user->field_sirname['und'][0]['value'];
     $mail_body = $user->field_name['und'][0]['value'] . ' ' . $user->field_sirname['und'][0]['value'] . ', вітання! ';
-    $mail_body = $mail_body . 'Замовлення місяця успішно підтверджено.</br>';
+    $mail_body = $mail_body . 'Замовлення успішно підтверджено.</br>';
 
     $order = commerce_cart_order_load($user->uid);
     $order_count = count($order->commerce_line_items['und']);
@@ -153,7 +292,7 @@ function bookbox_confirm_box($arg0) {
         $file = file_load($book2->field_nni['und'][0]['fid']);
         $uri = $file->uri;
         $url = file_create_url($uri);
-        
+
         $tid = $book2->field_book_author['und'][0]['tid'];
         $author = taxonomy_term_load($tid);
 

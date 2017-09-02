@@ -214,10 +214,31 @@
         }
       }
 
-      #edit-submit {
-        border: none;
+      #edit-submit,
+      #edit-submit-book {
+        border: @secondary-color 1px solid;
         background-color: @secondary-color;
         padding: 15px;
+      }
+
+      #edit-submit-book {
+        margin-top: 15px;
+
+        &:hover {
+          background-color: white;
+          color: @secondary-color;
+        }
+      }
+
+      .btn-container.with-tip {
+        .book-tip {
+          font-size: 11px;
+          font-style: italic;
+        }
+
+        #edit-submit-book {
+          margin-top: 5px;
+        }
       }
 
       .description-tabs {
@@ -369,5 +390,11 @@
         display: none;
       }
     }
+  }
+}
+
+#block-system-main.with-tip {
+   article .book-dids .links {
+    margin-top: 10px;
   }
 }

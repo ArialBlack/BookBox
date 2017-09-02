@@ -78,6 +78,26 @@
   <?php print $page_top; ?>
   <?php print $page; ?>
   <?php print $page_bottom; ?>
+  <?php
+    $changes_block = module_invoke('block', 'block_view', 9);
+    $block_object = block_load('block', 9);
+  ?>
+  <div class="modal fade" tabindex="-1" role="dialog" id="new-changes">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+          <h2><?php print $block_object->title; ?></h2>
+          <?php print render($changes_block['content']); ?>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline red" data-dismiss="modal">Зрозуміло</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <span id="bpMArker"></span>
   <div class="fontdown hidden"><button class="btn btn-default btn-transparent"id="down">A -</button></div>
   <div class="fontup hidden"><button class="btn btn-default btn-transparent" id="up">A +</button></div>

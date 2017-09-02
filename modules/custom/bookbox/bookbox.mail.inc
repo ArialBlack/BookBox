@@ -93,10 +93,6 @@ function bookbox_mail($key, &$message, $params) {
               'name' => 'img1',
               'content' => $params['img1']
           ),
-          array(
-              'name' => 'img2',
-              'content' => $params['img2']
-          ),
       );
       $message['subject'] = isset($params['subject']) ? $params['subject'] : t('Замовлення підтверджено');
       $mandrill_params['message']['from_name'] = 'Book Box';
