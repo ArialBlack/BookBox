@@ -9,7 +9,7 @@
 
     .links {
       position: absolute;
-      right: 0;
+      right: -15px;
       top: 0;
     }
 
@@ -22,8 +22,13 @@
         height: 13px;
         width: 13px;
         background: url(../images/close.png) no-repeat center center;
+        background-size: cover;
         border: none;
         display: block;
+
+        @media screen and (max-width: 767px) {
+          width: 18px;
+        }
       }
     }
   }
@@ -72,8 +77,27 @@
           .node-teaser {
             height:100%;
           }
+
+          @media screen and (max-width:767px) {
+            width: 100%;
+            max-width: none;
+          }
+
+          @media (min-width: 768px) and (max-width: 991px) {
+            width: 49.9%;
+            max-width: none;
+          }
         }
       }
+
+      @media screen and (max-width: 767px) {
+        padding-left: 0;
+      }
+    }
+
+    @media screen and (max-width: 767px) {
+      padding-left: 30px !important;
+      padding-right: 30px !important;
     }
   }
 }

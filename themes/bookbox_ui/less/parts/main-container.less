@@ -1,6 +1,29 @@
 .main-container {
   min-height: 90vh;
   padding-bottom: 111px !important;
+
+  @media screen and (max-width: 1023px) {
+    padding-bottom: 545px !important;
+  }
+
+  .col-sm-8:after {
+    content: '';
+    position: absolute;
+    height: ~"calc(100% + 100px)";
+    width: 1px;
+    background: #ebecee;
+    right: -1px;
+    top: 0;
+    bottom: 0;
+
+    @media (min-width: 1025px) {
+      content: none ;
+    }
+
+    @media screen and (max-width: 767px) {
+      content: none;
+    }
+  }
 }
 
 .page-user-login,

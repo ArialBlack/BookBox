@@ -46,6 +46,15 @@
         margin-left: 0;
         padding: 0;
       }
+
+      @media screen and (max-width: 767px) {
+        display: block;
+        text-align: center;
+
+        &:before {
+          display: none;
+        }
+      }
     }
 
     #block-system-main .row {
@@ -59,6 +68,15 @@
         margin:30px 34% 0 32px;
         font-size: 18px;
         border-bottom: 1px solid #ebecee;
+
+        @media screen and (max-width:767px) {
+          display: block;
+          text-align: center;
+          width: 100%;
+          margin: 0;
+          padding-bottom: 35px;
+          border-bottom: none;
+        }
       }
 
       .node-book {
@@ -66,10 +84,26 @@
         flex-grow: 1;
         padding:0 15px;
 
-        //.node-teaser {
-        //  height:100%;
-        //}
+        @media screen and (max-width:767px) {
+          width: 100%;
+          max-width: none;
+          margin: auto;
+        }
+
+        @media (min-width: 768px) and (max-width: 1023px) {
+          max-width: 49.9%;
+        }
       }
+
+      @media screen and (max-width: 767px) {
+        display: block;
+        padding-left: 0;
+      }
+    }
+
+    @media screen and (max-width: 767px) {
+      padding-left: 30px !important;
+      padding-right: 30px !important;
     }
   }
 }

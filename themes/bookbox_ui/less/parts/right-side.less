@@ -1,13 +1,16 @@
 aside.col-sm-4 {
   padding:0;
-  padding-top: 73px;
   border-left: #ebecee 1px solid;
   position: fixed;
   right:0;
   top: 0;
-
   height:100%;
   overflow: auto;
+  display: none;
+
+  @media (min-width: @screen-sm-min) {
+    display: block;
+  }
 
   #block-bookbox-minicart,
   #block-bookbox-readingnow,
@@ -39,7 +42,7 @@ aside.col-sm-4 {
       position: relative;
       margin-bottom: 0;
 
-      @media (min-width: @screen-md-min) {
+      @media screen and (min-width: 1300px) {
         width: 50%;
         float: left;
         padding-right: 22px;
@@ -55,6 +58,10 @@ aside.col-sm-4 {
 
         .flag-bookmarks {
           display: none;
+        }
+
+        @media screen and (max-width: 1300px) {
+          // max-width: none;
         }
       }
     }
@@ -102,7 +109,50 @@ aside.col-sm-4 {
         margin-right: 5%;
       }
     }
+
+    @media screen and (max-width: 1300px) {
+      width: 100%;
+    }
   }
+
+  @media screen and (max-width: 991px) {
+    //padding-top: 70px;
+    padding-right: 15px;
+  }
+
+  //@media screen and (max-width: 1023px) {
+  //  padding-bottom: 510px;
+  //}
+
+  @media (min-width: 992px) and (max-width: 1300px) {
+    padding-right: 15px;
+    //padding-top: 115px;
+  }
+
+  .region-sidebar-second {
+    padding-top: 73px;
+    padding-bottom: 70px;
+
+    //@media screen and (max-width: 1300px) {
+    //  //padding-right: 15px;
+    //  padding-top: 10px;
+    //}
+
+    @media screen and (max-width: 1024px) {
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+
+    @media (min-width: 1025px) and (max-width: 1300px) {
+      //padding-right: 15px;
+      padding-top: 65px;
+    }
+  }
+
+  @media screen and (max-width: 1024px) {
+    position: relative;
+  }
+
 }
 
 #block-bookbox-minicart {
@@ -118,6 +168,10 @@ aside.col-sm-4 {
       width: 13px;
       background: url('../images/close.png') no-repeat center center;
       border: none;
+
+      @media screen and (max-width: 1299px) {
+        right: -10px;
+      }
     }
   }
 
@@ -131,6 +185,22 @@ aside.col-sm-4 {
     &:hover {
       background: darken(@secondary-color, 20);
     }
+
+    @media screen and (max-width: 992px) {
+      font-size: 10px;
+      margin: 0;
+
+    }
+  }
+
+  //@media screen and (max-width: 1300px) {
+  //  padding-right: 0;
+  //}
+
+  @media screen and (max-width: 1300px) {
+    padding: 0;
+    padding-left: 1vw;
+    padding-right: 3vw;
   }
 }
 
@@ -138,6 +208,12 @@ aside.col-sm-4 {
 #block-bookbox-monthorder {
   //padding: 0 75px 130px 4.9vw;
   padding: 40px 75px 10px 4.9vw;
+
+  @media screen and (max-width: 1300px) {
+  	padding: 0;
+    padding-left: 1vw;
+    padding-right: 3vw;
+  }
 
   .book-container {
     button {
@@ -147,6 +223,14 @@ aside.col-sm-4 {
 
       span {
         display: none;
+      }
+
+      @media screen and (max-width: 992px) {
+        font-size: 10px;
+      }
+
+      @media screen and (max-width: 1300px) {
+        margin-bottom: 20px;
       }
     }
   }

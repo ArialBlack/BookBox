@@ -17,8 +17,6 @@ function bookbox_form_alter(&$form, &$form_state, $form_id){
         );
     }
 
-    //dsm($form); <svg preserveAspectRatio="xMaxYMax"><use xlink:href="/sites/all/themes/bookbox_ui/images/svg-icons-sprite.svg#icon-search"></use></svg>
-
     if ($form['#id'] == 'user-register-form') {
         $query = db_select('node', 'n');
         $query->fields('n', array('nid', 'title'));
@@ -45,14 +43,8 @@ function bookbox_form_alter(&$form, &$form_state, $form_id){
             '#markup' => $domainslist,
         );
 
-       // $form['name'] = $form['field_name'];
-       // $form['email'] = $form['account']['mail'];
-        //unset($form['field_name']);
-       // unset($form['account']['mail']);
-
         $form['field_name']['#weight'] = -10;
         $form['field_sirname']['#weight'] = -9;
-        //$form['email']['#weight'] = -8;
 
         $form['pass'] = $form['account']['pass'];
         unset($form['account']['pass']);
@@ -60,12 +52,13 @@ function bookbox_form_alter(&$form, &$form_state, $form_id){
 
         $form['mail'] = $form['account']['mail'];
         unset($form['account']['mail']);
-        $form['mail']['#weight'] = -7;
+        $form['mail']['#weight'] = -6;
         $form['mail']['#title'] = 'Email <span>(Корпоративний email)</span>';
         $form['mail']['#description'] = '';
+        
+        $form['field_tel']['#weight'] = -7;
 
-        $form['pass']['#weight'] = -6;
-
+        $form['pass']['#weight'] = -5;
     }
 
     if ($form['#id'] == 'user-login') {
@@ -85,7 +78,6 @@ function bookbox_form_alter(&$form, &$form_state, $form_id){
     if ($form['#id'] == 'user-pass') {
         $form['actions']['submit']['#value'] = 'Відновити пароль';
     }
-
 }
 
 function bookbox_registeruser_validate($form, &$form_state) {
@@ -115,7 +107,7 @@ function bookbox_registeruser_validate($form, &$form_state) {
 
     $pattern = "/^\+380\d{3}\d{2}\d{2}\d{2}$/";
     if(!preg_match($pattern, $usertel))  {
-        ife_errors('set', 'edit-field-tel-und-0-value', 'Номер має бути у форматі +380ххххххххх');
+        ife_errors('set', 'edit-tel-und-0-value', 'Номер має бути у форматі +380ххххххххх');
         form_set_error('tel', 'Номер має бути у форматі +380ххххххххх');
     }
 }

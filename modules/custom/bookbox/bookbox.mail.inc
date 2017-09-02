@@ -52,7 +52,6 @@ function create_message_vars(&$mandrill_params, $message){
   return $settings;
 }
 
-
 function bookbox_mail($key, &$message, $params) {
   $message['headers']['Content-Type'] = 'text/html; charset=UTF-8';
 
@@ -101,7 +100,7 @@ function bookbox_mail($key, &$message, $params) {
       );
       $message['subject'] = isset($params['subject']) ? $params['subject'] : t('Замовлення підтверджено');
       $mandrill_params['message']['from_name'] = 'Book Box';
-      $mandrill_params['message']['headers']['From'] = 'noreply@bookbox.ua';
+      $mandrill_params['message']['headers']['From'] = 'info@bookbox.ua';
       $mandrill_params['message']['headers']['Reply-To'] = 'info@bookbox.ua';
       if (isset($params['headers']) && is_array($params['headers'])) {
         $message['headers'] += $params['headers'];
@@ -126,8 +125,8 @@ function bookbox_mandrill_mail_alter(&$mandrill_params, $message){
     $mandrill_params['message']['subject'] = 'Замовлення підтверджено';
     $mandrill_params['args']['template_id'] = 'order-confirmation-mandrill';
     $mandrill_params['message']['from_name'] = 'Book Box';
-    $mandrill_params['message']['from_email'] = 'noreply@bookbox.ua';
-    $mandrill_params['message']['headers']['From'] = 'noreply@bookbox.ua';
+    $mandrill_params['message']['from_email'] = 'info@bookbox.ua';
+    $mandrill_params['message']['headers']['From'] = 'info@bookbox.ua';
     $mandrill_params['message']['headers']['Reply-To'] = 'info@bookbox.ua';
     $mandrill_params['message']['global_merge_vars'] = $global_merge_vars;
   }
@@ -146,8 +145,8 @@ function bookbox_mandrill_mail_alter(&$mandrill_params, $message){
     $mandrill_params['message']['subject'] = 'Ваш пароль змінено';
     $mandrill_params['args']['template_id'] = 'password-change-mandrill';
     $mandrill_params['message']['from_name'] = 'Book Box';
-    $mandrill_params['message']['from_email'] = 'noreply@bookbox.ua';
-    $mandrill_params['message']['headers']['From'] = 'noreply@bookbox.ua';
+    $mandrill_params['message']['from_email'] = 'info@bookbox.ua';
+    $mandrill_params['message']['headers']['From'] = 'info@bookbox.ua';
     $mandrill_params['message']['headers']['Reply-To'] = 'info@bookbox.ua';
   }
 }
@@ -174,9 +173,9 @@ function user_mandrill_mail_alter(&$mandrill_params, $message) {
         'content' => $urls[0][0][0],
     );
     $mandrill_params['message']['subject'] = 'Підтвердження email';
-    $mandrill_params['message']['from_email'] = 'noreply@bookbox.ua';
+    $mandrill_params['message']['from_email'] = 'info@bookbox.ua';
     $mandrill_params['message']['from_name'] = 'Book Box';
-    $mandrill_params['message']['headers']['From'] = 'noreply@bookbox.ua';
+    $mandrill_params['message']['headers']['From'] = 'info@bookbox.ua';
     $mandrill_params['message']['headers']['Reply-To'] = 'info@bookbox.ua';
     $mandrill_params['args']['template_id'] = 'email-confirmation-mandrill';
     $mandrill_params['args']['template_content'][0]['name'] = 'content';
@@ -214,7 +213,6 @@ function user_mandrill_mail_alter(&$mandrill_params, $message) {
     $mandrill_params['message']['html'] = '';
     $mandrill_params['message']['text'] = '';
 
-
     $mandrill_params['message']['global_merge_vars'] = $global_merge_vars;
 
     if (!empty($merge_vars)) {
@@ -245,8 +243,8 @@ function user_mandrill_mail_alter(&$mandrill_params, $message) {
     $mandrill_params['message']['subject'] = 'Відновлення паролю';
     $mandrill_params['args']['template_id'] = 'password-reset-mandrill';
     $mandrill_params['message']['from_name'] = 'Book Box';
-    $mandrill_params['message']['from_email'] = 'noreply@bookbox.ua';
-    $mandrill_params['message']['headers']['From'] = 'noreply@bookbox.ua';
+    $mandrill_params['message']['from_email'] = 'info@bookbox.ua';
+    $mandrill_params['message']['headers']['From'] = 'info@bookbox.ua';
     $mandrill_params['message']['headers']['Reply-To'] = 'info@bookbox.ua';
     $mandrill_params['args']['template_content'][0]['name'] = 'content';
     $mandrill_params['args']['template_content'][0]['content'] = '';
@@ -274,15 +272,14 @@ function user_mandrill_mail_alter(&$mandrill_params, $message) {
     }
     $mandrill_params['message']['subject'] = 'Ваш пароль змінено';
     $mandrill_params['message']['from_name'] = 'Book Box';
-    $mandrill_params['message']['from_email'] = 'noreply@bookbox.ua';
-    $mandrill_params['message']['headers']['From'] = 'noreply@bookbox.ua';
+    $mandrill_params['message']['from_email'] = 'info@bookbox.ua';
+    $mandrill_params['message']['headers']['From'] = 'info@bookbox.ua';
     $mandrill_params['message']['headers']['Reply-To'] = 'info@bookbox.ua';
     $mandrill_params['args']['template_id'] = 'password-change-mandrill';
     $mandrill_params['message']['global_merge_vars'] = $global_merge_vars;
   }
 
 }
-
 
 function bookbox_mail_send($module, $key, $to, $params = array()) {
 
@@ -301,8 +298,4 @@ function bookbox_mail_send($module, $key, $to, $params = array()) {
     return FALSE;
   }
 }
-
-
-
-
 

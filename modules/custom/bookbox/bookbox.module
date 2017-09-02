@@ -1,5 +1,4 @@
 <?php
-
 module_load_include('inc', 'bookbox', 'bookbox.functions');
 module_load_include('inc', 'bookbox', 'bookbox.mail');          //emails
 module_load_include('inc', 'bookbox', 'bookbox.forms');
@@ -8,10 +7,9 @@ module_load_include('inc', 'bookbox', 'bookbox.order');         //Заказ м�
 module_load_include('inc', 'bookbox', 'bookbox.readnow');       //Читаю сейчас
 module_load_include('inc', 'bookbox', 'bookbox.adminmessages');
 
-
 function bookbox_menu(){
   $items=array();
-  
+
   $items['admin/bookbox/labels'] = array(
       'title' => 'Адмін-тексти',
       'description' => 'Admin labels',
@@ -54,6 +52,59 @@ function bookbox_menu(){
       'type' => MENU_CALLBACK
   );
 
+  $items['json/category'] = array(
+      'page callback' => 'bookbox_category_endpoint',
+      'access arguments' => array('access content'),
+  );
+
+  global $user;
+  $uid = $user->uid;
+
+  $show_cart = true;
+  if(bookbox_count_in_confirm_this_month($uid) > 0 ) {
+    $show_cart = false;
+  }
+
+  $show_order = true;
+  if( bookbox_count_in_confirm_this_month($uid) < 1 ) {
+    $show_order = false;
+  }
+
+  $show_reading_now = true;
+  if( count(bookbox_get_in_reading_now($uid)) < 1) {
+    $show_reading_now = false;
+  }
+
+  if ($show_cart) {
+    $items['user/usercart'] = array(
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('bookbox_mini_cart_block'),
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+        'menu_name' => 'user-menu',
+    );
+  }
+
+  if ($show_order) {
+    $items['user/userorder'] = array(
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('bookbox_month_order_block'),
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+        'menu_name' => 'user-menu',
+    );
+  }
+
+  if($show_reading_now) {
+    $items['user/userreadingnow'] = array(
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('bookbox_reading_now_block'),
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+        'menu_name' => 'user-menu',
+    );
+  }
+
   return $items;
 }
 
@@ -84,6 +135,22 @@ function bookbox_block_info() {
       'info' => t('cat samo'),
   );
 
+  $blocks['CatZoj'] = array(
+      'info' => t('cat zoj'),
+  );
+
+  $blocks['CatNauch'] = array(
+      'info' => t('cat nauch'),
+  );
+
+  $blocks['CatHud'] = array(
+      'info' => t('cat hud'),
+  );
+
+  $blocks['BBUserMenu'] = array(
+      'info' => t('custom user menu'),
+  );
+
   return $blocks;
 }
 
@@ -95,7 +162,7 @@ function bookbox_block_view($delta = '') {
 
   //todo
   $show_cart = true;
-  if( /*current_period() == 2 || */ bookbox_count_in_confirm_this_month($uid) > 0 ) {
+  if(bookbox_count_in_confirm_this_month($uid) > 0 ) {
     $show_cart = false;
   }
 
@@ -157,8 +224,81 @@ function bookbox_block_view($delta = '') {
       $block['subject'] = '';
       $block['content'] = bookbox_cat_samo_block();
       break;
+
+    case 'CatZoj':
+      $block['subject'] = '';
+      $block['content'] = bookbox_cat_zoj_block();
+      break;
+
+    case 'CatNauch':
+      $block['subject'] = '';
+      $block['content'] = bookbox_cat_nauch_block();
+      break;
+
+    case 'CatHud':
+      $block['subject'] = '';
+      $block['content'] = bookbox_cat_hud_block();
+      break;
+
+    case 'BBUserMenu':
+      $block['subject'] = '';
+      $block['content'] = bookbox_custom_usermenu_block();
+      break;
   }
   return $block;
+}
+
+function bookbox_custom_usermenu_block() {
+  $content = "";
+  global $user;
+  $uid = $user->uid;
+  $account = user_load($uid);
+
+  $show_cart = true;
+  if(bookbox_count_in_confirm_this_month($uid) > 0 ) {
+    $show_cart = false;
+  }
+
+  $show_order = true;
+  if( bookbox_count_in_confirm_this_month($uid) < 1 ) {
+    $show_order = false;
+  }
+
+  $show_reading_now = true;
+  if( count(bookbox_get_in_reading_now($uid)) < 1) {
+    $show_reading_now = false;
+  }
+
+  $nanme = $account->field_name['und'][0]['safe_value'];
+  $snanme = $account->field_sirname['und'][0]['safe_value'];
+
+  $content = $content . '<ul class="menu nav navbar-nav secondary">';
+  $content = $content . '<li class="first last expanded dropdown">';
+  $content = $content . '<a href="/user" title="" data-target="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <span class="user-name"><span>' . $nanme . '</span> <span>' . $snanme . '</span></span> <span class="caret"></span></a>';
+  $content = $content . '<ul class="dropdown-menu"><li class="first leaf"><a href="/user" title="">Профіль</a></li>';
+  $content = $content . '<li class="leaf"><a href="/user/' . $uid . '/favorites" title="">Список бажань</a></li>';
+  $content = $content . '<li class="leaf"><a href="/user/' . $uid . '/orders" title="">Історія замовлень</a></li>';
+  $content = $content . '<li class="last leaf"><a href="/user/logout">Вихід</a></li>';
+
+  if($show_cart || $show_order || $show_reading_now ) {
+    $content = $content . '<li role="separator" class="divider visible-sm visible-xs"></li>';
+  }
+
+  if($show_cart) {
+    $content = $content . '<li class="leaf visible-sm visible-xs"><a href="/user/usercart" title="">Замовлення місяця</a></li>';
+  }
+
+  if($show_order) {
+    $content = $content . '<li class="leaf visible-sm visible-xs"><a href="/user/userorder" title="">Замовлення підтверджено</a></li>';
+  }
+
+  if($show_reading_now) {
+    $content = $content . '<li class="leaf visible-sm visible-xs"><a href="/user/userreadingnow" title="">Зараз читаю</a></li>';
+  }
+
+  $content = $content . '</ul></li></ul>';
+
+  return $content;
 }
 
 function bookbox_block_view_alter(&$data, $block) {
@@ -171,10 +311,6 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state)
   global $user;
   $uid = $user->uid;
   // можно добавить максимум 2
-
-  //dsm(   bookbox_count_in_confirm_this_month(), 'this ' );
-  //dsm(   bookbox_count_in_confirm_prev_month(), 'prev ' );
-  //dsm( bookbox_in_confirm_this_month() );
 
   $form['submit']['#value'] = 'Замовити';
 
@@ -212,9 +348,6 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state)
   if (!$can_add2cart) {
     $form['submit']['#attributes']['disabled'] = TRUE;
   }
-
-  //dsm('inc ', bookbox_count_in_confirm_this_month());
-  //dsm('pro  ', bookbox_count_in_prolong_this_month());
 }
 
 // Крон работы
@@ -223,69 +356,12 @@ function bookbox_cron() {
 
   if ( date('y-m-d', $cron_last) != date('y-md-', time())) {
 
-    if(intval(d()) == 1) {
-      bookbox_equal_stocks();
-
-      $result = db_select('commerce_order', 'o')
-          ->fields('o', array('order_id', 'status', 'changed'))
-          ->condition(
-              db_or()
-                  ->condition('o.status', 'completed')
-                  ->condition('o.status', 'prolong')
-          )
-          ->orderBy('o.order_id', 'DESC')
-          ->execute()->fetchAll();
-
-      foreach ($result as $item) {
-
-        $order_month = intval(date('m', $item->changed));
-
-        //1-го числа мы меняем статусы всех книг которые в статусе комлитед и были заказаны в пред-предудущем месяце
-        //если щас 1е мая, то мы ищем заказ марта
-        if ($item->status == 'completed' &&  intval(m()) - $order_month >=2 ) {
-          //dsm('в архив!');
-          $order = commerce_order_load($item->order_id);
-          commerce_order_status_update($order, 'archive', $skip_save = FALSE, $revision = NULL, $log = '');
-        }
-
-        //1-го числа мы меняем статус всех книг "пролонг" на "подтверждено" и меняем дату так как будто они были подтверждены в прошлом месяце
-        if ($item->status == 'prolong') {
-          $order = commerce_order_load($item->order_id);
-
-          $old_changed = $item->changed;
-          $old_changed_day = intval(date("d", $old_changed));
-          $old_changed_month = intval(date("m", $old_changed));
-          $old_changed_year = intval(date("Y", $old_changed));
-
-          $prev_date_month = $old_changed_month - 1;
-          $prev_date_year = $old_changed_year;
-          if ($prev_date_month < 1) {
-            $prev_date_month = 12;
-            $prev_date_year = $prev_date_year - 1;
-          }
-
-          $prev_date = $prev_date_month . '/' . $old_changed_day . '/' . $prev_date_year;
-          $date = date("Y-m-d H:i:s", strtotime($prev_date));
-          $timestamp = strtotime($date);
-
-          //commerce_order_status_update($order, 'completed', $skip_save = FALSE, $revision = NULL, $log = '');
-          //commerce_order_save($order);
-
-          db_update('commerce_order')
-              ->fields(array('changed' => $timestamp ))
-              ->fields(array('status' => 'completed'))
-              ->condition('order_id', $item->order_id)
-              ->execute();
-        }
-      }
-    }
+    bookbox_equal_stocks();
 
     variable_set('cron_last', date('y-m-d', time()));
     drupal_flush_all_caches();
   }
-
 }
-
 
 function bookbox_user_orders_history() {
   global $user;
@@ -329,7 +405,7 @@ function bookbox_user_orders_history() {
     $content = $content . '</div>';
     next($newOrder);
   }
-  
+
   return $content;
 }
 
@@ -348,6 +424,21 @@ function bookbox_cat_samo_block() {
   return $content;
 }
 
+function bookbox_cat_zoj_block() {
+  $content = _bookbox_catblock(276);
+  return $content;
+}
+
+function bookbox_cat_nauch_block() {
+  $content = _bookbox_catblock(286);
+  return $content;
+}
+
+function bookbox_cat_hud_block() {
+  $content = _bookbox_catblock(317);
+  return $content;
+}
+
 function _bookbox_catblock($parent_tid) {
   $content = '';
   $childrens = taxonomy_get_children($parent_tid);
@@ -355,19 +446,27 @@ function _bookbox_catblock($parent_tid) {
   foreach ($childrens as $subcategory) {
     $content = $content . '<div class="books-row"><h2><a href="/taxonomy/term/' . $subcategory->tid . '">' . $subcategory->name . '</a></h2>';
     $content = $content . '<a class="know-more" href="/taxonomy/term/' . $subcategory->tid . '">дивитись більше</a>';
-    $nodes = taxonomy_select_nodes($subcategory->tid, $pager = FALSE, $limit = 3, $order = array('t.sticky' => 'DESC', 't.created' => 'DESC'));
-
+    $nodes = taxonomy_select_nodes($subcategory->tid, $pager = FALSE, $limit = 100, $order = array('t.sticky' => 'DESC', 't.created' => 'DESC'));
     $content = $content . '<div class="books-row">';
+    $good_nodes = 0;
+
     foreach ($nodes as $nid) {
       $node = node_load($nid);
-      $node_view = node_view($node, 'teaser');
-      $rendered_teaser = render($node_view);
-      $content = $content . $rendered_teaser;
+
+      if($node) {
+        $good_nodes = $good_nodes + 1;
+        $node_view = node_view($node, 'teaser');
+        $rendered_teaser = render($node_view);
+        $content = $content . $rendered_teaser;
+      }
+
+      if ($good_nodes == 3) {
+        break;
+      }
     }
 
     $content = $content . '</div></div>';
   }
-
   return $content;
 }
 
@@ -380,8 +479,7 @@ function bookbox_menu_site_status_alter(&$menu_site_status, $path) {
 }
 
 //insert user to mailchimp company list after register
-function bookbox_user_insert(&$edit, $account, $category)
-{
+function bookbox_user_insert(&$edit, $account, $category) {
   $nid = (int)$account->field_company['und'][0]['target_id'];
   $node = node_load($nid);
   $company_name = $node->title;
@@ -415,7 +513,6 @@ function bookbox_user_insert(&$edit, $account, $category)
       }
     }
   }
-  //drupal_set_message(t('Дякуємо за реєстрацію! Підтвердьте електронну пошту, щоб розпочати користування Book Box.'), 'status');}
 }
 
 //delete user from mailchimp company list after delete in drupal
@@ -455,48 +552,57 @@ function bookbox_user_update(&$edit, $account, $category){
 }
 
 function bookbox_equal_stocks() {
-  $result = db_select('field_data_field_absolute_stock', 'a')
-      ->fields('a', array('entity_id', 'field_absolute_stock_value'))
+  $result = db_select('node', 'n')
+      ->fields('n', array('nid'))
+      ->condition('n.type', 'book')
+      ->condition('n.status', 1)
       ->execute()->fetchAll();
 
-  foreach ($result as $absolute_stock_record) {
-    db_update('field_data_commerce_stock')
-        ->fields(array('commerce_stock_value' => $absolute_stock_record->field_absolute_stock_value ))
-        ->condition('entity_id', $absolute_stock_record->entity_id)
-        ->execute();
+  foreach ($result as $row) {
+    $nid = $row->nid;
+    $node = node_load($nid);
+    if(isset($node->field_bookfields)) {
+      bookbox_node_update($node);
+    }
 
-    db_update('field_revision_commerce_stock')
-        ->fields(array('commerce_stock_value' => $absolute_stock_record->field_absolute_stock_value ))
-        ->condition('entity_id', $absolute_stock_record->entity_id)
-        ->execute();
   }
 }
 
 function bookbox_node_update($node) {
-  $product_id = $node->field_bookfields['und'][0]['product_id'];
-  $product = commerce_product_load($product_id);
-  $absolute_stock = $product->field_absolute_stock['und'][0]['value'];
-  $in_orders = bookbox_get_in_orders($node);
-
-  $product->commerce_stock['und'][0]['value'] = $absolute_stock - $in_orders;
-  commerce_product_save($product);
-}
-
-function bookbox_entity_update($entity, $type) {
-  if(isset($entity->nid)) {
-    $product_id = $entity->field_bookfields['und'][0]['product_id'];
+  if(isset($node->field_bookfields) && count($node->field_bookfields) > 0 ) {
+    $product_id = $node->field_bookfields['und'][0]['product_id'];
     $product = commerce_product_load($product_id);
     $absolute_stock = $product->field_absolute_stock['und'][0]['value'];
-    $in_orders = bookbox_get_in_orders($entity);
-
+    $in_orders = bookbox_get_in_orders_this_month($node);
     $product->commerce_stock['und'][0]['value'] = $absolute_stock - $in_orders;
     commerce_product_save($product);
   }
 }
 
+function bookbox_entity_update($entity, $type) {
+  if(isset($entity->nid) && isset($entity->field_bookfields)  && count($entity->field_bookfields) > 0) {
+    $product_id = $entity->field_bookfields['und'][0]['product_id'];
+    $product = commerce_product_load($product_id);
+    $absolute_stock = $product->field_absolute_stock['und'][0]['value'];
+    $in_orders = bookbox_get_in_orders_this_month($entity);
+    $product->commerce_stock['und'][0]['value'] = $absolute_stock - $in_orders;
+    commerce_product_save($product);
+  }
+}
+
+function bookbox_commerce_order_presave($order) {
+  if(isset($order->commerce_line_items) && count($order->commerce_line_items) > 0) {
+    $line_item = commerce_line_item_load($order->commerce_line_items['und'][0]['line_item_id']);
+
+    if(isset($line_item->commerce_product)) {
+        $node = _bookbox_get_product_display_by_product_id($line_item->commerce_product['und'][0]['product_id']);
+        bookbox_node_update($node);
+    }
+  }
+}
+
 function computed_field_field_search_string_compute(&$entity_field, $entity_type, $entity, $field, $instance, $langcode, $items) {
   $authors = " ";
-
   $author_count = count($entity->field_book_author['und']);
 
   for($i = 0; $i < $author_count; $i++) {
@@ -506,5 +612,10 @@ function computed_field_field_search_string_compute(&$entity_field, $entity_type
   }
 
   $entity_field[0]['value'] = $entity->title . " " . $entity->field_origin_name['und'][0]['value'] . $authors;
+}
 
+function bookbox_category_endpoint() {
+  $tree = taxonomy_get_nested_tree(4);
+  $items = taxonomy_nested_tree_render($tree);
+  drupal_json_output($items);
 }

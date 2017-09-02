@@ -26,6 +26,16 @@
   }
 }
 
+#block-views-main-recomend-block-1 .views-row {
+  @media screen and (max-width: 767px) and (min-width: 500px) {
+    width: 50%;
+
+    &.views-row-odd {
+      clear: both;
+    }
+  }
+}
+
 #views-exposed-form-booksearch-page {
   #edit-searchtext-wrapper,
   .views-submit-button button {
@@ -155,13 +165,18 @@
 
 #block-bookbox-catbiz,
 #block-bookbox-catsamo,
-#block-bookbox-catkrug {
+#block-bookbox-catkrug,
+#block-bookbox-catzoj,
+#block-bookbox-catnauch,
+#block-bookbox-cathud {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   padding-left: 50px;
 
   .books-row {
+    width: 100%;
+
     .node-book {
       .col(12);
 

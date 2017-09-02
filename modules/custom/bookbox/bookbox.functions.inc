@@ -4,11 +4,13 @@ function m() {
   $month = date("m");
   return $month;
 }
+
 //Получить текущий день
 function d() {
   $day = date("d");
   return $day;
 }
+
 //Получить укр.месяц в склонении
 //Если пусто то возвращает текущий
 //иначе нужно передать n-1, то есть ua_month(2) = 'березня'
@@ -21,6 +23,7 @@ function ua_month($m = null) {
   $ua_monthes = ['січня', 'лютого', 'березня', 'квітня', 'травня','червня', 'липня', 'серпня', 'вересня', 'жовтня', 'листопада', 'грудня'];
   return $ua_monthes[$current_date];
 }
+
 //Получить укр.месяц без склонения
 //Если пусто то возвращает текущий
 //иначе нужно передать n-1, то есть ua_month(2) = 'березень'
@@ -33,6 +36,7 @@ function ua_month_original($m = null) {
   $ua_monthes = ['січень', 'лютий', 'березень', 'квітень', 'травень','червень', 'липень', 'серпень', 'вересень', 'жовтень', 'листопад', 'грудень'];
   return $ua_monthes[$current_date];
 }
+
 //Получить Текущий период
 //1-20 включительно = 1
 //21 - 31 = 2
@@ -45,6 +49,7 @@ function current_period() {
   }
   return $period;
 }
+
 //Получить товары в корзине
 function _bookbox_get_cart_items() {
   global $user;
@@ -57,6 +62,7 @@ function _bookbox_get_cart_items() {
     return false;
   }
 }
+
 //Получить Дисплей книги по айдишнику ее продукта
 function _bookbox_get_product_display_by_product_id($product_id, $bundle = 'product_display', $field_name = 'field_bookfields') {
   $query = new EntityFieldQuery();
@@ -68,17 +74,22 @@ function _bookbox_get_product_display_by_product_id($product_id, $bundle = 'prod
   if ($result) {
     $product_display_nid = key($result['node']);
     return node_load($product_display_nid);
+  } else {
+    return null;
   }
 }
+
 ///////////////////////////////////////////////////////////////////////////
 //Сколько Подтвержено в этом месяце
 function bookbox_count_in_confirm_this_month($uid) {
   return count( bookbox_in_confirm_this_month($uid) );
 }
+
 //Сколько Подтверждено в прошлом месяце
 function bookbox_count_in_confirm_prev_month($uid) {
   return count( bookbox_in_confirm_prev_month($uid) );
 }
+
 //Получить список подтвержденных в этом мес
 function bookbox_in_confirm_this_month($uid) {
   $in_confirm_this_month = [];
@@ -90,6 +101,7 @@ function bookbox_in_confirm_this_month($uid) {
   }
   return $in_confirm_this_month;
 }
+
 //Получить список подтвержденных в прошлом мес
 function bookbox_in_confirm_prev_month($uid) {
   $in_confirm_prev_month = [];
@@ -113,6 +125,7 @@ function bookbox_in_confirm_prev_month($uid) {
   }
   return $in_confirm_prev_month;
 }
+
 //Выборка из базы - подтверждено юзером
 function bookbox_get_in_confirm($uid) {
   //global $user;
@@ -125,15 +138,18 @@ function bookbox_get_in_confirm($uid) {
       ->execute()->fetchAll();
   return $result;
 }
+
 /////////////////////////////////////////////////////////////
 //Сколько Продлено в этом месяце
 function bookbox_count_in_prolong_this_month($uid) {
   return count( bookbox_in_prolong_this_month($uid) );
 }
+
 //Сколько Продлено в прошлом месяце
 function bookbox_count_in_prolong_prev_month($uid) {
   return count( bookbox_in_prolong_prev_month($uid) );
 }
+
 //Список продленного в этом мес
 function bookbox_in_prolong_this_month($uid) {
   $in_prolong_this_month = [];
@@ -144,6 +160,7 @@ function bookbox_in_prolong_this_month($uid) {
   }
   return $in_prolong_this_month;
 }
+
 //Список Продлено в прошлом месяце
 function bookbox_in_prolong_prev_month($uid) {
   $in_prolong_prev_month = [];
@@ -168,6 +185,7 @@ function bookbox_in_prolong_prev_month($uid) {
 
   return $in_prolong_prev_month;
 }
+
 //Выборка из базы - продлено юзером
 function bookbox_get_in_prolong($uid) {
   $result = db_select('commerce_order', 'o')
@@ -179,6 +197,7 @@ function bookbox_get_in_prolong($uid) {
       ->execute()->fetchAll();
   return $result;
 }
+
 //Выборка продлено и заказы в прошлом месяце
 function bookbox_get_in_reading_now($uid) {
   $in_confirm_prev_month = bookbox_in_confirm_prev_month($uid);
@@ -214,7 +233,79 @@ function bookbox_get_in_orders($node) {
       $in_orders = $in_orders + 1;
     }
   }
-
   return $in_orders;
 }
 
+function bookbox_get_in_orders_this_month($node) {
+  $product_id = $node->field_bookfields['und'][0]['product_id'];
+
+  $query = db_select('field_data_commerce_product', 'p');
+  $query->innerJoin('field_data_commerce_line_items', 'l', 'p.entity_id = l.commerce_line_items_line_item_id');
+  $query->fields('l', array('entity_id'));
+  $query->condition('p.commerce_product_product_id', $product_id);
+  $orders = $query->execute()->fetchAll();
+  $in_orders = 0;
+
+  foreach ($orders as $row) {
+    $order_id = $row->entity_id;
+
+    $result = db_select('commerce_order', 'o')
+        ->fields('o', array('order_id', 'status', 'created'))
+        ->condition('o.order_id', $order_id)
+        ->condition('o.status', 'completed')
+        ->execute()->fetchAll();
+
+    foreach ($result as $item) {
+      if (date("m-Y", $item->created) == date("m-Y")) {
+        $in_orders = $in_orders + 1;
+        //dsm($result);
+      }
+    }
+  }
+  return $in_orders;
+}
+
+function taxonomy_get_nested_tree($vid_or_terms = array(), $max_depth = NULL, $parent = 0, $parents_index = array(), $depth = 0) {
+  if (!is_array($vid_or_terms)) {
+    $vid_or_terms = taxonomy_get_tree($vid_or_terms, 0, NULL, TRUE);
+  }
+
+  foreach ($vid_or_terms as $term) {
+    foreach ($term->parents as $term_parent) {
+      if ($term_parent == $parent) {
+        $return[$term->tid] = $term;
+      } else {
+        $parents_index[$term_parent][$term->tid] = $term;
+      }
+    }
+  }
+
+  foreach ($return as &$term) {
+    if (isset($parents_index[$term->tid]) && (is_null($max_depth) || $depth < $max_depth)) {
+      $term->children = taxonomy_get_nested_tree($parents_index[$term->tid], $max_depth, $term->tid, $parents_index, $depth + 1);
+    }
+  }
+
+  return
+
+      $return;
+}
+
+function taxonomy_nested_tree_render($tree, $recurring = FALSE) {
+  $items = array();
+  if (count($tree)) {
+    foreach ($tree as $term) {
+      $item = array('name' => $term->name, 'tid' => $term->tid);
+      if (isset($term->children)) {
+        $item["children"] = taxonomy_nested_tree_render($term->children, TRUE);
+      }
+      $items[] = $item;
+    }
+  }
+
+  if ($recurring) {
+    return $items;
+  }
+
+  return $items;
+}
