@@ -130,9 +130,8 @@ function bookbox_debug_block() {
     global $user;
     $uid = $user->uid;
 
-    $output = 'тестовое время: ' . date('d.m.Y H:i', variable_get('varTestDayTime')) . '<br>';
+    $output = 'тестовое время: ' . date('d.m.Y H:i', time()) . '<br>';
     $output = $output  . 'Максимальна кіклькість книжок для замовлень взагалі: ' . variable_get('varMaxBooks')  . '<br>';
-    //$output = $output  . 'uid: ' . $uid . '<br>';
     $output = $output  . 'Я замовив вже: ' . bookbox_count_in_confirm($uid) . '<br>';
     $output = $output  . 'Я читаю вже: ' . bookbox_count_in_reading_now($uid) . '<br>';
 

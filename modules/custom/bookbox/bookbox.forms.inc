@@ -133,8 +133,7 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state)
 
     $can_order = true;
 
-    //todo remove testdate
-    $date = variable_get('varTestDayTime');
+    $date = time();
 
     if (isset($form['product_id'])) {
         $form_product = $form['product_id']['#value'];
@@ -248,7 +247,7 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state)
 function bookbox_confirm_book($arg0,$arg1) {
     $user = user_load($arg0);
     $user_name = $user->field_name['und'][0]['value'] . ' ' . $user->field_sirname['und'][0]['value'];
-    $time = variable_get('varTestDayTime'); //todo delete from test
+    $time = time();
 
     $order_product = $arg1;
 
@@ -326,30 +325,6 @@ function bookbox_admin_delivery_form ($form, &$form_state) {
         '#type' => 'submit',
         '#value' => 'Ми все доставили!',
     );
-    //todo delete
-
-    $result = db_select('commerce_order', 'o')
-        ->fields('o', array('order_id', 'status', 'changed'))
-        ->condition('o.status', 'completed')
-        ->orderBy('o.order_id', 'DESC')
-        ->execute()->fetchAll();
-
-    foreach ($result as $item) {
-        if ($item->status == 'completed') {
-
-            $nfo = next_friday_object($item->changed);
-            $script_day = variable_get('varTestDayTime');
-
-            //dsm($nfo->format('U'), 'u');
-            //dsm($script_day, 'd');
-            //dsm($nfo->format('U') < $script_day, 'less');
-            //dsm('----------');
-
-            if( $nfo->format('U') < $script_day ) {
-
-            }
-        }
-    }
     
     return $form;
 }
@@ -366,7 +341,7 @@ function bookbox_admin_delivery_form_submit($form, &$form_state) {
 
             //todo remove test date
             $nfo = next_friday_object($item->changed);
-            $script_day = variable_get('varTestDayTime');
+            $script_day = time();
 
             if($nfo->format('U') < $script_day) {
                 $order = commerce_order_load($item->order_id);
