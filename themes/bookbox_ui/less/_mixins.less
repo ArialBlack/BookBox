@@ -36,3 +36,21 @@
 .tracking( @tracking ) {
   letter-spacing: ( @tracking / 1000 ) * 1em;
 }
+
+.rft(@mysizeValue-min, @mysizeValue-max) {
+
+  @delta: @mysizeValue-max - @mysizeValue-min;
+  @step: @delta / 3;
+
+  .font-size(@mysizeValue-min);
+
+  @media (min-width: @screen-sm-min) {
+    .font-size(@mysizeValue-max - @step * 2);
+  }
+  @media (min-width: @screen-md-min) {
+    .font-size(@mysizeValue-max - @step);
+  }
+  @media (min-width: @screen-lg-min) {
+    .font-size(@mysizeValue-max);
+  }
+}

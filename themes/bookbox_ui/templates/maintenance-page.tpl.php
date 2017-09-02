@@ -76,18 +76,22 @@
     <a href="#main-content" class="element-invisible element-focusable"><?php print t('Skip to main content'); ?></a>
 </div>
 
-<div class="main-container container text-center">
+<div class="main-container container">
     <div class="row">
-        <div class="col-sm-12">
-            <img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>" />
+        <div class="col-sm-12 col-md-10 col-lg-8 col-md-offset-1 col-lg-offset-2 col-content">
+            <img src="https://lib.bookbox.ua/sites/all/themes/bookbox_ui/images/bb-compact-logo.png" alt="BookBox" />
+
+            <div class="notice-message">
+                <h1><span class="div"><span class="text">Сайт</span></span> <span class="div"><span class="text">вдосконалюється</span></span></h1>
+                <div class="tip-text">
+                    <p>До 8 вересня все знову працюватиме.</p>
+                    <p>Дякуємо за розуміння.</p>
+                    <p>Відповімо на запитання на info@bookbox.ua</p>
+                </div>
+            </div>
         </div>
-
-        <h2>Сайт вдосконалюється.</h2>
-        <p>До 8 вересня все знову працюватиме.</p>
-        <p>Дякуємо за розуміння.</p>
-
     </div>
-</div>
+
 <span id="bpMArker"></span>
 <div class="fontdown hidden"><button class="btn btn-default btn-transparent"id="down">A -</button></div>
 <div class="fontup hidden"><button class="btn btn-default btn-transparent" id="up">A +</button></div>

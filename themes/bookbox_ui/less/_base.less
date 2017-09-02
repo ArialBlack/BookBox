@@ -9,6 +9,26 @@
     font-style: normal;
 }
 
+@font-face {
+  font-family: 'Ubuntu';
+  src: url('../fonts/subset-Ubuntu.eot');
+  src: url('../fonts/subset-Ubuntu.eot?#iefix') format('embedded-opentype'),
+  url('../fonts/subset-Ubuntu.woff') format('woff'),
+  url('../fonts/subset-Ubuntu.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'GillSansC';
+  src: url('../fonts/subset-GillSansC-Bold.eot');
+  src: url('../fonts/subset-GillSansC-Bold.eot?#iefix') format('embedded-opentype'),
+  url('../fonts/subset-GillSansC-Bold.woff') format('woff'),
+  url('../fonts/subset-GillSansC-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
 #bpMArker {
     display: inline-block;
     visibility: visible;
@@ -160,24 +180,49 @@ table tr.error {
 }
 
 body.offline {
-  background: #f9d35c;
+  background: #f9d35c url('https://lib.bookbox.ua/sites/all/themes/bookbox_ui/images/header-cover.jpg') no-repeat center center;
+  background-size: cover;
 
   .main-container {
     position: relative;
+
+    h1 {
+      font-family: 'GillSansC';
+      text-transform: uppercase;
+      color: white;
+      display: inline-block;
+
+      .div {
+        display: block;
+      }
+
+      .text {
+        display: inline-block;
+        background: #2e2e32;
+        padding: 5px 20px;
+      }
+
+      .rft(20,70);
+    }
+
+    .tip-text {
+      .rft(18,24);
+      margin-top: 40px;
+      text-transform: uppercase;
+
+      p {
+        text-shadow: 2px 0px 0px rgba(249, 211, 92, 1);
+      }
+    }
 
     img {
       margin-bottom: 20px;
     }
 
-    h2 {
-      margin-bottom: 40px;
-      color: white;
-    }
-
     > .row {
       position: absolute;
       width: 100%;
-      left: 0;
+      left: 15px;
       top: 50%;
       transform: translateY(-50%);
     }
