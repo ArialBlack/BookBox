@@ -38,7 +38,7 @@ function bookbox_current_order_block ($form, &$form_state) {
         } else {
         $form['title'] = array(
                 '#type' => 'markup',
-                '#markup' => '<h3>Замовлено</h3><h6>Замовляйте й отримайте доставку вже найближчої п’ятниці</h6>',
+                '#markup' => '<h3>Зробіть замовлення</h3><h6>Доставка книжок щоп’ятниці</h6>',
             );
     }
 

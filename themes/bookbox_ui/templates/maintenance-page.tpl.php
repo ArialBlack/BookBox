@@ -54,9 +54,9 @@
  * @ingroup templates
  */
 ?><!DOCTYPE html>
-<html<?php print $html_attributes;?><?php print $rdf_namespaces;?>>
+<html lang="uk" dir="ltr" prefix="content: http://purl.org/rss/1.0/modules/content/ dc: http://purl.org/dc/terms/ foaf: http://xmlns.com/foaf/0.1/ og: http://ogp.me/ns# rdfs: http://www.w3.org/2000/01/rdf-schema# sioc: http://rdfs.org/sioc/ns# sioct: http://rdfs.org/sioc/types# skos: http://www.w3.org/2004/02/skos/core# xsd: http://www.w3.org/2001/XMLSchema#">
 <head>
-    <link rel="profile" href="<?php print $grddl_profile; ?>" />
+    <link rel="profile" href="http://www.w3.org/1999/xhtml/vocab" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php print $head; ?>
@@ -78,7 +78,7 @@
 
 <div class="main-container container">
     <div class="row">
-        <div class="col-sm-12 col-md-10 col-lg-8 col-md-offset-1 col-lg-offset-2 col-content">
+        <div class="col-sm-12 col-content">
             <img src="https://lib.bookbox.ua/sites/all/themes/bookbox_ui/images/bb-compact-logo.png" alt="BookBox" />
 
             <div class="notice-message">
