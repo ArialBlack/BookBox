@@ -172,7 +172,7 @@
                 var visited = readCookie('visitedBookbox');
 
                 //user not visited in this month and last login was before changes
-                if ((!visited || visited !== "true") && (lastLoginWasBeforeChanges)){
+                if (!visited || visited !== "true") {
                     createCookie('visitedBookbox', "true", 30);
                     $('#new-changes').modal('show');
                 }
