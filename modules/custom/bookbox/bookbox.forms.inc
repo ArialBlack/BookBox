@@ -312,6 +312,7 @@ function bookbox_confirm_book($arg0,$arg1) {
     $params['merge_vars']['BTITLE1'] = $book->title;
     $params['merge_vars']['BAUTHOR1'] = $order_book['author'];
     $params['merge_vars']['BURL1'] =  $order_book['src'];
+    $params['merge_vars']['DELIVERYDATE'] = next_friday($time);
     $params['name'] = $user->field_name['und']['0']['value'];
 
     bookbox_mail_send('bookbox', 'book_box_order', $user->mail, $params);
