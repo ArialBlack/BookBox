@@ -249,73 +249,97 @@ function bookbox_confirm_book($arg0,$arg1) {
     $user_name = $user->field_name['und'][0]['value'] . ' ' . $user->field_sirname['und'][0]['value'];
     $time = time();
 
-    $order_product = $arg1;
+    //additional check
+    $can_order = true;
+    $uid = $arg0;
+    $max_books = variable_get('varMaxBooks') - bookbox_count_in_confirm($uid) - bookbox_count_in_reading_now($uid);
+    $form_product = $arg1;
 
-    $mail_body = $user->field_name['und'][0]['value'] . ' ' . $user->field_sirname['und'][0]['value'] . ', вітання! ';
-    $mail_body = $mail_body . 'Замовлення успішно підтверджено.</br>';
+    $is_in_order = is_in_order($form_product, $uid);
+    $is_in_readingnow = is_in_redingnow($form_product, $uid);
+    $is_in_archive = is_in_archive($form_product, $uid);
 
-    $book = _bookbox_get_product_display_by_product_id($order_product, $bundle = 'product_display', $field_name = 'field_bookfields');
+    $product = commerce_product_load($form_product);
+    $stock = 0;
 
-    $file = file_load($book->field_nni['und'][0]['fid']);
-    $uri = $file->uri;
-    $url = file_create_url($uri);
+    if($product) {
+        $stock = $product->commerce_stock['und'][0]['value'];
+    }
 
-    $tid = $book->field_book_author['und'][0]['tid'];
-    $author = taxonomy_term_load($tid);
+    if ($is_in_order > 0 || $is_in_readingnow > 0 || $max_books < 1 || $stock < 1) {
+        $can_order = false;
+    }
 
-    $order_book = array();
-    $order_book['src'] =  $GLOBALS['base_root'].'/node/' . $book->nid;
-    $order_book['img_src'] = $url;
-    $order_book['author'] = $author->name;
-    $order_book['title'] = $book->title;
+    //user can order
+    if ($can_order) {
+        $order_product = $arg1;
 
-    $mail_body = $mail_body . '<div style="display:inline-block; width:200px; margin-top:20px; margin-bottom:20px;">' . '<a href="'.$GLOBALS['base_root'].'/node/' . $book->nid .'">
+        $mail_body = $user->field_name['und'][0]['value'] . ' ' . $user->field_sirname['und'][0]['value'] . ', вітання! ';
+        $mail_body = $mail_body . 'Замовлення успішно підтверджено.</br>';
+
+        $book = _bookbox_get_product_display_by_product_id($order_product, $bundle = 'product_display', $field_name = 'field_bookfields');
+
+        $file = file_load($book->field_nni['und'][0]['fid']);
+        $uri = $file->uri;
+        $url = file_create_url($uri);
+
+        $tid = $book->field_book_author['und'][0]['tid'];
+        $author = taxonomy_term_load($tid);
+
+        $order_book = array();
+        $order_book['src'] =  $GLOBALS['base_root'].'/node/' . $book->nid;
+        $order_book['img_src'] = $url;
+        $order_book['author'] = $author->name;
+        $order_book['title'] = $book->title;
+
+        $mail_body = $mail_body . '<div style="display:inline-block; width:200px; margin-top:20px; margin-bottom:20px;">' . '<a href="'.$GLOBALS['base_root'].'/node/' . $book->nid .'">
         <img src = "' . $url . '" width="167" height="250" style="display:block; />'
-        . $book->title . '<br/>' . $author->name .'</a> </div>';
+            . $book->title . '<br/>' . $author->name .'</a> </div>';
 
-    $order = commerce_order_new($user->uid, 'checkout_checkout');
-    commerce_order_save($order);
+        $order = commerce_order_new($user->uid, 'checkout_checkout');
+        commerce_order_save($order);
 
-    $product = commerce_product_load($order_product);
-    $line_item = commerce_product_line_item_new($product, 1, $order->order_id);
-    commerce_line_item_save($line_item);
+        $product = commerce_product_load($order_product);
+        $line_item = commerce_product_line_item_new($product, 1, $order->order_id);
+        commerce_line_item_save($line_item);
 
-    $order_wrapper = entity_metadata_wrapper('commerce_order', $order);
-    $order_wrapper->commerce_line_items[] = $line_item;
+        $order_wrapper = entity_metadata_wrapper('commerce_order', $order);
+        $order_wrapper->commerce_line_items[] = $line_item;
 
-    commerce_order_save($order);
-    commerce_order_status_update($order, 'completed', $skip_save = FALSE, $revision = NULL, $log = '');
-    
-    $node = _bookbox_get_product_display_by_product_id($order_product);
-    bookbox_node_update($node);
+        commerce_order_save($order);
+        commerce_order_status_update($order, 'completed', $skip_save = FALSE, $revision = NULL, $log = '');
 
-    //todo: delete from test
-    db_update('commerce_order')
-        ->fields(array('created' => $time))
-        ->fields(array('changed' => $time))
-        ->condition('order_id', $order->order_id)
-        ->execute();
+        $node = _bookbox_get_product_display_by_product_id($order_product);
+        bookbox_node_update($node);
 
-    db_update('commerce_order_revision')
-        ->fields(array('revision_timestamp' => $time))
-        ->condition('order_id', $order->order_id)
-        ->execute();
+        //todo: delete from test
+        db_update('commerce_order')
+            ->fields(array('created' => $time))
+            ->fields(array('changed' => $time))
+            ->condition('order_id', $order->order_id)
+            ->execute();
 
-    $mail_body = '<div>' . $mail_body . '<div style="clear:both;"></div>Деталі щодо доставки буде надіслано окремо. <br /><br />Команда Book Box. <br /><br /><span style="font-size:12px;">Це автоматичне повідомлення, будь ласка, не відповідайте на нього.</span>' . '</div>';
+        db_update('commerce_order_revision')
+            ->fields(array('revision_timestamp' => $time))
+            ->condition('order_id', $order->order_id)
+            ->execute();
 
-    $params['subject'] = 'Ваше замовлення';
-    $params['content'] = $mail_body;
+        $mail_body = '<div>' . $mail_body . '<div style="clear:both;"></div>Деталі щодо доставки буде надіслано окремо. <br /><br />Команда Book Box. <br /><br /><span style="font-size:12px;">Це автоматичне повідомлення, будь ласка, не відповідайте на нього.</span>' . '</div>';
 
-    $params['img1'] = '<a href="'.$order_book['src'].'"><img alt = "" src = "' . $order_book['img_src'] . '" style = "max-width:1626px;" class="mcnImage" width = "264" ></a>';
-    $params['merge_vars']['FNAME'] = $user->field_name['und']['0']['value'];
-    $params['merge_vars']['FULLNAME'] = $user_name;
-    $params['merge_vars']['BTITLE1'] = $book->title;
-    $params['merge_vars']['BAUTHOR1'] = $order_book['author'];
-    $params['merge_vars']['BURL1'] =  $order_book['src'];
-    $params['merge_vars']['DELIVERYDATE'] = next_friday($time);
-    $params['name'] = $user->field_name['und']['0']['value'];
+        $params['subject'] = 'Ваше замовлення';
+        $params['content'] = $mail_body;
 
-    bookbox_mail_send('bookbox', 'book_box_order', $user->mail, $params);
+        $params['img1'] = '<a href="'.$order_book['src'].'"><img alt = "" src = "' . $order_book['img_src'] . '" style = "max-width:1626px;" class="mcnImage" width = "264" ></a>';
+        $params['merge_vars']['FNAME'] = $user->field_name['und']['0']['value'];
+        $params['merge_vars']['FULLNAME'] = $user_name;
+        $params['merge_vars']['BTITLE1'] = $book->title;
+        $params['merge_vars']['BAUTHOR1'] = $order_book['author'];
+        $params['merge_vars']['BURL1'] =  $order_book['src'];
+        $params['merge_vars']['DELIVERYDATE'] = next_friday($time);
+        $params['name'] = $user->field_name['und']['0']['value'];
+
+        bookbox_mail_send('bookbox', 'book_box_order', $user->mail, $params);
+    }
 
     $dest = drupal_get_destination();
     drupal_goto($dest);
