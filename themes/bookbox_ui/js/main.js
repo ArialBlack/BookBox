@@ -167,18 +167,6 @@
 
         });
 
-        $(window).on('load', function() {
-            if($('.role-authenticated-user #new-changes').length > 0) {
-                var visited = readCookie('visitedBookbox');
-
-                //user not visited in this month and last login was before changes
-                if (!visited || visited !== "true") {
-                    createCookie('visitedBookbox', "true", 30);
-                    $('#new-changes').modal('show');
-                }
-            }
-        });
-
         $( document ).on( "click", ".sort-submenu a", function() {
             var $this = $(this),
                 value = $this.data('value'),
