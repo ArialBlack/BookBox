@@ -233,3 +233,7 @@ themes/bookbox_ui/templates/page.tpl.php
 themes/bookbox_ui/icons-svg/compressed/
 themes/bookbox_ui/images/svg-icons-sprite.svg
 themes/bookbox_ui/images/svg-images-sprite.svg
+themes/bookbox_ui/templates/user-login.tpl.php
+/themes/bookbox_ui/templates/page--user--login.tpl.php
+/themes/bookbox_ui/templates/page--user--register.tpl.php
+/themes/bookbox_ui/css/login-register-recover-lost.css

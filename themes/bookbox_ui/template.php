@@ -4,6 +4,30 @@
  * The primary PHP file for this theme.
  */
 
+function bookbox_ui_theme() {
+  $items = array();
+
+  $items['user_login'] = array(
+      'render element' => 'form',
+      'path' => drupal_get_path('theme', 'bookbox_ui') . '/templates',
+      'template' => 'user-login-template',
+      'preprocess functions' => array(
+          'bookbox_ui_preprocess_user_login'
+      ),
+  );
+
+  $items['user_register_form'] = array(
+      'render element' => 'form',
+      'path' => drupal_get_path('theme', 'bookbox_ui') . '/templates',
+      'template' => 'user-register-template',
+      'preprocess functions' => array(
+          'bookbox_ui_preprocess_user_register_form'
+      ),
+  );
+
+  return $items;
+}
+
 function bookbox_ui_preprocess_node(&$vars) {
   if (variable_get('node_submitted_' . $vars['node']->type, TRUE)) {
     $date = format_date($vars['node']->created, 'date_type');
@@ -106,17 +130,6 @@ function bookbox_ui_preprocess_page(&$vars) {
     //
     // Latter items take precedence.
   }
-}
-
-function bookbox_ui_preprocess(&$variables) {
-  global $user;
-
-  $query = db_select('flagging', 'f');
-  $query->addExpression('COUNT(*)');
-  $query->condition('f.uid', $user->uid);
-  $count = $query->execute()->fetchField();
-
-  $variables['u_flag'] = $count;
 }
 
 function bookbox_ui_preprocess_html(&$vars, $hook) {

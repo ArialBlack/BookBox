@@ -1,6 +1,5 @@
 <?php
 function bookbox_form_alter(&$form, &$form_state, $form_id){
-
     if ($form['#id'] == 'user-register-form') {
         $form['#validate'][] = 'bookbox_registeruser_validate';
     }
@@ -18,6 +17,7 @@ function bookbox_form_alter(&$form, &$form_state, $form_id){
     }
 
     if ($form['#id'] == 'user-register-form') {
+        //dsm($form);
         $query = db_select('node', 'n');
         $query->fields('n', array('nid', 'title'));
         $query->condition('n.type', 'company');
@@ -62,17 +62,8 @@ function bookbox_form_alter(&$form, &$form_state, $form_id){
     }
 
     if ($form['#id'] == 'user-login') {
-        $form['submitpass'] = array(
-            '#type' => 'markup',
-            '#markup' => '<a id="userlostpass" href="/user/password">Забули пароль?</a>',
-            '#weight' => 8
-        );
-
-        $form['submitlogin'] = array(
-            '#type' => 'markup',
-            '#markup' => '<a id="userreglink" class="btn" href="/user/register">Зарееструватись</a>',
-            '#weight' => 9
-        );
+        //Sorry, unrecognized username or password. <a href="@password">Have you forgotten your password?</a>
+        //Невірний email/пароль, або ваша компанія не є клієнтом Book Box. Перевірьте введену інформацію або <a href="https://bookbox.ua/contacts">зв’яжіться з нами</a>
     }
 
     if ($form['#id'] == 'user-pass') {
@@ -88,6 +79,8 @@ function bookbox_form_alter(&$form, &$form_state, $form_id){
         $form['field_bookfields']['und']['form']['commerce_stock']['und'][0]['value']['#attributes']['title'] = $in_orders;
     }
 }
+
+
 
 function bookbox_registeruser_validate($form, &$form_state) {
     $company_id = $form_state['values']['field_company']['und'][0]['target_id'];
