@@ -61,7 +61,7 @@ function betterlogin_form_alter(&$form, &$form_state, $form_id) {
     unset($form['pass']['#description']);
 
     // Add in some CSS.
-    $form['#attached']['css'][] = drupal_get_path('theme', 'bookbox_ui') .'/css/login-register-lost.css';
+    //$form['#attached']['css'][] = drupal_get_path('theme', 'bookbox_ui') .'/css/login-register-lost.css';
   }
 
   switch ($form_id) {

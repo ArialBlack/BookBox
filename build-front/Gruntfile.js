@@ -28,8 +28,7 @@ module.exports = function(grunt) {
                     dumpLineNumbers: 'comments'
                 },
                 files: {
-                    '../themes/bookbox_ui/css/style.css': 'less/style.less',
-                    '../themes/bookbox_ui/css/login-register-recover-lost.css': 'less/landing.less'
+                    '../themes/bookbox_ui/css/style.css': 'less/style.less'
                 }
             }
         },
@@ -45,7 +44,9 @@ module.exports = function(grunt) {
                     "../themes/bookbox_ui/templates/page.tpl.php": "_templates-src/page.tpl.php",
                     "../themes/bookbox_ui/templates/page--type-book.tpl.php": "_templates-src/page--type-book.tpl.php",
                     "../themes/bookbox_ui/templates/page--user--login.tpl.php": "_templates-src/page--user--login.tpl.php",
-                    "../themes/bookbox_ui/templates/page--user--register.tpl.php": "_templates-src/page--user--register.tpl.php"
+                    "../themes/bookbox_ui/templates/page--user--register.tpl.php": "_templates-src/page--user--register.tpl.php",
+                    "../themes/bookbox_ui/templates/page--user--password.tpl.php": "_templates-src/page--user--password.tpl.php",
+                    "../themes/bookbox_ui/templates/page--user--reset.tpl.php": "_templates-src/page--user--reset.tpl.php"
                 }
             }
         },
