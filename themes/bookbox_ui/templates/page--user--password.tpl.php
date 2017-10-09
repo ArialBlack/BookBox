@@ -17,7 +17,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/"><img src="sites/all/themes/bookboxlanding_ui/images/svg/bookboxlogo.svg"></a>
+                    <a class="navbar-brand" href="/"><img src="/sites/all/themes/bookbox_ui/images/svg/bookboxlogo.svg"></a>
                 </div>
                 <div class="col-md-5 col-sm-6">
                     <div id="navbar" class="collapse navbar-collapse">
@@ -45,9 +45,13 @@
     </nav>
 </div>
 
-<div id="auth_box" class="password">
+
+<div id="auth_box" class="password-block">
 
   <div id="middle_part">
+  <div class="container">
+  <div class="row">
+  <div class="password-inner-block clearfix">
     <h2 class="title">Відновлення паролю</h2>
 
     <?php print $messages; ?>
@@ -56,11 +60,12 @@
       $page['content']['system_main']['name']['#title'] = 'Корпоративний email';
       //$page['content']['system_main']['actions']['submit']['value'] = 'Надіслати';
     ?>
-    
+
     <?php print render($page['content']); ?>
-
+</div>
   </div>
-
+</div>
+</div>
 
 </div>
 
@@ -68,7 +73,7 @@
     <div class="container">
         <div class="row links-row">
             <div class="col-md-2 col-sm-2 col-xs-2 footer-logo">
-                <img src="sites/all/themes/bookboxlanding_ui/images/logo-2.png" alt="">
+                <img src="/sites/all/themes/bookbox_ui/images/logo-2.png" alt="">
             </div>
             <div class="col-md-4 col-md-offset-2 col-sm-4 col-sm-offset-2 col-xs-4 col-xs-offset-2 text-center read-better">
                 <h1>Read better</h1>
@@ -78,6 +83,7 @@
                 <ul>
                     <li><a href="https://bookbox.ua/privacy">Політика конфіденційності</a></li>
                     <li><a href="https://bookbox.ua/terms">Правила користування</a></li>
+                    <li><a href="https://bookbox.ua#faq">FAQ</a></li>
                     <li><a href="https://bookbox.ua/contacts">Контакти</a></li>
                 </ul>
             </div>
@@ -87,3 +93,4 @@
         </div>
     </div>
 </footer>
+

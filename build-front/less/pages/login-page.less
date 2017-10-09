@@ -1,5 +1,7 @@
 html {
-  overflow: scroll !important; //todo
+  //overflow: scroll !important;
+  //todo
+
 }
 
 #block-block-7 {
@@ -12,7 +14,244 @@ html {
   }
 }
 
+body.login {
+  .container {
+    @media (min-width: @min-xl) {
+      width: 1170px;
+    }
+  }
 
+  .login-block {
+    min-height: 100vh;
+    padding-top: 105px;
+    background: url(../images/svg/bg_without_lamp.svg) no-repeat;
+    background-position: center 3vh;
+    background-size: 100%;
+
+    @media (max-width: @laptop-1) {
+      background-size: 110%;
+    }
+
+    @media (max-width: @laptop-2) {
+      background-size: 120%;
+      background-position: center bottom;
+    }
+
+    @media (max-width: @max-xs) {
+      background: none;
+    }
+
+    @media (max-width: 600px) {
+      padding-top: 80px;
+      min-height: inherit;
+      background: none;
+    }
+
+    .container{
+      height: ~'calc( 100vh - 105px)';
+
+      @media (max-width: 600px) {
+        height: inherit;
+      }
+
+      &>.row {
+        position: relative;
+        height: 100%;
+      }
+    }
+
+    .login-inner-block {
+      background: #f0f0f0;
+      width: 585px;
+      position: relative;
+      margin:auto;
+      margin-top: 20vh;
+      padding: 55px 100px 40px 100px;
+
+      @media (max-width: 600px) {
+        width: 100%;
+        margin-top: 0;
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+
+        .title {
+        float: left;
+        font-family: gillsans-bold;
+        font-size: @text-block-title;
+        color: @header-text;
+        margin: 0;
+      }
+
+      .reg-block {
+        float: right;
+        padding-top: 3px;
+
+        @media (max-width: 400px) {
+          padding-top: 5px;
+        }
+
+        span {
+          font-family: ubuntu-medium;
+          font-size: @body-text-n;
+          color: @input-text;
+          padding-right: 10px;
+
+          @media (max-width: 400px) {
+            font-size: 14px;
+            padding-right: 8px;
+          }
+
+          @media (max-width: 368px) {
+            display: none;
+          }
+        }
+
+        a {
+          font-family: ubuntu-medium;
+          font-size: @menu-text;
+          color: @red;
+          text-transform: uppercase;
+
+          @media (max-width: 400px) {
+            font-size: 13.5px;
+          }
+
+          &:focus {
+            text-decoration: none;
+          }
+        }
+      }
+
+      .alert.alert-block {
+        float: left;
+      }
+
+      #block-system-main {
+        float: left;
+        padding-top: 40px;
+
+        #user-login {
+
+          &>div>a {
+            position: relative;
+            float: right;
+            font-family: ubuntu-medium;
+            font-size: 13px;
+            color: @input-text;
+            text-transform: uppercase;
+          }
+
+          .form-item {
+            float: left;
+
+            @media (max-width: 600px) {
+              width: 100%;
+            }
+
+            .control-label {
+              font-family: ubuntu-medium;
+              font-size: 13px;
+              color: @menu-text;
+              text-transform: uppercase;
+              letter-spacing: 0;
+
+              span {
+                display: none;
+              }
+            }
+
+            input {
+              height: 44px;
+              box-shadow: none;
+
+              &.form-control:focus {
+                  box-shadow: none;
+                  border-color: #ccc;
+                  border-bottom: 3px solid @yellow;
+              }
+
+              &.form-control.error {
+                border: 2px solid @red;
+              }
+            }
+
+            .help-block {
+              display: none;
+            }
+
+            &.form-item-pass {
+              margin-top: -22px;
+            }
+
+            div.error {
+              font-family: ubuntu-medium;
+              font-size: 13px;
+              color: @header-text;
+              letter-spacing: 0;
+              line-height: 1;
+              padding-top: 8px;
+
+              a {
+                color: @red;
+                text-decoration: underline;
+              }
+            }
+          }
+
+          .form-actions {
+            text-align: right;
+            padding-top: 20px;
+
+            button {
+              border-color: @red !important;
+              border-radius: 0;
+              height: 50px;
+              letter-spacing: 6px;
+              width: 180px;
+              padding:0;
+              text-transform: uppercase;
+              font-family: ubuntu-medium;
+              font-size: @body-text-n;
+              color: #fff;
+              background: @red;
+              -webkit-box-shadow: 18px 28px 61px 5px rgba(216,72,48, 0.2);
+              -moz-box-shadow: 18px 28px 61px 5px rgba(216,72,48,0.2);
+              box-shadow: 18px 28px 61px 5px rgba(216,72,48,0.2);
+              outline: 0;
+
+              &:hover {
+                background: #db553f;
+                -webkit-box-shadow: 18px 28px 61px 5px rgba(216,72,48,0.3);
+                -moz-box-shadow: 18px 28px 61px 5px rgba(216,72,48,0.3);
+                box-shadow: 18px 28px 61px 5px rgba(216,72,48,0.3);
+              }
+
+              //@media (max-width: @laptop-1) {
+              //  height: 50px;
+              //  letter-spacing: 6px;
+              //}
+              //
+              //@media (max-width: @max-sm) {
+              //  width: 22%;
+              //  height: 50px;
+              //  font-size: @menu-text;
+              //}
+              //
+              //@media (max-width: @max-xs) {
+              //  width: 45%;
+              //}
+              //
+              //@media (max-width: 460px) {
+              //  width: 100%;
+              //}
+            }
+          }
+        }
+      }
+    }
+  }
+}
 
 /*
 .page-user-login {

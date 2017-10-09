@@ -1,85 +1,323 @@
-.page-user-password {
-  height:100%;
-  width:100%;
-  #reg_mes1,
-  #navbar,
-  .footer,
-  .breadcrumb,
-  .tabs--primary,
-  .help-block {
-    display: none;
-  }
-
-  .alert-success {
-    width: 50% !important;
-    margin:auto !important;
-
-    li {
-      list-style-type: none !important;
+body.page-user-password,
+body.page-user-reset {
+  .container {
+    @media (min-width: @min-xl) {
+      width: 1170px;
     }
   }
 
-  .main-container {
-    position: absolute;
-    top: 50%;
-    left:50%;
-    transform:translate(-50%, -50%);
-    color: @bb-darkblue;
+  .password-block,
+  .reset-block {
+    padding-top: 105px;
+    height: 100vh;
+    background: url(../images/svg/bg_without_lamp.svg) no-repeat;
+    background-position: center 3vh;
+    background-size: 100%;
 
-    #block-block-7 {
-      text-align: center;
+    @media (max-width: @laptop-1) {
+      background-size: 110%;
+    }
 
-      a {
-        text-transform: uppercase;
-        color: @primary-color;
-        text-decoration: underline;
+    @media (max-width: @laptop-2) {
+      background-size: 120%;
+      background-position: center bottom;
+    }
+
+    @media (max-width: @max-xs) {
+      background: none;
+    }
+
+    @media (max-width: 600px) {
+      padding-top: 80px;
+      background: none;
+      height: inherit;
+    }
+
+    #middle_part>.container>.row {
+      height: 100vh;
+
+      @media (max-width: 600px) {
+        height: inherit;
       }
     }
 
-    #block-block-8 {
-      h2 {
-        &.label-pass {
-          display: block;
-        }
-      }
-    }
-
-    #user-pass {
-      width:40vw;
+    .password-inner-block,
+    .reset-inner-block {
+      background: #f0f0f0;
+      width: 585px;
+      position: relative;
       margin:auto;
-      margin-top: 40px;
+      margin-top: 20vh;
+      padding: 55px 100px 40px 100px;
 
-      #edit-actions {
-        margin: 40px 0;
-        text-align: center;
+      @media (max-width: 600px) {
+        width: 100%;
+        margin-top: 0;
+        padding-left: 15px;
+        padding-right: 15px;
+      }
 
-        button {
-          color: @primary-color;
-          border:2px solid;
-          background: none;
+      .title {
+        float: left;
+        font-family: gillsans-bold;
+        font-size: @text-block-title;
+        color: @header-text;
+        margin: 0;
+      }
 
-          &:hover {
-            background: @primary-color;
-            color: @light-color;
+      #block-system-main {
+        float: left;
+        padding-top: 40px;
+
+        #user-pass,
+        #user-pass-reset {
+          .form-item {
+            float: left;
+
+            @media (max-width: 600px) {
+              width: 100%;
+            }
+
+            .control-label {
+              font-family: ubuntu-medium;
+              font-size: 13px;
+              color: @menu-text;
+              text-transform: uppercase;
+              letter-spacing: 0;
+
+              span {
+                display: none;
+              }
+            }
+
+            input {
+              height: 44px;
+              box-shadow: none;
+
+              &.form-control:focus {
+                box-shadow: none;
+                border-color: #ccc;
+                border-bottom: 3px solid @yellow;
+              }
+
+              &.form-control.error {
+                border: 2px solid @red;
+              }
+            }
+          }
+
+          .captcha.panel.panel-default.form-wrapper {
+            float: left;
+            background: none;
+            border: none;
+            box-shadow: none;
+            width: 100%;
+            margin-bottom: 0;
+
+            @media (max-width: 350px) {
+              width: 290px;
+
+              iframe {
+                width: 290px;
+                border-right: 1px solid #d3d3d3;
+              }
+            }
+
+            .panel-heading {
+              display: none;
+            }
+
+            .panel-body {
+              padding-left: 0;
+              padding-right: 0;
+
+              .g-recaptcha>div {
+                margin: auto;
+              }
+
+              .help-block {
+                display: none;
+              }
+            }
+          }
+
+          .form-actions {
+            text-align: center;
+            padding-top: 20px;
+
+            button {
+              border-color: @red !important;
+              border-radius: 0;
+              height: 50px;
+              letter-spacing: 6px;
+              width: 180px;
+              padding:0;
+              text-transform: uppercase;
+              font-family: ubuntu-medium;
+              font-size: @body-text-n;
+              color: #fff;
+              background: @red;
+              -webkit-box-shadow: 18px 28px 61px 5px rgba(216,72,48, 0.2);
+              -moz-box-shadow: 18px 28px 61px 5px rgba(216,72,48,0.2);
+              box-shadow: 18px 28px 61px 5px rgba(216,72,48,0.2);
+              outline: 0;
+
+              &:hover {
+                background: #db553f;
+                -webkit-box-shadow: 18px 28px 61px 5px rgba(216,72,48,0.3);
+                -moz-box-shadow: 18px 28px 61px 5px rgba(216,72,48,0.3);
+                box-shadow: 18px 28px 61px 5px rgba(216,72,48,0.3);
+              }
+
+              //@media (max-width: @laptop-1) {
+              //  height: 50px;
+              //  letter-spacing: 6px;
+              //}
+              //
+              //@media (max-width: @max-sm) {
+              //  width: 22%;
+              //  height: 50px;
+              //  font-size: @menu-text;
+              //}
+              //
+              //@media (max-width: @max-xs) {
+              //  width: 45%;
+              //}
+              //
+              //@media (max-width: 460px) {
+              //  width: 100%;
+              //}
+            }
           }
         }
       }
+    }
 
-      @media screen and (max-width: 767px) {
-        width: 80vw;
+    .reset-inner-block {
+      p {
+        margin-bottom: 5px;
+        font-family: ubuntu-medium;
+        font-size: @menu-text;
+        color: @header-text;
       }
     }
   }
 }
 
-.page-user-reset {
-  #block-block-8 {
-    img {
-      display: none;
-    }
-  }
+//.page-user-reset {
+//  #block-block-8 {
+//    img {
+//      display: none;
+//    }
+//  }
+//
+//  .reset-block {
+//    padding-top: 105px;
+//    height: 100vh;
+//    background: url(../images/svg/bg_without_lamp.svg) no-repeat;
+//    background-position: center 3vh;
+//    background-size: 100%;
+//
+//    @media (max-width: @laptop-1) {
+//      background-size: 110%;
+//    }
+//
+//    @media (max-width: 600px) {
+//      padding-top: 80px;
+//      background: none;
+//      height: inherit;
+//    }
+//
+//    #middle_part>.container>.row {
+//      height: 100vh;
+//
+//      @media (max-width: 600px) {
+//        height: inherit;
+//      }
+//    }
+//  }
+//
+//  .reset-inner-block {
+//    #block-system-main {
+//      margin-top: 60px;
+//    }
+//  }
+//}
 
-  #block-system-main {
-    margin-top: 60px;
-  }
-}
+
+
+//.page-user-password {
+//  height:100%;
+//  width:100%;
+//  #reg_mes1,
+//  #navbar,
+//  .footer,
+//  .breadcrumb,
+//  .tabs--primary,
+//  .help-block {
+//    display: none;
+//  }
+//
+//  .alert-success {
+//    width: 50% !important;
+//    margin:auto !important;
+//
+//    li {
+//      list-style-type: none !important;
+//    }
+//  }
+//
+//  .main-container {
+//    position: absolute;
+//    top: 50%;
+//    left:50%;
+//    transform:translate(-50%, -50%);
+//    color: @bb-darkblue;
+//
+//    #block-block-7 {
+//      text-align: center;
+//
+//      a {
+//        text-transform: uppercase;
+//        color: @primary-color;
+//        text-decoration: underline;
+//      }
+//    }
+//
+//    #block-block-8 {
+//      h2 {
+//        &.label-pass {
+//          display: block;
+//        }
+//      }
+//    }
+//
+//    #user-pass {
+//      width:40vw;
+//      margin:auto;
+//      margin-top: 40px;
+//
+//      #edit-actions {
+//        margin: 40px 0;
+//        text-align: center;
+//
+//        button {
+//          color: @primary-color;
+//          border:2px solid;
+//          background: none;
+//
+//          &:hover {
+//            background: @primary-color;
+//            color: @light-color;
+//          }
+//        }
+//      }
+//
+//      @media screen and (max-width: 767px) {
+//        width: 80vw;
+//      }
+//    }
+//  }
+//}
+
+

@@ -2,7 +2,7 @@
   @sizeValue: @mysizeValue / @basefontsize;
   @remValue: @sizeValue;
   @pxValue: (@sizeValue * 10);
-  font-size: ~"@{pxValue}px"; 
+  font-size: ~"@{pxValue}px";
   font-size: ~"@{remValue}rem";
 }
 
@@ -10,7 +10,7 @@
   @sizeValue: @mysizeValue / @basefontsize;
   @remValue: @sizeValue;
   @pxValue: (@sizeValue * 10);
-  line-height: ~"@{pxValue}px"; 
+  line-height: ~"@{pxValue}px";
   line-height: ~"@{remValue}rem";
 }
 
@@ -53,4 +53,26 @@
   @media (min-width: @screen-lg-min) {
     .font-size(@mysizeValue-max);
   }
+}
+
+
+//fonts
+@font-face {
+  font-family: 'gillsans-bold';
+  src: url('../fonts/GillSans-Bold.eot?#iefix') format('embedded-opentype'),
+  url('../fonts/GillSans-Bold.otf')  format('opentype'),
+  url('../fonts/GillSans-Bold.woff') format('woff'),
+  url('../fonts/GillSans-Bold.ttf')  format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'ubuntu-medium';
+  src: url('../fonts/Ubuntu-Medium.eot?#iefix') format('embedded-opentype'),
+  url('../fonts/Ubuntu-Medium.otf')  format('opentype'),
+  url('../fonts/Ubuntu-Medium.woff') format('woff'),
+  url('../fonts/Ubuntu-Medium.ttf')  format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }

@@ -17,7 +17,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/"><img src="sites/all/themes/bookboxlanding_ui/images/svg/bookboxlogo.svg"></a>
+                    <a class="navbar-brand" href="/"><img src="/sites/all/themes/bookbox_ui/images/svg/bookboxlogo.svg"></a>
                 </div>
                 <div class="col-md-5 col-sm-6">
                     <div id="navbar" class="collapse navbar-collapse">
