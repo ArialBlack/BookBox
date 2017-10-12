@@ -133,7 +133,7 @@
                 //    $('.primary-nav>ul').append($('.collapse-nav-items>ul>li'));
                 //    $('.collapse-nav-items').remove();
                 // }
-            })
+            });
 
             $('.page-faq #block-system-main .view-id-faq .nav-tabs li').click(function(){
                 if ($(window).width() <768) {
@@ -164,6 +164,38 @@
                     }
                 }
             });
+
+            $('.page-user-login .form-type-password').append('<div class="show-pass"><img  src="/sites/all/themes/bookbox_ui/images/singup_eye.svg"></div>');
+
+          if ($(window).width() > 992) {
+            $('.show-pass').mousedown(function(){
+              var type = $('.page-user-login .form-type-password input').attr('type') == "text" ? "password" : 'text';
+                // c = $(this).text() == "Скрыть пароль" ? "Показать пароль" : "Скрыть пароль";
+              // $(this).text(c);
+              $(this).css('opacity', '0.5');
+              $('.page-user-login .form-type-password input').prop('type', type);
+            });
+
+            $('.show-pass').mouseup(function(){
+              var type = $('.page-user-login .form-type-password input').attr('type') == "text" ? "password" : 'text';
+                // c = $(this).text() == "Скрыть пароль" ? "Показать пароль" : "Скрыть пароль";
+              // $(this).text(c);
+              $(this).css('opacity', '1');
+              $('.page-user-login .form-type-password input').prop('type', type);
+            });
+          } else {
+            $('.show-pass').click(function(){
+              var type = $('.page-user-login .form-type-password input').attr('type') == "text" ? "password" : 'text',
+                c = $(this).text() == "Скрыть пароль" ? "Показать пароль" : "Скрыть пароль";
+              $(this).text(c);
+              $(this).css('opacity', '1');
+              $('.page-user-login .form-type-password input').prop('type', type);
+            });
+          }
+
+          $('.page-user-login .form-item-name input').click(function() {
+            $('.form-item-name.form-type-textfield > .error').css('display', 'none');
+          });
 
         });
 
@@ -210,7 +242,6 @@
 
         //$('#views-exposed-form-booksearch-page .icon-search').click(function() {
         $('.search-block .svg-icon').click(function() {
-            //console.log('--------------c');
             $('body').addClass('open-search');
         });
 
@@ -255,6 +286,5 @@
         if ($('.col-sm-8').height() < $('aside.col-sm-4').height() && $(window).width() <= 1024 && $(window).width() > 767) {
             $('.col-sm-8').css('height', $('aside.col-sm-4').height());
         };
-
     });
 }(jQuery));

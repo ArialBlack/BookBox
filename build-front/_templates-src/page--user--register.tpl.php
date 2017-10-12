@@ -6,7 +6,7 @@
 <div class="register-block-inner">
     <h2 class="title">Реєстрація</h2>
     <div class="login-block">
-    <span>Вже зареєстровані?</span> <a href="/user/login">Вхід</a>
+    <span><a href="/user/login">Вже зареєстровані?</a></span>
     </div>
 
     <?php print $messages; ?>

@@ -8,11 +8,11 @@ html {
   display: none; //todo remove from db
 }
 
-#user-login {
-  div.error {
-    display: block !important;
-  }
-}
+//#user-login {
+//  div.error {
+//    display: block !important;
+//  }
+//}
 
 body.login {
   .container {
@@ -63,12 +63,28 @@ body.login {
     .login-inner-block {
       background: #f0f0f0;
       width: 585px;
-      position: relative;
-      margin:auto;
-      margin-top: 20vh;
+      //position: relative;
+      //margin:auto;
+      //margin-top: 20vh;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      -webkit-transform: translate(-50%, -50%);
+      -moz-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      -o-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
       padding: 55px 100px 40px 100px;
 
       @media (max-width: 600px) {
+        position: relative;
+        top: 0;
+        left: 0;
+        -webkit-transform: translate(0);
+        -moz-transform: translate(0);
+        -ms-transform: translate(0);
+        -o-transform: translate(0);
+        transform: translate(0);
         width: 100%;
         margin-top: 0;
         padding-left: 15px;
@@ -85,17 +101,13 @@ body.login {
 
       .reg-block {
         float: right;
-        padding-top: 3px;
+        padding-top: 8px;
 
-        @media (max-width: 400px) {
-          padding-top: 5px;
-        }
-
-        span {
+        span a {
           font-family: ubuntu-medium;
-          font-size: @body-text-n;
+          font-size: @menu-text;
           color: @input-text;
-          padding-right: 10px;
+          text-transform: uppercase;
 
           @media (max-width: 400px) {
             font-size: 14px;
@@ -107,20 +119,20 @@ body.login {
           }
         }
 
-        a {
-          font-family: ubuntu-medium;
-          font-size: @menu-text;
-          color: @red;
-          text-transform: uppercase;
-
-          @media (max-width: 400px) {
-            font-size: 13.5px;
-          }
-
-          &:focus {
-            text-decoration: none;
-          }
-        }
+        //a {
+        //  font-family: ubuntu-medium;
+        //  font-size: @menu-text;
+        //  color: @red;
+        //  text-transform: uppercase;
+        //
+        //  @media (max-width: 400px) {
+        //    font-size: 13.5px;
+        //  }
+        //
+        //  &:focus {
+        //    text-decoration: none;
+        //  }
+        //}
       }
 
       .alert.alert-block {
@@ -140,6 +152,7 @@ body.login {
             font-size: 13px;
             color: @input-text;
             text-transform: uppercase;
+            z-index: 5;
           }
 
           .form-item {
@@ -182,6 +195,19 @@ body.login {
 
             &.form-item-pass {
               margin-top: -22px;
+              position: relative;
+
+              .show-pass {
+                position: absolute;
+                right: 14px;
+                top: 40px;
+                cursor: pointer;
+                width: 18px;
+
+                img {
+                  pointer-events: none;
+                }
+              }
             }
 
             div.error {
@@ -226,25 +252,6 @@ body.login {
                 -moz-box-shadow: 18px 28px 61px 5px rgba(216,72,48,0.3);
                 box-shadow: 18px 28px 61px 5px rgba(216,72,48,0.3);
               }
-
-              //@media (max-width: @laptop-1) {
-              //  height: 50px;
-              //  letter-spacing: 6px;
-              //}
-              //
-              //@media (max-width: @max-sm) {
-              //  width: 22%;
-              //  height: 50px;
-              //  font-size: @menu-text;
-              //}
-              //
-              //@media (max-width: @max-xs) {
-              //  width: 45%;
-              //}
-              //
-              //@media (max-width: 460px) {
-              //  width: 100%;
-              //}
             }
           }
         }

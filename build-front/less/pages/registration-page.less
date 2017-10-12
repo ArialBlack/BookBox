@@ -7,11 +7,11 @@ html {
   display: none; //todo remove from db
 }
 
-#user-login {
-  div.error {
-    display: block !important;
-  }
-}
+//#user-login {
+//  div.error {
+//    display: block !important;
+//  }
+//}
 
 .footer {
   position: static;
@@ -60,6 +60,13 @@ body.page-user-register {
       margin-top: 40px;
       padding: 55px 100px 40px 100px;
 
+      &>.alert-danger.messages.error {
+        clear: both;
+        margin: 0;
+
+      }
+
+
       @media (max-width: 600px) {
         width: 100%;
         margin-top: 0;
@@ -77,17 +84,17 @@ body.page-user-register {
 
       .login-block {
         float: right;
-        padding-top: 5px;
+        padding-top: 7px;
 
         @media (max-width: 400px) {
           padding-top: 7px;
         }
 
-        span {
+        span a {
           font-family: ubuntu-medium;
-          font-size: @body-text-n;
+          font-size: @menu-text;
           color: @input-text;
-          padding-right: 10px;
+          text-transform: uppercase;
 
           @media (max-width: 400px) {
             font-size: 14px;
@@ -99,20 +106,20 @@ body.page-user-register {
           }
         }
 
-        a {
-          font-family: ubuntu-medium;
-          font-size: @menu-text;
-          color: @red;
-          text-transform: uppercase;
-
-          @media (max-width: 400px) {
-            font-size: 13.5px;
-          }
-
-          &:focus {
-            text-decoration: none;
-          }
-        }
+        //a {
+        //  font-family: ubuntu-medium;
+        //  font-size: @menu-text;
+        //  color: @red;
+        //  text-transform: uppercase;
+        //
+        //  @media (max-width: 400px) {
+        //    font-size: 13.5px;
+        //  }
+        //
+        //  &:focus {
+        //    text-decoration: none;
+        //  }
+        //}
       }
 
       #block-system-main {

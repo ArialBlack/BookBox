@@ -5,7 +5,7 @@
 <div class="row">
 <div class="login-inner-block clearfix">
     <h1 class="title">Вхід</h1>
-    <div class="reg-block"><span>Ще не зареєструвались?</span> <a href="/user/register">реєстрація</a></div>
+    <div class="reg-block"><span><a href="/user/register">Не зареєстровані?</a></span></div>
 
     <?php print $messages; ?>
 
