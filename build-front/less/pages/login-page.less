@@ -8,16 +8,79 @@ html {
   display: none; //todo remove from db
 }
 
-//#user-login {
-//  div.error {
-//    display: block !important;
-//  }
-//}
-
 body.login {
   .container {
     @media (min-width: @min-xl) {
       width: 1170px;
+    }
+  }
+
+  .alert-block.alert-success {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: #f0f0f0;
+    border: none;
+    z-index: 10;
+    font-family: gillsans-bold;
+    font-size: 24px;
+    color: @header-text;
+    text-align: center;
+    padding-left: 90px;
+    padding-right: 90px;
+    padding-top: 170px;
+    background-image: url(../images/checkmark.png);
+    background-repeat: no-repeat;
+    background-position: center 70px;
+
+    @media (max-width: 600px) {
+      padding-left: 50px;
+      padding-right: 50px;
+    }
+
+    @media (max-width: 450px) {
+      padding-right: 20px;
+      padding-left: 20px;
+      font-size: 18px;
+    }
+
+    .close {
+      position: absolute;
+      opacity: 1;
+      left: 50%;
+      bottom:70px;
+      -webkit-transform: translateX(-50%);
+      -moz-transform: translateX(-50%);
+      -ms-transform: translateX(-50%);
+      -o-transform: translateX(-50%);
+      transform: translateX(-50%);
+      border-color: @red !important;
+      border-radius: 0;
+      height: 50px;
+      line-height: 49px;
+      font-weight: initial;
+      letter-spacing: 6px;
+      width: 195px;
+      padding:0;
+      text-transform: uppercase;
+      font-family: ubuntu-medium;
+      font-size: @body-text-n;
+      color: #fff;
+      background: @red;
+      -webkit-box-shadow: 18px 28px 61px 5px rgba(216,72,48, 0.2);
+      -moz-box-shadow: 18px 28px 61px 5px rgba(216,72,48,0.2);
+      box-shadow: 18px 28px 61px 5px rgba(216,72,48,0.2);
+      text-shadow: none;
+      outline: 0;
+
+      &:hover {
+        background: #db553f;
+        -webkit-box-shadow: 18px 28px 61px 5px rgba(216,72,48,0.3);
+        -moz-box-shadow: 18px 28px 61px 5px rgba(216,72,48,0.3);
+        box-shadow: 18px 28px 61px 5px rgba(216,72,48,0.3);
+      }
     }
   }
 

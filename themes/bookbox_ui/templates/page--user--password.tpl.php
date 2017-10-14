@@ -48,7 +48,7 @@
 
 <div id="auth_box" class="password-block">
 
-  <div id="middle_part">
+ <!-- <div id="middle_part"> -->
   <div class="container">
   <div class="row">
   <div class="password-inner-block clearfix">
@@ -67,7 +67,7 @@
 </div>
 </div>
 
-</div>
+<!-- </div> -->
 
 <footer class="footer">
     <div class="container">

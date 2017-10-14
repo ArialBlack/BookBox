@@ -185,9 +185,9 @@
             });
           } else {
             $('.show-pass').click(function(){
-              var type = $('.page-user-login .form-type-password input').attr('type') == "text" ? "password" : 'text',
-                c = $(this).text() == "Скрыть пароль" ? "Показать пароль" : "Скрыть пароль";
-              $(this).text(c);
+              var type = $('.page-user-login .form-type-password input').attr('type') == "text" ? "password" : 'text';
+                // c = $(this).text() == "Скрыть пароль" ? "Показать пароль" : "Скрыть пароль";
+              // $(this).text(c);
               $(this).css('opacity', '1');
               $('.page-user-login .form-type-password input').prop('type', type);
             });
@@ -197,6 +197,8 @@
             $('.form-item-name.form-type-textfield > .error').css('display', 'none');
           });
 
+          $('.page-user-login .alert-block.alert-success .close').text(' ');
+          $('.page-user-login .alert-block.alert-success .close').text('Вхід');
         });
 
         $( document ).on( "click", ".sort-submenu a", function() {
