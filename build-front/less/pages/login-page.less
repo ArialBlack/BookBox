@@ -51,6 +51,11 @@ body.login {
       opacity: 1;
       left: 50%;
       bottom:70px;
+      -webkit-transition: all .3s ease;
+      -moz-transition: all .3s ease;
+      -ms-transition: all .3s ease;
+      -o-transition: all .3s ease;
+      transition: all .3s ease;
       -webkit-transform: translateX(-50%);
       -moz-transform: translateX(-50%);
       -ms-transform: translateX(-50%);
@@ -176,26 +181,7 @@ body.login {
             font-size: 14px;
             padding-right: 8px;
           }
-
-          @media (max-width: 368px) {
-            display: none;
-          }
         }
-
-        //a {
-        //  font-family: ubuntu-medium;
-        //  font-size: @menu-text;
-        //  color: @red;
-        //  text-transform: uppercase;
-        //
-        //  @media (max-width: 400px) {
-        //    font-size: 13.5px;
-        //  }
-        //
-        //  &:focus {
-        //    text-decoration: none;
-        //  }
-        //}
       }
 
       .alert.alert-block {
