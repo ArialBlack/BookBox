@@ -2,7 +2,7 @@
 
 <div id="auth_box" class="reset-block">
 
-  <div id="middle_part">
+  <!-- <div id="middle_part"> -->
   <div class="container">
     <div class="row">
     <div class="reset-inner-block clearfix">
@@ -14,7 +14,7 @@
     </div>
       </div>
     </div>
-  </div>
+  <!-- </div> -->
 
 </div>
 

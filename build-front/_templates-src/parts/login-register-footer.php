@@ -12,7 +12,6 @@
                 <ul>
                     <li><a href="https://bookbox.ua/privacy">Політика конфіденційності</a></li>
                     <li><a href="https://bookbox.ua/terms">Правила користування</a></li>
-                    <li><a href="https://bookbox.ua#faq">FAQ</a></li>
                     <li><a href="https://bookbox.ua/contacts">Контакти</a></li>
                 </ul>
             </div>

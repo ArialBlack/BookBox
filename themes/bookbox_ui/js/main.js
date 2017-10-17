@@ -279,7 +279,7 @@
         });
 
         //NICESCROLL
-        var nice = $("html").niceScroll({cursorcolor:"#999", mousescrollstep:60});  // The document page (body)
+        // var nice = $("html").niceScroll({cursorcolor:"#999", mousescrollstep:60});  // The document page (body)
 
         if ($(window).width() > 1024) {
             $(".col-sm-4").niceScroll({cursorcolor:"#999", mousescrollstep:60}); // end of nicescroll
