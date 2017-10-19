@@ -1,5 +1,6 @@
 <?php
 function bookbox_form_alter(&$form, &$form_state, $form_id){
+
     if(isset($form['#node_edit_form']) && $form['#node_edit_form'] && $form['type']['#value'] == 'book') {
         $form['field_bookfields']['und']['form']['commerce_price']['und'][0]['amount']['#default_value'] = 0;
         $form['field_bookfields']['und']['form']['commerce_price']['#access'] = false;
@@ -54,6 +55,11 @@ function bookbox_form_alter(&$form, &$form_state, $form_id){
 
         $form['field_bookfields']['und']['form']['commerce_stock']['und'][0]['value']['#disabled'] = TRUE;
         $form['field_bookfields']['und']['form']['commerce_stock']['und'][0]['value']['#attributes']['title'] = $in_orders;
+    }
+
+    if ($form['#id'] == 'user-pass-reset') {
+        unset($form['help']);
+        $form['message']['#markup'] = '<p>Це одноразове посилання для входу на сайт та встановлення нового паролю.</p>';
     }
 }
 
