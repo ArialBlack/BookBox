@@ -193,9 +193,9 @@
             });
           }
 
-          $('.page-user-login .form-item-name input').click(function() {
-            $('.form-item-name.form-type-textfield > .error').css('display', 'none');
-          });
+          // $('.page-user-login .form-item-name input').click(function() {
+          //   $('.form-item-name.form-type-textfield > div.error').css('display', 'none');
+          // });
 
           $('.page-user-login .alert-block.alert-success .close').text(' ');
           $('.page-user-login .alert-block.alert-success .close').text('Вхід');
