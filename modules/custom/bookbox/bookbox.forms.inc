@@ -14,25 +14,27 @@ function bookbox_form_alter(&$form, &$form_state, $form_id){
     }
 
     if ($form['#id'] == 'user-register-form') {
+
         $form['#validate'][] = 'bookbox_registeruser_validate';
 
         $form['mail'] = $form['account']['mail'];
         unset($form['account']['mail']);
+        
         $form['mail']['#weight'] = -10;
         $form['mail']['#title'] = 'Корпоративний email</span>';
         $form['mail']['#description'] = '';
-        $form['mail']['#attributes']['placeholder'] = 'oskar123@bookbox.ua';
+        $form['mail']['und'][0]['value']['#attributes']['placeholder'] = 'oskar123@bookbox.ua';
 
         $form['field_name']['#weight'] = -9;
-        $form['field_name']['#attributes']['placeholder'] = 'Оскар';
+        $form['field_name']['und'][0]['value']['#attributes']['placeholder'] = 'Оскар';
 
         $form['field_sirname']['#weight'] = -8;
-        $form['field_name']['#attributes']['placeholder'] = 'Уайльд';
+        $form['field_sirname']['und'][0]['value']['#attributes']['placeholder'] = 'Уайльд';
 
         $form['field_company']['#disabled']= TRUE;
 
         $form['field_tel']['#weight'] = -7;
-        $form['field_tel']['#attributes']['placeholder'] = '+380 97 447 97 57';
+        $form['field_tel']['und'][0]['value']['#attributes']['placeholder'] = '+380 97 447 97 57';
         
         $form['pass'] = $form['account']['pass'];
         unset($form['account']['pass']);
