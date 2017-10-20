@@ -23,7 +23,7 @@ function bookbox_form_alter(&$form, &$form_state, $form_id){
         $form['mail']['#weight'] = -10;
         $form['mail']['#title'] = 'Корпоративний email</span>';
         $form['mail']['#description'] = '';
-        $form['mail']['und'][0]['value']['#attributes']['placeholder'] = 'oskar123@bookbox.ua';
+        $form['mail']['#attributes']['placeholder'] = 'oskar123@bookbox.ua';
 
         $form['field_name']['#weight'] = -9;
         $form['field_name']['und'][0]['value']['#attributes']['placeholder'] = 'Оскар';
