@@ -170,24 +170,18 @@
           if ($(window).width() > 992) {
             $('.show-pass').mousedown(function(){
               var type = $('.page-user-login .form-type-password input').attr('type') == "text" ? "password" : 'text';
-                // c = $(this).text() == "Скрыть пароль" ? "Показать пароль" : "Скрыть пароль";
-              // $(this).text(c);
               $(this).css('opacity', '0.5');
               $('.page-user-login .form-type-password input').prop('type', type);
             });
 
             $('.show-pass').mouseup(function(){
               var type = $('.page-user-login .form-type-password input').attr('type') == "text" ? "password" : 'text';
-                // c = $(this).text() == "Скрыть пароль" ? "Показать пароль" : "Скрыть пароль";
-              // $(this).text(c);
               $(this).css('opacity', '1');
               $('.page-user-login .form-type-password input').prop('type', type);
             });
           } else {
             $('.show-pass').click(function(){
               var type = $('.page-user-login .form-type-password input').attr('type') == "text" ? "password" : 'text';
-                // c = $(this).text() == "Скрыть пароль" ? "Показать пароль" : "Скрыть пароль";
-              // $(this).text(c);
               $(this).css('opacity', '1');
               $('.page-user-login .form-type-password input').prop('type', type);
             });
@@ -198,7 +192,26 @@
           // });
 
           $('.page-user-login .alert-block.alert-success .close').text(' ');
-          $('.page-user-login .alert-block.alert-success .close').text('Вхід');
+          $('.page-user-login .alert-block.alert-success .close').text('Ок');
+          //
+          // $('.page-user-register .field-name-field-tel input').change(function() {
+          // $(this).val().replace(/ /g,'');
+          // });
+
+          //Delete whitespaces from phone form
+          var txt = $(".page-user-register .field-name-field-tel input");
+          var func = function() {
+            txt.val(txt.val().replace(/\s/g, ''));
+          };
+          txt.keyup(func).blur(func);
+          //
+
+          $('.page-user-register .field-name-field-tel input').click(function() {
+            // console.log($(this).val().length);
+            if (!$(this).val().length) {
+              $(this).val('+380');
+            }
+          });
         });
 
         $( document ).on( "click", ".sort-submenu a", function() {
@@ -231,7 +244,7 @@
                 var cid = $(this).val(),
                     tiptext = $( "#clist li:contains(" + cid + ")" ).data('d');
 
-                $(".page-user-register #edit-mail--2").attr('placeholder', tiptext);
+                // $(".page-user-register #edit-mail--2").attr('placeholder', tiptext);
             });
         }).change();
 
@@ -250,8 +263,7 @@
         $(document).mouseup(function (e) {
             var container = $(".search-block");
 
-            if (!container.is(e.target)
-                && container.has(e.target).length === 0) {
+            if (!container.is(e.target) && container.has(e.target).length === 0) {
                 $('body').removeClass('open-search');
             }
             ////

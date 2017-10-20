@@ -63,7 +63,8 @@ body.page-user-register {
       &>.alert-danger.messages.error {
         clear: both;
         margin: 0;
-
+        margin-bottom: -40px;
+        margin-top: 35px;
       }
 
 
@@ -114,6 +115,7 @@ body.page-user-register {
           font-family: ubuntu-medium;
           font-size: 13px;
           color: @header-text;
+          margin-bottom: -4px;
 
           a {
             color: @red;
@@ -170,6 +172,10 @@ body.page-user-register {
           }
 
           &.form-item-field-agree-und {
+
+            .error {
+              padding-left: 15px;
+            }
 
             .control-label {
               float: left;

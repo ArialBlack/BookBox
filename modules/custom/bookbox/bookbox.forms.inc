@@ -19,7 +19,7 @@ function bookbox_form_alter(&$form, &$form_state, $form_id){
 
         $form['mail'] = $form['account']['mail'];
         unset($form['account']['mail']);
-        
+
         $form['mail']['#weight'] = -10;
         $form['mail']['#title'] = 'Корпоративний email</span>';
         $form['mail']['#description'] = '';
@@ -34,8 +34,8 @@ function bookbox_form_alter(&$form, &$form_state, $form_id){
         $form['field_company']['#disabled']= TRUE;
 
         $form['field_tel']['#weight'] = -7;
-        $form['field_tel']['und'][0]['value']['#attributes']['placeholder'] = '+380 97 447 97 57';
-        
+        $form['field_tel']['und'][0]['value']['#attributes']['placeholder'] = '+380';
+
         $form['pass'] = $form['account']['pass'];
         unset($form['account']['pass']);
         $form['pass']['#weight'] = -5;
@@ -210,7 +210,7 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state)
     //если я уже читаю или я уже заказал эту книгу, то отключать кнопку.
     // если я уже читаю 3 книги, то отключать кнопку
     //если я читаю + я заказал = 3шт, то отключать кнопку
-    
+
     $is_in_order = is_in_order($form_product, $uid);
     $is_in_readingnow = is_in_redingnow($form_product, $uid);
     $is_in_archive = is_in_archive($form_product, $uid);
@@ -375,7 +375,7 @@ function bookbox_admin_delivery_form ($form, &$form_state) {
         '#type' => 'submit',
         '#value' => 'Ми все доставили!',
     );
-    
+
     return $form;
 }
 
