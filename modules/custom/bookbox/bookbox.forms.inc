@@ -41,11 +41,6 @@ function bookbox_form_alter(&$form, &$form_state, $form_id){
         $form['pass']['#weight'] = -5;
     }
 
-    //if ($form['#id'] == 'user-login') {
-        //Sorry, unrecognized username or password. <a href="@password">Have you forgotten your password?</a>
-        //Невірний email/пароль, або ваша компанія не є клієнтом Book Box. Перевірьте введену інформацію або <a href="https://bookbox.ua/contacts">зв’яжіться з нами</a>
-    //}
-
     if ($form['#id'] == 'user-pass') {
         $form['actions']['submit']['#value'] = 'Відновити пароль';
     }
@@ -66,7 +61,6 @@ function bookbox_form_alter(&$form, &$form_state, $form_id){
 }
 
 function bookbox_registeruser_validate ($form, &$form_state) {
-    //$company_id = $form_state['values']['field_company']['und'][0]['target_id'];
     $usermail = $form_state['values']['mail'];
 
     if ($usermail) {
@@ -89,60 +83,23 @@ function bookbox_registeruser_validate ($form, &$form_state) {
             form_set_error('mail', 'Вибачте, але такий email вже існує. <a href="/user/login">Бажаєте ввійти?</a>');
         }
 
-        //dsm($company_nid);
-
         if($company_nid) {
-            //$company = node_load($company_nid);
-            //$company_name = $company->title;
-            //dsm($company_nid);
-            //dsm($form_state['values']['field_company']['und'][0]['target_id']);
-            //dsm($form_state['values']);
-
             $form['field_company']['#parents'] = array('field_company');
             form_set_value($form['field_company'], array('und' => array(0 => array('target_id' => $company_nid))), $form_state);
-
-
-
-            //$form_state['values']['field_company']['und'][0]['target_id'] = $company_nid;
-            //dsm($form_state['values']);
-            //dsm($form_state['values']['field_company']['und'][0]['target_id']);
-            //ife_errors('set', 'edit-mail--2', 'Невірний email або ваша компанія не є клієнтом Book Box. Перевірьте введену інформацію або зв’яжіться з нами');
-            //form_set_error('mail', 'Невірний email або ваша компанія не є клієнтом Book Box. Перевірьте введену інформацію або зв’яжіться з нами');
         } else {
-            //dsm($form_state['values']);
-            //dsm('nooo');
-            ife_errors('set', 'edit-mail--2', 'Невірний email або ваша компанія не є клієнтом Book Box. Перевірьте введену інформацію або <a href="https://bookbox.ua/contacts">зв’яжіться з нами</a>');
-            form_set_error('mail', 'Невірний email або ваша компанія не є клієнтом Book Box. Перевірьте введену інформацію або <a href="https://bookbox.ua/contacts">зв’яжіться з нами</a>');
+            ife_errors('set', 'edit-mail--2', 'Невірний email або ваша компанія не є клієнтом Book Box. Перевірте введену інформацію або <a href="https://bookbox.ua/contacts">зв’яжіться з нами</a>');
+            form_set_error('mail', 'Невірний email або ваша компанія не є клієнтом Book Box. Перевірте введену інформацію або <a href="https://bookbox.ua/contacts">зв’яжіться з нами</a>');
         }
     }
 
     $usertel = $form_state['values']['field_tel']['und'][0]['value'];
 
+
     $pattern = "/^\+380\d{3}\d{2}\d{2}\d{2}$/";
     if(!preg_match($pattern, $usertel))  {
-        ife_errors('set', 'edit-tel-und-0-value', 'Номер має бути у форматі +380ххххххххх');
-        form_set_error('tel', 'Номер має бути у форматі +380ххххххххх');
+        ife_errors('set', 'edit-field-tel-und-0-value', 'Номер має бути у форматі +380ххххххххх');
+        //form_set_error('field_tel[und][0][value]', 'Номер має бути у форматі +380ххххххххх');
     }
-
-    /*if ($usermail) {
-        $usermail_domain = substr(strrchr($usermail, "@"), 1);
-        $node = node_load($company_id);
-        $domains = $node->field_maildomain['und'];
-        $in_list = false;
-
-        for($i = 0; $i < count($domains); $i++) {
-            if ($domains[$i]['value'] == $usermail_domain) {
-                $in_list = true;
-            }
-        }
-
-        if (!$in_list) {
-            ife_errors('set', 'edit-mail--2', 'Введіть адресу корпоративної електронної пошти');
-            form_set_error('mail', 'Введіть адресу корпоративної електронної пошти');
-        }
-    }
-
-    */
 }
 
 function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state) {
