@@ -54,9 +54,9 @@
  * @ingroup templates
  */
 ?><!DOCTYPE html>
-<html<?php print $html_attributes;?><?php print $rdf_namespaces;?>>
+<html lang="uk" dir="ltr" prefix="content: http://purl.org/rss/1.0/modules/content/ dc: http://purl.org/dc/terms/ foaf: http://xmlns.com/foaf/0.1/ og: http://ogp.me/ns# rdfs: http://www.w3.org/2000/01/rdf-schema# sioc: http://rdfs.org/sioc/ns# sioct: http://rdfs.org/sioc/types# skos: http://www.w3.org/2004/02/skos/core# xsd: http://www.w3.org/2001/XMLSchema#">
 <head>
-    <link rel="profile" href="<?php print $grddl_profile; ?>" />
+    <link rel="profile" href="http://www.w3.org/1999/xhtml/vocab" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php print $head; ?>
@@ -76,18 +76,22 @@
     <a href="#main-content" class="element-invisible element-focusable"><?php print t('Skip to main content'); ?></a>
 </div>
 
-<div class="main-container container text-center">
+<div class="main-container container">
     <div class="row">
-        <div class="col-sm-12">
-            <img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>" />
+        <div class="col-sm-12 col-content">
+            <img src="https://lib.bookbox.ua/sites/all/themes/bookbox_ui/images/bb-compact-logo.png" alt="BookBox" />
+
+            <div class="notice-message">
+                <h1><span class="div"><span class="text">Сайт</span></span> <span class="div"><span class="text">вдосконалюється</span></span></h1>
+                <div class="tip-text">
+                    <p>До 8 вересня все знову працюватиме.</p>
+                    <p>Дякуємо за розуміння.</p>
+                    <p>Відповімо на запитання на info@bookbox.ua</p>
+                </div>
+            </div>
         </div>
-
-        <h2>Сайт вдосконалюється.</h2>
-        <p>До 8 вересня все знову працюватиме.</p>
-        <p>Дякуємо за розуміння.</p>
-
     </div>
-</div>
+
 <span id="bpMArker"></span>
 <div class="fontdown hidden"><button class="btn btn-default btn-transparent"id="down">A -</button></div>
 <div class="fontup hidden"><button class="btn btn-default btn-transparent" id="up">A +</button></div>

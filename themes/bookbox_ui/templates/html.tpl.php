@@ -78,6 +78,10 @@
   <?php print $page_top; ?>
   <?php print $page; ?>
   <?php print $page_bottom; ?>
+  <?php
+    $changes_block = module_invoke('block', 'block_view', 9);
+    $block_object = block_load('block', 9);
+  ?>
   <span id="bpMArker"></span>
   <div class="fontdown hidden"><button class="btn btn-default btn-transparent"id="down">A -</button></div>
   <div class="fontup hidden"><button class="btn btn-default btn-transparent" id="up">A +</button></div>
