@@ -17,7 +17,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/"><img src="/sites/all/themes/bookbox_ui/images/svg/bookboxlogo.svg"></a>
+                    <a class="navbar-brand" href="https://bookbox.ua"><img src="/sites/all/themes/bookbox_ui/images/svg/bookboxlogo.svg"></a>
                 </div>
                 <div class="col-md-5 col-sm-6">
                     <div id="navbar" class="collapse navbar-collapse">
@@ -48,7 +48,7 @@
 
 <div id="auth_box" class="reset-block">
 
-  <div id="middle_part">
+  <!-- <div id="middle_part"> -->
   <div class="container">
     <div class="row">
     <div class="reset-inner-block clearfix">
@@ -60,7 +60,7 @@
     </div>
       </div>
     </div>
-  </div>
+  <!-- </div> -->
 
 </div>
 
@@ -78,7 +78,6 @@
                 <ul>
                     <li><a href="https://bookbox.ua/privacy">Політика конфіденційності</a></li>
                     <li><a href="https://bookbox.ua/terms">Правила користування</a></li>
-                    <li><a href="https://bookbox.ua#faq">FAQ</a></li>
                     <li><a href="https://bookbox.ua/contacts">Контакти</a></li>
                 </ul>
             </div>
