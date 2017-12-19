@@ -133,7 +133,7 @@
                 //    $('.primary-nav>ul').append($('.collapse-nav-items>ul>li'));
                 //    $('.collapse-nav-items').remove();
                 // }
-            })
+            });
 
             $('.page-faq #block-system-main .view-id-faq .nav-tabs li').click(function(){
                 if ($(window).width() <768) {
@@ -165,6 +165,53 @@
                 }
             });
 
+            $('.page-user-login .form-type-password').append('<div class="show-pass"><img  src="/sites/all/themes/bookbox_ui/images/singup_eye.svg"></div>');
+
+          if ($(window).width() > 992) {
+            $('.show-pass').mousedown(function(){
+              var type = $('.page-user-login .form-type-password input').attr('type') == "text" ? "password" : 'text';
+              $(this).css('opacity', '0.5');
+              $('.page-user-login .form-type-password input').prop('type', type);
+            });
+
+            $('.show-pass').mouseup(function(){
+              var type = $('.page-user-login .form-type-password input').attr('type') == "text" ? "password" : 'text';
+              $(this).css('opacity', '1');
+              $('.page-user-login .form-type-password input').prop('type', type);
+            });
+          } else {
+            $('.show-pass').click(function(){
+              var type = $('.page-user-login .form-type-password input').attr('type') == "text" ? "password" : 'text';
+              $(this).css('opacity', '1');
+              $('.page-user-login .form-type-password input').prop('type', type);
+            });
+          }
+
+          // $('.page-user-login .form-item-name input').click(function() {
+          //   $('.form-item-name.form-type-textfield > div.error').css('display', 'none');
+          // });
+
+          $('.page-user-login .alert-block.alert-success .close').text(' ');
+          $('.page-user-login .alert-block.alert-success .close').text('Ок');
+          //
+          // $('.page-user-register .field-name-field-tel input').change(function() {
+          // $(this).val().replace(/ /g,'');
+          // });
+
+          //Delete whitespaces from phone form
+          var txt = $(".page-user-register .field-name-field-tel input");
+          var func = function() {
+            txt.val(txt.val().replace(/\s/g, ''));
+          };
+          txt.keyup(func).blur(func);
+          //
+
+          $('.page-user-register .field-name-field-tel input').click(function() {
+            // console.log($(this).val().length);
+            if (!$(this).val().length) {
+              $(this).val('+380');
+            }
+          });
         });
 
         $( document ).on( "click", ".sort-submenu a", function() {
@@ -197,7 +244,7 @@
                 var cid = $(this).val(),
                     tiptext = $( "#clist li:contains(" + cid + ")" ).data('d');
 
-                $(".page-user-register #edit-mail--2").attr('placeholder', tiptext);
+                // $(".page-user-register #edit-mail--2").attr('placeholder', tiptext);
             });
         }).change();
 
@@ -210,15 +257,13 @@
 
         //$('#views-exposed-form-booksearch-page .icon-search').click(function() {
         $('.search-block .svg-icon').click(function() {
-            //console.log('--------------c');
             $('body').addClass('open-search');
         });
 
         $(document).mouseup(function (e) {
             var container = $(".search-block");
 
-            if (!container.is(e.target)
-                && container.has(e.target).length === 0) {
+            if (!container.is(e.target) && container.has(e.target).length === 0) {
                 $('body').removeClass('open-search');
             }
             ////
@@ -246,7 +291,7 @@
         });
 
         //NICESCROLL
-        var nice = $("html").niceScroll({cursorcolor:"#999", mousescrollstep:60});  // The document page (body)
+        // var nice = $("html").niceScroll({cursorcolor:"#999", mousescrollstep:60});  // The document page (body)
 
         if ($(window).width() > 1024) {
             $(".col-sm-4").niceScroll({cursorcolor:"#999", mousescrollstep:60}); // end of nicescroll
@@ -255,6 +300,5 @@
         if ($('.col-sm-8').height() < $('aside.col-sm-4').height() && $(window).width() <= 1024 && $(window).width() > 767) {
             $('.col-sm-8').css('height', $('aside.col-sm-4').height());
         };
-
     });
 }(jQuery));

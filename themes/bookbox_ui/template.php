@@ -4,6 +4,21 @@
  * The primary PHP file for this theme.
  */
 
+function bookbox_ui_theme() {
+  $items = array();
+
+  $items['user_login'] = array(
+      'render element' => 'form',
+      'path' => drupal_get_path('theme', 'bookbox_ui') . '/templates',
+      'template' => 'user-login-template',
+      'preprocess functions' => array(
+          'bookbox_ui_preprocess_user_login'
+      ),
+  );
+
+  return $items;
+}
+
 function bookbox_ui_preprocess_node(&$vars) {
   if (variable_get('node_submitted_' . $vars['node']->type, TRUE)) {
     $date = format_date($vars['node']->created, 'date_type');

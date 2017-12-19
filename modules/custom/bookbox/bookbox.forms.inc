@@ -1,10 +1,6 @@
 <?php
 function bookbox_form_alter(&$form, &$form_state, $form_id){
 
-    if ($form['#id'] == 'user-register-form') {
-        $form['#validate'][] = 'bookbox_registeruser_validate';
-    }
-    
     if(isset($form['#node_edit_form']) && $form['#node_edit_form'] && $form['type']['#value'] == 'book') {
         $form['field_bookfields']['und']['form']['commerce_price']['und'][0]['amount']['#default_value'] = 0;
         $form['field_bookfields']['und']['form']['commerce_price']['#access'] = false;
@@ -18,61 +14,31 @@ function bookbox_form_alter(&$form, &$form_state, $form_id){
     }
 
     if ($form['#id'] == 'user-register-form') {
-        $query = db_select('node', 'n');
-        $query->fields('n', array('nid', 'title'));
-        $query->condition('n.type', 'company');
-        $result = $query->execute();
 
-        $domainslist = '<ul id="clist" class="hidden">';
-        foreach ($result as $node) {
-            $query2 = db_select('field_data_field_maildomain', 'm');
-            $query2->fields('m', array('field_maildomain_value'));
-            $query2->condition('m.entity_id', $node->nid);
-            $result2 = $query2->execute();
-
-            $domainslist = $domainslist . '<li data-d="';
-            foreach ($result2 as $d) {
-                $domainslist = $domainslist . $d->field_maildomain_value . '; ';
-            }
-            $domainslist = $domainslist .'">' . $node->nid . '</li>';
-        }
-        $domainslist = $domainslist . '</ul>';
-
-        $form['clist'] = array(
-            '#type' => 'markup',
-            '#markup' => $domainslist,
-        );
-
-        $form['field_name']['#weight'] = -10;
-        $form['field_sirname']['#weight'] = -9;
-
-        $form['pass'] = $form['account']['pass'];
-        unset($form['account']['pass']);
-        $form['field_company']['#weight'] = -8;
+        $form['#validate'][] = 'bookbox_registeruser_validate';
 
         $form['mail'] = $form['account']['mail'];
         unset($form['account']['mail']);
-        $form['mail']['#weight'] = -6;
-        $form['mail']['#title'] = 'Email <span>(Корпоративний email)</span>';
+
+        $form['mail']['#weight'] = -10;
+        $form['mail']['#title'] = 'Корпоративний email</span>';
         $form['mail']['#description'] = '';
-        
+        $form['mail']['#attributes']['placeholder'] = 'oskar123@bookbox.ua';
+
+        $form['field_name']['#weight'] = -9;
+        $form['field_name']['und'][0]['value']['#attributes']['placeholder'] = 'Оскар';
+
+        $form['field_sirname']['#weight'] = -8;
+        $form['field_sirname']['und'][0]['value']['#attributes']['placeholder'] = 'Уайльд';
+
+        $form['field_company']['#disabled']= TRUE;
+
         $form['field_tel']['#weight'] = -7;
+        $form['field_tel']['und'][0]['value']['#attributes']['placeholder'] = '+380';
 
+        $form['pass'] = $form['account']['pass'];
+        unset($form['account']['pass']);
         $form['pass']['#weight'] = -5;
-    }
-
-    if ($form['#id'] == 'user-login') {
-        $form['submitpass'] = array(
-            '#type' => 'markup',
-            '#markup' => '<a id="userlostpass" href="/user/password">Забули пароль?</a>',
-            '#weight' => 8
-        );
-
-        $form['submitlogin'] = array(
-            '#type' => 'markup',
-            '#markup' => '<a id="userreglink" class="btn" href="/user/register">Зарееструватись</a>',
-            '#weight' => 9
-        );
     }
 
     if ($form['#id'] == 'user-pass') {
@@ -87,36 +53,52 @@ function bookbox_form_alter(&$form, &$form_state, $form_id){
         $form['field_bookfields']['und']['form']['commerce_stock']['und'][0]['value']['#disabled'] = TRUE;
         $form['field_bookfields']['und']['form']['commerce_stock']['und'][0]['value']['#attributes']['title'] = $in_orders;
     }
+
+    if ($form['#id'] == 'user-pass-reset') {
+        unset($form['help']);
+        $form['message']['#markup'] = '<p>Це одноразове посилання для входу на сайт та встановлення нового паролю.</p>';
+    }
 }
 
-function bookbox_registeruser_validate($form, &$form_state) {
-    $company_id = $form_state['values']['field_company']['und'][0]['target_id'];
+function bookbox_registeruser_validate ($form, &$form_state) {
     $usermail = $form_state['values']['mail'];
 
-    if ($usermail && $company_id) {
+    if ($usermail) {
         $usermail_domain = substr(strrchr($usermail, "@"), 1);
-        $node = node_load($company_id);
-        $domains = $node->field_maildomain['und'];
-        $in_list = false;
 
-        for($i = 0; $i < count($domains); $i++) {
-            if ($domains[$i]['value'] == $usermail_domain) {
-                $in_list = true;
-            }
+        $company_nid = db_select('field_data_field_maildomain', 'md')
+            ->fields('md', array('entity_id'))
+            ->condition('md.field_maildomain_value', $usermail_domain)
+            ->execute()
+            ->fetchField();
+
+        $email = db_select('users', 'u')
+            ->fields('u', array('mail'))
+            ->condition('u.mail', $usermail)
+            ->execute()
+            ->fetchField();
+
+        if($email) {
+            ife_errors('set', 'edit-mail--2', 'Вибачте, але такий email вже існує. <a href="/user/login">Бажаєте ввійти?</a>');
+            form_set_error('mail', 'Вибачте, але такий email вже існує. <a href="/user/login">Бажаєте ввійти?</a>');
         }
 
-        if (!$in_list) {
-            ife_errors('set', 'edit-mail--2', 'Введіть адресу корпоративної електронної пошти');
-            form_set_error('mail', 'Введіть адресу корпоративної електронної пошти');
+        if($company_nid) {
+            $form['field_company']['#parents'] = array('field_company');
+            form_set_value($form['field_company'], array('und' => array(0 => array('target_id' => $company_nid))), $form_state);
+        } else {
+            ife_errors('set', 'edit-mail--2', 'Невірний email або ваша компанія не є клієнтом Book Box. Перевірте введену інформацію або <a href="https://bookbox.ua/contacts">зв’яжіться з нами</a>');
+            form_set_error('mail', 'Невірний email або ваша компанія не є клієнтом Book Box. Перевірте введену інформацію або <a href="https://bookbox.ua/contacts">зв’яжіться з нами</a>');
         }
     }
 
     $usertel = $form_state['values']['field_tel']['und'][0]['value'];
 
+
     $pattern = "/^\+380\d{3}\d{2}\d{2}\d{2}$/";
     if(!preg_match($pattern, $usertel))  {
-        ife_errors('set', 'edit-tel-und-0-value', 'Номер має бути у форматі +380ххххххххх');
-        form_set_error('tel', 'Номер має бути у форматі +380ххххххххх');
+        ife_errors('set', 'edit-field-tel-und-0-value', 'Номер має бути у форматі +380ххххххххх');
+        //form_set_error('field_tel[und][0][value]', 'Номер має бути у форматі +380ххххххххх');
     }
 }
 
@@ -185,7 +167,7 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state)
     //если я уже читаю или я уже заказал эту книгу, то отключать кнопку.
     // если я уже читаю 3 книги, то отключать кнопку
     //если я читаю + я заказал = 3шт, то отключать кнопку
-    
+
     $is_in_order = is_in_order($form_product, $uid);
     $is_in_readingnow = is_in_redingnow($form_product, $uid);
     $is_in_archive = is_in_archive($form_product, $uid);
@@ -350,7 +332,7 @@ function bookbox_admin_delivery_form ($form, &$form_state) {
         '#type' => 'submit',
         '#value' => 'Ми все доставили!',
     );
-    
+
     return $form;
 }
 

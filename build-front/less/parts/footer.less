@@ -1,0 +1,172 @@
+.logged-in {
+  .footer {
+    padding: 18px 95px;
+    border: 0 none;
+    background-color: @gray-bg;
+    color: @bb-darkblue;
+    font-weight: 600;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+
+    @media screen and (max-width: 1023px) {
+      padding: 75px 0 35px 0;
+    }
+
+    iframe {
+      display: none;
+    }
+
+    #block-block-5 {
+      display: none;
+    }
+
+    .container {
+      padding: 0 !important;
+      width: 100% !important;
+    }
+
+    .region-footer {
+      display: flex;
+      justify-content: space-between;
+
+      @media (max-width: 1240px) and (min-width: 1024px) {
+        font-size: 0.83em;
+      }
+
+      @media screen and (max-width: 1023px) {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+    }
+
+    #block-block-2 {
+      display: inline-block;
+
+      @media screen and (max-width: 1023px) {
+        order: 3;
+        font-size: .75rem;
+      }
+
+      @media (min-width: 1024px) and (max-width: 1105px) {
+        p span {
+          display: none;
+        }
+      }
+    }
+
+    #block-menu-menu-footer-menu {
+      display: inline-block;
+      text-align: right;
+      margin-left: 3vw;
+
+      @media screen and (max-width: 1023px) {
+        margin-left: 0;
+      }
+
+      .menu {
+        list-style: none;
+
+        li {
+          @media (min-width: 1240px) {
+            margin-left: 0;
+          }
+
+          @media (min-width: 1380px) {
+            margin-left: 1vw;
+          }
+
+          @media (min-width: 1520px) {
+            margin-left: 3vw;
+          }
+        }
+
+        .leaf {
+          display: inline-block;
+
+          a {
+            color: @bb-darkblue;
+            text-transform: uppercase;
+            padding: 0 10px;
+            transition: all, .3s;
+
+            &:hover, &:focus {
+              text-decoration: none;
+              color: lighten(@bb-darkblue, 10%);
+              background: transparent;
+              font-weight: 600;
+            }
+          }
+
+          @media screen and (max-width: 1023px) {
+            display: block;
+            padding-bottom: 55px;
+          }
+        }
+
+        @media screen and (max-width: 1023px) {
+          text-align: center;
+        }
+      }
+    }
+
+    #block-block-3 {
+      display: inline-block;
+
+      ul {
+        list-style: none;
+        margin: 0;
+        padding-left: 0;
+
+        li {
+          a {
+            text-indent: -9999px;
+            width: 25px;
+            height: 25px;
+            background: url('../img-svg/facebook-icon-5.svg');
+            background-size: contain;
+            display: inline-block;
+
+          }
+        }
+      }
+      @media screen and (max-width: 1023px) {
+        padding-bottom: 30px;
+      }
+
+    }
+
+    #block-block-2,
+    #block-menu-menu-footer-menu {
+      margin-top: 20px;
+    }
+
+    #block-block-3 {
+      margin-top: 15px;
+    }
+
+    #block-block-4 {
+      display: inline-block;
+
+      .clogos_slab {
+        display: block;
+        text-indent: -9999px;
+        width: 57px;
+        height: 50px;
+        float: left;
+
+        background: url(../images/slab-logo.png) no-repeat;
+
+        &:hover {
+          background: url(../images/slab-logo-ani.gif) no-repeat;
+        }
+
+        @media (min-width: 1024px) {
+          margin-left: 20px;
+        }
+      }
+    }
+  }
+}

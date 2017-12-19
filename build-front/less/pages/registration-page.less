@@ -1,0 +1,456 @@
+html {
+  //overflow: scroll !important;
+  //todo
+}
+
+#block-block-7 {
+  display: none; //todo remove from db
+}
+
+//#user-login {
+//  div.error {
+//    display: block !important;
+//  }
+//}
+
+.footer {
+  position: static;
+}
+
+#edit-field-company {
+  display: none !important;
+}
+
+body.page-user-register {
+  .container {
+    @media (min-width: @min-xl) {
+      width: 1170px;
+    }
+  }
+
+  .register-block {
+    padding-top: 105px;
+    min-height: 100vh;
+    background: url(../images/svg/bg_without_lamp.svg) no-repeat;
+    background-position: center 3vh;
+    background-size: 100%;
+
+    @media (max-width: @laptop-1) {
+      background-size: 110%;
+    }
+
+    @media (max-width: @laptop-2) {
+      background-size: 120%;
+      background-position: center bottom;
+    }
+
+    @media (max-width: @max-xs) {
+      background: none;
+    }
+
+    @media (max-width: 600px) {
+      padding-top: 80px;
+      background: none;
+    }
+
+    .register-block-inner {
+      background: #f0f0f0;
+      width: 585px;
+      margin:auto;
+      margin-top: 40px;
+      padding: 55px 100px 40px 100px;
+
+      &>.alert-danger.messages.error {
+        clear: both;
+        margin: 0;
+        margin-bottom: -40px;
+        margin-top: 35px;
+      }
+
+
+      @media (max-width: 600px) {
+        width: 100%;
+        margin-top: 0;
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+
+      .title {
+        float: left;
+        font-family: gillsans-bold;
+        font-size: @text-block-title;
+        color: @header-text;
+        margin: 0;
+      }
+
+      .login-block {
+        float: right;
+        padding-top: 7px;
+
+        @media (max-width: 400px) {
+          padding-top: 7px;
+        }
+
+        span a {
+          font-family: ubuntu-medium;
+          font-size: 13px;
+          color: @input-text;
+          text-transform: uppercase;
+
+          @media (max-width: 400px) {
+            font-size: 14px;
+            padding-right: 8px;
+          }
+
+          @media (max-width: 368px) {
+            display: none;
+          }
+        }
+      }
+
+      #block-system-main {
+        padding-top: 40px;
+
+        div.error {
+          font-family: ubuntu-medium;
+          font-size: 13px;
+          color: @header-text;
+          margin-bottom: -4px;
+
+          a {
+            color: @red;
+            text-decoration: underline;
+          }
+        }
+
+        .field-name-field-name,
+        .field-name-field-sirname,
+        .field-name-field-tel {
+          float: left;
+        }
+
+        .field-name-field-name,
+        .field-name-field-sirname,
+        .field-name-field-tel,
+        .form-item-mail {
+          @media (max-width: 600px) {
+            width: 100%;
+
+            .form-item {
+              width: 100%;
+            }
+          }
+        }
+
+
+        .form-item {
+          float: left;
+
+          &.form-item-pass {
+            width: 100%;
+            margin-bottom: 10px;
+
+            &>.row {
+              .form-item-pass-pass1,
+              .form-item-pass-pass2 {
+                width: 100%;
+              }
+
+              .form-item-pass-pass2 {
+                margin-bottom: 0;
+              }
+
+              .glyphicon.form-control-feedback,
+              .progress {
+                display: none;
+              }
+            }
+
+            .help-block {
+              display: none;
+            }
+          }
+
+          &.form-item-field-agree-und {
+
+            .error {
+              padding-left: 15px;
+            }
+
+            .control-label {
+              float: left;
+            }
+
+            #edit-field-agree-und {
+              height: 23px;
+            }
+
+            .help-block {
+              padding-left: 18px;
+            }
+
+            .help-block,
+            .help-block a {
+              font-family: ubuntu-medium;
+              font-size: 15px;
+              color: @header-text;
+            }
+
+            .help-block a {
+              text-decoration: underline;
+            }
+
+            }
+
+          .control-label {
+            font-family: ubuntu-medium;
+            font-size: 13px;
+            color: @menu-text;
+            text-transform: uppercase;
+            letter-spacing: 0;
+
+            span {
+              display: none;
+            }
+          }
+
+          input {
+            height: 44px;
+            box-shadow: none;
+
+            &.form-control:focus {
+              box-shadow: none;
+              border-color: #ccc;
+              border-bottom: 3px solid @yellow;
+            }
+
+            &.form-control.error {
+              border: 2px solid @red;
+            }
+          }
+
+          .password-help {
+            display: none !important;
+          }
+        }
+
+        .form-actions {
+          text-align: right;
+          padding-top: 20px;
+
+          button {
+            border-color: @red !important;
+            border-radius: 0;
+            height: 50px;
+            letter-spacing: 6px;
+            width: 180px;
+            padding:0;
+            text-transform: uppercase;
+            font-family: ubuntu-medium;
+            font-size: @body-text-n;
+            color: #fff;
+            background: @red;
+            -webkit-box-shadow: 18px 28px 61px 5px rgba(216,72,48, 0.2);
+            -moz-box-shadow: 18px 28px 61px 5px rgba(216,72,48,0.2);
+            box-shadow: 18px 28px 61px 5px rgba(216,72,48,0.2);
+            outline: 0;
+
+            &:hover {
+              background: #db553f;
+              -webkit-box-shadow: 18px 28px 61px 5px rgba(216,72,48,0.3);
+              -moz-box-shadow: 18px 28px 61px 5px rgba(216,72,48,0.3);
+              box-shadow: 18px 28px 61px 5px rgba(216,72,48,0.3);
+            }
+
+            //@media (max-width: @laptop-1) {
+            //  height: 50px;
+            //  letter-spacing: 6px;
+            //}
+            //
+            //@media (max-width: @max-sm) {
+            //  width: 22%;
+            //  height: 50px;
+            //  font-size: @menu-text;
+            //}
+            //
+            //@media (max-width: @max-xs) {
+            //  width: 45%;
+            //}
+            //
+            //@media (max-width: 460px) {
+            //  width: 100%;
+            //}
+          }
+        }
+      }
+    }
+  }
+}
+
+/*
+
+.page-user-register {
+  #navbar,
+  .footer,
+  .breadcrumb,
+  #edit-account  {
+    display: none;
+  }
+
+  .main-container {
+    margin-top: 10vh;
+
+    #block-block-8 {
+      margin-bottom: 40px;
+
+      h2 {
+        &.label-reg {
+          display: block;
+        }
+      }
+    }
+
+    .tabs--primary {
+      margin-bottom: 40px;
+
+      li {
+        width: 100%;
+        text-align: center;
+
+        a{
+          border: none;
+          text-transform: uppercase;
+          font-weight: 600;
+          font-size: 18px;
+          padding: 0;
+          color: @bb-darkblue;
+        }
+      }
+
+
+    }
+
+    .field-name-field-name,
+    .field-name-field-sirname,
+    .form-item-mail,
+    .field-name-field-company,
+    .field-name-field-tel {
+      width: 30vw;
+      margin: auto;
+      margin-bottom: 40px;
+
+      @media screen and (max-width: 767px) {
+        width: 80vw;
+      }
+
+      @media (min-width: 768px) and (max-width: 991px) {
+        width: 55vw
+      }
+    }
+
+    .form-type-password-confirm {
+      .password-help,
+      .label-danger,
+      .form-control-feedback {
+        display: none !important;
+      }
+
+      label {
+        span {
+          &.form-required {
+            display: none;
+          }
+        }
+      }
+
+      .form-item {
+        label {
+          span {
+            &.form-required {
+              display: inline;
+            }
+          }
+        }
+      }
+
+      .form-type-password {
+        float: none;
+        margin: auto;
+        width:30vw;
+        padding:0;
+        padding-bottom: 40px;
+
+        @media screen and (max-width: 767px) {
+          width: 80vw;
+        }
+
+        @media (min-width: 768px) and (max-width: 991px) {
+          width: 55vw
+        }
+      }
+
+      .help-block {
+        display: none;
+      }
+    }
+
+    .field-name-field-agree {
+      margin-bottom: 45px;
+      .form-required {
+        display: none;
+      }
+
+      .form-item-field-agree-und {
+        text-align: center;
+      }
+
+      #edit-field-agree-und {
+        height:26px;
+      }
+
+      .help-block {
+        display: inline-block;
+        color: @bb-darkblue;
+        font-size: 14px;
+
+        a {
+          color: @primary-color;
+          text-decoration: underline;
+        }
+      }
+    }
+
+    #edit-actions {
+      text-align: center;
+    }
+
+    #block-block-7 {
+      text-align: center;
+
+      #reg_mes1 {
+        color: @bb-darkblue;
+        font-size: 14px;
+        margin-top: 15px;
+        margin-bottom: 60px;
+
+
+        a {
+          color: @primary-color;
+          text-decoration: underline;
+        }
+      }
+
+      #reg_mes2 {
+        font-size: 14px;
+        text-transform: uppercase;
+        margin-bottom: 120px;
+        text-decoration: underline;
+
+        a {
+          color: @primary-color;
+        }
+      }
+    }
+  }
+}
+*/

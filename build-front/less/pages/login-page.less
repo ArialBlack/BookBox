@@ -1,0 +1,441 @@
+html {
+  //overflow: scroll !important;
+  //todo
+
+}
+
+#block-block-7 {
+  display: none; //todo remove from db
+}
+
+body.login {
+  .container {
+    @media (min-width: @min-xl) {
+      width: 1170px;
+    }
+  }
+
+  .alert-block.alert-success {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: #f0f0f0;
+    border: none;
+    z-index: 10;
+    font-family: gillsans-bold;
+    font-size: 28px;
+    line-height: 1;
+    color: @header-text;
+    text-align: center;
+    padding-left: 90px;
+    padding-right: 90px;
+    padding-top: 150px;
+    background-image: url(../images/checkmark.png);
+    background-repeat: no-repeat;
+    background-position: center 70px;
+
+    @media (max-width: 600px) {
+      padding-left: 50px;
+      padding-right: 50px;
+    }
+
+    @media (max-width: 450px) {
+      padding-right: 20px;
+      padding-left: 20px;
+      font-size: 24px;
+    }
+
+    @media (max-width: 380px) {
+      font-size: 22px;
+    }
+
+    .close {
+      position: absolute;
+      opacity: 1;
+      left: 50%;
+      bottom:65px;
+      -webkit-transition: all .3s ease;
+      -moz-transition: all .3s ease;
+      -ms-transition: all .3s ease;
+      -o-transition: all .3s ease;
+      transition: all .3s ease;
+      -webkit-transform: translateX(-50%);
+      -moz-transform: translateX(-50%);
+      -ms-transform: translateX(-50%);
+      -o-transform: translateX(-50%);
+      transform: translateX(-50%);
+      border-color: @red !important;
+      border-radius: 0;
+      height: 50px;
+      line-height: 49px;
+      font-weight: initial;
+      letter-spacing: 6px;
+      width: 195px;
+      padding:0;
+      text-transform: uppercase;
+      font-family: ubuntu-medium;
+      font-size: @body-text-n;
+      color: #fff;
+      background: @red;
+      -webkit-box-shadow: 18px 28px 61px 5px rgba(216,72,48, 0.2);
+      -moz-box-shadow: 18px 28px 61px 5px rgba(216,72,48,0.2);
+      box-shadow: 18px 28px 61px 5px rgba(216,72,48,0.2);
+      text-shadow: none;
+      outline: 0;
+
+      &:hover {
+        background: #db553f;
+        -webkit-box-shadow: 18px 28px 61px 5px rgba(216,72,48,0.3);
+        -moz-box-shadow: 18px 28px 61px 5px rgba(216,72,48,0.3);
+        box-shadow: 18px 28px 61px 5px rgba(216,72,48,0.3);
+      }
+    }
+  }
+
+  .login-block {
+    min-height: 100vh;
+    padding-top: 105px;
+    background: url(../images/svg/bg_without_lamp.svg) no-repeat;
+    background-position: center 3vh;
+    background-size: 100%;
+
+    @media (max-width: @laptop-1) {
+      background-size: 110%;
+    }
+
+    @media (max-width: @laptop-2) {
+      background-size: 120%;
+      background-position: center bottom;
+    }
+
+    @media (max-width: @max-xs) {
+      background: none;
+    }
+
+    @media (max-width: 600px) {
+      padding-top: 80px;
+      min-height: inherit;
+      background: none;
+    }
+
+    .container{
+      height: ~'calc( 100vh - 105px)';
+
+      @media (max-width: 600px) {
+        height: inherit;
+      }
+
+      &>.row {
+        position: relative;
+        height: 100%;
+      }
+    }
+
+    .login-inner-block {
+      background: #f0f0f0;
+      width: 585px;
+      //position: relative;
+      //margin:auto;
+      //margin-top: 20vh;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      -webkit-transform: translate(-50%, -50%);
+      -moz-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      -o-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+      padding: 55px 100px 40px 100px;
+
+      @media (max-width: 600px) {
+        position: relative;
+        top: 0;
+        left: 0;
+        -webkit-transform: translate(0);
+        -moz-transform: translate(0);
+        -ms-transform: translate(0);
+        -o-transform: translate(0);
+        transform: translate(0);
+        width: 100%;
+        margin-top: 0;
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+
+        .title {
+        float: left;
+        font-family: gillsans-bold;
+        font-size: @text-block-title;
+        color: @header-text;
+        margin: 0;
+      }
+
+      .reg-block {
+        float: right;
+        padding-top: 8px;
+
+        span a {
+          font-family: ubuntu-medium;
+          font-size: 13px;
+          color: @input-text;
+          text-transform: uppercase;
+
+          @media (max-width: 400px) {
+            font-size: 14px;
+            padding-right: 8px;
+          }
+        }
+      }
+
+      .alert.alert-block {
+        float: left;
+      }
+
+      #block-system-main {
+        float: left;
+        padding-top: 40px;
+
+        #user-login {
+
+          &>div>a {
+            position: relative;
+            float: right;
+            font-family: ubuntu-medium;
+            font-size: 13px;
+            color: @input-text;
+            text-transform: uppercase;
+            z-index: 5;
+          }
+
+          .form-item {
+            float: left;
+
+            @media (max-width: 600px) {
+              width: 100%;
+            }
+
+            .control-label {
+              font-family: ubuntu-medium;
+              font-size: 13px;
+              color: @menu-text;
+              text-transform: uppercase;
+              letter-spacing: 0;
+
+              span {
+                display: none;
+              }
+            }
+
+            input {
+              height: 44px;
+              box-shadow: none;
+
+              &.form-control:focus {
+                  box-shadow: none;
+                  border-color: #ccc;
+                  border-bottom: 3px solid @yellow;
+              }
+
+              &.form-control.error {
+                border: 2px solid @red;
+              }
+            }
+
+            .help-block {
+              display: none;
+            }
+
+            &.form-item-pass {
+              margin-top: -22px;
+              position: relative;
+
+              .show-pass {
+                position: absolute;
+                right: 14px;
+                top: 40px;
+                cursor: pointer;
+                width: 18px;
+
+                img {
+                  pointer-events: none;
+                }
+              }
+            }
+
+            div.error {
+              font-family: ubuntu-medium;
+              font-size: 13px;
+              color: @header-text;
+              letter-spacing: 0;
+              line-height: 1;
+              padding-top: 8px;
+
+              a {
+                color: @red;
+                text-decoration: underline;
+                display: none;
+              }
+            }
+          }
+
+          .form-actions {
+            text-align: right;
+            padding-top: 20px;
+
+            button {
+              border-color: @red !important;
+              border-radius: 0;
+              height: 50px;
+              letter-spacing: 6px;
+              width: 180px;
+              padding:0;
+              text-transform: uppercase;
+              font-family: ubuntu-medium;
+              font-size: @body-text-n;
+              color: #fff;
+              background: @red;
+              -webkit-box-shadow: 18px 28px 61px 5px rgba(216,72,48, 0.2);
+              -moz-box-shadow: 18px 28px 61px 5px rgba(216,72,48,0.2);
+              box-shadow: 18px 28px 61px 5px rgba(216,72,48,0.2);
+              outline: 0;
+
+              &:hover {
+                background: #db553f;
+                -webkit-box-shadow: 18px 28px 61px 5px rgba(216,72,48,0.3);
+                -moz-box-shadow: 18px 28px 61px 5px rgba(216,72,48,0.3);
+                box-shadow: 18px 28px 61px 5px rgba(216,72,48,0.3);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/*
+.page-user-login {
+  height:100%;
+  width:100%;
+
+  #navbar,
+  .footer,
+  .breadcrumb,
+  .tabs--primary,
+  .help-block {
+    display: none;
+  }
+
+  .alert-success {
+    width: 50% !important;
+    margin:auto !important;
+
+    li {
+      list-style-type: none !important;
+    }
+  }
+
+  .main-container {
+    color: @bb-darkblue;
+    //position: absolute;
+    //top: 50%;
+    //left:50%;
+    //transform:translate(-50%, -50%);
+
+    #block-block-7 {
+      display: none; //todo remove from db
+
+      text-align: center;
+
+      a {
+        text-transform: uppercase;
+        color: @primary-color;
+        text-decoration: underline;
+      }
+    }
+
+    #block-block-8 {
+      h2 {
+        &.label-login {
+          display: block;
+        }
+      }
+    }
+
+    .page-header {
+      text-align: center;
+      border:none;
+      text-transform: uppercase;
+    }
+
+    .form-item-name {
+      margin: 40px 0;
+    }
+
+    #userlostpass {
+      color: @dirty-blue;
+      text-decoration: underline;
+      margin-right:5px;
+    }
+
+    #user-login {
+      margin:auto;
+      width:30vw;
+
+      .form-actions {
+        button,
+        .btn {
+          margin: 40px 0;
+          float: left;
+          color: @primary-color;
+          border:2px solid;
+          background: none;
+
+          &.form-submit {
+            background: @primary-color;
+            color: @light-color;
+
+            @media (min-width:1024px) {
+              width:31%;
+            }
+
+            @media (min-width:1281px) {
+              width:45%;
+            }
+          }
+
+          &:hover {
+            background: @primary-color;
+            color: @light-color;
+          }
+        }
+
+        #userreglink {
+          width: auto;
+          margin-left: 10px !important;
+        }
+      }
+
+      #edit-actions {
+        text-align: center;
+      }
+
+      @media screen and (max-width: 767px) {
+        width:90vw;
+      }
+
+      @media (min-width: 768px) and (max-width:991px) {
+        width: 50vw;
+      }
+    }
+  }
+}
+
+.not-logged-in.page-user {
+  h1 {
+    display: none;
+  }
+}
+*/
