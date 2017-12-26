@@ -267,3 +267,20 @@ function bookbox_category_endpoint() {
   $items = taxonomy_nested_tree_render($tree);
   drupal_json_output($items);
 }
+
+function bookbox_theme() {
+  return array(
+    'manualhits' => array(
+      'template' => 'block--bookbox-manualhits',
+      'variables' => array(),
+    ),
+    'newbyadmin' => array(
+      'template' => 'block--bookbox-newbyadmin',
+      'variables' => array(),
+    ),
+    'companyhits' => array(
+      'template' => 'block--bookbox-companyhits',
+      'variables' => array(),
+    )
+  );
+}

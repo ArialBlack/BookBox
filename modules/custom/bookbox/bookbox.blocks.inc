@@ -43,6 +43,18 @@ function bookbox_block_info() {
         'info' => t('custom user menu'),
     );
 
+    $blocks['ManualHits'] = array(
+      'info' => t('Manual hits'),
+    );
+
+    $blocks['CompanyHits'] = array(
+      'info' => t('Company hits'),
+    );
+
+    $blocks['NewByAdmin'] = array(
+      'info' => t('New by Admin'),
+    );
+
     return $blocks;
 }
 
@@ -118,12 +130,129 @@ function bookbox_block_view($delta = '') {
             $block['content'] = bookbox_custom_usermenu_block();
             break;
 
+        case 'ManualHits':
+          $variables = array();
+          $block = array('content' => theme('manualhits', $variables));
+          break;
+
+        case 'NewByAdmin':
+          $variables = array();
+          $block = array('content' => theme('newbyadmin', $variables));
+          break;
+
+        case 'CompanyHits':
+          $variables = array();
+          $block = array('content' => theme('companyhits', $variables));
+          break;
+
         case 'debug':
             $block['subject'] = '';
             $block['content'] = bookbox_debug_block();
             break;
     }
     return $block;
+}
+
+function bookbox_preprocess_companyhits(&$variables) {
+  global $user;
+  $uid = $user->uid;
+  $account = user_load($uid);
+  $company_nid = $account->field_company['und'][0]['target_id'];
+  $company = node_load($company_nid);
+
+  $date_diff = (time() - $company->created)/60/60/24;
+
+  if($date_diff > 60) {
+    $view_results = views_get_view_result('company_orders', 'default', $company_nid);
+    $content = null;
+
+    if(count($view_results) > 0) {
+      $content = '<ul>';
+
+      foreach ($view_results as $row) {
+        $product_id = $row->commerce_line_item_field_data_commerce_line_items__field_dat;
+        $book = _bookbox_get_product_display_by_product_id($product_id);
+
+        $node_view = node_view($book, 'teaser');
+        $rendered_teaser = render($node_view);
+
+        $content = $content . '<li>' . $rendered_teaser . '</li>';
+      }
+      $content = $content . '</ul>';
+    }
+    $variables['bookslist'] = $content;
+    $variables['name'] = $company->title;
+  } else {
+    $variables['bookslist'] = null;
+  }
+}
+
+function bookbox_preprocess_newbyadmin(&$variables) {
+  if ($cache = cache_get('bookbox_newbyadmin_data')) {
+    $content = $cache->data;
+  } else {
+    $content = null;
+
+    $nid = db_select('node', 'n')
+      ->fields('n', array('nid'))
+      ->condition('n.title', 'Нові надходження')
+      ->execute()->fetchField();
+
+    if(isset($nid)) {
+      $node = node_load($nid);
+      $content = $content . '<ul>';
+
+      foreach ($node->field_book['und'] as $field) {
+        $book_nid = $field['target_id'];
+
+        $book = node_load($book_nid);
+
+        $node_view = node_view($book, 'teaser');
+        $rendered_teaser = render($node_view);
+
+        $content = $content . '<li>' . $rendered_teaser . '</li>';
+      }
+      $content = $content . '</ul>';
+    }
+
+    cache_set('bookbox_newbyadmin_data', $content, 'cache');
+  }
+
+  $variables['bookslist'] = $content;
+}
+
+function bookbox_preprocess_manualhits(&$variables) {
+  if ($cache = cache_get('bookbox_manualhits_data')) {
+    $content = $cache->data;
+  } else {
+    $content = null;
+
+    $nid = db_select('node', 'n')
+      ->fields('n', array('nid'))
+      ->condition('n.title', 'Хіти на головну')
+      ->execute()->fetchField();
+
+    if(isset($nid)) {
+      $node = node_load($nid);
+      $content = $content . '<ul>';
+
+      foreach ($node->field_book['und'] as $field) {
+        $book_nid = $field['target_id'];
+
+        $book = node_load($book_nid);
+
+        $node_view = node_view($book, 'teaser');
+        $rendered_teaser = render($node_view);
+
+        $content = $content . '<li>' . $rendered_teaser . '</li>';
+      }
+      $content = $content . '</ul>';
+    }
+
+    cache_set('bookbox_manualhits_data', $content, 'cache');
+  }
+
+  $variables['bookslist'] = $content;
 }
 
 function bookbox_debug_block() {
