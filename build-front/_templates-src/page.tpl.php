@@ -94,6 +94,10 @@
 
   <div class="row">
     <div class="col-sm-12">
+      <?php print render($page['slider_area']); ?>
+    </div>
+
+    <div class="col-sm-12">
       <?php print render($page['precontent']); ?>
     </div>
 
