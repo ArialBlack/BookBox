@@ -40,8 +40,8 @@
 .field-name-field-isnew,
 .field-name-field-bookbox-rec,
 .field-name-field-hit {
-  .font-size(9) !important;
-  .line-height(24) !important;
+  //.font-size(9) !important;
+  //.line-height(24) !important;
   float: left;
   margin-bottom: 5px;
   text-align: center;
@@ -54,23 +54,39 @@
 }
 
 .field-name-field-isnew,
-.field-name-field-bookbox-rec {
-  background: @primary-color;
-  color: @light-color;
-}
-
-.field-name-field-bookbox-rec {
-
+.field-name-field-bookbox-rec,
+.field-name-field-isnew {
+  font-family: ubuntu-bold;
+  font-size: 13px;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  color: @label-color;
 }
 
 
 .field-name-field-isnew {
-  background-color: @bb-darkblue;
+  font-family: ubuntu-bold;
+  background-color: @yellow;
+  color: @label-color;
+  height: 25px;
+  width: 90px;
+  position: absolute;
+  top: 132px;
+  left: -5px;
+  transform: rotate(-90deg);
+
 }
 
 .field-name-field-hit {
+  position: absolute;
+  height: 25px;
+  width: 45px;
+  top: 65px;
+  left: 17.9px;
+  transform: rotate(-90deg);
+  font-family: ubuntu-bold;
   background-color: @secondary-color;
-  color: @light-color;
+  color: @label-color;
 }
 
 .pager.pager-load-more {

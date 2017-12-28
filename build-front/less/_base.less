@@ -1,3 +1,35 @@
+//fonts
+@font-face {
+  font-family: 'gillsans-bold';
+  src: url('../fonts/GillSans-Bold.eot?#iefix') format('embedded-opentype'),
+  url('../fonts/GillSans-Bold.otf')  format('opentype'),
+  url('../fonts/GillSans-Bold.woff') format('woff'),
+  url('../fonts/GillSans-Bold.ttf')  format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'ubuntu-medium';
+  src: url('../fonts/Ubuntu-Medium.eot?#iefix') format('embedded-opentype'),
+  url('../fonts/Ubuntu-Medium.otf')  format('opentype'),
+  url('../fonts/Ubuntu-Medium.woff') format('woff'),
+  url('../fonts/Ubuntu-Medium.ttf')  format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'ubuntu-bold';
+  src: url('../fonts/Ubuntu-Bold.eot?#iefix') format('embedded-opentype'),
+  url('../fonts/Ubuntu-Bold.otf')  format('opentype'),
+  url('../fonts/Ubuntu-Bold.woff') format('woff'),
+  url('../fonts/Ubuntu-Bold.ttf')  format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
 @font-face {
     font-family: 'MyriadPro-Regular';
     src: url('../fonts/MyriadPro-Regular.eot?#iefix') format('embedded-opentype'),
@@ -179,6 +211,10 @@ table tr.error {
   }
 }
 
+.logged-in .main-container {
+  background: @green !important;
+}
+
 body.offline {
   background: #f9d35c url('https://lib.bookbox.ua/sites/all/themes/bookbox_ui/images/header-cover.jpg') no-repeat center center;
   background-size: cover;
@@ -231,4 +267,22 @@ body.offline {
 
 .order-date.debug-info {
   display: none;
+}
+
+
+.logged-in {
+  .yellow-block {
+    background: @yellow;
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+
+  .main-container .col-sm-12 {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .breadcrumb {
+    padding: 0;
+  }
 }
