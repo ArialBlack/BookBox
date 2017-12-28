@@ -66,8 +66,21 @@ body.books.category {
 .page-node-1202,
 .page-node-1203,
 .page-node-1234 {
-  .tabs--primary,
+
   .breadcrumb {
+    display: block;
+    background: none;
+
+    a {
+      font-family: ubuntu-medium;
+      color: @header-text-2;
+      font-size: @menu-text;
+      text-transform: uppercase;
+
+    }
+  }
+
+  .tabs--primary {
     display: none;
   }
 
@@ -83,112 +96,7 @@ body.books.category {
       margin:0 10px 10px 35px;
       float: left;
     }
-    //end
 
-    .views-row {
-      .col(12);
-
-      .book-card {
-        display: block;
-        height: 100%;
-        //box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-        transition: all 0.3s cubic-bezier(.25,.8,.25,1);
-        padding: 20px;
-        color: @bb-darkblue;
-        text-decoration: none;
-
-        &:hover, &:focus {
-          box-shadow: 0 0 49px rgba(0, 0, 0, 0.15), 0 2px 20px rgba(0, 0, 0, 0.62);
-          //0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)
-          text-decoration: none;
-        }
-
-        ul, li {
-          margin-left: 0;
-          padding-left: 0;
-        }
-
-        li {
-          list-style: none;
-        }
-
-        .field-name-field-nni {
-          img {
-            display: inline-block;
-            width: 100%;
-            border: @line 1px solid;
-          }
-        }
-
-        h4 {
-          .font-size(14);
-          color: @bb-darkblue;
-          font-weight: 600;
-        }
-
-        .field-name-field-book-author {
-          color: @bb-darkblue;
-          margin-bottom: 5px;
-
-          &:hover, &:focus {
-            text-decoration: none;
-          }
-        }
-
-        .book-labels {
-          overflow: hidden;
-
-          .field {
-            text-transform: uppercase;
-          }
-
-          .field + .field {
-            margin-left: 5px;
-
-            @media (min-width: 768px) and (max-width: 850px) {
-             margin-left: 0;
-            }
-          }
-
-        }
-
-        .field-name-field-bookbox-rec:extend(.btn) {
-          //margin-top: 10px;
-          // margin-left: 5px;
-        }
-
-        .field-name-field-hit {
-          //margin-top: 10px;
-        }
-
-        .field-name-field-bookbox-rec,
-        .ield-name-field-isnew,
-        .field-name-field-hit {
-          .font-size(10);
-        }
-
-      }
-
-      @media (min-width: @screen-sm-min) {
-        .col(6);
-
-        &:nth-of-type(odd) {
-          clear: both;
-        }
-      }
-
-      @media (min-width: @screen-md-min) {
-        .col(4);
-
-        &:nth-of-type(odd) {
-          clear: none;
-        }
-
-        &:nth-of-type(3n+1) {
-          clear: both;
-        }
-      }
-    }
 
     .text-center {
       clear: both;
@@ -214,42 +122,13 @@ body.books.category {
    }
 
    .page-header {
-     margin: 60px 0 20px 0;
-     color: @bb-darkblue;
+     font-family: gillsans-bold;
+     margin: 0;
+     color: @header-text-3;
      text-transform: uppercase;
      display: inline-block;
-     font-size: 24px;
+     font-size: @header-large;
      border:none;
-
-      @media screen and (max-width: 767px) {
-        display: block;
-        text-align: center;
-      }
-
-      @media screen and (max-width: 480px) {
-        font-size: 22px;
-      }
-
-     &:before {
-       content: " ";
-       width: 90px;
-       height: 2px;
-       background: @primary-color;
-       position: relative;
-       display: inline-block;
-       margin-bottom: 7px;
-       margin-right: 4px;
-       margin-left: 0;
-       padding: 0;
-
-       @media screen and (max-width: 767px) {
-        display: none;
-      }
-
-       @media (min-width: 768px) and (max-width: 850px) {
-         width: 45px;
-       }
-     }
    }
 
    #block-system-main {

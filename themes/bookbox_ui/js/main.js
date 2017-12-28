@@ -36,6 +36,17 @@
             createCookie(name,"",-1);
         }
 
+      function checkBookName(bookBlock) {
+        for(var tb = 0; tb<$(bookBlock).length; tb++) {
+          // console.log('checking book name');
+          if ($(bookBlock + ':nth-child('+ tb +' ) h4').text().length > 32) {
+            //console.log('book name is too long');
+            var newBookName = $(bookBlock + ':nth-child('+ tb +' ) h4').text().substr(0, 31);
+            $(bookBlock + ':nth-child('+ tb +' ) h4').text(newBookName + '...');
+          }
+        }
+      }
+
         $(document).ajaxStop(function() {
             var $label = $('.book-labels .field');
             $label.each(function( index ) {
@@ -212,6 +223,8 @@
               $(this).val('+380');
             }
           });
+
+          checkBookName('.block-bookbox ul>li');
         });
 
         $( document ).on( "click", ".sort-submenu a", function() {
