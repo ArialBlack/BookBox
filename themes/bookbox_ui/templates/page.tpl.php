@@ -150,6 +150,10 @@
 
   <div class="row">
     <div class="col-sm-12">
+      <?php print render($page['slider_area']); ?>
+    </div>
+
+    <div class="col-sm-12">
       <?php print render($page['precontent']); ?>
     </div>
 
@@ -164,13 +168,19 @@
       <?php if (!empty($page['highlighted'])): ?>
         <div class="highlighted jumbotron"><?php print render($page['highlighted']); ?></div>
       <?php endif; ?>
-      <?php if (!empty($breadcrumb)): print $breadcrumb; endif;?>
+    <div class="yellow-block">
+      <div class="container">
+        <?php if (!empty($breadcrumb)): print $breadcrumb; endif;?>
+           <?php print render($title_prefix); ?>
+              <?php if (!empty($title)): ?>
+                <h1 class="page-header"><?php print $title; ?></h1>
+              <?php endif; ?>
+           <?php print render($title_suffix); ?>
+           <div class="page-icon"></div>
+        </div>
+    </div>
+    <div class="container">
       <a id="main-content"></a>
-      <?php print render($title_prefix); ?>
-      <?php if (!empty($title)): ?>
-        <h1 class="page-header"><?php print $title; ?></h1>
-      <?php endif; ?>
-      <?php print render($title_suffix); ?>
       <?php if (!empty($tabs)): ?>
         <?php print render($tabs); ?>
       <?php endif; ?>
@@ -181,6 +191,7 @@
         <ul class="action-links"><?php print render($action_links); ?></ul>
       <?php endif; ?>
       <?php print render($page['content']); ?>
+    </div>
     </section>
 
     <?php if (!empty($page['sidebar_second'])): ?>
@@ -194,11 +205,13 @@
 
 <?php if (!empty($page['footer'])): ?>
     <footer class="footer">
+<a href="#navbar" class="scroll-to"><img src="/sites/all/themes/bookbox_ui/images/scroll-to-2.jpg"></a>
         <div class="container">
             <?php print render($page['footer']); ?>
         </div>
     </footer>
 <?php endif; ?>
+
 
 
 
