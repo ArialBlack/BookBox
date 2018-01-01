@@ -109,22 +109,56 @@
             <svg class="svg-icon icon-search" preserveAspectRatio="xMaxYMax"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/sites/all/themes/bookbox_ui/images/svg-icons-sprite.svg#icon-search"></use></svg>
         </div>
 
-        <div class="navbar-collapse collapse user-navbar-collapse">
-            <?php if ($u_flag > 0): ?>
-                <div class="user-fav-nav">
-                    <a href="/user/<?php print $user->uid;?>/favorites">
-                        <svg class="svg-icon icon-heart" preserveAspectRatio="xMaxYMax"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/sites/all/themes/bookbox_ui/images/svg-icons-sprite.svg#icon-fav"></use></svg>
-                        <span class="counter_container"><span class="counter"><span><?php print $u_flag; ?></span></span></span>
-                    </a>
-                </div>
-            <?php endif; ?>
+      <div class="navbar-collapse collapse user-navbar-collapse">
+        <?php if ($user->uid != 0): ?>
+          <?php
+          $uid = $user->uid;
 
-             <?php if ($user->uid != 0): ?>
-                 <?php
-                    $block = module_invoke('bookbox', 'block_view', 'BBUserMenu');
-                    print render($block['content']);
-                 ?>
-             <?php endif; ?>
+          $u_orders_c = bookbox_count_in_confirm($user->uid);
+          $u_reading_c = bookbox_count_in_reading_now($user->uid);
+
+          $favs_view = views_get_view('user_wishlist');
+          $favs_view->set_display('block_1');
+          $favs_view->set_arguments(array($user->uid));
+          $favs_view->pre_execute();
+          $favs_view->execute();
+          $u_favs_c = $favs_view->total_rows;
+          ?>
+
+
+            <ul class="user-icons-menu nav nav-tabs dup-tabs" role="tablist">
+              <li role="presentation">
+                <a href="/user#order" aria-controls="order" role="tab"
+                   data-toggle="tab">Замовлено
+                  <?php if ($u_orders_c > 0): ?>
+                    <span class="badge"><?php print $u_orders_c; ?></span>
+                  <?php endif; ?>
+                </a>
+              </li>
+              <li role="presentation">
+                <a href="/user#read" aria-controls="read" role="tab"
+                   data-toggle="tab">Зараз читаю
+                  <?php if ($u_reading_c > 0): ?>
+                    <span class="badge"><?php print $u_reading_c; ?></span>
+                  <?php endif; ?>
+                </a>
+              </li>
+              <li role="presentation">
+                <a href="/user#favs" aria-controls="favs" role="tab"
+                   data-toggle="tab">Вішліст
+                  <?php if ($u_favs_c > 0): ?>
+                    <span class="badge"><?php print $u_favs_c; ?></span>
+                  <?php endif; ?>
+                </a>
+              </li>
+            </ul>
+
+
+          <?php
+          $block = module_invoke('bookbox', 'block_view', 'BBUserMenu');
+          print render($block['content']);
+          ?>
+        <?php endif; ?>
 
          </div>
     </div>

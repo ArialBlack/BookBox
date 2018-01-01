@@ -63,6 +63,25 @@
         $( document ).ready(function() {
             //console.log(Drupal.settings.firstLogin);
 
+            ///url must switch tab
+            var hash = window.location.hash;
+            hash && $('.user-tabs ul.nav a[href="' + hash + '"]').tab('show');
+            console.log(hash);
+
+            $('.user-tabs .nav-tabs a').click(function (e) {
+                $(this).tab('show');
+                var scrollmem = $('body').scrollTop() || $('html').scrollTop();
+                window.location.hash = this.hash;
+                $('html,body').scrollTop(scrollmem);
+            });
+
+            $('.menu.navbar-nav.secondary .dropdown-menu a').click(function() {
+                var url = $(this).attr('href'),
+                    hash = '#' + url.split('#')[1];
+
+                hash && $('.user-tabs ul.nav a[href="' + hash + '"]').tab('show');
+            });
+
             $('body').append('<div class="scroll-up"></div>');
 
             $( ".region-sidebar-second .block-bookbox" ).each(function( index ) {
@@ -80,8 +99,6 @@
                 $('.page-content-finder .form-autocomplete>label').html('Введіть пошукове слово');
                 $('.page-content-finder #edit-find').html('Пошук');
             }
-
-
 
             if($('.btn-container.with-tip').length > 0) {
                 $('#block-system-main').addClass('with-tip');

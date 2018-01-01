@@ -31,10 +31,10 @@ function bookbox_menu(){
       'access callback' => TRUE,
   );
 
-  $items['user/%user/orders'] = array(
+  $items['user/orders'] = array(
       'title' => 'Історія замовлень',
       'page callback' => 'bookbox_user_orders_history',
-      'page arguments' => array(1),
+      //'page arguments' => array(1),
       'access callback' => TRUE,
       'type' => MENU_LOCAL_TASK,
   );
@@ -173,7 +173,6 @@ function bookbox_user_delete($account)
             $list_id,
             $user_mail
         );
-
       }
     }
   }

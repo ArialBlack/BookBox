@@ -15,6 +15,10 @@ function bookbox_block_info() {
         'info' => t('Reading now'),
     );
 
+    $blocks['OrdersHistory'] = array(
+      'info' => t('Orders history'),
+    );
+
     $blocks['CatBiz'] = array(
         'info' => t('cat biz'),
     );
@@ -149,6 +153,11 @@ function bookbox_block_view($delta = '') {
             $block['subject'] = '';
             $block['content'] = bookbox_debug_block();
             break;
+
+        case 'OrdersHistory':
+          $block['subject'] = '';
+          $block['content'] = bookbox_user_orders_history_block();
+          break;
     }
     return $block;
 }
@@ -273,47 +282,53 @@ function bookbox_custom_usermenu_block() {
     $uid = $user->uid;
     $account = user_load($uid);
 
-    $show_cart = true;
-    if(bookbox_count_in_confirm($uid) > 0 ) {
-        $show_cart = false;
-    }
+    $u_orders_c = bookbox_count_in_confirm($user->uid);
+    $u_reading_c = bookbox_count_in_reading_now($user->uid);
 
-    $show_order = true;
-    if( bookbox_count_in_confirm($uid) < 1 ) {
-        $show_order = false;
-    }
+    list($x,$y) = _bookbox_user_orders_history();
+    $u_history_c = $y;
 
-    $show_reading_now = true;
-    if( count(bookbox_get_in_reading_now($uid)) < 1) {
-        $show_reading_now = false;
-    }
+    $favs_view = views_get_view('user_wishlist');
+    $favs_view->set_display('block_1');
+    $favs_view->set_arguments(array($user->uid));
+    $favs_view->pre_execute();
+    $favs_view->execute();
+    $u_favs_c = $favs_view->total_rows;
 
     $nanme = $account->field_name['und'][0]['safe_value'];
     $snanme = $account->field_sirname['und'][0]['safe_value'];
 
-    $content = $content . '<ul class="menu nav navbar-nav secondary">';
+    $content = $content . '<ul class="menu nav navbar-nav secondary dup-tabs">';
     $content = $content . '<li class="first last expanded dropdown">';
     $content = $content . '<a href="/user" title="" data-target="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <span class="user-name"><span>' . $nanme . '</span> <span>' . $snanme . '</span></span> <span class="caret"></span></a>';
     $content = $content . '<ul class="dropdown-menu"><li class="first leaf"><a href="/user" title="">Профіль</a></li>';
-    $content = $content . '<li class="leaf"><a href="/user/' . $uid . '/favorites" title="">Список бажань</a></li>';
-    $content = $content . '<li class="leaf"><a href="/user/' . $uid . '/orders" title="">Історія замовлень</a></li>';
+    //
+    $content = $content . '<li class="leaf"><a href="/user#order" title="">Замовлено ';
+    if ($u_orders_c > 0) {
+      $content = $content . '<span class="badge">' . $u_orders_c . '</span>';
+    }
+    $content = $content . '</a></li>';
+    //
+    $content = $content . '<li class="leaf"><a href="/user#read" title="">Читаю зараз ';
+    if ($u_reading_c > 0) {
+      $content = $content . '<span class="badge">' . $u_reading_c . '</span>';
+    }
+    $content = $content . '</a></li>';
+    //
+    $content = $content . '<li class="leaf"><a href="/user#history" title="">Прочитано ';
+    if ($u_history_c > 0) {
+      $content = $content . '<span class="badge">' . $u_history_c . '</span>';
+    }
+    $content = $content . '</a></li>';
+    //
+    $content = $content . '<li class="leaf"><a href="/user#favs" title="">Вішліст ';
+    if ($u_favs_c > 0) {
+      $content = $content . '<span class="badge">' . $u_favs_c . '</span>';
+    }
+    $content = $content . '</a></li>';
+
     $content = $content . '<li class="last leaf"><a href="/user/logout">Вихід</a></li>';
 
-    if($show_cart || $show_order || $show_reading_now ) {
-        $content = $content . '<li role="separator" class="divider visible-sm visible-xs"></li>';
-    }
-
-    if($show_cart) {
-        $content = $content . '<li class="leaf visible-sm visible-xs"><a href="/user/usercart" title="">Замовлення місяця</a></li>';
-    }
-
-    if($show_order) {
-        $content = $content . '<li class="leaf visible-sm visible-xs"><a href="/user/userorder" title="">Замовлення підтверджено</a></li>';
-    }
-
-    if($show_reading_now) {
-        $content = $content . '<li class="leaf visible-sm visible-xs"><a href="/user/userreadingnow" title="">Зараз читаю</a></li>';
-    }
 
     $content = $content . '</ul></li></ul>';
 
@@ -387,49 +402,20 @@ function _bookbox_catblock($parent_tid) {
     return $content;
 }
 
+function bookbox_user_orders_history_block() {
+  $content = '<h2>Історія замовлень</h2><div class="row">';
+
+  list($x,$y) = _bookbox_user_orders_history();
+
+  $content = $content . $x . '</div>';
+  return $content;
+}
+
+//todo: delete;
 function bookbox_user_orders_history() {
-    global $user;
     $content = '<h1>Історія замовлень</h1><div class="row">';
     drupal_set_title('Архів прочитаного | Book Box');
 
-    $result = db_select('commerce_order', 'o')
-        ->fields('o', array('order_id', 'created'))
-        ->condition('o.uid', $user->uid)
-        ->condition('o.status', 'archive')
-        ->execute()->fetchAll();
-
-    $user_product_displays = array();
-    $c = 0;
-
-    foreach ($result as $res) {
-        $order = commerce_order_load($res->order_id);
-        $line_item_id = $order->commerce_line_items['und'][0]['line_item_id'];
-        $line_item = commerce_line_item_load($line_item_id);
-        $product_id =  $line_item->commerce_product['und'][0]['product_id'];
-        $product_display = _bookbox_get_product_display_by_product_id($product_id);
-
-        $user_product_displays[$c] = array();
-        $user_product_displays[$c]['title'] = $product_display->title;
-        $user_product_displays[$c]['nid'] = $product_display->nid;
-        $c++;
-    }
-
-    foreach ($user_product_displays as $key => $row) {
-        $title[$key]  = $row['title'];
-        $nid[$key] = $row['nid'];
-    }
-
-    array_multisort($user_product_displays, SORT_ASC, $title);
-
-    foreach ($user_product_displays as $product_display) {
-        if ($product_display['nid']) {
-            $node = node_load($product_display['nid']);
-            $node_view = node_view($node, 'teaser');
-            $rendered_teaser = render($node_view);
-            $content = $content . $rendered_teaser;
-        }
-    }
-
-    $content = $content . '</div>';
+    $content = $content . _bookbox_user_orders_history() . '</div>';
     return $content;
 }

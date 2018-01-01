@@ -46,7 +46,19 @@
 
   &.logged-in {
     .nav-tabs {
-      display: none;
+      //display: none;
+    }
+
+    .user-tabs {
+      .nav-tabs {
+        a {
+          color: #fff; //todo: rewrite
+        }
+
+        .active a {
+          color: black; //todo: rewrite
+        }
+      }
     }
 
     #block-system-main {

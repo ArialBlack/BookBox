@@ -40,11 +40,6 @@ $edit_link = '/user/' . $user->uid .'/edit';
 
 ?>
 
-<ul class="user-profile-hot-links">
-  <li><a href="/user/<?php print $user->uid; ?>/favorites">Список бажань</a></li>
-  <li><a href="/user/<?php print $user->uid; ?>/orders">Історія замовлень</a></li>
-</ul>
-
 <div class="profile"<?php print $attributes; ?>>
 
   <?php
@@ -67,4 +62,77 @@ $edit_link = '/user/' . $user->uid .'/edit';
     print '<a class="user-change-pass" href="' . $edit_link . '">Змінити пароль</a>'
   ?>
 
+  <div class="user-tabs">
+    <?php
+      $u_orders_c = bookbox_count_in_confirm($user->uid);
+      $u_reading_c = bookbox_count_in_reading_now($user->uid);
+
+      list($x,$y) = _bookbox_user_orders_history();
+      $u_history = $x;
+      $u_history_c = $y;
+
+      $favs_view = views_get_view('user_wishlist');
+      $favs_view->set_display('block_1');
+      $favs_view->set_arguments(array($user->uid));
+      $favs_view->pre_execute();
+      $favs_view->execute();
+      $u_favs_c = $favs_view->total_rows;
+
+    ?>
+    <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation" class="active">
+        <a href="#order" aria-controls="order" role="tab" data-toggle="tab">Замовлено
+          <?php if($u_orders_c > 0):?>
+          <span class="badge"><?php print $u_orders_c;?></span>
+          <?php endif; ?>
+        </a>
+      </li>
+      <li role="presentation">
+        <a href="#read" aria-controls="read" role="tab" data-toggle="tab">Зараз читаю
+          <?php if($u_reading_c > 0):?>
+            <span class="badge"><?php print $u_reading_c;?></span>
+          <?php endif; ?>
+        </a>
+      </li>
+      <li role="presentation">
+        <a href="#history" aria-controls="history" role="tab" data-toggle="tab">Прочитано
+          <?php if($u_history_c > 0):?>
+            <span class="badge"><?php print $u_history_c;?></span>
+          <?php endif; ?>
+        </a>
+      </li>
+      <li role="presentation">
+        <a href="#favs" aria-controls="favs" role="tab" data-toggle="tab">Вішліст
+          <?php if($u_favs_c > 0):?>
+            <span class="badge"><?php print $u_favs_c;?></span>
+          <?php endif; ?>
+        </a>
+      </li>
+    </ul>
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="order">
+        <?php
+          $block = module_invoke('bookbox', 'block_view', 'MonthOrder');
+          print render($block['content']);
+        ?>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="read">
+        <?php
+          $block = module_invoke('bookbox', 'block_view', 'ReadingNow');
+          print render($block['content']);
+        ?>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="history">
+        <h3>Історія замовлень</h3>
+        <?php
+          print $u_history;
+        ?>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="favs">
+        <?php
+          print $favs_view->render();
+        ?>
+      </div>
+    </div>
+  </div>
 </div>
