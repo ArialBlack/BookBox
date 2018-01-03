@@ -266,9 +266,7 @@ function taxonomy_get_nested_tree($vid_or_terms = array(), $max_depth = NULL, $p
     }
   }
 
-  return
-
-      $return;
+  return $return;
 }
 
 function taxonomy_nested_tree_render($tree, $recurring = FALSE) {

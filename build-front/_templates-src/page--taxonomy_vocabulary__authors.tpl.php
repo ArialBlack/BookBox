@@ -74,6 +74,8 @@
  */
 
 $term = taxonomy_term_load(arg(2));
+//dsm($term);
+
 ?>
 
 <!--(bake parts/header.php)-->
@@ -91,11 +93,11 @@ $term = taxonomy_term_load(arg(2));
               <?php endif; ?>
            <?php print render($title_suffix); ?>
 
-          <?php if(isset($term->field_url['und'])): ?>
-            <div class="publisher-url">
+          <?php if(isset($term->field_original_name['und'])): ?>
+            <div class="author-original-name">
               <?php
-                $url = $term->field_url['und'][0]['url'];
-                print l($url, $url, array('attributes' => array('target'=>'_blank')));
+                $aon = $term->field_original_name['und'][0]['safe_value'];
+                print $aon;
               ?>
             </div>
           <?php endif; ?>

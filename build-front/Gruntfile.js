@@ -47,7 +47,8 @@ module.exports = function(grunt) {
                     "../themes/bookbox_ui/templates/page--user--register.tpl.php": "_templates-src/page--user--register.tpl.php",
                     "../themes/bookbox_ui/templates/page--user--password.tpl.php": "_templates-src/page--user--password.tpl.php",
                     "../themes/bookbox_ui/templates/page--user--reset.tpl.php": "_templates-src/page--user--reset.tpl.php",
-                    "../themes/bookbox_ui/templates/page--taxonomy_vocabulary__publishers.tpl.php": "_templates-src/page--taxonomy_vocabulary__publishers.tpl.php"
+                    "../themes/bookbox_ui/templates/page--taxonomy_vocabulary__publishers.tpl.php": "_templates-src/page--taxonomy_vocabulary__publishers.tpl.php",
+                    "../themes/bookbox_ui/templates/page--taxonomy_vocabulary__authors.tpl.php": "_templates-src/page--taxonomy_vocabulary__authors.tpl.php"
                 }
             }
         },

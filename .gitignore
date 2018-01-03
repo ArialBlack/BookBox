@@ -240,3 +240,5 @@ themes/bookbox_ui/templates/user-login.tpl.php
 themes/bookbox_ui/templates/page--type-book.tpl.php
 themes/bookbox_ui/templates/page.tpl.php
 themes/bookbox_ui/templates/page--taxonomy_vocabulary__publishers.tpl.php
+themes/bookbox_ui/templates/page--taxonomy_vocabulary__authors.tpl.php
+themes/bookbox_ui/templates/page--type-book.tpl.php

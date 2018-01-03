@@ -280,6 +280,10 @@ function bookbox_theme() {
     'companyhits' => array(
       'template' => 'block--bookbox-companyhits',
       'variables' => array(),
-    )
+    ),
+    'relevantbooks' => array(
+      'template' => 'block--bookbox-relevantbooks',
+      'variables' => array(),
+    ),
   );
 }
