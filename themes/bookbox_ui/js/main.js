@@ -21,6 +21,30 @@
             document.cookie = name+"="+value+expires+"; path=/";
         }
 
+      //Pagination for Main page
+      function BookBoxPagination(page, booksInBlock) {
+        var BookBox =  page + ' .block-bookbox',
+          countOfBookBoxes = $(BookBox).length;
+        for (var i = 1; i<=countOfBookBoxes; i++) {
+          var currentBookBox = BookBox + ':nth-child('+ i.toString() + ')>ul',
+            book = currentBookBox+'>li',
+            booksCount = $(book).length;
+          if ( booksCount > booksInBlock) {
+            $(currentBookBox).addClass('box-pagination');
+            var innerBoxesCount = Math.ceil(booksCount/booksInBlock);
+            for(var k = 1; k<=innerBoxesCount; k++) {
+              $(currentBookBox).append('<div class="inner-block-bookbox"></div>');
+            }
+
+            $(currentBookBox + ' .inner-block-bookbox').each( function(){
+              for(var j = 1; j<=booksInBlock; j++) {
+                $(this).append($(book + ':first-child'));
+              }
+            });
+          }
+        }
+      }
+
         function readCookie(name) {
             var nameEQ = name + "=";
             var ca = document.cookie.split(';');
@@ -241,27 +265,13 @@
             }
           });
 
-          //Pagination for Main page
-
-          var frontBookBox = '.front .block-bookbox',
-            countOfBookBoxes = $(frontBookBox).length;
-          for (var i = 1; i<=countOfBookBoxes; i++) {
-            var currentBookBox = frontBookBox + ':nth-child('+ i.toString() + ')>ul',
-              book = currentBookBox+'>li',
-              booksCount = $(book).length;
-            if ( booksCount > 4) {
-              $(currentBookBox).addClass('box-pagination');
-              var innerBoxesCount = Math.ceil(booksCount/4);
-              for(var k = 1; k<=innerBoxesCount; k++) {
-                $(currentBookBox).append('<div class="inner-block-bookbox"></div>');
-              }
-
-              $(currentBookBox + ' .inner-block-bookbox').each( function(){
-                for(var j = 1; j<=4; j++) {
-                  $(this).append($(book + ':first-child'));
-                }
-              });
-            }
+          //Initialization of pagination for Main page
+          if ($(window).width() >= 1200) {
+            BookBoxPagination('.front', 4);
+          } else if ($(window).width() >= 992){
+            BookBoxPagination('.front', 3);
+          } else {
+            BookBoxPagination('.front', 2);
           }
 
 
@@ -358,16 +368,5 @@
             var $this = $(this);
             $('<a data-target="#" class="new-dropdown-toggle" data-toggle="dropdown"></a>').insertAfter($this);
         });
-
-        //NICESCROLL
-        // var nice = $("html").niceScroll({cursorcolor:"#999", mousescrollstep:60});  // The document page (body)
-
-        if ($(window).width() > 1024) {
-            $(".col-sm-4").niceScroll({cursorcolor:"#999", mousescrollstep:60}); // end of nicescroll
-        };
-
-        if ($('.col-sm-8').height() < $('aside.col-sm-4').height() && $(window).width() <= 1024 && $(window).width() > 767) {
-            $('.col-sm-8').css('height', $('aside.col-sm-4').height());
-        };
     });
 }(jQuery));
