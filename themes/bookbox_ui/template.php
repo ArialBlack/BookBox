@@ -121,6 +121,12 @@ function bookbox_ui_preprocess_page(&$vars) {
     //
     // Latter items take precedence.
   }
+
+  if (arg(0) == 'taxonomy' && arg(1) == 'term' ) {
+    $term = taxonomy_term_load(arg(2));
+    $vocabulary = taxonomy_vocabulary_load($term->vid);
+    $vars['theme_hook_suggestions'][] = 'page__taxonomy_vocabulary__' . $vocabulary->machine_name;
+  }
 }
 
 function bookbox_ui_preprocess(&$variables) {

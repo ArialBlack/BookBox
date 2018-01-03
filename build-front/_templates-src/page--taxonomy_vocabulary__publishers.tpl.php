@@ -73,14 +73,20 @@
  * @ingroup templates
  */
 
-
+$term = taxonomy_term_load(arg(2));
+//dsm($term);
 
 ?>
 
 <!--(bake parts/header.php)-->
 
-<div class="main-container <?php print $container_class; ?>">
+<?php if (!empty($page['sidebar_filters'])): ?>
+  <div class="sidebar-filters">
+    <?php print render($page['sidebar_filters']); ?>
+  </div>
+<?php endif; ?>
 
+<div class="main-container <?php print $container_class; ?>">
   <header role="banner" id="page-header">
     <?php if (!empty($site_slogan)): ?>
       <p class="lead"><?php print $site_slogan; ?></p>
@@ -91,19 +97,47 @@
 
   <div class="row">
     <div class="col-sm-12">
+      <?php print render($page['slider_area']); ?>
+    </div>
+
+    <div class="col-sm-12">
       <?php print render($page['precontent']); ?>
     </div>
- 
-    <section class="col-sm-8">
+
+    <?php if (!empty($page['sidebar_first'])): ?>
+      <aside class="col-sm-3" role="complementary">
+        <?php print render($page['sidebar_first']); ?>
+      </aside>  <!-- /#sidebar-first -->
+    <?php endif; ?>
+
+    <section<?php print $content_column_class; ?>>
       <?php print $messages; ?>
       <?php if (!empty($page['highlighted'])): ?>
         <div class="highlighted jumbotron"><?php print render($page['highlighted']); ?></div>
       <?php endif; ?>
-      
-      <?php if (!empty($breadcrumb)): print $breadcrumb; endif;?>
+    <div class="yellow-block">
+      <div class="container">
+        <?php if (!empty($breadcrumb)): print $breadcrumb; endif;?>
+           <?php print render($title_prefix); ?>
+              <?php if (!empty($title)): ?>
+                <h1 class="page-header"><?php print $title; ?></h1>
+              <?php endif; ?>
+           <?php print render($title_suffix); ?>
 
+          <?php if(isset($term->field_url['und'])): ?>
+            <div class="publisher-url">
+              <?php
+                $url = $term->field_url['und'][0]['url'];
+                print l($url, $url, array('attributes' => array('target'=>'_blank')));
+              ?>
+            </div>
+          <?php endif; ?>
+
+           <div class="page-icon"></div>
+        </div>
+    </div>
+    <div class="container">
       <a id="main-content"></a>
-
       <?php if (!empty($tabs)): ?>
         <?php print render($tabs); ?>
       <?php endif; ?>
@@ -114,6 +148,7 @@
         <ul class="action-links"><?php print render($action_links); ?></ul>
       <?php endif; ?>
       <?php print render($page['content']); ?>
+    </div>
     </section>
 
     <?php if (!empty($page['sidebar_second'])): ?>
@@ -126,5 +161,6 @@
 </div>
 
 <!--(bake parts/footer.php)-->
+
 
 
