@@ -27,7 +27,8 @@
     "queue": "^3.1.0",
     "request": "^2.67.0",
     "sync-exec": "^0.6.2",
-    "time-grunt": "^1.2.2"
+    "time-grunt": "^1.2.2",
+    "slick-carousel":"1.8.1"
   },
   "devDependencies": {},
   "scripts": {
