@@ -75,7 +75,6 @@
 
 
 
-
 ?>
 
 <?php global $user; ?>

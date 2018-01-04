@@ -78,7 +78,6 @@
  *
  * @ingroup templates
  */
-
 $product_id = $node->field_bookfields['und'][0]['product_id'];
 $product = commerce_product_load($product_id);
 $status = $product->status;
@@ -88,6 +87,9 @@ $aviable_class = '';
 if ($status == 0) {
   $aviable_class = ' not-aviable';
 }
+
+$node_lang = $node->language;
+$translations = translation_path_get_translations("node/" . $node->nid);
 
 ?>
 <article id="node-<?php print $node->nid; ?>" class="<?php print $classes;  print $aviable_class; ?> clearfix"<?php print $attributes; ?>>
@@ -117,6 +119,32 @@ if ($status == 0) {
       <div class="book-dids">
         <?php print render($content['field_bookfields']); ?>
         <?php print render($content['links']); ?>
+
+        <?php
+          if (count($translations) > 1) {
+            print '<ul class="books-translations">';
+            foreach ($translations as $key => $value) {
+              if($key != $node_lang) {
+                switch ($key) {
+                  case 'uk':
+                    $l_name = 'українською';
+                    break;
+
+                  case 'en':
+                    $l_name = 'англійською';
+                    break;
+
+                  case 'ru':
+                    $l_name = 'російською';
+                    break;
+                }
+                print '<li><a href="/' . drupal_get_path_alias($value) .'">Є  ' . $l_name . ' мовою</a></li>';
+              }
+            }
+            print '</ul>';
+          }
+        ?>
+
       </div>
     </header>
 

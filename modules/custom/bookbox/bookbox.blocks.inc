@@ -59,6 +59,10 @@ function bookbox_block_info() {
       'info' => t('New by Admin'),
     );
 
+    $blocks['RelevantBooks'] = array(
+      'info' => t('Relevant books'),
+    );
+
     return $blocks;
 }
 
@@ -149,6 +153,11 @@ function bookbox_block_view($delta = '') {
           $block = array('content' => theme('companyhits', $variables));
           break;
 
+        case 'RelevantBooks':
+          $variables = array();
+          $block = array('content' => theme('relevantbooks', $variables));
+          break;
+
         case 'debug':
             $block['subject'] = '';
             $block['content'] = bookbox_debug_block();
@@ -160,6 +169,89 @@ function bookbox_block_view($delta = '') {
           break;
     }
     return $block;
+}
+
+function bookbox_preprocess_relevantbooks(&$variables) {
+  /*
+   * Наступна пріоритетність:
+2. Ще книги цього автора. Максимум дві. Якщо їх більше, то дві обираємо за популярністю.
+3. Беремо за основу ту категорію, яка відображається в хлібних крихтах. І з неї показуємо хіти.
+4. Якщо хітів не вистачає, аби добити 12 штук, тоді добиваємо популярними нехітами з категорії, яка в хлібних крихтах.
+   */
+  $node = menu_get_object();
+  $books_list = [];
+  $books_count = 0;
+
+  if (isset($node->nid)) {
+    //книги цього автора. Максимум дві. Якщо їх більше, то дві обираємо за популярністю.
+    if(isset($node->field_book_author['und'])) {
+      //автора може буть > 2
+      foreach ($node->field_book_author['und'] as $atid) {
+        $vtid = $atid['tid'];
+        $view_results = views_get_view_result('popuar_orders', 'default', $vtid);
+
+        if(count($view_results) > 0) {
+          foreach ($view_results as $row) {
+            $product_id = $row->commerce_line_item_field_data_commerce_line_items__field_dat;
+            $book = _bookbox_get_product_display_by_product_id($product_id);
+
+            //Нам не потрібна ця ж книга
+            if($book->nid != $node->nid) {
+              $node_view = node_view($book, 'teaser');
+              $rendered_teaser = render($node_view);
+              $books_count++;
+              $books_list[] = $rendered_teaser;
+            }
+          }
+        }
+      }
+
+      //категорія у крихтах
+      $ttid = null;
+      $urlparams = drupal_get_query_parameters();
+
+      if(isset($urlparams['term'])) {
+        $ttid = $urlparams['term'];
+      }
+      else {
+        $ttid = $node->field_book_category['und'][1]['tid'];
+      }
+
+      if(isset($ttid)) {
+        $view_results = views_get_view_result('category_hits', 'default', $ttid);
+
+        if(count($view_results) > 0) {
+          foreach ($view_results as $row) {
+            //Нам не потрібна ця ж книга
+            if ($row->nid != $node->nid) {
+              $book = node_load($row->nid);
+              $node_view = node_view($book, 'teaser');
+              $rendered_teaser = render($node_view);
+              $books_count++;
+              $books_list[] = $rendered_teaser;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  if ($books_count > 0) {
+    $content = '<ul>';
+    $c = 0;
+    foreach ($books_list as $item) {
+      $content = $content . '<li>' . $item . '</li>';
+      $c++;
+      if ($c == 12) {
+        break;
+      }
+    }
+    $content = $content . '</ul>';
+    $variables['bookslist'] = $content;
+
+  } else {
+    $variables['bookslist'] = null;
+  }
 }
 
 function bookbox_preprocess_companyhits(&$variables) {
@@ -409,13 +501,4 @@ function bookbox_user_orders_history_block() {
 
   $content = $content . $x . '</div>';
   return $content;
-}
-
-//todo: delete;
-function bookbox_user_orders_history() {
-    $content = '<h1>Історія замовлень</h1><div class="row">';
-    drupal_set_title('Архів прочитаного | Book Box');
-
-    $content = $content . _bookbox_user_orders_history() . '</div>';
-    return $content;
 }
