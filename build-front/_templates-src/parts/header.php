@@ -3,16 +3,14 @@
 <header id="navbar" role="banner" class="<?php print $navbar_classes; ?>">
     <div class="<?php print $container_class; ?>">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".main-nav-collapse"></button>
             <a href="/" class="home-header"><i class="icon ion-ios-home-outline"></i></a>
 
             <?php if ($logo): ?>
                 <a class="logo navbar-btn pull-left" href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>">
-                    <img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>" />
+                    <!-- <img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>" /> -->
+                    <img src="/sites/all/themes/bookbox_ui/images/svg/bookboxlogo.svg" alt="<?php print t('Home'); ?>" />
                 </a>
             <?php endif; ?>
-
-            <button type="button" class="navbar-toggle usermenu-toggle" data-toggle="collapse" data-target=".user-navbar-collapse"></button>
         </div>
 
         <div class="navbar-collapse collapse main-nav-collapse">
@@ -29,7 +27,7 @@
                 print render($block['content']);
             ?>
 
-            <svg class="svg-icon icon-search" preserveAspectRatio="xMaxYMax"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/sites/all/themes/bookbox_ui/images/svg-icons-sprite.svg#icon-search"></use></svg>
+            <svg class="svg-icon icon-search" preserveAspectRatio="xMaxYMax"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/sites/all/themes/bookbox_ui/images/svg/search.svg#icon-search"></use></svg>
         </div>
 
       <div class="navbar-collapse collapse user-navbar-collapse">
