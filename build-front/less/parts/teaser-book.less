@@ -1,15 +1,15 @@
-.block-bookbox {
- &>ul{
-   padding-left: 0;
+.front .block-bookbox,
+.publishers #block-system-main,
+.node-type-book .block-bookbox {
+  article > .list-inline {
+    li:not(.flag-bookmarks) {
+      display: none;
+    }
+  }
 
-   @media (max-width: @laptop-2) {
-     //text-align: center;
-   }
-
-   &>li,
-   .inner-block-bookbox >li {
-     display: inline-block;
+ article {
      position: relative;
+     display: inline-block;
      width: 262px;
      height: 328px;
      margin-right: 30px;
@@ -27,13 +27,21 @@
        }
      }
 
-     @media (max-width: @max-xs) {
+     @media (max-width: @max-sm) and (min-width: 741px){
        &:nth-child(3n) {
          margin-right: 30px;
        }
 
        &:nth-child(2n) {
          margin-right: 0;
+       }
+     }
+
+     @media (max-width: 615px) {
+       & {
+         margin-right: 0;
+         display: block;
+         clear: both;
        }
      }
 
@@ -73,7 +81,7 @@
        display: block;
        text-align: center;
        text-decoration: none;
-       color: none;
+       color: unset;
 
        img {
          position: relative;
@@ -117,25 +125,36 @@
          font-size: @menu-text;
          color: rgba(255, 255, 255, .6);
          text-transform: uppercase;
-       }
 
+         &:nth-child(n) {
+           display: none;
+         }
+
+         &:first-child {
+           display: block;
+         }
+
+
+       }
+     }
+
+
+     .flag-bookmarks a {
+       position: absolute;
+       top: 50px;
+       right: 17px;
+       width: 15px;
+       height: 15px;
+       font-size: .01px;
+       background: url(../images/svg/add-to-wish-book.svg);
+       background-size: 100%;
+       background-repeat: no-repeat;
+
+       &:hover {
+         background: url(../images/svg/add-to-wish-book-2.svg);
+         background-size: 100%;
+         background-repeat: no-repeat;
+       }
      }
    }
- }
-
-  .node-readmore {
-    display: none;
-  }
-
-  &.not-aviable {
-    opacity: 0.6; //todo ask designer
-  }
-
-  .not-aviable-mark {
-    display: none;
-  }
-
-  .flag-bookmarks {
-    display: none;
-  }
 }

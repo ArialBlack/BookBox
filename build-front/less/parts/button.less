@@ -1,40 +1,92 @@
 .btn {
-  color: @light-color;
-  background-color: @primary-color;
-  transition: all .3s;
+  width: 260px;
+  padding: 0;
+  font-family: ubuntu-bold;
+  font-size: @body-text-n;
   text-transform: uppercase;
-  padding: 20px;
-  letter-spacing: 1px;
+  color: @white;
+  background: @red;
+  border: none;
+  line-height: 50px;
+  border-radius: 0;
+  letter-spacing: 6px;
+  transition: all .3s ease;
+  -webkit-box-shadow: 18px 28px 61px 5px rgba(216,72,48, 0.2);
+  -moz-box-shadow: 18px 28px 61px 5px rgba(216,72,48,0.2);
+  box-shadow: 18px 28px 61px 5px rgba(216,72,48,0.2);
+  outline: 0;
 
-  &:hover, &:focus {
-    text-decoration: none;
-    background-color: darken(@primary-color, 20);
-    color: @light-color;
+  @media (max-width: @laptop-2) {
+    width: 220px;
   }
 
-  &-red {
-    background-color: @secondary-color;
-
-    &:hover, &:focus {
-      color: @light-color;
-      text-decoration: none;
-      background-color: darken(@secondary-color, 20);
-    }
+  @media (max-width: @max-sm) {
+    width: 240px;
   }
 
-  &.outline {
-    background: none;
-
-    &.red {
-      color: @secondary-color;
-      border-color: @secondary-color;
-
-      &:hover {
-        background: @secondary-color;
-        color: white;
-      }
-    }
+  @media (max-width: @max-xs) {
+    width: 210px;
   }
+
+  @media (max-width: @mid-xs) {
+    width: 100%;
+  }
+
+  &:hover {
+    color: @white;
+    border: none;
+    background: #db553f;
+    -webkit-box-shadow: 18px 28px 61px 5px rgba(216,72,48,0.3);
+    -moz-box-shadow: 18px 28px 61px 5px rgba(216,72,48,0.3);
+    box-shadow: 18px 28px 61px 5px rgba(216,72,48,0.3);
+  }
+
+  &:focus, &:active {
+    outline: 0;
+  }
+
+  &[disabled]:hover {
+    background-color: @red;
+    border: none;
+  }
+
+  //color: @light-color;
+  //background-color: @primary-color;
+  //transition: all .3s;
+  //text-transform: uppercase;
+  //padding: 20px;
+  //letter-spacing: 1px;
+  //
+  //&:hover, &:focus {
+  //  text-decoration: none;
+  //  background-color: darken(@primary-color, 20);
+  //  color: @light-color;
+  //}
+  //
+  //&-red {
+  //  background-color: @secondary-color;
+  //
+  //  &:hover, &:focus {
+  //    color: @light-color;
+  //    text-decoration: none;
+  //    background-color: darken(@secondary-color, 20);
+  //  }
+  //}
+  //
+  //&.outline {
+  //  background: none;
+  //
+  //  &.red {
+  //    color: @secondary-color;
+  //    border-color: @secondary-color;
+  //
+  //    &:hover {
+  //      background: @secondary-color;
+  //      color: white;
+  //    }
+  //  }
+  //}
+
 }
 
 .field-name-field-isnew,

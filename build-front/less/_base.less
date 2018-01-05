@@ -29,6 +29,15 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'ubuntu-regular';
+  src: url('../fonts/Ubuntu-Regular.eot?#iefix') format('embedded-opentype'),
+  url('../fonts/Ubuntu-Regular.otf')  format('opentype'),
+  url('../fonts/Ubuntu-Regular.woff') format('woff'),
+  url('../fonts/Ubuntu-Regular.ttf')  format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 
 @font-face {
     font-family: 'MyriadPro-Regular';
@@ -145,41 +154,6 @@ img {
     display: none;
 }
 
-.page-node.node-type-book {
-    .breadcrumb {
-        display: block;
-        background: none;
-        opacity: .8;
-        padding-left: 92px;
-
-        a {
-            color: @light-grey-2;
-        }
-
-        .delimiter {
-            display: none;
-        }
-
-        .inline {
-            &:after {
-                content: '/';
-                color: @light-grey-2;
-                margin-left: 10px;
-            }
-
-            &.last {
-                &:after {
-                    display: none;
-                }
-            }
-        }
-
-      @media screen and (max-width:991px) {
-        display: none;
-      }
-    }
-}
-
 div.error,
 table tr.error {
     background: none;
@@ -275,6 +249,15 @@ body.offline {
     background: @yellow;
     padding-top: 60px;
     padding-bottom: 60px;
+
+    @media (max-width: 480px) {
+      padding-top: 30px;
+      padding-bottom: 45px;
+    }
+
+    @media (max-width: @mid-xs) {
+      padding-bottom: 35px;
+    }
   }
 
   .main-container .col-sm-12 {
@@ -289,6 +272,19 @@ body.offline {
   .inner-block-bookbox {
     @media (max-width: @laptop-2) {
       padding: 0 45px;
+    }
+
+    @media (max-width: @max-sm) {
+      padding: 0 68px;
+    }
+
+    @media (max-width: 740px) {
+      display: flex;
+      justify-content: center;
+
+      article {
+        margin-right: 0 !important;
+      }
     }
   }
 }

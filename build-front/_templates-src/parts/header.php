@@ -49,24 +49,21 @@
 
             <ul class="user-icons-menu nav nav-tabs dup-tabs" role="tablist">
               <li role="presentation">
-                <a href="/user#order" aria-controls="order" role="tab"
-                   data-toggle="tab">Замовлено
+                <a href="/user#order">Замовлено
                   <?php if ($u_orders_c > 0): ?>
                     <span class="badge"><?php print $u_orders_c; ?></span>
                   <?php endif; ?>
                 </a>
               </li>
               <li role="presentation">
-                <a href="/user#read" aria-controls="read" role="tab"
-                   data-toggle="tab">Зараз читаю
+                <a href="/user#read">Зараз читаю
                   <?php if ($u_reading_c > 0): ?>
                     <span class="badge"><?php print $u_reading_c; ?></span>
                   <?php endif; ?>
                 </a>
               </li>
               <li role="presentation">
-                <a href="/user#favs" aria-controls="favs" role="tab"
-                   data-toggle="tab">Вішліст
+                <a href="/user#favs">Вішліст
                   <?php if ($u_favs_c > 0): ?>
                     <span class="badge"><?php print $u_favs_c; ?></span>
                   <?php endif; ?>
