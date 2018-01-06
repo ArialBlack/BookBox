@@ -124,10 +124,10 @@ $translations = translation_path_get_translations("node/" . $node->nid);
 	      <div class="book-dids">
 	        <?php print render($content['field_bookfields']); ?>
 	        <?php print render($content['links']); ?>
-	        <div class="change-lang"><a>Є іншою мовою</a></div>
 
 	        <?php
 	          if (count($translations) > 1) {
+              print '<div class="change-lang"><a>Є іншою мовою</a></div>';
 	            print '<ul class="books-translations">';
 	            foreach ($translations as $key => $value) {
 	              if($key != $node_lang) {
