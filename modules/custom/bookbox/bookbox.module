@@ -47,6 +47,14 @@ function bookbox_menu(){
       'type' => MENU_CALLBACK
   );
 
+  $items['notify/%/%/book'] = array(
+    'title' => 'Buy',
+    'page callback' => 'bookbox_notify_book',
+    'page arguments' => array(1,2),
+    'access arguments' => array('access content'), // whatever see above
+    'type' => MENU_CALLBACK
+  );
+
   $items['json/category'] = array(
       'page callback' => 'bookbox_category_endpoint',
       'access arguments' => array('access content'),

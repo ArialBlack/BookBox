@@ -125,6 +125,7 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state)
     }
 
     $button_disabled = '<button disabled="1" type="button" id="edit-submit-book" class="btn btn-default form-submit">Замовити</button>';
+    $button_out_of_stock = '<button disabled="1" type="button" id="edit-submit-book" class="btn btn-default form-submit">Читається зараз</button>';
 
     $button = '<button type="button" id="edit-submit-book" class="btn btn-default form-submit" data-toggle="modal" data-target="#confirm-orders">Замовити</button>';
     $modal = '<div class="modal fade" tabindex="-1" role="dialog" id="confirm-orders">
@@ -186,8 +187,11 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state)
     $disabled_reason = '';
 
     if ($stock < 1) {
-        $disabled_reason = 'Читається зараз';
-        $can_order = false;
+      $can_order = false;
+      $form['confirmordersmarkup'] = array(
+        '#type' => 'markup',
+        '#markup' => '<div class="btn-container with-tip">' . $button_out_of_stock . '</div>',
+      );
     }
 
     if ($is_in_order > 0){
@@ -200,14 +204,36 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state)
         $disabled_reason = 'Ви вже читаєте цю книгу';
     }
 
-    if(($stock < 1 || $is_in_order > 0 || $is_in_readingnow > 0) ) {
+    if(($is_in_order > 0 || $is_in_readingnow > 0) ) {
         $form['confirmordersmarkup'] = array(
             '#type' => 'markup',
-            '#markup' => '<div class="btn-container with-tip"><div class="book-tip disabled-tip">' . $disabled_reason . '</div>' . $button_disabled . '</div>',
+            '#markup' => '<div class="btn-container with-tip">' . $button_disabled . '<div class="book-tip disabled-tip">' . $disabled_reason . '</div></div>',
         );
 
         return;
     }
+
+    if(($stock < 1 && $is_in_order < 1  && $is_in_readingnow < 1 && !(bookbox_notify_is_in_list($uid, $form_product))) ) {
+      $notify_message = '<a href="/notify/' . $uid . '/' . $form_product . '/book?destination=' . $destination . '">Повідомити мене про доступність</a>';
+      $can_order = false;
+      $form['confirmordersmarkup'] = array(
+        '#type' => 'markup',
+        '#markup' => '<div class="btn-container with-tip">' . $button_out_of_stock . '<div class="notify-actions">' . $notify_message . '</div></div>',
+      );
+
+      return;
+    }
+
+  if(($stock < 1 && $is_in_order < 1  && $is_in_readingnow < 1 && bookbox_notify_is_in_list($uid, $form_product)) ) {
+    $notify_message = 'Ви дізнаєтесь про надходження';
+    $can_order = false;
+    $form['confirmordersmarkup'] = array(
+      '#type' => 'markup',
+      '#markup' => '<div class="btn-container with-tip">' . $button_out_of_stock . '<div class="notify-actions notify-actions-disabled">' . $notify_message . '</div></div>',
+    );
+
+    return;
+  }
 
     if($max_books < 1) {
         $can_order = false;
