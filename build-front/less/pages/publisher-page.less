@@ -1,23 +1,152 @@
 body.publishers {
   .sort-submenu,
-  #block-system-main,
   div.col-sm-12 {
     display: none !important;
   }
 
   .block-bookbox {
-    padding-top: 35px;
+    padding-bottom: 0;
+  }
 
-    &>h2 {
-      font-family: GillSansC;
-      font-size: @text-block-title;
-      color: @white;
+  .main-container {
+    width: 100%;
+  }
+
+  .breadcrumb {
+    display: block;
+    background: none;
+
+    a {
+      font-family: ubuntu-medium;
+      color: #a58c3c;
+      font-size: @menu-text;
       text-transform: uppercase;
-      margin-bottom: 40px;
+      opacity: .65;
     }
 
-    &>a {
+    .delimiter {
+      position: relative;
+      display: inline-block;
+      font-size: .01px;
+      padding: 0 9px;
+
+      &:after {
+        content: '';
+        position: absolute;
+        width: 0;
+        left: 6px;
+        top: 7px;
+        height: 0;
+        border-top: 4px solid transparent;
+        border-left: 6px solid @red;
+        border-bottom: 4px solid transparent;
+      }
+    }
+  }
+
+  .page-header {
+    font-family: GillSansC;
+    font-size: @header-large;
+    text-transform: uppercase;
+    color: @header-text-3;
+    border: none;
+
+    @media (max-width: @laptop-2) {
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: @max-sm) {
+      font-size: 50px;
+    }
+
+    @media (max-width: @max-xs) {
+      font-size: @screen-title;
+    }
+
+    @media (max-width: @mid-xs) {
+      font-size: 26px;
+    }
+  }
+
+  .publisher-url {
+    a {
+      position: relative;
+      font-family: ubuntu-medium;
+      font-size: @body-text-b;
+      color: @header-text-3;
+      text-decoration: underline;
+      padding-left: 30px;
+
+      &:before {
+        content: '';
+        position: absolute;
+        left:0;
+        top:0;
+        width: 20px;
+        height: 20px;
+        background: url(../images/svg/publish-link.svg);
+        background-size: 100%;
+        background-repeat: no-repeat;
+      }
+
+      @media (max-width: @max-sm) {
+        &:before {
+          left:3px;
+        }
+
+        @media (max-width: @mid-xs) {
+          font-size: @body-text-n;
+        }
+      }
+    }
+  }
+
+  h2 {
+    font-family: GillSansC;
+    font-size: @text-block-title;
+    color: @white;
+    text-transform: uppercase;
+    padding: 30px 0;
+
+    @media (max-width: @max-xs) {
+      font-size: 24px;
+    }
+
+    @media (max-width: @mid-xs) {
+      font-size: 22px;
+    }
+  }
+
+
+  #block-system-main {
+    //padding-left: 0 !important;
+    justify-content: flex-start !important;
+
+    @media (max-width: @laptop-2) {
+      padding: 0 47px;
+    }
+
+    @media (max-width: @max-sm) {
+      padding: 0 82px;
+    }
+
+    @media (max-width: @max-xs) {
+      display: block !important;
+      padding: 0;
+    }
+
+    article {
+      @media (max-width: @max-xs) {
+        display: block;
+        clear: both;
+        margin-left: auto !important;
+        margin-right: auto !important;
+      }
+    }
+
+    .term-listing-heading {
       display: none;
     }
   }
+
 }

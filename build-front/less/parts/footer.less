@@ -16,6 +16,7 @@
 
     @media (max-width: 600px) {
       margin-top: 0;
+      padding-bottom: 20px;
     }
 
     iframe {
@@ -52,6 +53,14 @@
       display: inline-block;
       padding-left: 15px;
 
+      @media (max-width: 600px) {
+        padding-left: 45px;
+      }
+
+      @media (max-width: @mid-xs) {
+        padding-left: 10px;
+      }
+
       img {
         width: 105px;
       }
@@ -64,7 +73,7 @@
       padding-left: 15px;
       padding-right: 15px;
 
-      @media (max-width: 500px) {
+      @media (max-width: 600px) {
         position: relative;
         padding-top: 20px;
         margin-top: 20px;
@@ -90,6 +99,10 @@
         list-style-type: none;
         line-height: 25px;
         text-align: right;
+
+        @media (max-width: 600px) {
+          text-align: center;
+        }
 
         a {
           display: inline;
@@ -121,10 +134,20 @@
       padding-left: 135px;
       padding-right: 15px;
 
-      @media (max-width: 500px) {
+      @media (max-width: @max-sm) {
+        padding-left: 95px;
+      }
+
+      @media (max-width: 600px) {
         width: inherit;
         float: right;
-        text-align: right;
+        text-align: center;
+        padding-right: 30px;
+        padding-left: 0;
+      }
+
+      @media (max-width: @mid-xs) {
+        padding-right: 10px;
       }
 
       h1 {
@@ -140,7 +163,7 @@
           font-size: 23px;
         }
 
-        @media (max-width: 500px) {
+        @media (max-width: 600px) {
           padding-bottom: 5px;
           font-size: 20px;
           padding-top: 5px;
@@ -161,8 +184,7 @@
           color: @yellow;
         }
 
-        @media (max-width: 500px) {
-          font-size: 18px;
+        @media (max-width: 600px) {
           letter-spacing: 0.9px;
         }
       }
@@ -188,6 +210,11 @@
         width: 98%;
         height: 1px;
         background: #4d4d4d;
+      }
+
+      @media (max-width: 600px) {
+        padding-top: 20px;
+        margin-top: 20px;
       }
     }
   }

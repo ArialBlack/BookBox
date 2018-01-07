@@ -26,6 +26,241 @@
   }
 }
 
+.block-bookbox {
+  width: 100%;
+  padding-bottom: 45px;
+
+  .node-readmore {
+    display: none;
+  }
+
+  &.not-aviable {
+    opacity: 0.6; //todo ask designer
+  }
+
+  .not-aviable-mark {
+    display: none;
+  }
+
+
+  &>ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    padding-left: 0;
+
+    li {
+      display: inline-block;
+
+      @media (min-width: 1200px) {
+        &:nth-child(4n) {
+          article {
+            margin-right: 0;
+          }
+        }
+      }
+
+
+      @media (max-width: @laptop-2) {
+        &:nth-child(3n) {
+          article {
+            margin-right: 0;
+          }
+        }
+      }
+
+      @media (max-width: @max-sm) {
+        article {
+          &:nth-child(3n) {
+            margin-right: 30px;
+          }
+
+          &:nth-child(2n) {
+            margin-right: 0;
+          }
+        }
+      }
+
+      @media (max-width: 740px) {
+        article {
+          & {
+            margin-right: 0;
+          }
+        }
+      }
+    }
+
+    .slick-list {
+      width: 100%;
+      order: -1;
+    }
+
+    .slick-track{
+      padding-top: 20px;
+    }
+
+    .slick-prev,
+    .slick-next {
+      position: relative;
+      background: none;
+      border: 2px solid rgba(0, 0, 0, .07);
+      text-indent: -9999px;
+      padding:0;
+      line-height: 31px;
+      width: 35px;
+
+      &:before {
+        text-indent: 0;
+      }
+
+      &:hover {
+        background: rgba(0, 0, 0, .07);
+      }
+    }
+
+    .slick-prev {
+      &:before {
+        content: '◄';
+        position: absolute;
+        left: 8px;
+        top: 0;
+      }
+    }
+
+    .slick-next {
+      order: 1;
+
+      &:before {
+        content: '►';
+        position: absolute;
+        left: 8px;
+        top: 0;
+      }
+    }
+
+    .slick-dots {
+      padding: 11px 30px 0 30px;
+
+      li {
+        list-style-type: none;
+        display: inline-block;
+        border: 2px solid rgba(0, 0, 0, .07);
+        width: 15px;
+        height: 15px;
+        background: none;
+        text-indent: -10000px;
+        margin-right: 15px;
+        cursor: pointer;
+        transition: all .3s ease;
+
+        &:last-child {
+          margin-right: 0;
+        }
+
+        &:hover {
+          background: rgba(0, 0, 0, .07);
+        }
+
+        &.slick-active {
+          background: @header-text;
+        }
+      }
+    }
+  }
+}
+
+.publishers #block-system-main {
+  width: 100%;
+  padding-bottom: 45px;
+  padding-left: 0;
+
+  &.block-system {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+
+    .slick-list {
+      width: 100%;
+      order: -1;
+    }
+
+    .slick-track{
+      padding-top: 20px;
+    }
+
+    .slick-prev,
+    .slick-next {
+      position: relative;
+      background: none;
+      border: 2px solid rgba(0, 0, 0, .07);
+      text-indent: -9999px;
+      padding:0;
+      line-height: 31px;
+      width: 35px;
+
+      &:before {
+        text-indent: 0;
+      }
+
+      &:hover {
+        background: rgba(0, 0, 0, .07);
+      }
+    }
+
+    .slick-prev {
+      &:before {
+        content: '◄';
+        position: absolute;
+        left: 8px;
+        top: 0;
+      }
+    }
+
+    .slick-next {
+      order: 1;
+
+      &:before {
+        content: '►';
+        position: absolute;
+        left: 8px;
+        top: 0;
+      }
+    }
+
+    .slick-dots {
+      margin-bottom: 0;
+      padding: 11px 30px 0 30px;
+
+      li {
+        list-style-type: none;
+        display: inline-block;
+        border: 2px solid rgba(0, 0, 0, .07);
+        width: 15px;
+        height: 15px;
+        background: none;
+        text-indent: -10000px;
+        margin-right: 15px;
+        cursor: pointer;
+        transition: all .3s ease;
+
+        &:last-child {
+          margin-right: 0;
+        }
+
+        &:hover {
+          background: rgba(0, 0, 0, .07);
+        }
+
+        &.slick-active {
+          background: @header-text;
+        }
+      }
+    }
+  }
+}
+
 #views-exposed-form-booksearch-page {
   #edit-searchtext-wrapper,
   .views-submit-button button {
@@ -42,7 +277,7 @@
   height: 100vh;
   overflow: hidden;
 
-  .menu.secondary:before {
+  &:before {
     z-index: 9800;
     content: '';
     position: absolute;
@@ -57,9 +292,8 @@
     z-index: 1 !important;
   }
 
-  .menu.secondary .dropdown-menu ,
-  .menu.secondary .dropdown-toggle {
-    z-index:9990;
+  #navbar {
+    z-index:9990 !important;
   }
 }
 

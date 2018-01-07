@@ -22,13 +22,38 @@
         }
 
       //Pagination for Main page
-      function BookBoxPagination(page, booksInBlock) {
-        var BookBox =  page + ' .block-bookbox',
-          countOfBookBoxes = $(BookBox).length;
+      function BookBoxPagination(page, box) {
+        var BookBox =  page + ' ' + box,
+          countOfBookBoxes = $(BookBox).length,
+          booksInBlock;
+
+        if ($(window).width() >= 1200) {
+          booksInBlock = 4;
+        } else if ($(window).width() >= 992){
+          booksInBlock = 3;
+        } else if($(window).width() >= 740) {
+          booksInBlock = 2;
+        } else {
+          booksInBlock = 1;
+        }
+
         for (var i = 1; i<=countOfBookBoxes; i++) {
-          var currentBookBox = BookBox + ':nth-child('+ i.toString() + ')>ul',
-            book = currentBookBox+'>li',
-            booksCount = $(book).length;
+          var currentBookBox = BookBox + ':nth-child('+ i.toString() + ')>ul';
+
+          if (countOfBookBoxes === 1) {
+            currentBookBox = BookBox + '>ul';
+          }
+
+          var book = currentBookBox+'>li',
+            booksCount;
+
+          if (box === '#block-system-main') {
+            currentBookBox = page + ' ' + box;
+            book = currentBookBox + '>.node-book';
+          }
+
+          booksCount= $(book).length;
+
           if ( booksCount > booksInBlock) {
             $(currentBookBox).addClass('box-pagination');
             var innerBoxesCount = Math.ceil(booksCount/booksInBlock);
@@ -36,7 +61,7 @@
               $(currentBookBox).append('<div class="inner-block-bookbox"></div>');
             }
 
-            $(currentBookBox + ' .inner-block-bookbox').each( function(){
+            $(currentBookBox + ' .inner-block-bookbox').each(function(){
               for(var j = 1; j<=booksInBlock; j++) {
                 $(this).append($(book + ':first-child'));
               }
@@ -266,13 +291,10 @@
           });
 
           //Initialization of pagination for Main page
-          if ($(window).width() >= 1200) {
-            BookBoxPagination('.front', 4);
-          } else if ($(window).width() >= 992){
-            BookBoxPagination('.front', 3);
-          } else {
-            BookBoxPagination('.front', 2);
-          }
+            BookBoxPagination('.front', '.block-bookbox');
+            BookBoxPagination('.node-type-book', '.block-bookbox');
+            $('.publishers #block-system-main .term-listing-heading').detach();
+            // BookBoxPagination('.publishers', '#block-system-main');
 
 
           $('.view-front-slider>.view-content').slick({
@@ -291,6 +313,11 @@
             infinite: true,
             fade: false,
             cssEase: 'none'
+          });
+
+          $('.node-type-book .change-lang a').click(function(e) {
+            e.preventDefault();
+            $('.node-type-book .books-translations').toggleClass('open');
           });
         });
 
