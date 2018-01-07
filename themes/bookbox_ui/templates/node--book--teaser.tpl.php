@@ -89,6 +89,13 @@ if ($status == 0) {
   $aviable_class = ' not-aviable';
 }
 
+$term_ref = null;
+$term = taxonomy_term_load(arg(2));
+
+if(isset($term->tid)) {
+  $term_ref = "?term=" . $term->tid;
+}
+
 ?>
 <article id="node-<?php print $node->nid; ?>" class="<?php print $classes; print $aviable_class; ?> clearfix"<?php print $attributes; ?>>
   <?php if ((!$page && !empty($title)) || !empty($title_prefix) || !empty($title_suffix) || $display_submitted): ?>
@@ -109,7 +116,7 @@ if ($status == 0) {
     //print render($content);
   ?>
 
-  <a class="book-card" href="/node/<?php print $node->nid; ?>">
+  <a class="book-card" href="/node/<?php print $node->nid . $term_ref;?>">
     <?php
       print render($content['field_nni']);
       print '<h4>' . $title . '</h4>';

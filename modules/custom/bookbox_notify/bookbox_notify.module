@@ -1,0 +1,115 @@
+<?php
+
+function bookbox_notify_schema() {
+  $schema['bookbox_notify'] = array(
+    'fields' => array(
+      'rid' => array(
+        'description' => 'Record ID',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'uid' => array(
+        'description' => 'User ID',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'pid' => array(
+        'description' => 'Product ID',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'created' => array(
+        'description' => 'Record date',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'primary key' => array('rid'),
+  );
+
+  return $schema;
+}
+
+function bookbox_notify_book($arg0,$arg1) {
+  $user = user_load($arg0);
+  $user_name = $user->field_name['und'][0]['value'] . ' ' . $user->field_sirname['und'][0]['value'];
+
+  //additional check
+  $uid = $arg0;
+  $max_books = variable_get('varMaxBooks') - bookbox_count_in_confirm($uid) - bookbox_count_in_reading_now($uid);
+  $form_product = $arg1;
+
+  $is_in_order = is_in_order($form_product, $uid);
+  $is_in_readingnow = is_in_redingnow($form_product, $uid);
+  $is_in_archive = is_in_archive($form_product, $uid);
+
+  $product = commerce_product_load($form_product);
+  $stock = 0;
+
+  if($product) {
+    $stock = $product->commerce_stock['und'][0]['value'];
+  }
+
+  //user can order, create DB record
+  if ($stock < 1 && $is_in_order < 1  && $is_in_readingnow < 1 && !(bookbox_notify_is_in_list($arg0,$arg1))) {
+    $id = db_insert('bookbox_notify')
+      ->fields(array(
+        'uid' => $arg0,
+        'pid' => $arg1,
+        'created' => time(),
+      ))
+      ->execute();
+  }
+
+  $dest = drupal_get_destination();
+  drupal_goto($dest);
+}
+
+function bookbox_notify_is_in_list($uid,$pid) {
+  // Drupal 7, dynamic query
+  $record = db_select('bookbox_notify', 'bn')
+    ->fields('bn', array('rid', 'created'))
+    ->condition('bn.uid', $uid)
+    ->condition('bn.pid', $pid)
+    ->execute()
+    ->fetchAll();
+
+  if(count($record) > 0) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function bookbox_notify_cron() {
+  $records = db_select('bookbox_notify', 'bn')
+    ->fields('bn', array('uid', 'pid'))
+    ->execute()
+    ->fetchAll();
+
+  if(count($records) > 0) {
+    foreach ($records as $record) {
+      $product = commerce_product_load($record->pid);
+      $stock = 0;
+
+      if($product) {
+        $stock = $product->commerce_stock['und'][0]['value'];
+
+        if ($stock > 1) {
+          //todo: send email
+          drupal_set_message('Ми типу послали мейл', 'status');
+
+          //after send: delete record
+          db_delete('bookbox_notify')
+            ->condition('uid', $record->uid)
+            ->condition('pid', $record->pid)
+            ->execute();
+        }
+      }
+    }
+  }
+}

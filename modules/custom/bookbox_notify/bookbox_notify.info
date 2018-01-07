@@ -1,0 +1,11 @@
+name = Bookbox notify
+description = Notify users about book
+core = 7.x
+package = Bookbox
+
+dependencies[] = commerce
+dependencies[] = bookbox
+
+version = "7.x-1.0"
+core = "7.x"
+
