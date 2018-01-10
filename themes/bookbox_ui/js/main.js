@@ -54,6 +54,23 @@
 
           booksCount= $(book).length;
 
+          //Changes count of book-blocks relatively from the device size.
+          // if ($(window).width() <= 991 && $(window).width() >= 741) {
+          //   var allowBookCount = 8;
+          //
+          // } else if ($(window).width() <= 740) {
+          //   allowBookCount = 4;
+          // }
+          //
+          // if (booksCount > allowBookCount) {
+          //   for (var b = 0; b < (booksCount - allowBookCount); b++ ) {
+          //     console.log('detach works');
+          //     $(book + ':last-child').detach();
+          //   }
+          // }
+          //
+          // booksCount= $(book).length;
+
           if ( booksCount > booksInBlock) {
             $(currentBookBox).addClass('box-pagination');
             var innerBoxesCount = Math.ceil(booksCount/booksInBlock);
@@ -131,7 +148,6 @@
                 hash && $('.user-tabs ul.nav a[href="' + hash + '"]').tab('show');
             });
 
-            $('body').append('<div class="scroll-up"></div>');
 
             $( ".region-sidebar-second .block-bookbox" ).each(function( index ) {
                 var $this = $(this),
@@ -152,18 +168,6 @@
             if($('.btn-container.with-tip').length > 0) {
                 $('#block-system-main').addClass('with-tip');
             }
-
-            $('.scroll-up').click(function() {
-                $('html, body').animate({ scrollTop: 0}, 1000 );
-            });
-
-            $(window).scroll(function(){
-                if ($(this).scrollTop() > 300 && $(this).width() < 768 ) {
-                    $('.scroll-up').fadeIn();
-                } else {
-                    $('.scroll-up').fadeOut();
-                }
-            });
 
             var html = document.documentElement;
             var startSize =  parseInt(getComputedStyle(html, '').fontSize);

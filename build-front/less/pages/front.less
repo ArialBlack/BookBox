@@ -43,6 +43,11 @@
 
   .block-bookbox {
 
+    @media (max-width: @max-xs) {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
     &#block-bookbox-newbyadmin {
       h2 {
         color: @header-text;
@@ -60,6 +65,19 @@
       padding: 5px 0;
       background: #353535;
       box-shadow: 10px 0 0 #353535, -10px 0 0 #353535;
+
+      @media (max-width: @max-sm) {
+        font-size: 32px;
+      }
+
+      @media (max-width: @max-xs) {
+        font-size: 30px;
+        margin-left: 10px;
+      }
+
+      @media (max-width: @mid-xs) {
+        font-size: 26px;
+      }
     }
 
     &>a {
@@ -76,6 +94,14 @@
       letter-spacing: 4px;
       border: 2px solid rgba(0,0,0, .07);
       transition: all .3s ease;
+
+      @media (max-width: @max-xs) {
+        order: 1;
+        margin-left: auto;
+        margin-right: auto;
+        width: 205px;
+        margin-top: 10px;
+      }
 
       &:hover {
         text-decoration: none;

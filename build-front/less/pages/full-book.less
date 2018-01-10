@@ -150,7 +150,66 @@
         @media (max-width: @mid-xs) {
           display: block;
           float: none;
-          margin-bottom: 10px;
+          //margin-bottom: 10px;
+        }
+      }
+
+      .btn-container {
+        .notify-actions {
+          padding-top: 15px;
+
+          @media (max-width: @max-sm) {
+            padding-top: 0;
+          }
+
+          @media (max-width: @mid-xs) {
+            text-align: center;
+            padding-bottom: 5px;
+            padding-top: 25px;
+          }
+
+          a {
+            position: relative;
+            font-family: ubuntu-medium;
+            font-size: @menu-text;
+            text-transform: uppercase;
+            color: @white;
+            opacity:.65;
+            padding-left: 25px;
+
+            @media (max-width: @max-sm) and (min-width: 451px){
+              display: block;
+              color: @yellow;
+              padding: 0 20px;
+              text-align: center;
+              border: 2px solid @yellow;
+              opacity: 1;
+              width: 220px;
+
+              &:before {
+                display: none;
+              }
+
+              &:hover {
+                text-decoration: none;
+              }
+            }
+
+            &:before {
+              content: '';
+              position: absolute;
+              top: -2px;
+              left: 0;
+              width: 22px;
+              height: 20px;
+              background: url(../images/svg/notify-me.svg);
+              background-repeat: no-repeat;
+            }
+
+            &:hover {
+              opacity: 1;
+            }
+          }
         }
       }
 
@@ -178,6 +237,7 @@
         @media (max-width: @mid-xs) {
           width: 100%;
           text-align: center;
+          padding-top: 25px;
           padding-left: 0;
 
           .flag-bookmarks {
@@ -211,6 +271,10 @@
             font-size: @menu-text;
             color: @white;
             text-transform: uppercase;
+
+            &:hover {
+              text-decoration: underline;
+            }
           }
         }
 
@@ -260,6 +324,7 @@
         @media (max-width: @mid-xs) {
           width: 100%;
           text-align: center;
+          padding-top: 25px;
           padding-left: 0;
         }
 
@@ -317,8 +382,9 @@
         }
 
         @media (max-width: @mid-xs) {
-          left: 119px;
-          top: 135px;
+          left: 52%;
+          top: 175px;
+          transform: translateX(-50%);
         }
 
         &.open {

@@ -16,6 +16,13 @@
   box-shadow: 18px 28px 61px 5px rgba(216,72,48,0.2);
   outline: 0;
 
+  &:active  {
+    box-shadow: 18px 28px 61px 5px rgba(216, 72, 48, 0.2);
+    color: @white;
+    background-color: @red;
+    outline: 0;
+  }
+
   @media (max-width: @laptop-2) {
     width: 220px;
   }
@@ -32,7 +39,7 @@
     width: 100%;
   }
 
-  &:hover {
+  &:hover, &:active:hover, &:focus {
     color: @white;
     border: none;
     background: #db553f;
@@ -45,9 +52,23 @@
     outline: 0;
   }
 
-  &[disabled]:hover {
-    background-color: @red;
-    border: none;
+  &[disabled]{
+    background: darken(@green, 5);
+    opacity: 1;
+    cursor: auto;
+    font-family: ubuntu-medium;
+    letter-spacing: 4px;
+    font-size: @menu-text;
+
+    @media (max-width: @max-sm) and (min-width: 451px) {
+      display: none;
+    }
+
+   &:hover {
+     background-color: darken(@green, 7);
+     border: none;
+     box-shadow: none;
+   }
   }
 
   //color: @light-color;
