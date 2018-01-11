@@ -42,6 +42,7 @@ module.exports = function(grunt) {
                 files: {
                     // files go here, like so:
                     "../themes/bookbox_ui/templates/page.tpl.php": "_templates-src/page.tpl.php",
+                    "../themes/bookbox_ui/templates/page--user.tpl.php": "_templates-src/page--user.tpl.php",
                     "../themes/bookbox_ui/templates/page--type-book.tpl.php": "_templates-src/page--type-book.tpl.php",
                     "../themes/bookbox_ui/templates/page--user--login.tpl.php": "_templates-src/page--user--login.tpl.php",
                     "../themes/bookbox_ui/templates/page--user--register.tpl.php": "_templates-src/page--user--register.tpl.php",
