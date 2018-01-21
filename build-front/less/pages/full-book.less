@@ -51,15 +51,33 @@
     }
   }
 
+  .book-cover-block {
+    @media (max-width: @mid-xs) {
+      display: inline-block;
+    }
+  }
+
   .book-initials {
 
     @media (max-width: @max-sm) {
       padding-bottom: 50px;
     }
 
+    .book-labels {
+      .field-name-field-hit {
+        top: 30px;
+        left: 6px;
+      }
+
+      .field-name-field-isnew {
+        top: 97px;
+        left: -17px;
+      }
+    }
+
     .field-type-image {
-      width: 335px;
       margin-bottom: -170px;
+      padding-left: 25px;
 
       @media (max-width: @laptop-2) {
         width: 100%;

@@ -87,6 +87,18 @@
         }
       }
 
+      function BookBoxBlockBuilder(index, book) {
+          var BookContainer = index + ' ' + book,
+              BooksCount=$(BookContainer).length;
+          console.log(index);
+          console.log(BooksCount);
+
+          $(index).append('<div class="book-inner-block"></div>');
+          for (var i=1; i<=BooksCount; i++) {
+            $(index + ' ' + '.book-inner-block').append($(BookContainer + ':first'));
+          }
+      }
+
         function readCookie(name) {
             var nameEQ = name + "=";
             var ca = document.cookie.split(';');
@@ -299,7 +311,15 @@
             BookBoxPagination('.node-type-book', '.block-bookbox');
             $('.publishers #block-system-main .term-listing-heading').detach();
             // BookBoxPagination('.publishers', '#block-system-main');
+          BookBoxBlockBuilder('.page-user- .visible-desktop #order>form>div', '.book-container');
+          BookBoxBlockBuilder('.page-user- .visible-desktop #read>form>div', '.book-container');
+          BookBoxBlockBuilder('.page-user- .visible-desktop #history', '.node-book');
+          BookBoxBlockBuilder('.page-user- .visible-desktop #favs>.view-user-wishlist>.view-content', '.views-row');
+          BookBoxBlockBuilder('body.authors #block-system-main', '.node-book');
 
+          $('.page-user- .panel-collapse').on('shown.bs.collapse', function () {
+            $('.profile .panel-collapse.in').not(this).siblings('.panel-heading').find('a').click();
+          });
 
           $('.view-front-slider>.view-content').slick({
             autoplay: true,

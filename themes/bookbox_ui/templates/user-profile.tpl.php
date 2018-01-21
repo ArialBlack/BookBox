@@ -34,122 +34,214 @@
  * @ingroup themeable
  */
 
-  global $user;
-  $email = $user->mail;
-  $edit_link = '/user/' . $user->uid .'/edit';
-  $uri = $user_profile['field_author_photo'][0]['#item']['uri'];
+global $user;
+$email = $user->mail;
+$edit_link = '/user/' . $user->uid .'/edit';
+$uri = $user_profile['field_author_photo'][0]['#item']['uri'];
 ?>
 
 <div class="yellow-block">
-  <div class="container">
-    <div class="a-img">
-      <img src="<?php print image_style_url("medium", $uri); ?>"/>
-    </div>
-    <h6>
-      <?php print $user_profile['field_company'][0]['#markup'];?>
-    </h6>
-    <h1>
-      <?php print $user_profile['field_name']['#items'][0]['value'] . ' ' . $user_profile['field_sirname']['#items'][0]['value'];?>
-    </h1>
+	<div class="container">
+		<div class="a-img profile-photo">
+			<?php
+				print '<a href="' . $edit_link . '">'
+			?>
+			  <img src="<?php print image_style_url("medium", $uri); ?>"/>
+			  <span> Обрати фото</span>
+			</a>
+		</div>
+		<div class="profile-info">
+			<h6>
+				<?php print $user_profile['field_company'][0]['#markup'];?>
+			</h6>
+			<h1>
+				<?php print $user_profile['field_name']['#items'][0]['value'] . ' ' . $user_profile['field_sirname']['#items'][0]['value'];?>
+			</h1>
 
-    <div class="field field-name-field-email field-type-text field-label-above">
-      <div class="field-label">Email</div>
-      <div class="field-items">
-        <div class="field-item even">
-          <?php print $email;?>
-        </div>
-      </div>
-    </div>
+			<div class="field field-name-field-email field-type-text field-label-above">
+				<div class="field-label">Email:</div>
+				<div class="field-items">
+					<div class="field-item even">
+						<?php print $email;?>
+					</div>
+				</div>
+			</div>
 
-    <?php
-      if(isset($user_profile['field_tel'])) {
-        $tel = $user_profile['field_tel'][0]['#markup'];
-        if(isset($tel)) {
-          print '<div class="field field-name-field-tel field-type-text field-label-above"><div class="field-label">Телефон <a href="' . $edit_link . '"> (Змінити) </a></div><div class="field-items"><div class="field-item even">' . $tel . '</div></div></div>';
-        }
-      }
+			<?php
+			if(isset($user_profile['field_tel'])) {
+				$tel = $user_profile['field_tel'][0]['#markup'];
+				if(isset($tel)) {
+					print '<div class="field field-name-field-tel field-type-text field-label-above"><div class="field-label">Телефон:</div><div class="field-items"><div class="field-item even">' . $tel . ' <a href="' . $edit_link . '"> <img src="/sites/all/themes/bookbox_ui/images/svg/change-phone.svg">...</a></div></div></div>';
+				}
+			}
 
-      print '<a class="user-change-pass" href="' . $edit_link . '">Встановити новий пароль</a>'
-    ?>
-  </div>
+			print '<a class="user-change-pass" href="' . $edit_link . '">Встановити новий пароль</a>'
+			?>
+		</div>
+
+	</div>
 </div>
 
 <div class="container">
-  <div class="profile"<?php print $attributes; ?>>
+	<div class="profile"<?php print $attributes; ?>>
 
-    <div class="user-tabs">
-      <?php
-      $u_orders_c = bookbox_count_in_confirm($user->uid);
-      $u_reading_c = bookbox_count_in_reading_now($user->uid);
+		<div class="visible-desktop">
+			<div class="user-tabs">
+				<?php
+				$u_orders_c = bookbox_count_in_confirm($user->uid);
+				$u_reading_c = bookbox_count_in_reading_now($user->uid);
 
-      list($x,$y) = _bookbox_user_orders_history();
-      $u_history = $x;
-      $u_history_c = $y;
+				list($x,$y) = _bookbox_user_orders_history();
+				$u_history = $x;
+				$u_history_c = $y;
 
-      $favs_view = views_get_view('user_wishlist');
-      $favs_view->set_display('block_1');
-      $favs_view->set_arguments(array($user->uid));
-      $favs_view->pre_execute();
-      $favs_view->execute();
-      $u_favs_c = $favs_view->total_rows;
+				$favs_view = views_get_view('user_wishlist');
+				$favs_view->set_display('block_1');
+				$favs_view->set_arguments(array($user->uid));
+				$favs_view->pre_execute();
+				$favs_view->execute();
+				$u_favs_c = $favs_view->total_rows;
 
-      ?>
-      <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active">
-          <a href="#order" aria-controls="order" role="tab" data-toggle="tab">Замовлено
-            <?php if($u_orders_c > 0):?>
-              <span class="badge"><?php print $u_orders_c;?></span>
-            <?php endif; ?>
-          </a>
-        </li>
-        <li role="presentation">
-          <a href="#read" aria-controls="read" role="tab" data-toggle="tab">Зараз читаю
-            <?php if($u_reading_c > 0):?>
-              <span class="badge"><?php print $u_reading_c;?></span>
-            <?php endif; ?>
-          </a>
-        </li>
-        <li role="presentation">
-          <a href="#history" aria-controls="history" role="tab" data-toggle="tab">Прочитано
-            <?php if($u_history_c > 0):?>
-              <span class="badge"><?php print $u_history_c;?></span>
-            <?php endif; ?>
-          </a>
-        </li>
-        <li role="presentation">
-          <a href="#favs" aria-controls="favs" role="tab" data-toggle="tab">Вішліст
-            <?php if($u_favs_c > 0):?>
-              <span class="badge"><?php print $u_favs_c;?></span>
-            <?php endif; ?>
-          </a>
-        </li>
-      </ul>
-      <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="order">
-          <?php
-          $block = module_invoke('bookbox', 'block_view', 'MonthOrder');
-          print render($block['content']);
-          ?>
-        </div>
-        <div role="tabpanel" class="tab-pane" id="read">
-          <?php
-          $block = module_invoke('bookbox', 'block_view', 'ReadingNow');
-          print render($block['content']);
-          ?>
-        </div>
-        <div role="tabpanel" class="tab-pane" id="history">
-          <h3>Історія замовлень</h3>
-          <?php
-          print $u_history;
-          ?>
-        </div>
-        <div role="tabpanel" class="tab-pane" id="favs">
-          <?php
-          print $favs_view->render();
-          ?>
-        </div>
-      </div>
-    </div>
-  </div>
+				?>
+				<ul class="nav nav-tabs" role="tablist">
+					<li role="presentation" class="active">
+						<a href="#order" aria-controls="order" role="tab" data-toggle="tab">Замовлено
+							<?php if($u_orders_c > 0):?>
+								<span class="badge"><?php print $u_orders_c;?></span>
+							<?php endif; ?>
+						</a>
+					</li>
+					<li role="presentation">
+						<a href="#read" aria-controls="read" role="tab" data-toggle="tab">Зараз читаю
+							<?php if($u_reading_c > 0):?>
+								<span class="badge"><?php print $u_reading_c;?></span>
+							<?php endif; ?>
+						</a>
+					</li>
+					<li role="presentation">
+						<a href="#history" aria-controls="history" role="tab" data-toggle="tab">Прочитано
+							<?php if($u_history_c > 0):?>
+								<span class="badge"><?php print $u_history_c;?></span>
+							<?php endif; ?>
+						</a>
+					</li>
+					<li role="presentation">
+						<a href="#favs" aria-controls="favs" role="tab" data-toggle="tab">Вішліст
+							<?php if($u_favs_c > 0):?>
+								<span class="badge"><?php print $u_favs_c;?></span>
+							<?php endif; ?>
+						</a>
+					</li>
+				</ul>
+				<div class="tab-content">
+					<div role="tabpanel" class="tab-pane active" id="order">
+					<h6>Атмосфера Юпітера — газова оболонка, яка оточує Юпітер. Атмосфера Юпітера є найбільшою планетною атмосферою в Сонячній системі. Вона не має чіткої нижньої межі і плавно переходить. в океан з рідкого водню. Виділяють такі шари атмосфери.</h6>
+						<?php
+						$block = module_invoke('bookbox', 'block_view', 'MonthOrder');
+						print render($block['content']);
+						?>
+					</div>
+					<div role="tabpanel" class="tab-pane" id="read">
+					  <h6>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus beatae veritatis dignissimos, atque necessitatibus enim iusto.</h6>
+						<?php
+						$block = module_invoke('bookbox', 'block_view', 'ReadingNow');
+						print render($block['content']);
+						?>
+					</div>
+					<div role="tabpanel" class="tab-pane" id="history">
+						<h6>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati sunt blanditiis, debitis adipisci nisi sapiente eum iusto voluptatem odio quas aut facere cumque nulla.</h6>
+						<?php
+						print $u_history;
+						?>
+					</div>
+					<div role="tabpanel" class="tab-pane" id="favs">
+						<h6>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Temporibus dolores aspernatur sunt. Quis natus vitae laudantium dolor, quidem maiores cumque praesentium quod et voluptatem, ipsa magni necessitatibus saepe deserunt. Doloribus enim ipsa illo dignissimos adipisci quas quisquam nobis sunt suscipit.</h6>
+						<?php
+						print $favs_view->render();
+						?>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="visible-mobile">
+			<?php
+			$u_orders_c = bookbox_count_in_confirm($user->uid);
+			$u_reading_c = bookbox_count_in_reading_now($user->uid);
+
+			list($x,$y) = _bookbox_user_orders_history();
+			$u_history = $x;
+			$u_history_c = $y;
+
+			$favs_view = views_get_view('user_wishlist');
+			$favs_view->set_display('block_1');
+			$favs_view->set_arguments(array($user->uid));
+			$favs_view->pre_execute();
+			$favs_view->execute();
+			$u_favs_c = $favs_view->total_rows;
+			?>
+
+			<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#collapse-group" href="#order-m" class="collapsed">Замовлено <span class="caret"></span></a>
+						</h4>
+					</div>
+					<div id="order-m" class="panel-collapse collapse" aria-expanded="false">
+						<div class="panel-body">
+							<?php
+							$block = module_invoke('bookbox', 'block_view', 'MonthOrder');
+							print render($block['content']);
+							?>
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#collapse-group" href="#read-m" class="collapsed">Зараз читаю <span class="caret"></span></a>
+						</h4>
+					</div>
+					<div id="read-m" class="panel-collapse collapse" aria-expanded="false">
+						<div class="panel-body">
+							<?php
+							$block = module_invoke('bookbox', 'block_view', 'ReadingNow');
+							print render($block['content']);
+							?>
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#collapse-group" href="#history-m" class="collapsed">Прочитано <span class="caret"></span></a>
+						</h4>
+					</div>
+					<div id="history-m" class="panel-collapse collapse">
+						<div class="panel-body">
+							<?php
+							print $u_history;
+							?>
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#collapse-group" href="#favs-m" class="collapsed">Вішліст <span class="caret"></span></a>
+						</h4>
+					</div>
+					<div id="favs-m" class="panel-collapse collapse">
+						<div class="panel-body">
+							<?php
+							print $favs_view->render();
+							?>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 

@@ -287,4 +287,20 @@ body.offline {
       }
     }
   }
+
+  .visible-desktop {
+    display: block;
+
+    @media (max-width: @max-xs) {
+      display: none;
+    }
+  }
+
+  .visible-mobile {
+    display: none;
+
+    @media (max-width: @max-xs) {
+      display: block;
+    }
+  }
 }

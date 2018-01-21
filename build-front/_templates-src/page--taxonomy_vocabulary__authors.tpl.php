@@ -86,7 +86,9 @@ $term = taxonomy_term_load(arg(2));
       <?php print $messages; ?>
     <div class="yellow-block">
       <div class="container">
-        <?php if (!empty($breadcrumb)): print $breadcrumb; endif;?>
+      	<div class="row">
+      		<div class="col-md-9">
+      			<?php if (!empty($breadcrumb)): print $breadcrumb; endif;?>
            <?php print render($title_prefix); ?>
               <?php if (!empty($title)): ?>
                 <h1 class="page-header"><?php print $title; ?></h1>
@@ -101,11 +103,14 @@ $term = taxonomy_term_load(arg(2));
               ?>
             </div>
           <?php endif; ?>
-
-           <div class="page-icon"></div>
+      		</div>
+      		<div class="col-md-2">
+          <div class="page-icon"></div>
+      		</div>
+      	</div>
+        
         </div>
     </div>
-    <div class="container">
       <a id="main-content"></a>
       <?php if (!empty($tabs)): ?>
         <?php print render($tabs); ?>
@@ -116,13 +121,9 @@ $term = taxonomy_term_load(arg(2));
       <?php if (!empty($action_links)): ?>
         <ul class="action-links"><?php print render($action_links); ?></ul>
       <?php endif; ?>
-
       <?php print render($page['content']); ?>
-
     </div>
     </section>
-
-  </div>
 </div>
 
 <!--(bake parts/footer.php)-->

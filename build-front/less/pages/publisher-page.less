@@ -12,38 +12,6 @@ body.publishers {
     width: 100%;
   }
 
-  .breadcrumb {
-    display: block;
-    background: none;
-
-    a {
-      font-family: ubuntu-medium;
-      color: #a58c3c;
-      font-size: @menu-text;
-      text-transform: uppercase;
-      opacity: .65;
-    }
-
-    .delimiter {
-      position: relative;
-      display: inline-block;
-      font-size: .01px;
-      padding: 0 9px;
-
-      &:after {
-        content: '';
-        position: absolute;
-        width: 0;
-        left: 6px;
-        top: 7px;
-        height: 0;
-        border-top: 4px solid transparent;
-        border-left: 6px solid @red;
-        border-bottom: 4px solid transparent;
-      }
-    }
-  }
-
   .page-header {
     font-family: GillSansC;
     font-size: @header-large;
@@ -121,6 +89,7 @@ body.publishers {
   #block-system-main {
     //padding-left: 0 !important;
     justify-content: flex-start !important;
+    padding-top: 30px;
 
     @media (max-width: @laptop-2) {
       padding: 0 47px;

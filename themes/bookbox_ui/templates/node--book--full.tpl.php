@@ -113,14 +113,14 @@ $translations = translation_path_get_translations("node/" . $node->nid);
     <header class="book-initials">
     	<div class="container">
     		<div class="row">
-    			<div class="col-md-4 col-sm-4">
+    			<div class="col-md-4 col-sm-4 book-cover-block">
             <?php
               print '<div class="book-labels">';
 
               if(isset($node->field_isnew['und'])) {
                 if($node->field_isnew['und']['0']['value'] == 1) { print render($content['field_isnew']);}
               }
-  
+
               if(isset($node->field_hit['und'])) {
                 if($node->field_hit['und']['0']['value'] == 1) { print render($content['field_hit']);}
               }
