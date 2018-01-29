@@ -35,20 +35,22 @@
 ?>
 
 <div class="slider-container" <?php print $style;?>>
-  <div class="container">
-    <div class="col-md-4">
-      <div class="slider-text">
-        <h2><?php print $fields['title']->raw; ?></h2>
-        <h6><?php print $fields['body']->content; ?></h6>
-        <div class="cta-link"><?php print $fields['field_cta_link_1']->content; ?></div>
+  <div class="phantom-container">
+    <div class="row">
+      <div class="col-md-4 col-sm-5 col-xs-8">
+        <div class="slider-text">
+          <h2><?php print $fields['title']->raw; ?></h2>
+          <h6><?php print $fields['body']->content; ?></h6>
+          <div class="cta-link"><?php print $fields['field_cta_link_1']->content; ?></div>
+        </div>
       </div>
-    </div>
 
-    <div class="col-md-8">
-      <div class="slider-image">
-        <?php
-          print $fields['field_header_cover']->content;
-        ?>
+      <div class="col-md-8">
+        <div class="slider-image">
+          <?php
+            print $fields['field_header_cover']->content;
+          ?>
+        </div>
       </div>
     </div>
   </div>

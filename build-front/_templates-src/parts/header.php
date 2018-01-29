@@ -27,8 +27,6 @@
                 $block = module_invoke('finder', 'block_view', 'content_finder');
                 print render($block['content']);
             ?>
-
-            <svg class="svg-icon icon-search" preserveAspectRatio="xMaxYMax"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/sites/all/themes/bookbox_ui/images/svg/search.svg#icon-search"></use></svg>
         </div>
 
       <div class="navbar-collapse collapse user-navbar-collapse">

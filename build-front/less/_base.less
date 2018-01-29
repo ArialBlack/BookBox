@@ -303,4 +303,25 @@ body.offline {
       display: block;
     }
   }
+
+  .phantom-container {
+    width: 1170px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+
+    @media (max-width: @laptop-2) {
+      width: 981px;
+    }
+
+    @media (max-width: 1000px) {
+      margin-right: 0;
+    }
+
+    @media(max-width: @max-sm) {
+      width: 100%;
+    }
+  }
 }

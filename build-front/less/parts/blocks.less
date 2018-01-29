@@ -283,14 +283,44 @@
   width: 455px;
   margin-right: auto;
 
+  @media (max-width: @laptop-2) {
+    width: 380px;
+  }
+
   .finder-element {
     height: 55px;
   }
 
   #finder-block-content_finder {
-    button,
-    label {
+    button {
       display: none;
+    }
+  }
+
+  .form-item-title {
+    position: relative;
+
+    &:before {
+      content: '';
+      position: absolute;
+      width: 92%;
+      height: 1px;
+      background: #e5e5e5;
+      left: 4%;
+      bottom: 10px;
+    }
+
+    .control-label {
+      position: absolute;
+      font-size: .1px;
+      width: 21px;
+      height: 22px;
+      right: 4%;
+      top: 14px;
+      background: url(../images/svg/search.svg);
+      background-repeat: no-repeat;
+      background-size: 100%;
+      cursor: pointer;
     }
   }
 
@@ -302,6 +332,14 @@
     padding-top: 2px;
     cursor: pointer;
     margin-top: 7px;
+  }
+
+  input {
+    &:focus {
+      border-color: #0fad9c;
+      outline: 0;
+      box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(15, 173, 156, .4);
+    }
   }
 }
 
@@ -400,45 +438,92 @@
     }
 
     .book-card {
+      transition: all .2s ease;
+
       &:hover {
         text-decoration: none;
         color: transparent;
+        text-shadow: 4px 4px 5px rgba(150, 150, 150, .3);
       }
     }
 
-    &:first-child,
-    &:nth-child(2) {
-      width: 50%;
-      padding-bottom: 20px;
+    @media (min-width: 1200px) {
+      &:first-child,
+      &:nth-child(2) {
+        width: 50%;
+        padding-bottom: 20px;
 
-      .book-card {
+        .book-card {
+          &:hover {
+            text-shadow: none;
+          }
 
-        &:hover {
+          &:hover {
+            .field-type-image img {
+              -webkit-box-shadow: 3px 1px 20px 0 rgba(0, 0, 0, 0.7);
+              -moz-box-shadow: 3px 1px 20px 0 rgba(0, 0, 0, 0.7);
+              box-shadow: 3px 1px 20px 0 rgba(0, 0, 0, 0.7);
+            }
+          }
+
           .field-type-image img {
-            -webkit-box-shadow: 3px 1px 20px 0 rgba(0, 0, 0, 0.7);
-            -moz-box-shadow: 3px 1px 20px 0 rgba(0, 0, 0, 0.7);
-            box-shadow: 3px 1px 20px 0 rgba(0, 0, 0, 0.7);
+            display: inline-block;
+            margin-right: 10px;
+            float: left;
+            height: 95px;
+            width: 65px;
+            border: none;
+            -webkit-box-shadow: 3px 1px 20px 0 rgba(0, 0, 0, 0.5);
+            -moz-box-shadow: 3px 1px 20px 0 rgba(0, 0, 0, 0.5);
+            box-shadow: 3px 1px 20px 0 rgba(0, 0, 0, 0.5);
+            -webkit-transition: all .2s ease;
+            -moz-transition: all .2s ease;
+            -ms-transition: all .2s ease;
+            -o-transition: all .2s ease;
+            transition: all .2s ease;
           }
         }
+      }
+    }
 
-        .field-type-image img {
-          display: inline-block;
-          margin-right: 10px;
-          float: left;
-          height: 95px;
-          width: 65px;
-          border: none;
-          -webkit-box-shadow: 3px 1px 20px 0 rgba(0, 0, 0, 0.5);
-          -moz-box-shadow: 3px 1px 20px 0 rgba(0, 0, 0, 0.5);
-          box-shadow: 3px 1px 20px 0 rgba(0, 0, 0, 0.5);
-          -webkit-transition: all .2s ease;
-          -moz-transition: all .2s ease;
-          -ms-transition: all .2s ease;
-          -o-transition: all .2s ease;
-          transition: all .2s ease;
+    &:first-child {
+      @media (max-width: @laptop-2) {
+        width: 100%;
+        padding-bottom: 20px;
+
+        .book-card {
+          &:hover {
+            text-shadow: none;
+          }
+
+          &:hover {
+            .field-type-image img {
+              -webkit-box-shadow: 3px 1px 20px 0 rgba(0, 0, 0, 0.7);
+              -moz-box-shadow: 3px 1px 20px 0 rgba(0, 0, 0, 0.7);
+              box-shadow: 3px 1px 20px 0 rgba(0, 0, 0, 0.7);
+            }
+          }
+
+          .field-type-image img {
+            display: inline-block;
+            margin-right: 10px;
+            float: left;
+            height: 95px;
+            width: 65px;
+            border: none;
+            -webkit-box-shadow: 3px 1px 20px 0 rgba(0, 0, 0, 0.5);
+            -moz-box-shadow: 3px 1px 20px 0 rgba(0, 0, 0, 0.5);
+            box-shadow: 3px 1px 20px 0 rgba(0, 0, 0, 0.5);
+            -webkit-transition: all .2s ease;
+            -moz-transition: all .2s ease;
+            -ms-transition: all .2s ease;
+            -o-transition: all .2s ease;
+            transition: all .2s ease;
+          }
         }
       }
     }
+
   }
 }
 
@@ -522,7 +607,8 @@
 }
 
 body.publishers .breadcrumb,
-body.authors .breadcrumb {
+body.authors .breadcrumb,
+body.page-node-889 .breadcrumb {
   display: block;
   background: none;
 
