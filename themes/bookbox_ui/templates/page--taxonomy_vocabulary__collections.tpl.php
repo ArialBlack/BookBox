@@ -77,7 +77,90 @@ $term = taxonomy_term_load(arg(2));
 
 ?>
 
-<!--(bake parts/header.php)-->
+<?php
+global $user;
+
+
+?>
+
+<header id="navbar" role="banner" class="<?php print $navbar_classes; ?>">
+    <div class="<?php print $container_class; ?>">
+        <div class="navbar-header">
+            <?php if ($logo): ?>
+                <a class="logo navbar-btn pull-left" href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>">
+                    <!-- <img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>" /> -->
+                    <img src="/sites/all/themes/bookbox_ui/images/svg/bookboxlogo.svg" alt="<?php print t('Home'); ?>" />
+                </a>
+            <?php endif; ?>
+        </div>
+
+        <div class="button-block">
+          <a href="/books" class="all-books">Всі книги</a>
+        </div>
+
+        <div class="search-block">
+            <?php
+                $block = module_invoke('finder', 'block_view', 'content_finder');
+                print render($block['content']);
+            ?>
+
+            <svg class="svg-icon icon-search" preserveAspectRatio="xMaxYMax"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/sites/all/themes/bookbox_ui/images/svg/search.svg#icon-search"></use></svg>
+        </div>
+
+      <div class="navbar-collapse collapse user-navbar-collapse">
+        <?php if ($user->uid != 0): ?>
+          <?php
+          $uid = $user->uid;
+
+          $u_orders_c = bookbox_count_in_confirm($user->uid);
+          $u_reading_c = bookbox_count_in_reading_now($user->uid);
+
+          $favs_view = views_get_view('user_wishlist');
+          $favs_view->set_display('block_1');
+          $favs_view->set_arguments(array($user->uid));
+          $favs_view->pre_execute();
+          $favs_view->execute();
+          $u_favs_c = $favs_view->total_rows;
+          ?>
+
+
+            <ul class="user-icons-menu nav nav-tabs dup-tabs" role="tablist">
+              <li role="presentation">
+                <a href="/user#order">Замовлено
+                  <?php if ($u_orders_c > 0): ?>
+                    <span class="badge"><?php print $u_orders_c; ?></span>
+                  <?php endif; ?>
+                </a>
+              </li>
+              <li role="presentation">
+                <a href="/user#read">Зараз читаю
+                  <?php if ($u_reading_c > 0): ?>
+                    <span class="badge"><?php print $u_reading_c; ?></span>
+                  <?php endif; ?>
+                </a>
+              </li>
+              <li role="presentation">
+                <a href="/user#favs">Вішліст
+                  <?php if ($u_favs_c > 0): ?>
+                    <span class="badge"><?php print $u_favs_c; ?></span>
+                  <?php endif; ?>
+                </a>
+              </li>
+            </ul>
+
+
+          <?php
+          $block = module_invoke('bookbox', 'block_view', 'BBUserMenu');
+          print render($block['content']);
+          ?>
+        <?php endif; ?>
+
+         </div>
+    </div>
+</header>
+
+
+
 
 <div class="main-container <?php print $container_class; ?>">
   <div class="row">
@@ -89,21 +172,12 @@ $term = taxonomy_term_load(arg(2));
       		<div class="col-md-9">
       			<?php if (!empty($breadcrumb)): print $breadcrumb; endif;?>
 
+
             <h1 class="page-header"><?php print $term->name; ?></h1>
 
-
-          <?php if(isset($term->field_original_name['und'])): ?>
-            <div class="author-original-name">
-              <?php
-                $aon = $term->field_original_name['und'][0]['safe_value'];
-                print $aon;
-              ?>
-            </div>
-          <?php endif; ?>
-
             <?php
-            if(isset($term->field_author_photo)) {
-              print '<img src="'. image_style_url('medium', $term->field_author_photo['und'][0]['uri']). '" />';
+            if(isset($term->field_nni)) {
+              print '<img src="'. image_style_url('slider', $term->field_nni['und'][0]['uri']). '" />';
             }
 
             if (module_exists('i18n_taxonomy') && i18n_taxonomy_vocabulary_mode($term->vid) == 1) {
@@ -117,8 +191,7 @@ $term = taxonomy_term_load(arg(2));
 
 
 
-
-      		</div>
+          </div>
       		<div class="col-md-2">
           <div class="page-icon"></div>
       		</div>
@@ -141,7 +214,15 @@ $term = taxonomy_term_load(arg(2));
     </section>
 </div>
 
-<!--(bake parts/footer.php)-->
+<?php if (!empty($page['footer'])): ?>
+    <footer class="footer">
+<a href="#navbar" class="scroll-to"><img src="/sites/all/themes/bookbox_ui/images/scroll-to-2.jpg"></a>
+        <div class="container">
+            <?php print render($page['footer']); ?>
+        </div>
+    </footer>
+<?php endif; ?>
+
 
 
 

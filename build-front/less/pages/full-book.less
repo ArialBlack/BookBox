@@ -1,14 +1,29 @@
 .node-type-book {
-  .tabs--primary, .action-links {
-    display: none !important;
+
+  &.role-administrator {
+    .tabs--primary, .action-links {
+       position: fixed;
+       left: 0;
+       bottom: 0;
+       width: 75%;
+       background: white;
+       z-index: 999;
+       margin-bottom: 0;
+     }
+
+    .action-links {
+      width: 25%;
+      left: 75%;
+    }
   }
+
 
   .main-container {
     width: 100%;
   }
 
   .book-tip.disabled-tip {
-    display: none;
+    //display: none;
   }
 
   section.col-sm-8 {

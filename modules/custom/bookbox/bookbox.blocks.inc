@@ -19,7 +19,7 @@ function bookbox_block_info() {
       'info' => t('Orders history'),
     );
 
-    $blocks['CatBiz'] = array(
+    /*$blocks['CatBiz'] = array(
         'info' => t('cat biz'),
     );
 
@@ -41,7 +41,7 @@ function bookbox_block_info() {
 
     $blocks['CatHud'] = array(
         'info' => t('cat hud'),
-    );
+    );*/
 
     $blocks['BBUserMenu'] = array(
         'info' => t('custom user menu'),
@@ -62,6 +62,22 @@ function bookbox_block_info() {
     $blocks['RelevantBooks'] = array(
       'info' => t('Relevant books'),
     );
+
+    $blocks['SidebarFitlerBlockCompany'] = array(
+      'info' => t('Sidebar Fitler Block Company'),
+    );
+
+    $blocks['SidebarFitlerBlockCollections'] = array(
+      'info' => t('Sidebar Fitler Block Collections'),
+    );
+
+    //$block['SidebarFitlerBlock2'] = array(
+     // 'info' => t('Sidebar Fitler Block2'),
+    //);
+
+    //$block['SidebarFitlerBlock3'] = array(
+  //    'info' => t('Sidebar Fitler Block3'),
+  //  );
 
     return $blocks;
 }
@@ -103,7 +119,7 @@ function bookbox_block_view($delta = '') {
             }
             break;
 
-        case 'CatBiz':
+        /*case 'CatBiz':
             $block['subject'] = '';
             $block['content'] = bookbox_cat_biz_block();
             break;
@@ -132,6 +148,7 @@ function bookbox_block_view($delta = '') {
             $block['subject'] = '';
             $block['content'] = bookbox_cat_hud_block();
             break;
+        */
 
         case 'BBUserMenu':
             $block['subject'] = '';
@@ -164,8 +181,18 @@ function bookbox_block_view($delta = '') {
             break;
 
         case 'OrdersHistory':
+            $block['subject'] = '';
+            $block['content'] = bookbox_user_orders_history_block();
+          break;
+
+        case 'SidebarFitlerBlockCompany':
           $block['subject'] = '';
-          $block['content'] = bookbox_user_orders_history_block();
+          $block['content'] = bookbox_sidebarfc_block();
+          break;
+
+        case 'SidebarFitlerBlockCollections':
+          $block['subject'] = '';
+          //$block['content'] = bookbox_sidebarfc_block();
           break;
     }
     return $block;
@@ -254,6 +281,27 @@ function bookbox_preprocess_relevantbooks(&$variables) {
   }
 }
 
+function bookbox_sidebarfc_block() {
+  $content = '<ul><li><a href="/books/hits">Хіти місяця</a></li>';
+  $content = $content . '<li><a href="/books/new">Новинки</a></li>';
+
+  global $user;
+  $uid = $user->uid;
+  $account = user_load($uid);
+  $company_nid = $account->field_company['und'][0]['target_id'];
+  $company = node_load($company_nid);
+
+  $date_diff = (time() - $company->created)/60/60/24;
+
+  if($date_diff > 60) {
+    $content = $content . '<li><a href="books/company-hits">Хіти в ' . $company->title . '</a></li>';
+  }
+
+  $content = $content . '</ul>';
+
+  return $content;
+}
+
 function bookbox_preprocess_companyhits(&$variables) {
   global $user;
   $uid = $user->uid;
@@ -285,6 +333,17 @@ function bookbox_preprocess_companyhits(&$variables) {
     $variables['name'] = $company->title;
   } else {
     $variables['bookslist'] = null;
+  }
+}
+
+function bookbox_views_pre_render(&$view) {
+  if ($view->name == 'user_company_hits' && $view->current_display == 'page_1') {
+    global $user;
+    $uid = $user->uid;
+    $account = user_load($uid);
+    $company_nid = $account->field_company['und'][0]['target_id'];
+    $company = node_load($company_nid);
+    $view->build_info['title'] = "Хіти в " . $company->title;
   }
 }
 
@@ -373,6 +432,9 @@ function bookbox_custom_usermenu_block() {
     global $user;
     $uid = $user->uid;
     $account = user_load($uid);
+    if(isset($account->field_author_photo['und'])) {
+      $uri = $account->field_author_photo['und'][0]['uri'];
+    }
 
     $u_orders_c = bookbox_count_in_confirm($user->uid);
     $u_reading_c = bookbox_count_in_reading_now($user->uid);
@@ -392,7 +454,15 @@ function bookbox_custom_usermenu_block() {
 
     $content = $content . '<ul class="menu nav navbar-nav secondary dup-tabs">';
     $content = $content . '<li class="first last expanded dropdown">';
-    $content = $content . '<a href="/user" title="" data-target="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <span class="user-name"><span>' . $nanme . '</span> <span>' . $snanme . '</span></span> <span class="caret"></span></a>';
+    $content = $content . '<a href="/user" title="" data-target="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <span class="user-name"><span>' . $nanme . '</span> <span>' . $snanme . '</span></span>';
+
+    if(isset($account->field_author_photo['und'])) {
+      $content = $content . '<span class="caret has-image"><img src="' . image_style_url("medium", $uri) . '"/>';
+    } else {
+      $content = $content . '<span class="caret">';
+    }
+    $content = $content . '</span></a>';
+
     $content = $content . '<ul class="dropdown-menu"><li class="first leaf"><a href="/user" title="">Профіль</a></li>';
     //
     $content = $content . '<li class="leaf"><a href="/user#order" title="">Замовлено ';
@@ -433,7 +503,7 @@ function bookbox_block_view_alter(&$data, $block) {
     }
 }
 
-function bookbox_cat_biz_block() {
+/*function bookbox_cat_biz_block() {
     $content = _bookbox_catblock(7);
     return $content;
 }
@@ -462,8 +532,9 @@ function bookbox_cat_hud_block() {
     $content = _bookbox_catblock(317);
     return $content;
 }
+*/
 
-function _bookbox_catblock($parent_tid) {
+/*function _bookbox_catblock($parent_tid) {
     $content = '';
     $childrens = taxonomy_get_children($parent_tid);
 
@@ -492,7 +563,7 @@ function _bookbox_catblock($parent_tid) {
         $content = $content . '</div></div>';
     }
     return $content;
-}
+}*/
 
 function bookbox_user_orders_history_block() {
   $content = '<h2>Історія замовлень</h2><div class="row">';

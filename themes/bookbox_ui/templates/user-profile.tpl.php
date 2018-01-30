@@ -34,18 +34,17 @@
  * @ingroup themeable
  */
 
-global $user;
-$email = $user->mail;
-$edit_link = '/user/' . $user->uid .'/edit';
+//global $user;
+$email = $elements['#account']->mail;
+$edit_link = '/user/' . $elements['#account']->uid .'/edit';
 $uri = $user_profile['field_author_photo'][0]['#item']['uri'];
+
 ?>
 
 <div class="yellow-block">
 	<div class="container">
 		<div class="a-img profile-photo">
-			<?php
-				print '<a href="' . $edit_link . '">'
-			?>
+			<a href="<?php print $edit_link;?>">
 			  <img src="<?php print image_style_url("medium", $uri); ?>"/>
 			  <span> Обрати фото</span>
 			</a>
@@ -88,8 +87,8 @@ $uri = $user_profile['field_author_photo'][0]['#item']['uri'];
 		<div class="visible-desktop">
 			<div class="user-tabs">
 				<?php
-				$u_orders_c = bookbox_count_in_confirm($user->uid);
-				$u_reading_c = bookbox_count_in_reading_now($user->uid);
+				$u_orders_c = bookbox_count_in_confirm($elements['#account']->uid);
+				$u_reading_c = bookbox_count_in_reading_now($elements['#account']->uid);
 
 				list($x,$y) = _bookbox_user_orders_history();
 				$u_history = $x;
@@ -97,7 +96,7 @@ $uri = $user_profile['field_author_photo'][0]['#item']['uri'];
 
 				$favs_view = views_get_view('user_wishlist');
 				$favs_view->set_display('block_1');
-				$favs_view->set_arguments(array($user->uid));
+				$favs_view->set_arguments(array($elements['#account']->uid));
 				$favs_view->pre_execute();
 				$favs_view->execute();
 				$u_favs_c = $favs_view->total_rows;
@@ -135,7 +134,8 @@ $uri = $user_profile['field_author_photo'][0]['#item']['uri'];
 				</ul>
 				<div class="tab-content">
 					<div role="tabpanel" class="tab-pane active" id="order">
-					<h6>Атмосфера Юпітера — газова оболонка, яка оточує Юпітер. Атмосфера Юпітера є найбільшою планетною атмосферою в Сонячній системі. Вона не має чіткої нижньої межі і плавно переходить. в океан з рідкого водню. Виділяють такі шари атмосфери.</h6>
+					<h6>Атмосфера Юпітера — газова оболонка, яка оточує Юпітер. Атмосфера Юпітера є найбільшою планетною атмосферою в Сонячній системі.
+            Вона не має чіткої нижньої межі і плавно переходить. в океан з рідкого водню. Виділяють такі шари атмосфери.</h6>
 						<?php
 						$block = module_invoke('bookbox', 'block_view', 'MonthOrder');
 						print render($block['content']);
@@ -166,8 +166,8 @@ $uri = $user_profile['field_author_photo'][0]['#item']['uri'];
 
 		<div class="visible-mobile">
 			<?php
-			$u_orders_c = bookbox_count_in_confirm($user->uid);
-			$u_reading_c = bookbox_count_in_reading_now($user->uid);
+			$u_orders_c = bookbox_count_in_confirm($elements['#account']->uid);
+			$u_reading_c = bookbox_count_in_reading_now($elements['#account']->uid);
 
 			list($x,$y) = _bookbox_user_orders_history();
 			$u_history = $x;
@@ -175,7 +175,7 @@ $uri = $user_profile['field_author_photo'][0]['#item']['uri'];
 
 			$favs_view = views_get_view('user_wishlist');
 			$favs_view->set_display('block_1');
-			$favs_view->set_arguments(array($user->uid));
+			$favs_view->set_arguments(array($elements['#account']->uid));
 			$favs_view->pre_execute();
 			$favs_view->execute();
 			$u_favs_c = $favs_view->total_rows;

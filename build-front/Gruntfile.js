@@ -22,10 +22,9 @@ module.exports = function(grunt) {
         less: {
             development: {
                 options: {
-                    paths: ['less'],
-                    compress: false,
-                    cleancss: true,
-                    dumpLineNumbers: 'comments'
+                    compress: true,
+                    sourceMap: true,
+                    cleancss: true
                 },
                 files: {
                     '../themes/bookbox_ui/css/style.css': 'less/style.less'
@@ -49,7 +48,8 @@ module.exports = function(grunt) {
                     "../themes/bookbox_ui/templates/page--user--password.tpl.php": "_templates-src/page--user--password.tpl.php",
                     "../themes/bookbox_ui/templates/page--user--reset.tpl.php": "_templates-src/page--user--reset.tpl.php",
                     "../themes/bookbox_ui/templates/page--taxonomy_vocabulary__publishers.tpl.php": "_templates-src/page--taxonomy_vocabulary__publishers.tpl.php",
-                    "../themes/bookbox_ui/templates/page--taxonomy_vocabulary__authors.tpl.php": "_templates-src/page--taxonomy_vocabulary__authors.tpl.php"
+                    "../themes/bookbox_ui/templates/page--taxonomy_vocabulary__authors.tpl.php": "_templates-src/page--taxonomy_vocabulary__authors.tpl.php",
+                    "../themes/bookbox_ui/templates/page--taxonomy_vocabulary__collections.tpl.php": "_templates-src/page--taxonomy_vocabulary__collections.tpl.php"
                 }
             }
         },
@@ -86,6 +86,7 @@ module.exports = function(grunt) {
         
         postcss: {
             options: {
+              map: true,
               processors: [
                 require('autoprefixer')({browsers: ['last 2 versions', 'ie 10']})
               ]

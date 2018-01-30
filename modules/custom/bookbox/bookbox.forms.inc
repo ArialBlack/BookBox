@@ -103,32 +103,26 @@ function bookbox_registeruser_validate ($form, &$form_state) {
 }
 
 function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state) {
-    global $user;
-    $uid = $user->uid;
-    $max_books = variable_get('varMaxBooks') - bookbox_count_in_confirm($uid) - bookbox_count_in_reading_now($uid);
-    // можно добавить максимум 3
+  global $user;
+  $uid = $user->uid;
+  $max_books = variable_get('varMaxBooks') - bookbox_count_in_confirm($uid) - bookbox_count_in_reading_now($uid);
+  // можно добавить максимум 3
+  $destination = request_path();
+  $form['submit']['#attributes']['disabled'] = TRUE;
+  $form['submit']['#type'] = 'hidden';
+  $can_order = true;
+  $date = time();
 
-    $destination = request_path();
+  if (isset($form['product_id'])) {
+    $form_product = $form['product_id']['#value'];
+  } else {
+    $form_product = null;
+    $can_order = false;
+  }
 
-    $form['submit']['#attributes']['disabled'] = TRUE;
-    $form['submit']['#type'] = 'hidden';
-
-    $can_order = true;
-
-    $date = time();
-
-    if (isset($form['product_id'])) {
-        $form_product = $form['product_id']['#value'];
-    } else {
-        $form_product = null;
-        $can_order = false;
-    }
-
-    $button_disabled = '<button disabled="1" type="button" id="edit-submit-book" class="btn btn-default form-submit">Замовити</button>';
-    $button_out_of_stock = '<button disabled="1" type="button" id="edit-submit-book" class="btn btn-default form-submit">Читається зараз</button>';
-
-    $button = '<button type="button" id="edit-submit-book" class="btn btn-default form-submit" data-toggle="modal" data-target="#confirm-orders">Замовити</button>';
-    $modal = '<div class="modal fade" tabindex="-1" role="dialog" id="confirm-orders">
+  $button_disabled = '<button disabled="1" type="button" id="edit-submit-book" class="btn btn-default form-submit">Замовити</button>';
+  $button = '<button type="button" id="edit-submit-book" class="btn btn-default form-submit" data-toggle="modal" data-target="#confirm-orders">Замовити</button>';
+  $modal = '<div class="modal fade" tabindex="-1" role="dialog" id="confirm-orders">
                                       <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                           <div class="modal-header">
@@ -145,9 +139,8 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state)
                                         </div>
                                       </div>
                                     </div>';
-
-    $overslots_button = '<button type="button" id="edit-submit-book" class="btn btn-default form-submit" data-toggle="modal" data-target="#over-slots">Замовити</button>';
-    $overslots_modal = '<div class="modal fade" tabindex="-1" role="dialog" id="over-slots">
+  $overslots_button = '<button type="button" id="edit-submit-book" class="btn btn-default form-submit" data-toggle="modal" data-target="#over-slots">Замовити</button>';
+  $overslots_modal = '<div class="modal fade" tabindex="-1" role="dialog" id="over-slots">
                                       <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                           <div class="modal-header">
@@ -163,94 +156,64 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state)
                                         </div>
                                       </div>
                                     </div>';
+  //если я уже читаю или я уже заказал эту книгу, то отключать кнопку.
+  // если я уже читаю 3 книги, то отключать кнопку
+  //если я читаю + я заказал = 3шт, то отключать кнопку
+  $is_in_order = is_in_order($form_product, $uid);
+  $is_in_readingnow = is_in_redingnow($form_product, $uid);
+  $is_in_archive = is_in_archive($form_product, $uid);
+  $product = commerce_product_load($form_product);
+  $stock = 0;
 
+  if($product) {
+    $stock = $product->commerce_stock['und'][0]['value'];
+  }
 
-    //если я уже читаю или я уже заказал эту книгу, то отключать кнопку.
-    // если я уже читаю 3 книги, то отключать кнопку
-    //если я читаю + я заказал = 3шт, то отключать кнопку
-
-    $is_in_order = is_in_order($form_product, $uid);
-    $is_in_readingnow = is_in_redingnow($form_product, $uid);
-    $is_in_archive = is_in_archive($form_product, $uid);
-
-    $product = commerce_product_load($form_product);
-    $stock = 0;
-
-    if($product) {
-        $stock = $product->commerce_stock['und'][0]['value'];
-    }
-
-    if ($is_in_order > 0 || $is_in_readingnow > 0 || $max_books < 1) {
-        $can_order = false;
-    }
-
-    $disabled_reason = '';
-
-    if ($stock < 1) {
-      $can_order = false;
-      $form['confirmordersmarkup'] = array(
-        '#type' => 'markup',
-        '#markup' => '<div class="btn-container with-tip">' . $button_out_of_stock . '</div>',
-      );
-    }
-
-    if ($is_in_order > 0){
-        $can_order = false;
-        $disabled_reason = 'Ви вже замовили цю книгу';
-    }
-
-    if ($is_in_readingnow > 0) {
-        $can_order = false;
-        $disabled_reason = 'Ви вже читаєте цю книгу';
-    }
-
-    if(($is_in_order > 0 || $is_in_readingnow > 0) ) {
-        $form['confirmordersmarkup'] = array(
-            '#type' => 'markup',
-            '#markup' => '<div class="btn-container with-tip">' . $button_disabled . '<div class="book-tip disabled-tip">' . $disabled_reason . '</div></div>',
-        );
-
-        return;
-    }
-
-    if(($stock < 1 && $is_in_order < 1  && $is_in_readingnow < 1 && !(bookbox_notify_is_in_list($uid, $form_product))) ) {
-      $notify_message = '<a href="/notify/' . $uid . '/' . $form_product . '/book?destination=' . $destination . '">Повідомити мене про доступність</a>';
-      $can_order = false;
-      $form['confirmordersmarkup'] = array(
-        '#type' => 'markup',
-        '#markup' => '<div class="btn-container with-tip">' . $button_out_of_stock . '<div class="notify-actions">' . $notify_message . '</div></div>',
-      );
-
-      return;
-    }
-
-  if(($stock < 1 && $is_in_order < 1  && $is_in_readingnow < 1 && bookbox_notify_is_in_list($uid, $form_product)) ) {
-    $notify_message = 'Ви дізнаєтесь про надходження';
+  if ($is_in_order > 0 || $is_in_readingnow > 0 || $max_books < 1) {
     $can_order = false;
+  }
+
+  $disabled_reason = '';
+
+  if ($stock < 1) {
+    $disabled_reason = 'Читається зараз';
+    $can_order = false;
+  }
+
+  if ($is_in_order > 0){
+    $can_order = false;
+    $disabled_reason = 'Ви вже замовили цю книгу';
+  }
+
+  if ($is_in_readingnow > 0) {
+    $can_order = false;
+    $disabled_reason = 'Ви вже читаєте цю книгу';
+  }
+
+  if(($stock < 1 || $is_in_order > 0 || $is_in_readingnow > 0) ) {
     $form['confirmordersmarkup'] = array(
       '#type' => 'markup',
-      '#markup' => '<div class="btn-container with-tip">' . $button_out_of_stock . '<div class="notify-actions notify-actions-disabled">' . $notify_message . '</div></div>',
+      '#markup' => '<div class="btn-container with-tip"><div class="book-tip disabled-tip">' . $disabled_reason . '</div>' . $button_disabled . '</div>',
     );
-
     return;
   }
 
-    if($max_books < 1) {
-        $can_order = false;
+  if($max_books < 1) {
+    $can_order = false;
+    $form['confirmordersmarkup'] = array(
+      '#type' => 'markup',
+      '#markup' => '<div class="btn-container">' . $overslots_button . '</div>' . $overslots_modal,
+    );
+  }
 
-        $form['confirmordersmarkup'] = array(
-            '#type' => 'markup',
-            '#markup' => '<div class="btn-container">' . $overslots_button . '</div>' . $overslots_modal,
-        );
-    }
-
-    if ($can_order) {
-        $form['confirmordersmarkup'] = array(
-            '#type' => 'markup',
-            '#markup' => '<div class="btn-container">' . $button . '</div>' . $modal,
-        );
-    }
+  if ($can_order) {
+    $form['confirmordersmarkup'] = array(
+      '#type' => 'markup',
+      '#markup' => '<div class="btn-container">' . $button . '</div>' . $modal,
+    );
+  }
 }
+
 
 function bookbox_confirm_book($arg0,$arg1) {
     $user = user_load($arg0);

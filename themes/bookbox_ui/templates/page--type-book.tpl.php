@@ -77,7 +77,11 @@
 
 ?>
 
-<?php global $user; ?>
+<?php
+global $user;
+
+
+?>
 
 <header id="navbar" role="banner" class="<?php print $navbar_classes; ?>">
     <div class="<?php print $container_class; ?>">
@@ -90,17 +94,10 @@
             <?php endif; ?>
         </div>
 
-
-        <!-- <div class="navbar-collapse collapse main-nav-collapse">
-            <nav role="navigation">
-                <?php if (!empty($primary_nav)): ?>
-                    <span class="primary-nav"><?php print render($primary_nav); ?></span>
-                <?php endif; ?>
-            </nav>
-        </div> -->
         <div class="button-block">
-          <a href="#" class="all-books">Всі книги</a>
+          <a href="/books" class="all-books">Всі книги</a>
         </div>
+
         <div class="search-block">
             <?php
                 $block = module_invoke('finder', 'block_view', 'content_finder');

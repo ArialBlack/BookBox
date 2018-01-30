@@ -89,21 +89,12 @@ $term = taxonomy_term_load(arg(2));
       		<div class="col-md-9">
       			<?php if (!empty($breadcrumb)): print $breadcrumb; endif;?>
 
+
             <h1 class="page-header"><?php print $term->name; ?></h1>
 
-
-          <?php if(isset($term->field_original_name['und'])): ?>
-            <div class="author-original-name">
-              <?php
-                $aon = $term->field_original_name['und'][0]['safe_value'];
-                print $aon;
-              ?>
-            </div>
-          <?php endif; ?>
-
             <?php
-            if(isset($term->field_author_photo)) {
-              print '<img src="'. image_style_url('medium', $term->field_author_photo['und'][0]['uri']). '" />';
+            if(isset($term->field_nni)) {
+              print '<img src="'. image_style_url('slider', $term->field_nni['und'][0]['uri']). '" />';
             }
 
             if (module_exists('i18n_taxonomy') && i18n_taxonomy_vocabulary_mode($term->vid) == 1) {
@@ -117,8 +108,7 @@ $term = taxonomy_term_load(arg(2));
 
 
 
-
-      		</div>
+          </div>
       		<div class="col-md-2">
           <div class="page-icon"></div>
       		</div>
