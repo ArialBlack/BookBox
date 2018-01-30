@@ -77,91 +77,16 @@ $term = taxonomy_term_load(arg(2));
 
 ?>
 
-<?php
-global $user;
-
-
-?>
-
-<header id="navbar" role="banner" class="<?php print $navbar_classes; ?>">
-    <div class="<?php print $container_class; ?>">
-        <div class="navbar-header">
-            <?php if ($logo): ?>
-                <a class="logo navbar-btn pull-left" href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>">
-                    <!-- <img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>" /> -->
-                    <img src="/sites/all/themes/bookbox_ui/images/svg/bookboxlogo.svg" alt="<?php print t('Home'); ?>" />
-                </a>
-            <?php endif; ?>
-        </div>
-
-        <div class="button-block">
-          <a href="/books" class="all-books">Всі книги</a>
-        </div>
-
-        <div class="search-block">
-            <?php
-                $block = module_invoke('finder', 'block_view', 'content_finder');
-                print render($block['content']);
-            ?>
-        </div>
-
-      <div class="navbar-collapse collapse user-navbar-collapse">
-        <?php if ($user->uid != 0): ?>
-          <?php
-          $uid = $user->uid;
-
-          $u_orders_c = bookbox_count_in_confirm($user->uid);
-          $u_reading_c = bookbox_count_in_reading_now($user->uid);
-
-          $favs_view = views_get_view('user_wishlist');
-          $favs_view->set_display('block_1');
-          $favs_view->set_arguments(array($user->uid));
-          $favs_view->pre_execute();
-          $favs_view->execute();
-          $u_favs_c = $favs_view->total_rows;
-          ?>
-
-
-            <ul class="user-icons-menu nav nav-tabs dup-tabs" role="tablist">
-              <li role="presentation">
-                <a href="/user#order">Замовлено
-                  <?php if ($u_orders_c > 0): ?>
-                    <span class="badge"><?php print $u_orders_c; ?></span>
-                  <?php endif; ?>
-                </a>
-              </li>
-              <li role="presentation">
-                <a href="/user#read">Зараз читаю
-                  <?php if ($u_reading_c > 0): ?>
-                    <span class="badge"><?php print $u_reading_c; ?></span>
-                  <?php endif; ?>
-                </a>
-              </li>
-              <li role="presentation">
-                <a href="/user#favs">Вішліст
-                  <?php if ($u_favs_c > 0): ?>
-                    <span class="badge"><?php print $u_favs_c; ?></span>
-                  <?php endif; ?>
-                </a>
-              </li>
-            </ul>
-
-
-          <?php
-          $block = module_invoke('bookbox', 'block_view', 'BBUserMenu');
-          print render($block['content']);
-          ?>
-        <?php endif; ?>
-
-         </div>
-    </div>
-</header>
-
-
-
+<!--(bake parts/header.php)-->
 
 <div class="main-container <?php print $container_class; ?>">
   <div class="row">
+    <?php if (!empty($page['sidebar_first'])): ?>
+      <aside class="col-sm-3" role="complementary">
+        <?php print render($page['sidebar_first']); ?>
+      </aside>  <!-- /#sidebar-first -->
+    <?php endif; ?>
+
     <section<?php print $content_column_class; ?>>
       <?php print $messages; ?>
     <div class="yellow-block">
@@ -170,26 +95,20 @@ global $user;
       		<div class="col-md-9">
       			<?php if (!empty($breadcrumb)): print $breadcrumb; endif;?>
 
-
             <h1 class="page-header"><?php print $term->name; ?></h1>
 
-            <?php
-            if(isset($term->field_nni)) {
-              print '<img src="'. image_style_url('slider', $term->field_nni['und'][0]['uri']). '" />';
-            }
 
-            if (module_exists('i18n_taxonomy') && i18n_taxonomy_vocabulary_mode($term->vid) == 1) {
-              $description = i18n_string("taxonomy:term:$term->tid:description", $term->description);
-            }
-            else {
-              $description = $term->description;
-            }
-            print '<div class="description">' . check_markup($description, $term->format, '', TRUE) . '</div>';
-            ?>
+            <div class="views-exposed-widget views-widget-sort-by">
+              <div class="form-item form-item-sort-by form-type-select form-group"> <label class="control-label" for="edit-sort-by">Впорядкувати за </label>
+                <select class="form-control form-select" id="edit-sort-by" name="sort_by"><option value="field_hit_value">Популярністю</option><option value="commerce_stock_value">Наявністю</option></select></div>      </div>
+
+            <div class="views-exposed-widget views-widget-per-page">
+              <div class="form-item form-item-items-per-page form-type-select form-group"> <label class="control-label" for="edit-items-per-page">Показати по </label>
+                <select class="form-control form-select" id="edit-items-per-page" name="items_per_page"><option value="12" selected="selected">12</option><option value="24">24</option><option value="48">48</option><option value="60">60</option></select></div>      </div>
 
 
 
-          </div>
+      		</div>
       		<div class="col-md-2">
           <div class="page-icon"></div>
       		</div>
@@ -197,6 +116,8 @@ global $user;
         
         </div>
     </div>
+
+
       <a id="main-content"></a>
       <?php if (!empty($tabs)): ?>
         <?php print render($tabs); ?>
@@ -212,15 +133,7 @@ global $user;
     </section>
 </div>
 
-<?php if (!empty($page['footer'])): ?>
-    <footer class="footer">
-<a href="#navbar" class="scroll-to"><img src="/sites/all/themes/bookbox_ui/images/scroll-to-2.jpg"></a>
-        <div class="container">
-            <?php print render($page['footer']); ?>
-        </div>
-    </footer>
-<?php endif; ?>
-
+<!--(bake parts/footer.php)-->
 
 
 

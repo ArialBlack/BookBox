@@ -162,6 +162,12 @@ global $user;
 
 <div class="main-container <?php print $container_class; ?>">
   <div class="row">
+    <?php if (!empty($page['sidebar_first'])): ?>
+      <aside class="col-sm-3" role="complementary">
+        <?php print render($page['sidebar_first']); ?>
+      </aside>  <!-- /#sidebar-first -->
+    <?php endif; ?>
+
     <section<?php print $content_column_class; ?>>
       <?php print $messages; ?>
     <div class="yellow-block">
@@ -170,26 +176,20 @@ global $user;
       		<div class="col-md-9">
       			<?php if (!empty($breadcrumb)): print $breadcrumb; endif;?>
 
-
             <h1 class="page-header"><?php print $term->name; ?></h1>
 
-            <?php
-            if(isset($term->field_nni)) {
-              print '<img src="'. image_style_url('slider', $term->field_nni['und'][0]['uri']). '" />';
-            }
 
-            if (module_exists('i18n_taxonomy') && i18n_taxonomy_vocabulary_mode($term->vid) == 1) {
-              $description = i18n_string("taxonomy:term:$term->tid:description", $term->description);
-            }
-            else {
-              $description = $term->description;
-            }
-            print '<div class="description">' . check_markup($description, $term->format, '', TRUE) . '</div>';
-            ?>
+            <div class="views-exposed-widget views-widget-sort-by">
+              <div class="form-item form-item-sort-by form-type-select form-group"> <label class="control-label" for="edit-sort-by">Впорядкувати за </label>
+                <select class="form-control form-select" id="edit-sort-by" name="sort_by"><option value="field_hit_value">Популярністю</option><option value="commerce_stock_value">Наявністю</option></select></div>      </div>
+
+            <div class="views-exposed-widget views-widget-per-page">
+              <div class="form-item form-item-items-per-page form-type-select form-group"> <label class="control-label" for="edit-items-per-page">Показати по </label>
+                <select class="form-control form-select" id="edit-items-per-page" name="items_per_page"><option value="12" selected="selected">12</option><option value="24">24</option><option value="48">48</option><option value="60">60</option></select></div>      </div>
 
 
 
-          </div>
+      		</div>
       		<div class="col-md-2">
           <div class="page-icon"></div>
       		</div>
@@ -197,6 +197,8 @@ global $user;
         
         </div>
     </div>
+
+
       <a id="main-content"></a>
       <?php if (!empty($tabs)): ?>
         <?php print render($tabs); ?>
