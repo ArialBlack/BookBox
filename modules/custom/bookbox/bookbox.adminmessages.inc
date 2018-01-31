@@ -1,5 +1,5 @@
 <?php
-
+// Функціонал http://prntscr.com/i8dva9
 function bookbox_admin_labels_form($form, &$form_state){
     $form['varMaxBooks'] = array(
         '#type' => 'textfield',

@@ -1,3 +1,7 @@
+<?php
+  //Темлейт блоку http://prntscr.com/i8dts9
+?>
+
 <?php if($bookslist !=null): ?>
 
   <h2>Хіти в <?php print $name;?></h2>

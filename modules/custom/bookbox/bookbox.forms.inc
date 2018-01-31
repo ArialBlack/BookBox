@@ -1,6 +1,7 @@
 <?php
 function bookbox_form_alter(&$form, &$form_state, $form_id){
 
+    //При редагуванні книги, нам не потрібна ціна
     if(isset($form['#node_edit_form']) && $form['#node_edit_form'] && $form['type']['#value'] == 'book') {
         $form['field_bookfields']['und']['form']['commerce_price']['und'][0]['amount']['#default_value'] = 0;
         $form['field_bookfields']['und']['form']['commerce_price']['#access'] = false;
@@ -13,8 +14,8 @@ function bookbox_form_alter(&$form, &$form_state, $form_id){
         );
     }
 
+    //Форма реєстрації юзера
     if ($form['#id'] == 'user-register-form') {
-
         $form['#validate'][] = 'bookbox_registeruser_validate';
 
         $form['mail'] = $form['account']['mail'];
@@ -60,12 +61,15 @@ function bookbox_form_alter(&$form, &$form_state, $form_id){
     }
 }
 
+//Валідація форми реєстрації юзера
 function bookbox_registeruser_validate ($form, &$form_state) {
     $usermail = $form_state['values']['mail'];
 
     if ($usermail) {
         $usermail_domain = substr(strrchr($usermail, "@"), 1);
 
+        //Є сутність - Компанія. Є мультіполе 'мейл-домени компанії'
+        //Мейл користувача, що реєструється, має належать компанії
         $company_nid = db_select('field_data_field_maildomain', 'md')
             ->fields('md', array('entity_id'))
             ->condition('md.field_maildomain_value', $usermail_domain)
@@ -102,11 +106,12 @@ function bookbox_registeruser_validate ($form, &$form_state) {
     }
 }
 
+//Логіка кнопки замовлення книги http://prntscr.com/i8e357
 function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state) {
   global $user;
   $uid = $user->uid;
   $max_books = variable_get('varMaxBooks') - bookbox_count_in_confirm($uid) - bookbox_count_in_reading_now($uid);
-  // можно добавить максимум 3
+  // можно добавить максимум 3, например
   $destination = request_path();
   $form['submit']['#attributes']['disabled'] = TRUE;
   $form['submit']['#type'] = 'hidden';
@@ -175,6 +180,7 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state)
 
   $disabled_reason = '';
 
+  //Якщо книг всього 10 і 10 людей їх розібрали, тобто в товарних запасах 0, то замовить не можна
   if ($stock < 1) {
     $disabled_reason = 'Читається зараз';
     $can_order = false;
@@ -214,7 +220,7 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state)
   }
 }
 
-
+//Додаткова функція перевірки замовлення і сабміт
 function bookbox_confirm_book($arg0,$arg1) {
     $user = user_load($arg0);
     $user_name = $user->field_name['und'][0]['value'] . ' ' . $user->field_sirname['und'][0]['value'];
@@ -244,7 +250,7 @@ function bookbox_confirm_book($arg0,$arg1) {
     //user can order
     if ($can_order) {
         $order_product = $arg1;
-
+        //Фомування темлейту мейлу
         $mail_body = $user->field_name['und'][0]['value'] . ' ' . $user->field_sirname['und'][0]['value'] . ', вітання! ';
         $mail_body = $mail_body . 'Замовлення успішно підтверджено.</br>';
 
@@ -267,6 +273,7 @@ function bookbox_confirm_book($arg0,$arg1) {
         <img src = "' . $url . '" width="167" height="250" style="display:block; />'
             . $book->title . '<br/>' . $author->name .'</a> </div>';
 
+        //Створимо комерс-замовлення
         $order = commerce_order_new($user->uid, 'checkout_checkout');
         commerce_order_save($order);
 
@@ -316,6 +323,7 @@ function bookbox_confirm_book($arg0,$arg1) {
     drupal_goto($dest);
 }
 
+//Форма http://prntscr.com/i8e541
 function bookbox_admin_delivery_form ($form, &$form_state) {
     $form['submit'] = array(
         '#type' => 'submit',
@@ -325,6 +333,8 @@ function bookbox_admin_delivery_form ($form, &$form_state) {
     return $form;
 }
 
+//Сабміт форми http://prntscr.com/i8e541
+//При сабміті, всі замовлення з статусу - замовлено, потраплять в статус доставлено
 function bookbox_admin_delivery_form_submit($form, &$form_state) {
     $result = db_select('commerce_order', 'o')
         ->fields('o', array('order_id', 'status', 'changed'))
@@ -335,7 +345,9 @@ function bookbox_admin_delivery_form_submit($form, &$form_state) {
     foreach ($result as $item) {
         if ($item->status == 'completed') {
 
-            //todo remove test date
+            //Букбокс доставляє книжки у наступну пятницю від замовлення.
+            //Тобто, якщо замовлено в четверг ввечері або в пятницю,
+            //то замоленя буде у наступну. Наступну пятницю калькулює ф-ця next_friday_object
             $nfo = next_friday_object($item->changed);
             $script_day = time();
 
@@ -346,6 +358,7 @@ function bookbox_admin_delivery_form_submit($form, &$form_state) {
         }
     }
 
+    //Пісял цього треба оновить стоки
     bookbox_equal_stocks();
 
     drupal_set_message(t('Статуси замовлень змінено!'));

@@ -19,6 +19,7 @@ function bookbox_block_info() {
       'info' => t('Orders history'),
     );
 
+    // Старі блоки видалить після релізу
     /*$blocks['CatBiz'] = array(
         'info' => t('cat biz'),
     );
@@ -71,27 +72,19 @@ function bookbox_block_info() {
       'info' => t('Sidebar Fitler Block Collections'),
     );
 
-    //$block['SidebarFitlerBlock2'] = array(
-     // 'info' => t('Sidebar Fitler Block2'),
-    //);
-
-    //$block['SidebarFitlerBlock3'] = array(
-  //    'info' => t('Sidebar Fitler Block3'),
-  //  );
-
     return $blocks;
 }
 
 function bookbox_block_view($delta = '') {
+    //Логіка блоків
     global $user;
     $uid = $user->uid;
     $max_books = variable_get('varMaxBooks');
 
     $block = array();
-
     $show_order = true;
-
     $show_reading_now = true;
+
     if (bookbox_count_in_reading_now($uid) < 1) {
         $show_reading_now = false;
     }
@@ -119,6 +112,7 @@ function bookbox_block_view($delta = '') {
             }
             break;
 
+        //Видалить після релізу
         /*case 'CatBiz':
             $block['subject'] = '';
             $block['content'] = bookbox_cat_biz_block();
@@ -281,6 +275,7 @@ function bookbox_preprocess_relevantbooks(&$variables) {
   }
 }
 
+//Формує блок http://prntscr.com/i8dymf
 function bookbox_sidebarfc_block() {
   $content = '<ul><li><a href="/books/hits">Хіти місяця</a></li>';
   $content = $content . '<li><a href="/books/new">Новинки</a></li>';
@@ -293,6 +288,7 @@ function bookbox_sidebarfc_block() {
 
   $date_diff = (time() - $company->created)/60/60/24;
 
+  //Якщо компнія молода, то не виводимо лінку.
   if($date_diff > 60) {
     $content = $content . '<li><a href="books/company-hits">Хіти в ' . $company->title . '</a></li>';
   }
@@ -302,6 +298,7 @@ function bookbox_sidebarfc_block() {
   return $content;
 }
 
+//Логіка формування блоку http://prntscr.com/i8dts9
 function bookbox_preprocess_companyhits(&$variables) {
   global $user;
   $uid = $user->uid;
@@ -336,6 +333,7 @@ function bookbox_preprocess_companyhits(&$variables) {
   }
 }
 
+//Змінить заголовок на сторінці блоку http://prntscr.com/i8dts9
 function bookbox_views_pre_render(&$view) {
   if ($view->name == 'user_company_hits' && $view->current_display == 'page_1') {
     global $user;
@@ -347,6 +345,7 @@ function bookbox_views_pre_render(&$view) {
   }
 }
 
+//Логіка формування блоку http://prntscr.com/i8dtxv
 function bookbox_preprocess_newbyadmin(&$variables) {
   if ($cache = cache_get('bookbox_newbyadmin_data')) {
     $content = $cache->data;
@@ -381,6 +380,7 @@ function bookbox_preprocess_newbyadmin(&$variables) {
   $variables['bookslist'] = $content;
 }
 
+//Логіка формування блоку http://prntscr.com/i8duku
 function bookbox_preprocess_manualhits(&$variables) {
   if ($cache = cache_get('bookbox_manualhits_data')) {
     $content = $cache->data;
@@ -427,11 +427,13 @@ function bookbox_debug_block() {
     return $output;
 }
 
+//Формує блок http://prntscr.com/i8e0x0
 function bookbox_custom_usermenu_block() {
     $content = "";
     global $user;
     $uid = $user->uid;
     $account = user_load($uid);
+
     if(isset($account->field_author_photo['und'])) {
       $uri = $account->field_author_photo['und'][0]['uri'];
     }
@@ -461,29 +463,34 @@ function bookbox_custom_usermenu_block() {
     } else {
       $content = $content . '<span class="caret">';
     }
+
     $content = $content . '</span></a>';
 
     $content = $content . '<ul class="dropdown-menu"><li class="first leaf"><a href="/user" title="">Профіль</a></li>';
     //
     $content = $content . '<li class="leaf"><a href="/user#order" title="">Замовлено ';
+
     if ($u_orders_c > 0) {
       $content = $content . '<span class="badge">' . $u_orders_c . '</span>';
     }
     $content = $content . '</a></li>';
     //
     $content = $content . '<li class="leaf"><a href="/user#read" title="">Читаю зараз ';
+
     if ($u_reading_c > 0) {
       $content = $content . '<span class="badge">' . $u_reading_c . '</span>';
     }
     $content = $content . '</a></li>';
     //
     $content = $content . '<li class="leaf"><a href="/user#history" title="">Прочитано ';
+
     if ($u_history_c > 0) {
       $content = $content . '<span class="badge">' . $u_history_c . '</span>';
     }
     $content = $content . '</a></li>';
     //
     $content = $content . '<li class="leaf"><a href="/user#favs" title="">Вішліст ';
+
     if ($u_favs_c > 0) {
       $content = $content . '<span class="badge">' . $u_favs_c . '</span>';
     }

@@ -139,6 +139,7 @@ function bookbox_count_in_reading_now($uid) {
   return count(bookbox_get_in_reading_now($uid));
 }
 
+//Скількьки саме цієї книги у замовленнях
 function bookbox_get_in_orders($node) {
   $product_id = $node->field_bookfields['und'][0]['product_id'];
 
@@ -179,6 +180,7 @@ function _is_in_orders($product_id) {
   return $orders;
 }
 
+//Чи юзер замовив цю книгу
 function is_in_order($product_id, $uid) {
   $orders = _is_in_orders($product_id);
 
@@ -201,6 +203,7 @@ function is_in_order($product_id, $uid) {
   return $in_orders;
 }
 
+//Чи юзер читає ц книгу
 function is_in_redingnow($product_id, $uid) {
   $orders = _is_in_orders($product_id);
 
@@ -223,6 +226,7 @@ function is_in_redingnow($product_id, $uid) {
   return $in_orders;
 }
 
+//Чи юзер читав цю книгу
 function is_in_archive($product_id, $uid) {
   $orders = _is_in_orders($product_id);
 
@@ -288,6 +292,7 @@ function taxonomy_nested_tree_render($tree, $recurring = FALSE) {
   return $items;
 }
 
+//Формує список http://prntscr.com/i8e87n
 function _bookbox_user_orders_history() {
   global $user;
   $content = '';
