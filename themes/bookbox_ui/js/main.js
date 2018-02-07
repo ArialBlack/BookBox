@@ -90,13 +90,18 @@
       function BookBoxBlockBuilder(index, book) {
           var BookContainer = index + ' ' + book,
               BooksCount=$(BookContainer).length;
-          console.log(index);
-          console.log(BooksCount);
+          // console.log(index);
+          // console.log(BooksCount);
 
           $(index).append('<div class="book-inner-block"></div>');
           for (var i=1; i<=BooksCount; i++) {
             $(index + ' ' + '.book-inner-block').append($(BookContainer + ':first'));
           }
+      }
+
+      function changeFormSelect(hiddenForm, visibleForm) {
+          var currentValue = $(hiddenForm).val();
+          $(visibleForm).val(currentValue);
       }
 
         function readCookie(name) {
@@ -307,15 +312,42 @@
           });
 
           //Initialization of pagination for Main page
-            BookBoxPagination('.front', '.block-bookbox');
-            BookBoxPagination('.node-type-book', '.block-bookbox');
-            $('.publishers #block-system-main .term-listing-heading').detach();
-            // BookBoxPagination('.publishers', '#block-system-main');
+          BookBoxPagination('.front', '.block-bookbox');
+          BookBoxPagination('.node-type-book', '.block-bookbox');
           BookBoxBlockBuilder('.page-user- .visible-desktop #order>form>div', '.book-container');
           BookBoxBlockBuilder('.page-user- .visible-desktop #read>form>div', '.book-container');
           BookBoxBlockBuilder('.page-user- .visible-desktop #history', '.node-book');
           BookBoxBlockBuilder('.page-user- .visible-desktop #favs>.view-user-wishlist>.view-content', '.views-row');
           BookBoxBlockBuilder('body.authors #block-system-main', '.node-book');
+
+          changeFormSelect('.books.category .col-sm-3 #edit-items-per-page','.books.category .col-sm-9 #edit-items-per-page');
+          changeFormSelect('.books.category .col-sm-3 #edit-sort-by','.books.category .col-sm-9 #edit-sort-by');
+
+          $('.books.category .col-sm-9 #edit-items-per-page').change(function() {
+            var thisValue = $(this).val();
+            $('.books.category .col-sm-3 #edit-items-per-page').val(thisValue).trigger('change');
+          });
+
+          $('.books.category .col-sm-9 #edit-sort-by').change(function() {
+            var thisValue = $(this).val();
+            $('.books.category .col-sm-3 #edit-sort-by').val(thisValue).trigger('change');
+          });
+
+          //Add placeholder to finder
+          $('.search-block .finder-element-title').attr('placeholder', 'Введіть назву книги');
+
+          //Open Dropdown on open category
+          $('.category .col-sm-3 .menu.nav>.active-trail>a').click();
+
+          // Add slideDown animation to Bootstrap dropdown when expanding.
+          $('.category .col-sm-3 .menu.nav .dropdown').on('show.bs.dropdown', function() {
+            $(this).find('.dropdown-menu').first().stop(true, true).slideDown();
+          });
+
+          // Add slideUp animation to Bootstrap dropdown when collapsing.
+          $('.category .col-sm-3 .menu.nav .dropdown').on('hide.bs.dropdown', function() {
+            $(this).find('.dropdown-menu').first().stop(true, true).slideUp();
+          });
 
           $('.page-user- .panel-collapse').on('shown.bs.collapse', function () {
             $('.profile .panel-collapse.in').not(this).siblings('.panel-heading').find('a').click();
@@ -339,10 +371,38 @@
             cssEase: 'none'
           });
 
+          if($(window).width() >= 768 ) {
+            $('.front #block-views-collections-slider-block .view-content').slick({
+              lazyLoad: 'ondemand',
+              dots: true,
+              slidesToScroll: 2,
+              slidesToShow:2
+            });
+          } else {
+            $('.front #block-views-collections-slider-block .view-content').slick({
+              lazyLoad: 'ondemand',
+              dots: true,
+              slidesToScroll: 1,
+              slidesToShow: 1
+            });
+          }
+
+
           $('.node-type-book .change-lang a').click(function(e) {
             e.preventDefault();
             $('.node-type-book .books-translations').toggleClass('open');
           });
+
+          $('.navbar .show-finder').click(function() {
+            $('.navbar').addClass('finder-open');
+            $('.show-finder.bg').addClass('visible');
+          });
+
+          $('.show-finder.bg').click(function() {
+            $('.navbar').removeClass('finder-open');
+            $('.show-finder.bg').removeClass('visible');
+          });
+
         });
 
 
@@ -389,22 +449,6 @@
             }, 250);
         });
 
-
-        // $(document).mouseup(function (e) {
-        //     var container = $(".search-block");
-        //
-        //     if (!container.is(e.target) && container.has(e.target).length === 0) {
-        //         $('body').removeClass('open-search');
-        //     }
-        //     ////
-        //     var filters = $('.sidebar-filters');
-        //
-        //     if (!filters.is(e.target)
-        //         && filters.has(e.target).length === 0) {
-        //         $('body').removeClass('open-filters');
-        //     }
-        // });
-
         $('#show-filters').click(function() {
             $('body').toggleClass('open-filters');
         });
@@ -419,5 +463,6 @@
             var $this = $(this);
             $('<a data-target="#" class="new-dropdown-toggle" data-toggle="dropdown"></a>').insertAfter($this);
         });
+
     });
 }(jQuery));

@@ -104,6 +104,7 @@ global $user;
                 print render($block['content']);
             ?>
         </div>
+        <div class="show-finder"></div>
 
       <div class="navbar-collapse collapse user-navbar-collapse">
         <?php if ($user->uid != 0): ?>
@@ -162,7 +163,25 @@ global $user;
 
 <div class="main-container <?php print $container_class; ?>">
   <div class="row">
-    <?php if (!empty($page['sidebar_first'])): ?>
+  	<div class="yellow-block">
+      <div class="container">
+      	<div class="row">
+      		<div class="col-md-9">
+      			<?php if (!empty($breadcrumb)): print $breadcrumb; endif;?>
+
+            <h1 class="page-header"><?php print $term->name; ?></h1>
+      		</div>
+      		<div class="col-md-2">
+          <div class="page-icon"></div>
+      		</div>
+      	</div>
+
+        </div>
+    </div>
+
+    <div class="container categories-block">
+    	<div class="row">
+    		<?php if (!empty($page['sidebar_first'])): ?>
       <aside class="col-sm-3" role="complementary">
         <?php print render($page['sidebar_first']); ?>
       </aside>  <!-- /#sidebar-first -->
@@ -170,35 +189,26 @@ global $user;
 
     <section<?php print $content_column_class; ?>>
       <?php print $messages; ?>
-    <div class="yellow-block">
-      <div class="container">
-      	<div class="row">
-      		<div class="col-md-9">
-      			<?php if (!empty($breadcrumb)): print $breadcrumb; endif;?>
 
-            <h1 class="page-header"><?php print $term->name; ?></h1>
-
-
-            <div class="views-exposed-widget views-widget-sort-by">
-              <div class="form-item form-item-sort-by form-type-select form-group"> <label class="control-label" for="edit-sort-by">Впорядкувати за </label>
-                <select class="form-control form-select" id="edit-sort-by" name="sort_by"><option value="field_hit_value">Популярністю</option><option value="commerce_stock_value">Наявністю</option></select></div>      </div>
-
-            <div class="views-exposed-widget views-widget-per-page">
-              <div class="form-item form-item-items-per-page form-type-select form-group"> <label class="control-label" for="edit-items-per-page">Показати по </label>
-                <select class="form-control form-select" id="edit-items-per-page" name="items_per_page"><option value="12" selected="selected">12</option><option value="24">24</option><option value="48">48</option><option value="60">60</option></select></div>      </div>
-
-
-
-      		</div>
-      		<div class="col-md-2">
-          <div class="page-icon"></div>
-      		</div>
-      	</div>
-        
-        </div>
+    <div class="views-exposed-widget views-widget-per-page">
+      <div class="form-item form-item-items-per-page form-type-select form-group">
+    	  <label class="control-label" for="edit-items-per-page">Показати по:</label>
+        <select class="form-control form-select" id="edit-items-per-page" name="items_per_page">
+        	<option value="12" selected="selected"><p>12 книг</p></option>
+        	<option value="24">24 книги</option>
+        	<option value="48">48 книг</option>
+        	<option value="60">60 книг</option>
+        </select>
+      </div>
     </div>
-
-
+    <div class="views-exposed-widget views-widget-sort-by">
+      <div class="form-item form-item-sort-by form-type-select form-group"> <label class="control-label" for="edit-sort-by">Сортувати за:</label>
+        <select class="form-control form-select" id="edit-sort-by" name="sort_by">
+        	<option value="field_hit_value">Популярністю</option>
+        	<option value="commerce_stock_value">Наявністю</option>
+        </select>
+      </div>
+    </div>
       <a id="main-content"></a>
       <?php if (!empty($tabs)): ?>
         <?php print render($tabs); ?>
@@ -212,9 +222,14 @@ global $user;
       <?php print render($page['content']); ?>
     </div>
     </section>
+    	</div>
+
+    </div>
+
 </div>
 
 <?php if (!empty($page['footer'])): ?>
+    <div class="show-finder bg"></div>
     <footer class="footer">
 <a href="#navbar" class="scroll-to"><img src="/sites/all/themes/bookbox_ui/images/scroll-to-2.jpg"></a>
         <div class="container">

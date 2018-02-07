@@ -1,13 +1,13 @@
-.front .block-bookbox,
-.publishers #block-system-main,
-.node-type-book .block-bookbox {
-  article > .list-inline {
+.front .block-bookbox article,
+.publishers #block-system-main .views-row,
+.node-type-book .block-bookbox article {
+  & > .list-inline {
     li:not(.flag-bookmarks) {
       display: none;
     }
   }
 
- article {
+ & {
      position: relative;
      display: inline-block;
      width: 262px;

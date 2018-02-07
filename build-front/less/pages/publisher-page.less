@@ -86,35 +86,132 @@ body.publishers {
   }
 
 
-  #block-system-main {
-    //padding-left: 0 !important;
-    justify-content: flex-start !important;
-    padding-top: 30px;
+  #block-system-main > .view-taxonomy-term {
+    >.view-content {
+      justify-content: flex-start !important;
+      padding-top: 30px;
+      padding-bottom: 0;
 
-    @media (max-width: @laptop-2) {
-      padding: 0 47px;
-    }
+      @media (max-width: @laptop-2) {
+        padding: 0 47px;
+      }
 
-    @media (max-width: @max-sm) {
-      padding: 0 82px;
-    }
+      @media (max-width: @max-sm) {
+        padding: 0 82px;
+      }
 
-    @media (max-width: @max-xs) {
-      display: block !important;
-      padding: 0;
-    }
-
-    article {
       @media (max-width: @max-xs) {
-        display: block;
-        clear: both;
-        margin-left: auto !important;
-        margin-right: auto !important;
+        display: block !important;
+        padding: 0;
+      }
+
+      .field-name-field-bookbox-rec {
+        display: none;
+      }
+
+      .views-row {
+        @media (max-width: @max-xs) {
+          display: block;
+          clear: both;
+          margin-left: auto !important;
+          margin-right: auto !important;
+        }
+
+        .book-card {
+          ul {
+            padding-left: 0;
+            list-style-type: none;
+          }
+        }
+      }
+
+      .term-listing-heading {
+        display: none;
       }
     }
+    >.text-center {
 
-    .term-listing-heading {
-      display: none;
+      .pagination {
+        li {
+          display: inline-block;
+
+          span, a {
+            border: 2px solid rgba(0, 0, 0, .14);
+            line-height: 28px;
+            font-family: ubuntu-regular;
+            font-size: @menu-text;
+            color: @white;
+            background: none;
+            margin-right: 5px;
+            padding: 0;
+            cursor: pointer;
+            transition: all .3s ease;
+            width: 32px;
+            height: 32px;
+            opacity: .6;
+
+            &:hover {
+              background: rgba(0, 0, 0, .07);
+            }
+          }
+
+          &.pager-last,
+          &.pager-first {
+            display: none;
+          }
+
+          &.active span {
+            opacity: 1;
+            background: rgba(0, 0, 0, .25);
+            border-color: transparent;
+          }
+
+          &.next, &.prev {
+            a {
+              position: relative;
+              border: 2px solid rgba(0, 0, 0, .09);
+              text-indent: -9999px;
+              padding:0;
+              line-height: 29px;
+              width: 32px;
+              font-size: 10px;
+              opacity: 1;
+
+              &:before {
+                text-indent: 0;
+              }
+
+              &:hover {
+                background: rgba(0, 0, 0, .07);
+              }
+            }
+          }
+
+          &.prev a {
+
+            &:before {
+              content: '◄';
+              position: absolute;
+              left: 0;
+              top: 0;
+              width: 100%;
+              text-align: center;
+            }
+          }
+
+          &.next a {
+
+            &:before {
+              content: '►';
+              position: absolute;
+              left: 0;
+              top: 0;
+              width: 100%;
+              text-align: center;
+            }
+          }
+        }
+      }
     }
   }
 

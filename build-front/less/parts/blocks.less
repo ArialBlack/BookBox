@@ -1,5 +1,4 @@
-.block-bookbox {
-  width: 100%;
+div:not(.well)>.block-bookbox {
   padding-bottom: 45px;
 
   .node-readmore {
@@ -150,95 +149,13 @@
   }
 }
 
-.publishers #block-system-main {
+.publishers #block-system-main > .view-taxonomy-term > .view-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   width: 100%;
   padding-bottom: 45px;
   padding-left: 0;
-
-  &.block-system {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    width: 100%;
-
-    .slick-list {
-      width: 100%;
-      order: -1;
-    }
-
-    .slick-track{
-      padding-top: 20px;
-    }
-
-    .slick-prev,
-    .slick-next {
-      position: relative;
-      background: none;
-      border: 2px solid rgba(0, 0, 0, .07);
-      text-indent: -9999px;
-      padding:0;
-      line-height: 31px;
-      width: 35px;
-
-      &:before {
-        text-indent: 0;
-      }
-
-      &:hover {
-        background: rgba(0, 0, 0, .07);
-      }
-    }
-
-    .slick-prev {
-      &:before {
-        content: '◄';
-        position: absolute;
-        left: 8px;
-        top: 0;
-      }
-    }
-
-    .slick-next {
-      order: 1;
-
-      &:before {
-        content: '►';
-        position: absolute;
-        left: 8px;
-        top: 0;
-      }
-    }
-
-    .slick-dots {
-      margin-bottom: 0;
-      padding: 11px 30px 0 30px;
-
-      li {
-        list-style-type: none;
-        display: inline-block;
-        border: 2px solid rgba(0, 0, 0, .07);
-        width: 15px;
-        height: 15px;
-        background: none;
-        text-indent: -10000px;
-        margin-right: 15px;
-        cursor: pointer;
-        transition: all .3s ease;
-
-        &:last-child {
-          margin-right: 0;
-        }
-
-        &:hover {
-          background: rgba(0, 0, 0, .07);
-        }
-
-        &.slick-active {
-          background: @header-text;
-        }
-      }
-    }
-  }
 }
 
 #views-exposed-form-booksearch-page {
@@ -287,8 +204,23 @@
     width: 380px;
   }
 
+  @media (max-width: @max-xs) {
+    display: none;
+  }
+
   .finder-element {
     height: 55px;
+    font-family: ubuntu-regular;
+    font-size: @body-text-n;
+    padding-left: 16px;
+
+    @media (max-width: @max-xs) {
+      padding-left: 26px;
+    }
+
+    @media (max-width: 480px) {
+      padding-left: 15px;
+    }
   }
 
   #finder-block-content_finder {
@@ -346,6 +278,7 @@
 //finder
 #autocomplete {
   border: none;
+  z-index:12121;
 
   .contextual-links {
     display: none;
@@ -608,7 +541,10 @@
 
 body.publishers .breadcrumb,
 body.authors .breadcrumb,
-body.page-node-889 .breadcrumb {
+body.page-node-889 .breadcrumb,
+body.page-books .breadcrumb,
+body.privacy .breadcrumb,
+body.books.category .breadcrumb {
   display: block;
   background: none;
 
@@ -631,7 +567,7 @@ body.page-node-889 .breadcrumb {
       position: absolute;
       width: 0;
       left: 6px;
-      top: 7px;
+      top: 2px;
       height: 0;
       border-top: 4px solid transparent;
       border-left: 6px solid @red;

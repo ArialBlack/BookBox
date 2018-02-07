@@ -25,6 +25,7 @@ global $user;
                 print render($block['content']);
             ?>
         </div>
+        <div class="show-finder"></div>
 
       <div class="navbar-collapse collapse user-navbar-collapse">
         <?php if ($user->uid != 0): ?>

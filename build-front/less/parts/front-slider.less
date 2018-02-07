@@ -15,9 +15,12 @@
     }
 
     .slick-prev,
-    .slick-next,
-    .slick-dots {
+    .slick-next {
       z-index: 100;
+      outline: none;
+    }
+
+    .slick-dots {
       outline: none;
     }
 
@@ -146,6 +149,7 @@
           box-shadow: -15px 0px 0 #353535, 16px 0 0 #353535;
           padding: 10px 0;
           line-height: 1.2;
+          margin-left: 0;
 
           @media (max-width: @max-sm) {
             font-size: 50px;
