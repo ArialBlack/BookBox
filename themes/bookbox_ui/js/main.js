@@ -327,32 +327,127 @@
             var thisValue = $(this).val();
             $('.books.category .col-sm-3 #edit-items-per-page').val(thisValue).trigger('change');
           });
-
           $('.books.category .col-sm-9 #edit-sort-by').change(function() {
             var thisValue = $(this).val();
             $('.books.category .col-sm-3 #edit-sort-by').val(thisValue).trigger('change');
           });
 
+          $('.page-books .col-sm-9 #edit-items-per-page').change(function() {
+            var thisValue = $(this).val();
+            $('.page-books .col-sm-3 #edit-items-per-page').val(thisValue).trigger('change');
+          });
+          $('.page-books .col-sm-9 #edit-sort-by').change(function() {
+            var thisValue = $(this).val();
+            $('.page-books .col-sm-3 #edit-sort-by').val(thisValue).trigger('change');
+          });
+
           //Add placeholder to finder
           $('.search-block .finder-element-title').attr('placeholder', 'Введіть назву книги');
 
-          //Open Dropdown on open category
-          $('.category .col-sm-3 .menu.nav>.active-trail>a').click();
+          if($(window).width() < 992) {
+            var activeCategory = $('.category #block-system-main-menu .menu.nav>.active-trail>a').text();
+            $('.category #block-bookbox-sidebarfitlerblockcompany').prepend('<button class="comp-block-btn">Хіти</button>');
+            $('<button class="category-block-btn">Хіти</button>').insertAfter('.category #block-system-main-menu .block-title');
+            $('<button class="lang-block-btn">Обрати</button>').insertAfter('.category #edit-lang-wrapper>label');
+            $('<button class="collection-block-btn">Обрати</button>').insertAfter('.category #block-views-collection-list-block-1 .block-title');
+            $('.category .category-block-btn').text(activeCategory);
+
+            $('.page-books #block-bookbox-sidebarfitlerblockcompany').prepend('<button class="comp-block-btn">Хіти</button>');
+            $('<button class="category-block-btn">Хіти</button>').insertAfter('.page-books #block-system-main-menu .block-title');
+            $('<button class="lang-block-btn">Обрати</button>').insertAfter('.page-books #edit-lang-wrapper>label');
+            $('<button class="collection-block-btn">Обрати</button>').insertAfter('.page-books #block-views-collection-list-block-1 .block-title');
+          }
+
+            // Add slideDown animation to Bootstrap dropdown when expanding.
+            $('.category .col-sm-3 #block-system-main-menu .dropdown').on('show.bs.dropdown', function() {
+              $(this).find('.dropdown-menu').first().stop(true, true).slideDown();
+            });
+            // Add slideUp animation to Bootstrap dropdown when collapsing.
+            $('.category .col-sm-3 #block-system-main-menu .dropdown').on('hide.bs.dropdown', function() {
+              $(this).find('.dropdown-menu').first().stop(true, true).slideUp();
+            });
 
           // Add slideDown animation to Bootstrap dropdown when expanding.
-          $('.category .col-sm-3 .menu.nav .dropdown').on('show.bs.dropdown', function() {
+          $('.page-books .col-sm-3 #block-system-main-menu .dropdown').on('show.bs.dropdown', function() {
             $(this).find('.dropdown-menu').first().stop(true, true).slideDown();
           });
-
           // Add slideUp animation to Bootstrap dropdown when collapsing.
-          $('.category .col-sm-3 .menu.nav .dropdown').on('hide.bs.dropdown', function() {
+          $('.page-books .col-sm-3 #block-system-main-menu .dropdown').on('hide.bs.dropdown', function() {
             $(this).find('.dropdown-menu').first().stop(true, true).slideUp();
+          });
+
+          //Open Dropdown on open category
+          if($(window).width() > 991) {
+            $('.category .col-sm-3 .menu.nav>.active-trail>a').click();
+          }
+
+          $('.category #block-bookbox-sidebarfitlerblockcompany a').click(function() {
+            var newCategory = $(this).text();
+            $('.lang button').text(newCategory);
+          });
+
+          $('#block-bookbox-sidebarfitlerblockcompany .comp-block-btn').click(function(e) {
+            e.preventDefault();
+            $('#block-bookbox-sidebarfitlerblockcompany>ul').toggleClass('visible');
+            $(this).toggleClass('open');
+            $('#block-bookbox-sidebarfitlerblockcompany').toggleClass('open-block');
+          });
+
+          $('#block-system-main-menu .category-block-btn').click(function(e) {
+            e.preventDefault();
+            $('#block-system-main-menu .menu.nav').toggleClass('visible');
+            $(this).toggleClass('open');
+            $('#block-system-main-menu').toggleClass('open-block');
+          });
+
+          $('#edit-lang-wrapper .lang-block-btn').click(function(e) {
+            e.preventDefault();
+            $('#edit-lang-wrapper .views-widget').toggleClass('visible');
+            $(this).toggleClass('open');
+            $('#block-views-exp-taxonomy-term-page').toggleClass('open-block');
+          });
+
+          $('#block-views-collection-list-block-1 .collection-block-btn').click(function(e) {
+            e.preventDefault();
+            $('#block-views-collection-list-block-1 .view-collection-list').toggleClass('visible');
+            $(this).toggleClass('open');
+            $('#block-views-collection-list-block-1').toggleClass('open-block');
+          });
+
+          $(document).on('click', '.category .col-sm-3 .menu.nav .dropdown-menu', function (e) {
+            e.stopPropagation();
+          });
+          $(document).on('click', '.category .main-container *', function (e) {
+            e.stopPropagation();
+          });
+
+          $(document).on('click', '.page-books .col-sm-3 .menu.nav .dropdown-menu', function (e) {
+            e.stopPropagation();
+          });
+          $(document).on('click', '.page-books .main-container *', function (e) {
+            e.stopPropagation();
           });
 
           $('.page-user- .panel-collapse').on('shown.bs.collapse', function () {
             $('.profile .panel-collapse.in').not(this).siblings('.panel-heading').find('a').click();
           });
 
+          $('.node-type-book .change-lang a').click(function(e) {
+            e.preventDefault();
+            $('.node-type-book .books-translations').toggleClass('open');
+          });
+
+          $('.navbar .show-finder').click(function() {
+            $('.navbar').addClass('finder-open');
+            $('.show-finder.bg').addClass('visible');
+          });
+
+          $('.show-finder.bg').click(function() {
+            $('.navbar').removeClass('finder-open');
+            $('.show-finder.bg').removeClass('visible');
+          });
+
+          //Sliders
           $('.view-front-slider>.view-content').slick({
             autoplay: true,
             autoplaySpeed: 8000,
@@ -386,23 +481,6 @@
               slidesToShow: 1
             });
           }
-
-
-          $('.node-type-book .change-lang a').click(function(e) {
-            e.preventDefault();
-            $('.node-type-book .books-translations').toggleClass('open');
-          });
-
-          $('.navbar .show-finder').click(function() {
-            $('.navbar').addClass('finder-open');
-            $('.show-finder.bg').addClass('visible');
-          });
-
-          $('.show-finder.bg').click(function() {
-            $('.navbar').removeClass('finder-open');
-            $('.show-finder.bg').removeClass('visible');
-          });
-
         });
 
 
@@ -436,9 +514,7 @@
         $(".page-user-register #edit-field-company-und").change(function () {
             $( "select option:selected" ).each(function() {
                 var cid = $(this).val(),
-                    tiptext = $( "#clist li:contains(" + cid + ")" ).data('d');
-
-                // $(".page-user-register #edit-mail--2").attr('placeholder', tiptext);
+                tiptext = $( "#clist li:contains(" + cid + ")" ).data('d');
             });
         }).change();
 

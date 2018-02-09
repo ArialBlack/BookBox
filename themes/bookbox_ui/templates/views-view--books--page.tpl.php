@@ -28,13 +28,25 @@
  */
 ?>
 
-<div class="views-exposed-widget views-widget-sort-by">
-  <div class="form-item form-item-sort-by form-type-select form-group"> <label class="control-label" for="edit-sort-by">Впорядкувати за </label>
-    <select class="form-control form-select" id="edit-sort-by" name="sort_by"><option value="field_hit_value">Популярністю</option><option value="commerce_stock_value">Наявністю</option></select></div>      </div>
-
 <div class="views-exposed-widget views-widget-per-page">
-  <div class="form-item form-item-items-per-page form-type-select form-group"> <label class="control-label" for="edit-items-per-page">Елементів на сторінку </label>
-    <select class="form-control form-select" id="edit-items-per-page" name="items_per_page"><option value="12" selected="selected">12</option><option value="24">24</option><option value="48">48</option><option value="60">60</option></select></div>      </div>
+      <div class="form-item form-item-items-per-page form-type-select form-group">
+    	  <label class="control-label" for="edit-items-per-page">Показати по:</label>
+        <select class="form-control form-select" id="edit-items-per-page" name="items_per_page">
+        	<option value="12" selected="selected"><p>12 книг</p></option>
+        	<option value="24">24 книги</option>
+        	<option value="48">48 книг</option>
+        	<option value="60">60 книг</option>
+        </select>
+      </div>
+    </div>
+    <div class="views-exposed-widget views-widget-sort-by">
+      <div class="form-item form-item-sort-by form-type-select form-group"> <label class="control-label" for="edit-sort-by">Сортувати за:</label>
+        <select class="form-control form-select" id="edit-sort-by" name="sort_by">
+        	<option value="field_hit_value">Популярністю</option>
+        	<option value="commerce_stock_value">Наявністю</option>
+        </select>
+      </div>
+    </div>
 
 
 <div class="<?php print $classes; ?>">

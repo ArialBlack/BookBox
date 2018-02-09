@@ -1,56 +1,38 @@
-.view-id-booksearch {
-  .views-row {
-    .col(12);
+body.page-content-finder {
+  .main-container {
+    width: 100%;
 
-    @media (min-width: @screen-sm-min) {
-      .col(6);
-
-      &:nth-of-type(odd) {
-        clear: both;
-      }
+    .page-header,
+    div.col-sm-12 {
+      display: none;
     }
 
-    @media (min-width: @screen-md-min) {
-      .col(4);
+    .yellow-block {
+      height: 255px;
+    }
 
-      &:nth-of-type(odd) {
-        clear: none;
+    section.col-sm-12>.container {
+      width: 100%;
+      padding:0;
+    }
+
+    #finder-form-content-finder {
+      .container;
+
+      .control-label,
+      #autocomplete {
+        display: none;
       }
 
-      &:nth-of-type(3n+1) {
-        clear: both;
+    }
+
+    .finder-results-content_finder {
+      .container;
+
+      .view-content {
+        display: flex;
+        flex-wrap: wrap;
       }
     }
-  }
-}
-
-.page-content-finder {
-  .page-header {
-    margin-top: 60px;
-  }
-
-  #edit-go {
-    display: none!important;
-  }
-  
-    #autocomplete {
-      li {
-        @media screen and (max-width: 1199px){
-          width: 33.3%;
-        }
-
-        @media screen and (max-width: 991px){
-          width: 50%;
-        }
-
-        @media screen and (max-width: 550px){
-          width: 100%;
-        }
-      }
-    }
-  
-
-  .finder-form-element.finder-form-element-f {
-    margin-bottom: 25px;
   }
 }

@@ -182,9 +182,21 @@ global $user;
     <div class="col-sm-12">
       <?php print render($page['precontent']); ?>
     </div>
+    <div class="yellow-block">
+      <div class="container">
+        <?php if (!empty($breadcrumb)): print $breadcrumb; endif;?>
+           <?php print render($title_prefix); ?>
+              <?php if (!empty($title)): ?>
+                <h1 class="page-header"><?php print $title; ?></h1>
+              <?php endif; ?>
+           <?php print render($title_suffix); ?>
+            <div class="page-icon"></div>
+        </div>
+    </div>
 
-
-    <?php if (!empty($page['sidebar_first'])): ?>
+    <div class="container categories-block">
+    	<div class="row">
+    		<?php if (!empty($page['sidebar_first'])): ?>
       <aside class="col-sm-3" role="complementary">
         <?php print render($page['sidebar_first']); ?>
       </aside>  <!-- /#sidebar-first -->
@@ -195,19 +207,7 @@ global $user;
       <?php if (!empty($page['highlighted'])): ?>
         <div class="highlighted jumbotron"><?php print render($page['highlighted']); ?></div>
       <?php endif; ?>
-    <div class="yellow-block">
-      <div class="container">
-        BOOOOOOOOOOOOOOOOOOOOOOOKS
-        <?php if (!empty($breadcrumb)): print $breadcrumb; endif;?>
-           <?php print render($title_prefix); ?>
-              <?php if (!empty($title)): ?>
-                <h1 class="page-header"><?php print $title; ?></h1>
-              <?php endif; ?>
-           <?php print render($title_suffix); ?>
-            <div class="page-icon"></div>
-        </div>
-    </div>
-    <div class="container">
+
       <a id="main-content"></a>
       <?php if (!empty($tabs)): ?>
         <?php print render($tabs); ?>
@@ -219,8 +219,11 @@ global $user;
         <ul class="action-links"><?php print render($action_links); ?></ul>
       <?php endif; ?>
       <?php print render($page['content']); ?>
-    </div>
     </section>
+    	</div>
+    </div>
+
+
 
     <?php if (!empty($page['sidebar_second'])): ?>
       <aside class="col-sm-4" role="complementary">
