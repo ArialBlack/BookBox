@@ -1,4 +1,5 @@
-body.publishers {
+body.publishers,
+body.collection {
   .sort-submenu,
   div.col-sm-12 {
     display: none !important;
@@ -10,6 +11,28 @@ body.publishers {
 
   .main-container {
     width: 100%;
+  }
+
+  .yellow-block {
+    img {
+      display: none;
+    }
+
+    .description {
+      font-family: ubuntu-regular;
+      font-size: @body-text-n;
+      color: @header-text-3;
+
+      @media (max-width: @max-xs) {
+        font-size: @menu-text-2;
+      }
+    }
+  }
+
+  &.collection {
+    #block-system-main>.view-taxonomy-term {
+      .container;
+    }
   }
 
   .page-header {
@@ -37,6 +60,9 @@ body.publishers {
   }
 
   .publisher-url {
+    width: 100%;
+    overflow: hidden;
+
     a {
       position: relative;
       font-family: ubuntu-medium;
@@ -44,6 +70,7 @@ body.publishers {
       color: @header-text-3;
       text-decoration: underline;
       padding-left: 30px;
+      white-space: normal;
 
       &:before {
         content: '';
@@ -88,6 +115,8 @@ body.publishers {
 
   #block-system-main > .view-taxonomy-term {
     >.view-content {
+      display: flex;
+      flex-wrap: wrap;
       justify-content: flex-start !important;
       padding-top: 30px;
       padding-bottom: 0;
