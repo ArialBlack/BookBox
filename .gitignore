@@ -244,3 +244,4 @@ themes/bookbox_ui/templates/page--taxonomy_vocabulary__authors.tpl.php
 themes/bookbox_ui/templates/page--type-book.tpl.php
 themes/bookbox_ui/templates/page--user.tpl.php
 themes/bookbox_ui/css/style.css.map
+themes/bookbox_ui/templates/page--node--893.tpl.php

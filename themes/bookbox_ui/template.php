@@ -44,9 +44,17 @@ function bookbox_ui_preprocess_page(&$vars) {
     drupal_goto('user/login');
   }
 
-  if (($views_page = views_get_page_view()) && $views_page->name === "books") {
-    $vars['theme_hook_suggestions'][] = 'page__views__books';
+  if ($views_page = views_get_page_view() ) {
+    if ($views_page->name === "books") {
+      $vars['theme_hook_suggestions'][] = 'page__views__books';
+    }
+
+    if ($views_page->name === "user_company_hits") {
+      $vars['theme_hook_suggestions'][] = 'page__views__usercompanyhits';
+    }
   }
+
+
 
 
   // Do we have a node?
