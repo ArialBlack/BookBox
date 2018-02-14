@@ -300,6 +300,10 @@
           });
 
           checkBookName('.block-bookbox ul>li');
+          checkBookName('.page-books .view-content>.views-row');
+          checkBookName('body.books .view-content>.views-row');
+          checkBookName('body.collection .view-content>.views-row');
+          checkBookName('.node-type-book .inner-block-bookbox>li');
 
             $('.navbar .dropdown-toggle .user-name').click(function() {
               // $('body').toggleClass('openNav');
@@ -342,20 +346,24 @@
           });
 
           //Add placeholder to finder
-          $('.search-block .finder-element-title').attr('placeholder', 'Введіть назву книги');
+          $('.search-block .finder-element-title').attr('placeholder', 'Пошук за назвою та (або) автором');
 
           if($(window).width() < 992) {
             var activeCategory = $('.category #block-system-main-menu .menu.nav>.active-trail>a').text();
             $('.category #block-bookbox-sidebarfitlerblockcompany').prepend('<button class="comp-block-btn">Хіти</button>');
-            $('<button class="category-block-btn">Хіти</button>').insertAfter('.category #block-system-main-menu .block-title');
+            $('<button class="category-block-btn">Обрати</button>').insertAfter('.category #block-system-main-menu .block-title');
             $('<button class="lang-block-btn">Обрати</button>').insertAfter('.category #edit-lang-wrapper>label');
             $('<button class="collection-block-btn">Обрати</button>').insertAfter('.category #block-views-collection-list-block-1 .block-title');
             $('.category .category-block-btn').text(activeCategory);
 
             $('.page-books #block-bookbox-sidebarfitlerblockcompany').prepend('<button class="comp-block-btn">Хіти</button>');
-            $('<button class="category-block-btn">Хіти</button>').insertAfter('.page-books #block-system-main-menu .block-title');
+            $('<button class="category-block-btn">Обрати</button>').insertAfter('.page-books #block-system-main-menu .block-title');
             $('<button class="lang-block-btn">Обрати</button>').insertAfter('.page-books #edit-lang-wrapper>label');
             $('<button class="collection-block-btn">Обрати</button>').insertAfter('.page-books #block-views-collection-list-block-1 .block-title');
+
+            if($('body').hasClass('hits') || $('body').hasClass('new') || $('body').hasClass('company-hits')) {
+              $('.comp-block-btn').text($('.page-header').text());
+            }
           }
 
             // Add slideDown animation to Bootstrap dropdown when expanding.
@@ -405,6 +413,8 @@
             $('#edit-lang-wrapper .views-widget').toggleClass('visible');
             $(this).toggleClass('open');
             $('#block-views-exp-taxonomy-term-page').toggleClass('open-block');
+            $('#block-views-exp-books-page-2').toggleClass('open-block');
+            $('#block-views-exp-books-page-1').toggleClass('open-block');
           });
 
           $('#block-views-collection-list-block-1 .collection-block-btn').click(function(e) {
@@ -427,6 +437,22 @@
           $(document).on('click', '.page-books .main-container *', function (e) {
             e.stopPropagation();
           });
+
+          $('.page-faq .panel-default').not('.open').click(function() {
+            // $('.page-faq .panel-default.open .panel-heading a').click();
+          });
+
+          $('.page-faq .panel-collapse').on('shown.bs.collapse', function () {
+            $('.panel-collapse.in').not(this).siblings('.panel-heading').find('a').click();
+          });
+
+          $('.page-faq .panel-heading a').click(function() {
+            var currentLink = $(this).attr('aria-controls'),
+                currentTab = $('.page-faq .panel-default.' + currentLink);
+
+            currentTab.toggleClass('open');
+          });
+
 
           $('.page-user- .panel-collapse').on('shown.bs.collapse', function () {
             $('.profile .panel-collapse.in').not(this).siblings('.panel-heading').find('a').click();

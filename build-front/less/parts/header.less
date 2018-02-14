@@ -11,6 +11,16 @@
     z-index: 2;
     border-bottom: 1px solid rgba(0, 0, 0, 0.07);
 
+    @media (max-width: 1499px) {
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    @media (max-width: @max-xs) {
+      padding-left: 20px;
+      padding-right: 15px;
+    }
+
     .dropdown-menu > li > a {
       text-transform: uppercase;
     }
@@ -59,14 +69,6 @@
       }
     }
 
-    @media (max-width: @laptop-2) {
-      padding-left: 25px;
-    }
-
-    @media (max-width: @max-sm) {
-      padding-left: 20px;
-    }
-
     &>.container {
       display: flex;
       padding-bottom: 3px;
@@ -77,7 +79,7 @@
     }
 
     @media (max-width: 991px) {
-      padding: 0 20px 0 20px;
+      //padding: 0 20px 0 20px;
 
       .main-nav-collapse {
         display: none !important;
@@ -210,72 +212,6 @@
       }
     }
 
-    //nav {
-    //  display: flex;
-    //  flex-direction: row;
-    //  justify-content: space-between;
-    //
-    //  li {
-    //    a {
-    //      text-transform: uppercase;
-    //      color: @light-color;
-    //      background: none;
-    //
-    //      @media screen and (max-width: 991px) {
-    //        letter-spacing: 1.5px;
-    //      }
-    //    }
-    //
-    //    .new-dropdown-toggle {
-    //      top: 17px;
-    //      width: 17px;
-    //      height: 17px;
-    //      margin: 0;
-    //
-    //
-    //      &:hover, &:active, &:focus {
-    //        color: @bb-darkblue;
-    //        background-color: @light-color;
-    //        transition: background-color .5s ease, color .5s ease;
-    //      }
-    //
-    //      @media screen and (min-width: 992px) and (max-width: 1150px) {
-    //        width: 15px;
-    //      }
-    //    }
-    //  }
-    //
-    //  .dropdown-menu {
-    //
-    //    li {
-    //      @media screen and (min-width: 992px) {
-    //        margin: 0;
-    //      }
-    //    }
-    //
-    //    a, a:active, a:focus, a:hover {
-    //      color: @bb-darkblue;
-    //      font-weight: normal;
-    //      line-height: 1.42857143;
-    //      text-transform: uppercase;
-    //      padding: 3px 20px;
-    //
-    //      @media screen and (max-width: 991px) {
-    //        line-height: 35px !important;
-    //        color: white;
-    //      }
-    //    }
-    //
-    //    a:active, a:focus, a:hover {
-    //      @media screen and (min-width: 992px) {
-    //        background: #f5f5f5;
-    //      }
-    //    }
-    //  }
-    //}
-
-
-
     .home-header {
       display: none;
 
@@ -303,6 +239,10 @@
     li {
       padding-left: 10px;
       padding-right: 10px;
+
+      &:nth-child(2) {
+        padding-right: 3px;
+      }
 
       &.active {
         a {
@@ -454,10 +394,6 @@
         line-height: 55px;
         padding-left: 10px;
 
-        //@media (max-width: @laptop-1) {
-        //  font-size: .01px;
-        //}
-
         &:before {
           content: '';
           position: absolute;
@@ -556,11 +492,6 @@
     width: 33px;
     height: 36px;
     border: none;
-
-    /*&:hover {
-      background: transparent url('../icons-svg/burger.svg') no-repeat center center;
-      background-size: contain;
-    }*/
 
     &.usermenu-toggle {
       background: transparent url('../icons-svg/user.svg') no-repeat center center;

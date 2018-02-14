@@ -160,10 +160,19 @@ body.page-content-finder article {
        background-size: 100%;
        background-repeat: no-repeat;
 
-       &:hover {
+       &:hover,
+       &:focus {
          background: url(../images/svg/add-to-wish-book-2.svg);
          background-size: 100%;
          background-repeat: no-repeat;
+         text-decoration: none;
+       }
+
+       &[title="Видалити книгу до списку обранного"] {
+         background: url(../images/svg/add-to-wish-book-3.svg);
+         background-size: 100%;
+         background-repeat: no-repeat;
+         text-decoration: none;
        }
      }
    }

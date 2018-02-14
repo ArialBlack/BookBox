@@ -6,10 +6,6 @@
     }
   }
 
-  #admin-menu {
-    //display: none; //TODO
-  }
-
   #block-bookbox-relevantbooks {
     display: none;
   }
@@ -534,6 +530,11 @@
         display: none;
       }
 
+      .translation_ru,
+      .translation_en {
+        display: none !important;
+      }
+
       .flag-bookmarks a {
         position: absolute;
         top: -255px;
@@ -549,6 +550,13 @@
           background: url(../images/svg/add-to-wish-book-2.svg);
           background-size: 100%;
           background-repeat: no-repeat;
+        }
+
+        &[title="Видалити книгу до списку обранного"] {
+          background: url(../images/svg/add-to-wish-book-3.svg);
+          background-size: 100%;
+          background-repeat: no-repeat;
+          text-decoration: none;
         }
       }
     }
