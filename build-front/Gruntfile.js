@@ -53,7 +53,8 @@ module.exports = function(grunt) {
                     "../themes/bookbox_ui/templates/page--taxonomy_vocabulary__authors.tpl.php": "_templates-src/page--taxonomy_vocabulary__authors.tpl.php",
                     "../themes/bookbox_ui/templates/page--taxonomy_vocabulary__collections.tpl.php": "_templates-src/page--taxonomy_vocabulary__collections.tpl.php",
                     "../themes/bookbox_ui/templates/page--taxonomy_vocabulary__categories.tpl.php": "_templates-src/page--taxonomy_vocabulary__categories.tpl.php",
-                    "../themes/bookbox_ui/templates/page--node--893.tpl.php": "_templates-src/page--node--893.tpl.php" //contacts
+                    "../themes/bookbox_ui/templates/page--node--893.tpl.php": "_templates-src/page--node--893.tpl.php", //contacts
+                    "../themes/bookbox_ui/templates/page--book-search.tpl.php": "_templates-src/page--book-search.tpl.php"
                 }
             }
         },

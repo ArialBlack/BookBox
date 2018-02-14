@@ -142,9 +142,24 @@
 
         $('#userreglink').appendTo("#edit-actions"); //todo in backend
         $('.sort-submenu').insertAfter(".page-header");
+        
+        function searchResultsActions() {
+            if($('.region-precontent #finder-block-content_finder-wrapper form').length > 0) {
+                var sString = $('#finder-block-content_finder form input.finder-element').val();
+
+                console.log(sString);
+                if($('.view-search-results-div').length > 0) {
+                    $('.view-search-results-div').find('span').text(sString);
+                }
+
+                $('.view-search-results-div').insertAfter( ".region-precontent #finder-block-content_finder-wrapper" );
+            }
+        }
 
         $( document ).ready(function() {
             //console.log(Drupal.settings.firstLogin);
+
+            searchResultsActions();
 
             ///url must switch tab
             var hash = window.location.hash;

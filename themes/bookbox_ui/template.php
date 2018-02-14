@@ -36,6 +36,30 @@ function bookbox_ui_preprocess_node(&$vars) {
   }
 }
 
+function bookbox_ui_preprocess(&$variables, $hook) {
+
+ /* global $user;
+
+  $query = db_select('flagging', 'f');
+  $query->addExpression('COUNT(*)');
+  $query->condition('f.uid', $user->uid);
+  $count = $query->execute()->fetchField();
+
+  $variables['u_flag'] = $count;
+
+  $variables['finder_node_results_string'] = null;
+  $vtc = 0;
+
+  if($hook == 'views_view') {
+    $view = $variables['view'];
+    if ($view->name === "finder_node") {
+      $vtc = $view->total_rows;
+    }
+  }
+  */
+}
+
+
 function bookbox_ui_preprocess_page(&$vars) {
 
   $url  = request_path();
@@ -140,17 +164,6 @@ function bookbox_ui_preprocess_page(&$vars) {
     $vocabulary = taxonomy_vocabulary_load($term->vid);
     $vars['theme_hook_suggestions'][] = 'page__taxonomy_vocabulary__' . $vocabulary->machine_name;
   }
-}
-
-function bookbox_ui_preprocess(&$variables) {
-  global $user;
-
-  $query = db_select('flagging', 'f');
-  $query->addExpression('COUNT(*)');
-  $query->condition('f.uid', $user->uid);
-  $count = $query->execute()->fetchField();
-
-  $variables['u_flag'] = $count;
 }
 
 function bookbox_ui_preprocess_html(&$vars, $hook) {

@@ -290,7 +290,7 @@ function bookbox_sidebarfc_block() {
 
   //Якщо компнія молода, то не виводимо лінку.
   if($date_diff > 60) {
-    $content = $content . '<li><a href="books/company-hits">Хіти в ' . $company->title . '</a></li>';
+    $content = $content . '<li><a href="/books/company-hits">Хіти в ' . $company->title . '</a></li>';
   }
 
   $content = $content . '</ul>';
