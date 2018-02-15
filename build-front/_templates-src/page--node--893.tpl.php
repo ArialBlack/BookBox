@@ -106,11 +106,8 @@
                 <h1 class="page-header"><?php print $title; ?></h1>
               <?php endif; ?>
            <?php print render($title_suffix); ?>
-            <div class="page-icon"></div>
-
-
             <?php print render($page['content']); ?>
-
+            <div class="page-icon"></div>
         </div>
     </div>
 

@@ -580,6 +580,7 @@ body.collection .breadcrumb,
 body.page-faq .breadcrumb,
 body.page-content-finder .breadcrumb,
 body.page-book-search .breadcrumb,
+body.page-node-893 .breadcrumb,
 body.books.category .breadcrumb {
   display: block;
   background: none;
@@ -619,7 +620,30 @@ body.books.category .breadcrumb {
 .page-book-search {
   .text-center>ul.pagination {
     li {
+      position: relative;
       display: inline-block;
+
+      &.first.active {
+        &:before {
+          content: '◄';
+          position: absolute;
+          top: 0;
+          left: -41px;
+          border: 2px solid rgba(0, 0, 0, .09);
+          line-height: 28px;
+          font-family: ubuntu-regular;
+          font-size: 10px;
+          color: @white;
+          background: none;
+          margin-right: 5px;
+          padding: 0;
+          cursor: pointer;
+          transition: all .3s ease;
+          width: 32px;
+          height: 32px;
+          opacity: 1;
+        }
+      }
 
       span, a {
         border: 2px solid rgba(0, 0, 0, .14);

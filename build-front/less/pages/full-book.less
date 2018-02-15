@@ -114,6 +114,23 @@
 
       }
 
+      .field-item {
+        position: relative;
+
+        &:before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 0;
+          height: 100%;
+          width: 14px;
+          background: linear-gradient(-90deg, black, transparent);
+          opacity: .25;
+          border-right: 2px solid white;
+          z-index: 10;
+        }
+      }
+
       img {
         -webkit-box-shadow: 15px 15px 33px -9px rgba(0,0,0,0.28);
         -moz-box-shadow: 15px 15px 33px -9px rgba(0,0,0,0.28);

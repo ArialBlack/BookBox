@@ -1,153 +1,165 @@
 .page-node-893 {
-	.main-container {
-		min-height: 90vh;
-		width: 100%;
 
-		h1, h2, h3 {
-			text-transform: uppercase;
-		}
+  .tabs--primary.nav.nav-tabs,
+  .action-links {
+    display: none;
+  }
 
-		h1 {
-			margin-bottom: 0;
-		}
+  .main-container {
+    width: 100%;
+    min-height: 0;
+    background: @bg-color !important;
 
-		iframe {
-			max-width: 1000px;
-			width: 100%;
-		}
-	}
+    .yellow-block {
+      .region-content {
+        float: left;
+      }
 
-	.tabs--primary.nav-tabs, .breadcrumb {
-		//display: none;
-	}
+      #block-system-main {
+        .phone,
+        .mail {
+          display: inline-block;
 
-	#node-893 {
-		padding-left: 95px;
-		@media screen and (max-width: 992px) {
-			padding-left: 15px;
-		}
+          a {
+            position: relative;
+            font-family: GillSansC;
+            font-size: @text-block-title;
+            color: @header-text-3;
+            padding-left: 35px;
 
-		a {
-			font-size: 18px;
-		}
+            &:hover {
+              text-decoration: none;
+            }
+          }
+        }
 
-		h3 {
-			font-size: 18px;
-			margin-top: 40px;
+        .phone a:before {
+          content: '';
+          position: absolute;
+          left: -5px;
+          top: 0;
+          background: url(../images/svg/phone.svg) no-repeat;
+          height: 100%;
+          width: 30px;
+          background-size: 90%;
+        }
 
-			@media screen and (max-width: 767px) {
-				margin-bottom: 0;
-				margin-top: 25px;
-			}
-		}
 
-		p>a, p {
-			font-size: 18px;
-			color: #65677b;
+        .mail {
+          margin-left: 70px;
+        }
 
-			@media screen and (max-width: 767px) {
-				font-size: 16px;
-			}
-		}
-	}
+        .mail a:before {
+          content: '';
+          position: absolute;
+          left: -5px;
+          top: 0;
+          background: url(../images/svg/post.svg) no-repeat;
+          height: 100%;
+          width: 30px;
+          background-size: 90%;
+        }
+      }
 
-	.webform-client-form {
-		padding-left: 95px;
-		max-width: 670px;
-		width: 100%;
+      .page-icon {
+        float: left;
+        width: 16.66666667%;
+        margin-top: -120px;
+        margin-left: 8.3333333%;
+        height: 150px;
+        background:url(../images/svg/contacts.svg);
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
 
-		@media screen and (max-width: 767px) {
-				.form-actions {
-					text-align: center;
-				}
-			}
+        @media (max-width: @max-sm) {
+          display: none;
+        }
+      }
+    }
 
-		.control-label {
-			font-size: 18px;
-		}
+    .page-header {
+      font-family: GillSansC;
+      font-size: @header-large;
+      text-transform: uppercase;
+      color: @header-text-3;
+      border: none;
 
-		textarea {
-			overflow: hidden;
-			min-height: 200px;
+      @media (max-width: @laptop-2) {
+        margin-bottom: 10px;
+      }
 
-			@media screen and (max-width: 767px) {
-				resize: none;
-				margin-bottom: 0;
-			}
-		}
+      @media (max-width: @max-sm) {
+        font-size: 50px;
+      }
 
-		.webform-submit {
-			margin-top: 50px;
+      @media (max-width: @max-xs) {
+        font-size: @screen-title;
+      }
 
-			@media screen and (max-width: 767px) {
-				margin-top: 25px;
-				width: 250px;
-			}
-		}
-	}
+      @media (max-width: @mid-xs) {
+        font-size: 26px;
+      }
+    }
+  }
 
-	.col-sm-8 {
-		padding-left: 0;
+  #block-webform-client-block-892 {
+    .container;
+    padding-top: 65px;
+    padding-bottom: 60px;
 
-		@media screen and (max-width: 767px) {
-			padding-left: 15px;
-		}
-	}
+    h2 {
+      font-family: GillSansC;
+      font-size: @screen-title;
+      color: @white;
+      text-transform: uppercase;
+      display: inline;
+      padding: 5px 0;
+      background: #353535;
+      box-shadow: 10px 0 0 #353535, -10px 0 0 #353535;
 
-	.page-header {
-		padding-top: 60px;
-		border-bottom: none;
-		text-transform: uppercase;
-		font-size: 24px;
+      @media (max-width: @max-sm) {
+        font-size: 32px;
+      }
 
-		@media screen and (max-width: 767px) {
-			text-align: center;
-			padding-bottom: 0;
-      padding-top: 40px;
-		}
-	}
+      @media (max-width: @max-xs) {
+        font-size: 30px;
+        margin-left: 10px;
+      }
 
-	.page-header:before,
-	.block-title:before {
-		content: " ";
-		width: 90px;
-		height: 2px;
-		background: #12ab99;
-		position: relative;
-		display: inline-block;
-		margin-bottom: 7px;
-		margin-right: 5px;
-		margin-left: 0;
-		padding: 0;
+      @media (max-width: @mid-xs) {
+        font-size: 26px;
+      }
+    }
 
-		@media screen and (max-width: 767px) {
-			display: none;
-		}
-	}
+    .webform-client-form-892 {
+      padding-top: 55px;
 
-	.block-title {
-		font-size: 24px;
-		padding: 60px 0;
+      .control-label {
+        font-family: ubuntu-medium;
+        font-size: 14px;
+        text-transform: uppercase;
+        color: @header-text-3;
+      }
 
-		@media screen and (max-width: 767px) {
-			text-align: center;
-			padding: 30px 0;
-			font-size: 20px;
-		}
-	}
+      .grippie {
+        display: none;
+      }
 
-	@media screen and (max-width: 767px) {
-		.webform-client-form, #node-893 {
-			padding-left: 0;
-			max-width: inherit;
-		}
-		.field-items .field-item.even p:last-child {
-			margin: 0 -15px;
+      textarea {
+        height: 170px;
 
-			iframe {
-				height: 350px;
-			}
-		}
-	}
+        &:focus {
+          box-shadow: none;
+          border-color: #ccc;
+          border-bottom: 3px solid @yellow;
+        }
+      }
+    }
+
+    .form-actions {
+      float: right;
+      padding-top: 10px;
+    }
+  }
 }
 

@@ -5,11 +5,16 @@
     width: 100%;
     min-height: 100px;
     padding-bottom: 60px !important;
-    background: @yellow !important;
+    background: @green !important;
 
     #block-system-main {
-      .container;
-      padding-top: 30px;
+
+      #edit-account,
+      #edit-field-tel,
+      .form-item-field-author-photo-und-0,
+      .form-actions {
+        .container;
+      }
 
       .glyphicon.form-control-feedback,
       .help-block.password-help {
@@ -18,6 +23,16 @@
 
       .help-block {
         max-width: 400px;
+        color: @white;
+        font-family: ubuntu-regular;
+
+        em {
+          font-style: normal;
+        }
+
+        a {
+          font-family: ubuntu-regular;
+        }
       }
 
       #edit-account {
@@ -65,7 +80,9 @@
 
         .field-name-field-author-photo {
           order: -3;
-          padding-bottom: 20px;
+          padding-top: 35px;
+          padding-bottom: 35px;
+          background: @yellow;
 
           .image-preview {
             border: 2px solid #e0e0e0;
@@ -76,6 +93,10 @@
           .image-widget-data {
             float: left;
             clear: both;
+
+            >button {
+              width: 223px;
+            }
 
             .input-group {
               .form-control.form-file {

@@ -100,32 +100,38 @@ $term = taxonomy_term_load(arg(2));
               ?>
             </div>
           <?php endif; ?>
-
-            <?php
-            if(isset($term->field_author_photo)) {
-              print '<img src="'. image_style_url('medium', $term->field_author_photo['und'][0]['uri']). '" />';
-            }
-
-            if (module_exists('i18n_taxonomy') && i18n_taxonomy_vocabulary_mode($term->vid) == 1) {
-              $description = i18n_string("taxonomy:term:$term->tid:description", $term->description);
-            }
-            else {
-              $description = $term->description;
-            }
-            print '<div class="description">' . check_markup($description, $term->format, '', TRUE) . '</div>';
-            ?>
-
-
-
-
       		</div>
       		<div class="col-md-2">
           <div class="page-icon"></div>
       		</div>
       	</div>
-        
+
         </div>
     </div>
+    <div class="term-listing-heading">
+      <div class="taxonomy-term">
+        <div class="content">
+          <div class="field-name-field-author-photo">
+            <?php
+              if(isset($term->field_author_photo)) {
+                print '<img src="'. image_style_url('medium', $term->field_author_photo['und'][0]['uri']). '" />';
+              }
+            ?>
+          </div>
+
+          <?php
+          if (module_exists('i18n_taxonomy') && i18n_taxonomy_vocabulary_mode($term->vid) == 1) {
+            $description = i18n_string("taxonomy:term:$term->tid:description", $term->description);
+          }
+          else {
+            $description = $term->description;
+          }
+          print '<div class="taxonomy-term-description">' . check_markup($description, $term->format, '', TRUE) . '</div>';
+          ?>
+        </div>
+      </div>
+    </div>
+
       <a id="main-content"></a>
       <?php if (!empty($tabs)): ?>
         <?php print render($tabs); ?>

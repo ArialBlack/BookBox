@@ -130,6 +130,17 @@
         }
       }
 
+      function checkBookName2(bookBlock, countOfChar) {
+        for(var tb = 0; tb<$(bookBlock).length; tb++) {
+          // console.log('checking book name');
+          if ($(bookBlock + ':nth-child('+ tb +' ) h4').text().length > countOfChar) {
+            //console.log('book name is too long');
+            var newBookName = $(bookBlock + ':nth-child('+ tb +' ) h4').text().substr(0, countOfChar-1);
+            $(bookBlock + ':nth-child('+ tb +' ) h4').text(newBookName + '...');
+          }
+        }
+      }
+
         $(document).ajaxStop(function() {
             var $label = $('.book-labels .field');
             $label.each(function( index ) {
@@ -149,9 +160,11 @@
             }, 250);
           });
 
-          $('.search-block button[type="submit"]').click(function() {
-            console.log('2xclick');
-          });
+          checkBookName2('#autocomplete ul>li', '37');
+
+          // $('.search-block button[type="submit"]').click(function() {
+          //   console.log('2xclick');
+          // });
         });
 
         $('#userreglink').appendTo("#edit-actions"); //todo in backend
@@ -333,6 +346,8 @@
           checkBookName('body.books .view-content>.views-row');
           checkBookName('body.collection .view-content>.views-row');
           checkBookName('.node-type-book .inner-block-bookbox>li');
+          checkBookName('.publishers .view-content>.views-row');
+          checkBookName('.book-search .view-content>article');
 
             $('.navbar .dropdown-toggle .user-name').click(function() {
               // $('body').toggleClass('openNav');
@@ -351,10 +366,12 @@
           BookBoxBlockBuilder('.page-user- .visible-desktop #read>form>div', '.book-container');
           BookBoxBlockBuilder('.page-user- .visible-desktop #history', '.node-book');
           BookBoxBlockBuilder('.page-user- .visible-desktop #favs>.view-user-wishlist>.view-content', '.views-row');
-          BookBoxBlockBuilder('body.authors #block-system-main', '.node-book');
+          BookBoxBlockBuilder('body.authors #block-system-main .view-content', '.views-row');
 
           changeFormSelect('.books.category .col-sm-3 #edit-items-per-page','.books.category .col-sm-9 #edit-items-per-page');
           changeFormSelect('.books.category .col-sm-3 #edit-sort-by','.books.category .col-sm-9 #edit-sort-by');
+          changeFormSelect('.page-books .col-sm-3 #edit-items-per-page','.page-books .col-sm-9 #edit-items-per-page');
+          changeFormSelect('.page-books .col-sm-3 #edit-sort-by','.page-books .col-sm-9 #edit-sort-by');
 
           $('.books.category .col-sm-9 #edit-items-per-page').change(function() {
             var thisValue = $(this).val();
@@ -453,6 +470,18 @@
             $(this).toggleClass('open');
             $('#block-views-collection-list-block-1').toggleClass('open-block');
           });
+
+          $('.scroll-to').click(function(e) {
+            e.preventDefault();
+            var target = $(this).attr('href');
+            var offsetScroll = $(target).offset().top;
+            $('html, body').animate( { scrollTop:  offsetScroll}, 1400);
+          });
+
+          var firstChild = $('.text-center>ul.pagination>li:first-child span').text();
+          if(firstChild === '1') {
+            $('.text-center>ul.pagination>li').first().addClass('first');
+          }
 
           //todo
           // $('.book-card').parent().mouseup(function() {

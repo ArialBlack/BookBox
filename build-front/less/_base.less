@@ -40,6 +40,16 @@
 }
 
 @font-face {
+  font-family: 'Handlee-Regular';
+  src: url('../fonts/Handlee-Regular.eot?#iefix') format('embedded-opentype'),
+  url('../fonts/Handlee-Regular.otf')  format('opentype'),
+  url('../fonts/Handlee-Regular.woff') format('woff'),
+  url('../fonts/Handlee-Regular.ttf')  format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
     font-family: 'MyriadPro-Regular';
     src: url('../fonts/MyriadPro-Regular.eot?#iefix') format('embedded-opentype'),
     url('../fonts/MyriadPro-Regular.otf')  format('opentype'),
@@ -349,4 +359,25 @@ body.offline {
   opacity: .2;
   border-right: 2px solid white;
   z-index: 10;
+}
+
+body.publishers,
+body.collection,
+.books.category {
+  .book-card {
+    position: relative;
+
+    &:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 61px;
+      height: 210px;
+      width: 9px;
+      background: #000;
+      opacity: .2;
+      border-right: 2px solid white;
+      z-index: 10;
+    }
+  }
 }

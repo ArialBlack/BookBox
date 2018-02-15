@@ -101,7 +101,7 @@
               <?php endif; ?>
            <?php print render($title_suffix); ?>
 
-        <div class="col-sm-12">
+        <div class="col-sm-9">
           <?php print render($page['precontent']); ?>
         </div>
             <div class="page-icon"></div>
