@@ -219,6 +219,7 @@ pip-log.txt
 !modules/
 modules/*
 !modules/custom/
+!modules/finder/
 modules/custom/contrib
 !modules/views_php/
 
@@ -245,3 +246,4 @@ themes/bookbox_ui/templates/page--type-book.tpl.php
 themes/bookbox_ui/templates/page--user.tpl.php
 themes/bookbox_ui/css/style.css.map
 themes/bookbox_ui/templates/page--node--893.tpl.php
+themes/bookbox_ui/templates/page--book-search.tpl.php
