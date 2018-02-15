@@ -138,11 +138,25 @@
                     $(this).remove();
                 }
             });
+
+          $('#autocomplete .show-all a').on('click', function(e) {
+            e.preventDefault();
+
+            $('.search-block button[type="submit"]').click();
+
+            setTimeout(function(){
+              $('.search-block button[type="submit"]').click();
+            }, 250);
+          });
+
+          $('.search-block button[type="submit"]').click(function() {
+            console.log('2xclick');
+          });
         });
 
         $('#userreglink').appendTo("#edit-actions"); //todo in backend
         $('.sort-submenu').insertAfter(".page-header");
-        
+
         function searchResultsActions() {
             if($('.region-precontent #finder-block-content_finder-wrapper form').length > 0) {
                 var sString = $('#finder-block-content_finder form input.finder-element').val();
@@ -362,6 +376,7 @@
 
           //Add placeholder to finder
           $('.search-block .finder-element-title').attr('placeholder', 'Пошук за назвою та (або) автором');
+          $('.page-book-search .main-container .finder-element-title').attr('placeholder', 'Пошук за назвою та (або) автором');
 
           if($(window).width() < 992) {
             var activeCategory = $('.category #block-system-main-menu .menu.nav>.active-trail>a').text();
@@ -438,6 +453,13 @@
             $(this).toggleClass('open');
             $('#block-views-collection-list-block-1').toggleClass('open-block');
           });
+
+          //todo
+          // $('.book-card').parent().mouseup(function() {
+          //   console.log('click');
+          //   $(this).find('.book-card').click();
+          //   // $(this).click();
+          // });
 
           $(document).on('click', '.category .col-sm-3 .menu.nav .dropdown-menu', function (e) {
             e.stopPropagation();

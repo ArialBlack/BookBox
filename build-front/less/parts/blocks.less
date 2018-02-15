@@ -225,7 +225,7 @@ div:not(.well)>.block-bookbox {
 
   #finder-block-content_finder {
     button {
-      //display: none;
+      display: none;
     }
   }
 
@@ -253,6 +253,7 @@ div:not(.well)>.block-bookbox {
       background-repeat: no-repeat;
       background-size: 100%;
       cursor: pointer;
+      clip: auto;
     }
   }
 
@@ -277,11 +278,38 @@ div:not(.well)>.block-bookbox {
 
 //finder
 #autocomplete {
+  overflow: visible;
   border: none;
   z-index:12121;
 
   .book-crust {
     display: none;
+  }
+
+  .show-all,
+  .sorry {
+    display: block;
+    clear: both;
+    width: 100%;
+  }
+
+
+  .sorry {
+    font-family: ubuntu-regular;
+    font-size: @body-text-b;
+    color: @header-text;
+  }
+
+  .show-all {
+    position: relative;
+    padding-top: 20px;
+    margin: 0 -21px -21px -21px;
+    width: ~'calc(100% + 42px)';
+
+    a {
+      width: 100%;
+      font-family: ubuntu-regular;
+    }
   }
 
   .contextual-links {
@@ -551,6 +579,7 @@ body.privacy .breadcrumb,
 body.collection .breadcrumb,
 body.page-faq .breadcrumb,
 body.page-content-finder .breadcrumb,
+body.page-book-search .breadcrumb,
 body.books.category .breadcrumb {
   display: block;
   background: none;
@@ -582,3 +611,93 @@ body.books.category .breadcrumb {
     }
   }
 }
+
+.page-books,
+.books.category,
+.publishers,
+.collection,
+.page-book-search {
+  .text-center>ul.pagination {
+    li {
+      display: inline-block;
+
+      span, a {
+        border: 2px solid rgba(0, 0, 0, .14);
+        line-height: 28px;
+        font-family: ubuntu-regular;
+        font-size: @menu-text;
+        color: @white;
+        background: none;
+        margin-right: 5px;
+        padding: 0;
+        cursor: pointer;
+        transition: all .3s ease;
+        width: 32px;
+        height: 32px;
+        opacity: .6;
+
+        &:hover {
+          background: rgba(0, 0, 0, .07);
+        }
+      }
+
+      &.pager-last,
+      &.pager-first {
+        display: none;
+      }
+
+      &.active span {
+        opacity: 1;
+        background: rgba(0, 0, 0, .25);
+        border-color: transparent;
+      }
+
+      &.next, &.prev {
+        a {
+          position: relative;
+          border: 2px solid rgba(0, 0, 0, .09);
+          text-indent: -9999px;
+          padding:0;
+          line-height: 29px;
+          width: 32px;
+          font-size: 10px;
+          opacity: 1;
+
+          &:before {
+            text-indent: 0;
+          }
+
+          &:hover {
+            background: rgba(0, 0, 0, .07);
+          }
+        }
+      }
+
+      &.prev a {
+
+        &:before {
+          content: '◄';
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          text-align: center;
+        }
+      }
+
+      &.next a {
+
+        &:before {
+          content: '►';
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          text-align: center;
+        }
+      }
+    }
+  }
+}
+
+

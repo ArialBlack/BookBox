@@ -2,12 +2,109 @@ body.page-book-search {
   .main-container {
     width: 100%;
 
+    .page-icon {
+      float: left;
+      width: 16.66666667%;
+      margin-top: -40px;
+      margin-left: 8.3333333%;
+      height: 150px;
+      background:url(../images/svg/search-page.svg);
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+
+      @media (max-width: @max-sm) {
+        display: none;
+      }
+    }
+
     .page-header {
       display: none;
     }
 
     .yellow-block {
       height: 255px;
+
+      #autocomplete {
+        display: none !important;
+      }
+
+      .col-sm-9 {
+        padding-left: 0;
+
+        #block-finder-content-finder {
+          .finder-wrapper {
+            .finder-results-content_finder {
+              display: none;
+            }
+
+            .form-type-textfield {
+              position: relative;
+              padding-bottom: 10px;
+              margin-bottom: 20px;
+
+              &:before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 30px;
+                height: 30px;
+                background: url(../images/svg/search-b.svg);
+                background-size: 100%;
+                background-repeat: no-repeat;
+                cursor: pointer;
+              }
+
+              &:after {
+                content: '';
+                position: absolute;
+                width: 100%;
+                height: 2px;
+                bottom: 0;
+                left: 0;
+                background: #000;
+                opacity: .1;
+              }
+
+              #edit-title--2 {
+                background: none;
+                border: none;
+                outline: 0;
+                box-shadow: none;
+                font-family: GillSansC;
+                font-size: @screen-title;
+                color: @header-text;
+                text-transform: uppercase;
+                padding-bottom: 10px;
+                padding-right: 0;
+                padding-left: 40px;
+
+                &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+                  color: #d7b44e;
+                }
+
+                &::-moz-placeholder { /* Firefox 19+ */
+                  color: #d7b44e;
+                }
+
+                &:-ms-input-placeholder { /* IE 10+ */
+                  color: #d7b44e;
+                }
+
+                &:-moz-placeholder { /* Firefox 18- */
+                  color: #d7b44e;
+                }
+              }
+            }
+          }
+
+          .view-search-results-div {
+            font-family: ubuntu-regular;
+            font-size: @body-text-n;
+            color: #a58c3c;
+          }
+        }
+      }
     }
 
     .search-results {
@@ -25,6 +122,10 @@ body.page-book-search {
     section.col-sm-12>.container {
       width: 100%;
       padding:0;
+
+      >.action-links {
+        display: none;
+      }
     }
 
     #finder-form-content-finder {
@@ -39,6 +140,7 @@ body.page-book-search {
 
     .finder-results-content_finder {
       .container;
+      padding-top: 40px;
 
       .view-content {
         display: flex;

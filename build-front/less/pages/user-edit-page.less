@@ -1,9 +1,57 @@
 .page-user-edit {
+  min-height: 100px;
+
   .main-container {
     width: 100%;
+    min-height: 100px;
+    padding-bottom: 60px !important;
+    background: @yellow !important;
 
     #block-system-main {
       .container;
+      padding-top: 30px;
+
+      .glyphicon.form-control-feedback,
+      .help-block.password-help {
+        display: none !important;
+      }
+
+      .help-block {
+        max-width: 400px;
+      }
+
+      #edit-account {
+        margin-bottom: 0;
+      }
+
+      .control-label {
+        font-family: ubuntu-medium;
+        font-size: 14px;
+        text-transform: uppercase;
+        color: @header-text-3;
+      }
+
+      input[type="password"],
+      input[type="text"] {
+        height: 55px;
+        min-width: 400px;
+        max-width: 400px;
+        font-family: ubuntu-medium;
+        font-size: 16px;
+        color: #2e2e2e;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+
+        &:focus {
+          box-shadow: none;
+          border-color: #ccc;
+          border-bottom: 3px solid #f9d35c;
+        }
+      }
 
       #user-profile-form > div {
         display: flex;
@@ -17,16 +65,48 @@
 
         .field-name-field-author-photo {
           order: -3;
+          padding-bottom: 20px;
 
           .image-preview {
             border: 2px solid #e0e0e0;
             padding: 0;
+            margin-bottom: 20px;
           }
 
           .image-widget-data {
             float: left;
             clear: both;
+
+            .input-group {
+              .form-control.form-file {
+                float: left;
+                display: block;
+                width: auto;
+                background: none;
+                border: none;
+                box-shadow: none;
+                outline: none;
+                padding-left: 0;
+                margin-top: 10px;
+                cursor: pointer;
+                font-family: ubuntu-regular;
+              }
+
+              .input-group-btn {
+                float: left;
+                clear: both;
+                padding-top: 20px;
+
+                button {
+                  box-shadow: none;
+                }
+              }
+            }
           }
+        }
+
+        .form-item-pass-pass2 {
+          margin-bottom: 0;
         }
       }
     }

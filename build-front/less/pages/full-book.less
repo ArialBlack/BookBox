@@ -507,6 +507,15 @@
 
           &:after {
             content: ',';
+            padding-right: 5px;
+          }
+        }
+
+        li {
+          >ul li:last-child {
+            a:after {
+              content: none;
+            }
           }
         }
       }
