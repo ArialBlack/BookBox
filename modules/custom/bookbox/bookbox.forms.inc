@@ -127,19 +127,26 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state)
 
   $button_disabled = '<button disabled="1" type="button" id="edit-submit-book" class="btn btn-default form-submit">Замовити</button>';
   $button = '<button type="button" id="edit-submit-book" class="btn btn-default form-submit" data-toggle="modal" data-target="#confirm-orders">Замовити</button>';
-  $modal = '<div class="modal fade" tabindex="-1" role="dialog" id="confirm-orders">
+  $modal = '<div class="modal fade order" tabindex="-1" role="dialog" id="confirm-orders">
                                       <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                           <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                          	<img src="/sites/all/themes/bookbox_ui/images/order-popup.png" alt="">
                                           </div>
                                           <div class="modal-body">
-                                            <p>Ви підтверджуєте замовлення даної книги?</p>
-                                            <p class="smaller">' . verbose_period4order($date) . '</p>
+                                          	<h4>Ви підтверджуєте замовлення книги?</h4>
+                                          	<h5 class="book-name">Назва книги... Lorem ipsum dolor sit.</h5>
+                                          	<h6>Імя автора</h6>
+                                            ' . verbose_period4order($date) . '
+                                            <!-- Нужен такой формат вывода даты: " Дата доставки: 19.10.2017 " -->
                                           </div>
                                           <div class="modal-footer">
-                                            <a class="btn btn-outline red" href="/confirm/' . $uid . '/' . $form_product . '/book?destination=' . $destination . '">Так</a>
-                                            <button type="button" class="btn btn-outline red" data-dismiss="modal">Ні</button>
+                                          	<div class="btn-block">
+                                          		 <a class="btn btn-outline red" href="/confirm/' . $uid . '/' . $form_product . '/book?destination=' . $destination . '">Замовити</a>
+                                            	 <button type="button" class="btn cancel red" data-dismiss="modal">Скасувати</button>
+                                          	</div>
+                                           
+                                            <p>Ви можете переглянути свої замовлення в <a href="/user#order">розділі ”Замовлено”</a> на сторінці Вашого профілю</p>
                                           </div>
                                         </div>
                                       </div>
@@ -149,11 +156,11 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state)
                                       <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                           <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <img src="/sites/all/themes/bookbox_ui/images/order-popup.png" alt="">
                                           </div>
                                           <div class="modal-body">
                                             <p>Три книжки - максимальна кількість на руках в один момент часу.</p>
-                                            <p class="smaller">Коли книга повертається нам - відкривається можливість замовити наступну.</p>
+                                            <p>Коли книга повертається нам - відкривається можливість замовити наступну.</p>
                                           </div>
                                           <div class="modal-footer">
                                             <button type="button" class="btn btn-outline red" data-dismiss="modal">Зрозуміло</button>

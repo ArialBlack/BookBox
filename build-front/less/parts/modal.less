@@ -1,22 +1,13 @@
 .modal-backdrop {
-  background-color: white;
+  background-color: rgba(0, 0, 0, .4);
   opacity: 0.9;
 }
 
 .modal {
-  top: 30%;
+  top: 16%;
 
-  .modal-header {
-    .close {
-        text-indent: -9999px;
-        height: 13px;
-        width: 13px;
-        background: transparent url(../images/close.png) no-repeat center center !important;
-        border: none;
-        display: block;
-
-        opacity: 1;
-    }
+  .modal-dialog {
+    width: 585px;
   }
 
   .modal-header,
@@ -25,32 +16,106 @@
   }
 
   .modal-content {
-    border: @primary-color 3px solid;
+    text-align: center;
+    padding: 65px 35px;
+
+    .modal-header,
+    .modal-body,
+    .modal-footer {
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .modal-header {
+      padding-top: 0;
+    }
+
+    .modal-footer {
+      padding-bottom: 0;
+    }
   }
 
   .modal-body {
-    font-weight: bold;
-    .font-size(20);
-    text-align: center;
-    padding: 40px 0;
-    margin-left: auto;
-    margin-right: auto;
+    padding-top: 3px;
+    padding-bottom: 0;
 
-    p.smaller {
-      font-weight: normal;
+    p {
+      font-family: ubuntu-regular;
+      font-size: @body-text-n;
+      color: @header-text;
+      font-weight: bold;
     }
 
-    @media (min-width: @screen-sm-min) {
-      width: 400px;
+    h4 {
+      font-family: GillSansC;
+      font-size: 27px;
+      color: @header-text;
+      padding-bottom: 20px;
+    }
+
+    h5 {
+      font-family: GillSansC;
+      font-size: @body-text-b;
+      color: @header-text;
+      text-transform: uppercase;
+      padding-left: 25px;
+      padding-right: 25px;
+    }
+
+    h6 {
+      font-family: ubuntu-medium;
+      font-size: @body-text-n;
+      color: #b7b7b7;
+      text-transform: uppercase;
+      padding-top: 7px;
+    }
+
+    .order-date {
+      position: relative;
+      font-family: ubuntu-medium;
+      font-size: @menu-text-2;
+      color: @header-text;
+      border-top: 1px solid #e0e0e0;
+      padding-top: 7px;
+      font-weight: bold;
     }
   }
 
   .modal-footer {
     text-align: center;
-    padding-bottom: 60px;
+
+    .btn-block {
+      display: flex;
+      justify-content: space-between;
+      padding-left: 13px;
+      padding-right: 13px;
+    }
 
     .btn {
-      padding: 20px 30px;
+      width: 230px;
+      box-shadow: 11px 14px 51px 5px rgba(216, 72, 48, 0.2);
+    }
+
+    .btn.cancel {
+      background: #c2c2c2;
+      box-shadow: none;
+
+      &:hover,
+      &:focus {
+        background: darken(#c2c2c2, 5);
+      }
+    }
+
+    p {
+      padding-top: 30px;
+      font-family: ubuntu-regular;
+      font-size: 15px;
+      color: #373737;
+
+      a {
+        color: @red;
+        text-decoration: underline;
+      }
     }
   }
 }
