@@ -120,6 +120,7 @@
         }
 
       function checkBookName(bookBlock) {
+          // console.log($(bookBlock).length);
         for(var tb = 0; tb<$(bookBlock).length; tb++) {
           // console.log('checking book name');
           if ($(bookBlock + ':nth-child('+ tb +' ) h4').text().length > 32) {
@@ -348,6 +349,7 @@
           checkBookName('.node-type-book .inner-block-bookbox>li');
           checkBookName('.publishers .view-content>.views-row');
           checkBookName('.book-search .view-content>article');
+          checkBookName('body.authors .view-content .views-row');
 
             $('.navbar .dropdown-toggle .user-name').click(function() {
               // $('body').toggleClass('openNav');

@@ -139,6 +139,7 @@ $term = taxonomy_term_load(arg(2));
       <?php if (!empty($page['help'])): ?>
         <?php print render($page['help']); ?>
       <?php endif; ?>
+      <h4 class="author-block-title">Книги автора</h4>
       <?php if (!empty($action_links)): ?>
         <ul class="action-links"><?php print render($action_links); ?></ul>
       <?php endif; ?>
