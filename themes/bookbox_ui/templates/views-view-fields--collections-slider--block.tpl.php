@@ -30,7 +30,7 @@ $nc = '<div>' . $count . ' книги</div>'; //todo verbose
 ?>
 
 <?php
-  $output = '<a href="/taxonomy/term' . $tid . '">';
+  $output = '<a href="/taxonomy/term/' . $tid . '">';
 
   if(isset($fields['field_nni'])) {
     $output = $output . '<div class="term-image">' . $fields['field_nni']->content . '</div>';

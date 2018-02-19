@@ -79,6 +79,20 @@
       padding-top: 7px;
       font-weight: bold;
     }
+
+    .popup-author {
+      &:after {
+        font-family: ubuntu-medium;
+        color: #b7b7b7;
+        content: ', ';
+        //opacity: .7;
+        margin-right: 5px;
+      }
+
+      &:last-child:after {
+        content: none;
+      }
+    }
   }
 
   .modal-footer {

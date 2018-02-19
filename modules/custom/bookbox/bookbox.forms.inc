@@ -120,6 +120,15 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state)
 
   if (isset($form['product_id'])) {
     $form_product = $form['product_id']['#value'];
+    $product_display = _bookbox_get_product_display_by_product_id($form_product);
+    $book_authors = $product_display->field_book_author['und'];
+    $author_count = count($book_authors);
+    $authors = '';
+
+    for($i = 0; $i < $author_count; $i++) {
+      $authors = $authors . '<span class="popup-author">' . $product_display->field_book_author['und'][$i]['taxonomy_term']->name . '</span> ';
+    }
+
   } else {
     $form_product = null;
     $can_order = false;
@@ -135,10 +144,9 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state)
                                           </div>
                                           <div class="modal-body">
                                           	<h4>Ви підтверджуєте замовлення книги?</h4>
-                                          	<h5 class="book-name">Назва книги... Lorem ipsum dolor sit.</h5>
-                                          	<h6>Імя автора</h6>
-                                            ' . verbose_period4order($date) . '
-                                            <!-- Нужен такой формат вывода даты: " Дата доставки: 19.10.2017 " -->
+                                          	<h5 class="book-name">' . $product_display->title . '</h5>
+                                          	<h6>' . $authors . '</h6>
+                                            ' . verbose_period4popup($date) . '
                                           </div>
                                           <div class="modal-footer">
                                           	<div class="btn-block">
