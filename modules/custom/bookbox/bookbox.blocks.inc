@@ -347,9 +347,7 @@ function bookbox_views_pre_render(&$view) {
 
 //Логіка формування блоку http://prntscr.com/i8dtxv
 function bookbox_preprocess_newbyadmin(&$variables) {
-  if ($cache = cache_get('bookbox_newbyadmin_data')) {
-    $content = $cache->data;
-  } else {
+
     $content = null;
 
     $nid = db_select('node', 'n')
@@ -374,17 +372,12 @@ function bookbox_preprocess_newbyadmin(&$variables) {
       $content = $content . '</ul>';
     }
 
-    cache_set('bookbox_newbyadmin_data', $content, 'cache');
-  }
-
   $variables['bookslist'] = $content;
 }
 
 //Логіка формування блоку http://prntscr.com/i8duku
 function bookbox_preprocess_manualhits(&$variables) {
-  if ($cache = cache_get('bookbox_manualhits_data')) {
-    $content = $cache->data;
-  } else {
+
     $content = null;
 
     $nid = db_select('node', 'n')
@@ -408,9 +401,6 @@ function bookbox_preprocess_manualhits(&$variables) {
       }
       $content = $content . '</ul>';
     }
-
-    cache_set('bookbox_manualhits_data', $content, 'cache');
-  }
 
   $variables['bookslist'] = $content;
 }
