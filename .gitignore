@@ -235,9 +235,9 @@ themes/bookbox_ui/icons-svg/compressed/
 themes/bookbox_ui/images/svg-icons-sprite.svg
 themes/bookbox_ui/images/svg-images-sprite.svg
 themes/bookbox_ui/templates/user-login.tpl.php
-/themes/bookbox_ui/templates/page--user--login.tpl.php
-/themes/bookbox_ui/templates/page--user--register.tpl.php
-/themes/bookbox_ui/css/login-register-recover-lost.css
+themes/bookbox_ui/templates/page--user--login.tpl.php
+themes/bookbox_ui/templates/page--user--register.tpl.php
+themes/bookbox_ui/css/login-register-recover-lost.css
 themes/bookbox_ui/templates/page--type-book.tpl.php
 themes/bookbox_ui/templates/page.tpl.php
 themes/bookbox_ui/templates/page--taxonomy_vocabulary__publishers.tpl.php
@@ -247,3 +247,5 @@ themes/bookbox_ui/templates/page--user.tpl.php
 themes/bookbox_ui/css/style.css.map
 themes/bookbox_ui/templates/page--node--893.tpl.php
 themes/bookbox_ui/templates/page--book-search.tpl.php
+themes/bookbox_ui/templates/page--views--books.tpl.php
+themes/bookbox_ui/templates/page--views--usercompanyhits.tpl.php

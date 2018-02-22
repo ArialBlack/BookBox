@@ -129,14 +129,7 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state)
       $authors = $authors . '<span class="popup-author">' . $product_display->field_book_author['und'][$i]['taxonomy_term']->name . '</span> ';
     }
 
-  } else {
-    $form_product = null;
-    $can_order = false;
-  }
-
-  $button_disabled = '<button disabled="1" type="button" id="edit-submit-book" class="btn btn-default form-submit">Замовити</button>';
-  $button = '<button type="button" id="edit-submit-book" class="btn btn-default form-submit" data-toggle="modal" data-target="#confirm-orders">Замовити</button>';
-  $modal = '<div class="modal fade order" tabindex="-1" role="dialog" id="confirm-orders">
+    $modal = '<div class="modal fade order" tabindex="-1" role="dialog" id="confirm-orders">
                                       <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                           <div class="modal-header">
@@ -159,6 +152,15 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state)
                                         </div>
                                       </div>
                                     </div>';
+
+  } else {
+    $form_product = null;
+    $can_order = false;
+  }
+
+  $button_disabled = '<button disabled="1" type="button" id="edit-submit-book" class="btn btn-default form-submit">Замовити</button>';
+  $button = '<button type="button" id="edit-submit-book" class="btn btn-default form-submit" data-toggle="modal" data-target="#confirm-orders">Замовити</button>';
+
   $overslots_button = '<button type="button" id="edit-submit-book" class="btn btn-default form-submit" data-toggle="modal" data-target="#over-slots">Замовити</button>';
   $overslots_modal = '<div class="modal fade" tabindex="-1" role="dialog" id="over-slots">
                                       <div class="modal-dialog" role="document">

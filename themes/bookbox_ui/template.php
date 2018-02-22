@@ -36,30 +36,6 @@ function bookbox_ui_preprocess_node(&$vars) {
   }
 }
 
-function bookbox_ui_preprocess(&$variables, $hook) {
-
- /* global $user;
-
-  $query = db_select('flagging', 'f');
-  $query->addExpression('COUNT(*)');
-  $query->condition('f.uid', $user->uid);
-  $count = $query->execute()->fetchField();
-
-  $variables['u_flag'] = $count;
-
-  $variables['finder_node_results_string'] = null;
-  $vtc = 0;
-
-  if($hook == 'views_view') {
-    $view = $variables['view'];
-    if ($view->name === "finder_node") {
-      $vtc = $view->total_rows;
-    }
-  }
-  */
-}
-
-
 function bookbox_ui_preprocess_page(&$vars) {
 
   $url  = request_path();
@@ -77,9 +53,6 @@ function bookbox_ui_preprocess_page(&$vars) {
       $vars['theme_hook_suggestions'][] = 'page__views__usercompanyhits';
     }
   }
-
-
-
 
   // Do we have a node?
   if (isset($vars['node'])) {
@@ -183,13 +156,6 @@ function bookbox_ui_preprocess_html(&$vars, $hook) {
 
   $r = request_path();
 
-  //https://lib.bookbox.ua/user/login - Вхід | Book Box
-  //https://lib.bookbox.ua/user/register - Реєстрація | Book Box
-  //https://lib.bookbox.ua/user/password - Відновлення паролю | Book Box
-  //https://lib.bookbox.ua/ - Book Box (не капсом і без рисочки)
-  //https://lib.bookbox.ua/user (сторінка профілю) - Профіль | Book Box
-  //https://lib.bookbox.ua/user/240/orders (історія замовлень) - Історія замовлень | Book Box
-
   if ($r == 'user/login') {
     $vars['head_title'] = 'Вхід | Book Box';
   }
@@ -208,6 +174,15 @@ function bookbox_ui_preprocess_html(&$vars, $hook) {
 
   if ($r == 'user') {
     $vars['head_title'] = 'Профіль | Book Box';
+  }
+}
+
+function bookbox_ui_preprocess_field(&$variables) {
+  $field_name = $variables['element']['#field_name'];
+
+  if($field_name == 'field_book_size') {
+    $instance = field_info_instance('node', $field_name, 'book');
+    $variables['element']['#help'] = $instance['description'];
   }
 }
 

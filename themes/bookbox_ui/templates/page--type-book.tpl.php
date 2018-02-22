@@ -79,8 +79,6 @@
 
 <?php
 global $user;
-
-
 ?>
 
 <header id="navbar" role="banner" class="<?php print $navbar_classes; ?>">
@@ -128,6 +126,8 @@ global $user;
                 <a href="/user#order">Замовлено
                   <?php if ($u_orders_c > 0): ?>
                     <span class="badge"><?php print $u_orders_c; ?></span>
+                  <?php else: ?>
+                    <span class="badge badge-empty">0</span>
                   <?php endif; ?>
                 </a>
               </li>
@@ -135,6 +135,8 @@ global $user;
                 <a href="/user#read">Зараз читаю
                   <?php if ($u_reading_c > 0): ?>
                     <span class="badge"><?php print $u_reading_c; ?></span>
+                  <?php else: ?>
+                    <span class="badge badge-empty">0</span>
                   <?php endif; ?>
                 </a>
               </li>
@@ -142,6 +144,8 @@ global $user;
                 <a href="/user#favs">Вішліст
                   <?php if ($u_favs_c > 0): ?>
                     <span class="badge"><?php print $u_favs_c; ?></span>
+                  <?php else: ?>
+                    <span class="badge badge-empty">0</span>
                   <?php endif; ?>
                 </a>
               </li>

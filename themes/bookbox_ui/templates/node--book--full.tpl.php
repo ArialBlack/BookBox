@@ -180,6 +180,8 @@ $translations = translation_path_get_translations("node/" . $node->nid);
   				  <?php print render($content['field_origin_name']); ?>
       			<?php print render($content['field_book_publisher']); ?>
      			  <?php print render($content['field_lang']); ?>
+            <?php print render($content['field_book_size']); ?>
+            <?php print render($content['field_year']); ?>
       			<?php print render($content['field_book_category']); ?>
     			</div>
     			<div class="col-md-8 col-sm-8">
@@ -198,9 +200,8 @@ $translations = translation_path_get_translations("node/" . $node->nid);
                   $desc = $node->field_book_author['und'][$i]['taxonomy_term']->description;
                   $uri = $node->field_book_author['und'][$i]['taxonomy_term']->field_author_photo['und'][0]['uri'];
                   print '<div class="author-block clearfix"><div class="a-img"><img src="' . image_style_url("medium", $uri) . '"/></div> <div class="about-autor">';
-                  print '<h3>' . $node->field_book_author['und'][$i]['taxonomy_term']->name . '</h3>';
+                  print '<h3><a href="/taxonomy/term/' . $node->field_book_author['und'][$i]['taxonomy_term']->tid .'">' . $node->field_book_author['und'][$i]['taxonomy_term']->name . '</a></h3>';
                   print $desc . '</div> </div>';
-
                 }
                 ?>
               </div>
