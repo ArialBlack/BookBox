@@ -277,15 +277,14 @@ function bookbox_preprocess_relevantbooks(&$variables) {
 
 //Формує блок http://prntscr.com/i8dymf
 function bookbox_sidebarfc_block() {
-  $content = '<ul><li><a href="/books/hits">Хіти місяця</a></li>';
-  $content = $content . '<li><a href="/books/new">Новинки</a></li>';
+  $content = '<ul><li><a href="/books">Всі книги</a></li>';
+  $content = $content . '<li><a href="/books/hits">Хіти місяця</a></li>';
 
   global $user;
   $uid = $user->uid;
   $account = user_load($uid);
   $company_nid = $account->field_company['und'][0]['target_id'];
   $company = node_load($company_nid);
-
   $date_diff = (time() - $company->created)/60/60/24;
 
   //Якщо компнія молода, то не виводимо лінку.
@@ -293,7 +292,7 @@ function bookbox_sidebarfc_block() {
     $content = $content . '<li><a href="/books/company-hits">Хіти в ' . $company->title . '</a></li>';
   }
 
-  $content = $content . '</ul>';
+  $content = $content . '<li><a href="/books/new">Новинки</a></li></ul>';
 
   return $content;
 }

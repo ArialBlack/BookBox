@@ -125,6 +125,8 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state)
     $author_count = count($book_authors);
     $authors = '';
 
+    $uri = $product_display->field_nni['und'][0]['uri'];
+
     for($i = 0; $i < $author_count; $i++) {
       $authors = $authors . '<span class="popup-author">' . $product_display->field_book_author['und'][$i]['taxonomy_term']->name . '</span> ';
     }
@@ -137,6 +139,7 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state)
                                           </div>
                                           <div class="modal-body">
                                           	<h4>Ви підтверджуєте замовлення книги?</h4>
+                                          	<img src="' . image_style_url("bookcover", $uri) . '"/>
                                           	<h5 class="book-name">' . $product_display->title . '</h5>
                                           	<h6>' . $authors . '</h6>
                                             ' . verbose_period4popup($date) . '
