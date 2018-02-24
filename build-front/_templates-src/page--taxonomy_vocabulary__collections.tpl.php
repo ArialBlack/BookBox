@@ -81,7 +81,6 @@ $term = taxonomy_term_load(arg(2));
 
 <div class="main-container <?php print $container_class; ?>">
   <div class="row">
-    <section<?php print $content_column_class; ?>>
       <?php print $messages; ?>
       <div class="yellow-block">
       <div class="container">
@@ -158,12 +157,11 @@ $term = taxonomy_term_load(arg(2));
               <ul class="action-links"><?php print render($action_links); ?></ul>
             <?php endif; ?>
             <?php print render($page['content']); ?>
-        </div>
     </section>
+        </div>
   </div>
 
     </div>
-    </section>
 </div>
 
 <!--(bake parts/footer.php)-->

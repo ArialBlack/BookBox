@@ -81,17 +81,29 @@
       .field-name-field-hit {
         top: 30px;
         left: 6px;
+
+        @media (min-width: 768px) {
+          left: -19px;
+        }
       }
 
       .field-name-field-isnew {
         top: 97px;
         left: -17px;
+
+        @media (min-width: 768px) {
+          left: -42px;
+        }
       }
     }
 
     .field-type-image {
       margin-bottom: -170px;
       padding-left: 25px;
+
+      @media (min-width: 768px) {
+        padding-left: 0;
+      }
 
       @media (max-width: @laptop-2) {
         width: 100%;
@@ -521,6 +533,7 @@
 
         li a {
           position: relative;
+          font-weight: lighter;
 
           &:after {
             content: ',';
@@ -666,7 +679,7 @@
             }
           }
 
-          h3 {
+          h3 a {
             font-family: GillSansC;
             font-size: @text-block-title;
             color: @header-text-3;
@@ -678,6 +691,10 @@
 
             @media (max-width: @mid-xs) {
               font-size: 22px;
+            }
+
+            &:hover {
+              text-decoration: none;
             }
           }
 

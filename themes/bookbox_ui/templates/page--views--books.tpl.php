@@ -44,8 +44,8 @@ global $user;
 
             <ul class="user-icons-menu nav nav-tabs dup-tabs" role="tablist">
               <li role="presentation">
-                <a href="/user#order">Замовлено
-                  <?php if ($u_orders_c > 0): ?>
+                <a href="/user#order" title="Замовлено">
+                  <?php if ($u_orders_c >= 0): ?>
                     <span class="badge"><?php print $u_orders_c; ?></span>
                   <?php else: ?>
                     <span class="badge badge-empty">0</span>
@@ -53,8 +53,8 @@ global $user;
                 </a>
               </li>
               <li role="presentation">
-                <a href="/user#read">Зараз читаю
-                  <?php if ($u_reading_c > 0): ?>
+                <a href="/user#read" title="Зараз читаю">
+                  <?php if ($u_reading_c >= 0): ?>
                     <span class="badge"><?php print $u_reading_c; ?></span>
                   <?php else: ?>
                     <span class="badge badge-empty">0</span>
@@ -62,8 +62,8 @@ global $user;
                 </a>
               </li>
               <li role="presentation">
-                <a href="/user#favs">Вішліст
-                  <?php if ($u_favs_c > 0): ?>
+                <a href="/user#favs" title="Список бажань">
+                  <?php if ($u_favs_c >= 0): ?>
                     <span class="badge"><?php print $u_favs_c; ?></span>
                   <?php else: ?>
                     <span class="badge badge-empty">0</span>
@@ -105,14 +105,20 @@ global $user;
     </div>
     <div class="yellow-block">
       <div class="container">
-        <?php if (!empty($breadcrumb)): print $breadcrumb; endif;?>
-           <?php print render($title_prefix); ?>
-              <?php if (!empty($title)): ?>
-                <h1 class="page-header"><?php print $title; ?></h1>
-              <?php endif; ?>
-           <?php print render($title_suffix); ?>
+        <div class="row">
+          <div class="col-md-9">
+            <?php if (!empty($breadcrumb)): print $breadcrumb; endif;?>
+               <?php print render($title_prefix); ?>
+                  <?php if (!empty($title)): ?>
+                    <h1 class="page-header"><?php print $title; ?></h1>
+                  <?php endif; ?>
+               <?php print render($title_suffix); ?>
+          </div>
+          <div class="col-md-2">
             <div class="page-icon"></div>
+          </div>
         </div>
+      </div>
     </div>
 
     <div class="container categories-block">

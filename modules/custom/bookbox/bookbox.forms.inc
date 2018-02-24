@@ -138,19 +138,17 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state)
                                           	<img src="/sites/all/themes/bookbox_ui/images/order-popup.png" alt="">
                                           </div>
                                           <div class="modal-body">
-                                          	<h4>Ви підтверджуєте замовлення книги?</h4>
-                                          	<img src="' . image_style_url("bookcover", $uri) . '"/>
-                                          	<h5 class="book-name">' . $product_display->title . '</h5>
-                                          	<h6>' . $authors . '</h6>
-                                            ' . verbose_period4popup($date) . '
+                                          	<h4>Ви підтверджуєте замовлення?</h4>
+                                          	<div class="modal-book-block">
+                                          	<img class="modal-book-img" src="' . image_style_url("bookcover", $uri) . '"/>
+                                          	</div>
                                           </div>
                                           <div class="modal-footer">
                                           	<div class="btn-block">
                                           		 <a class="btn btn-outline red" href="/confirm/' . $uid . '/' . $form_product . '/book?destination=' . $destination . '">Замовити</a>
                                             	 <button type="button" class="btn cancel red" data-dismiss="modal">Скасувати</button>
                                           	</div>
-                                           
-                                            <p>Ви можете переглянути свої замовлення в <a href="/user#order">розділі ”Замовлено”</a> на сторінці Вашого профілю</p>
+                                           ' . verbose_period4popup($date) . '
                                           </div>
                                         </div>
                                       </div>

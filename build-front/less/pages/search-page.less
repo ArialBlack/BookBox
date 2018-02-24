@@ -42,18 +42,18 @@ body.page-book-search {
               padding-bottom: 10px;
               margin-bottom: 20px;
 
-              &:before {
-                content: '';
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 30px;
-                height: 30px;
-                background: url(../images/svg/search-b.svg);
-                background-size: 100%;
-                background-repeat: no-repeat;
-                cursor: pointer;
-              }
+              //&:before {
+              //  content: '';
+              //  position: absolute;
+              //  left: 0;
+              //  top: 0;
+              //  width: 30px;
+              //  height: 30px;
+              //  background: url(../images/svg/search-b.svg);
+              //  background-size: 100%;
+              //  background-repeat: no-repeat;
+              //  cursor: pointer;
+              //}
 
               &:after {
                 content: '';
@@ -115,7 +115,19 @@ body.page-book-search {
 
     #block-finder-content-finder {
       .btn {
-        display: none;
+        font-size: 0px;
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 30px;
+        height: 30px;
+        background: url(../images/svg/search-b.svg);
+        background-size: 100%;
+        background-repeat: no-repeat;
+        cursor: pointer;
+        box-shadow: none;
+        outline: none !important;
       }
     }
 

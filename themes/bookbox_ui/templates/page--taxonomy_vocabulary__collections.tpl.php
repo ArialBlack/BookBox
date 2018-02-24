@@ -123,8 +123,8 @@ global $user;
 
             <ul class="user-icons-menu nav nav-tabs dup-tabs" role="tablist">
               <li role="presentation">
-                <a href="/user#order">Замовлено
-                  <?php if ($u_orders_c > 0): ?>
+                <a href="/user#order" title="Замовлено">
+                  <?php if ($u_orders_c >= 0): ?>
                     <span class="badge"><?php print $u_orders_c; ?></span>
                   <?php else: ?>
                     <span class="badge badge-empty">0</span>
@@ -132,8 +132,8 @@ global $user;
                 </a>
               </li>
               <li role="presentation">
-                <a href="/user#read">Зараз читаю
-                  <?php if ($u_reading_c > 0): ?>
+                <a href="/user#read" title="Зараз читаю">
+                  <?php if ($u_reading_c >= 0): ?>
                     <span class="badge"><?php print $u_reading_c; ?></span>
                   <?php else: ?>
                     <span class="badge badge-empty">0</span>
@@ -141,8 +141,8 @@ global $user;
                 </a>
               </li>
               <li role="presentation">
-                <a href="/user#favs">Вішліст
-                  <?php if ($u_favs_c > 0): ?>
+                <a href="/user#favs" title="Список бажань">
+                  <?php if ($u_favs_c >= 0): ?>
                     <span class="badge"><?php print $u_favs_c; ?></span>
                   <?php else: ?>
                     <span class="badge badge-empty">0</span>
@@ -167,7 +167,6 @@ global $user;
 
 <div class="main-container <?php print $container_class; ?>">
   <div class="row">
-    <section<?php print $content_column_class; ?>>
       <?php print $messages; ?>
       <div class="yellow-block">
       <div class="container">
@@ -244,12 +243,11 @@ global $user;
               <ul class="action-links"><?php print render($action_links); ?></ul>
             <?php endif; ?>
             <?php print render($page['content']); ?>
-        </div>
     </section>
+        </div>
   </div>
 
     </div>
-    </section>
 </div>
 
 <?php if (!empty($page['footer'])): ?>

@@ -17,7 +17,7 @@
 
   .modal-content {
     text-align: center;
-    padding: 65px 35px;
+    padding: 45px 35px;
 
     .modal-header,
     .modal-body,
@@ -50,7 +50,7 @@
       font-family: GillSansC;
       font-size: 27px;
       color: @header-text;
-      padding-bottom: 20px;
+      padding-bottom: 15px;
     }
 
     h5 {
@@ -70,16 +70,6 @@
       padding-top: 7px;
     }
 
-    .order-date {
-      position: relative;
-      font-family: ubuntu-medium;
-      font-size: @menu-text-2;
-      color: @header-text;
-      border-top: 1px solid #e0e0e0;
-      padding-top: 7px;
-      font-weight: bold;
-    }
-
     .popup-author {
       &:after {
         font-family: ubuntu-medium;
@@ -91,6 +81,31 @@
 
       &:last-child:after {
         content: none;
+      }
+    }
+
+    .modal-book-block {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 10px;
+
+      &:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 9px;
+        background: linear-gradient(-90deg, black, transparent);
+        opacity: .25;
+        border-right: 2px solid white;
+        z-index: 10;
+      }
+
+      .modal-book-img {
+        width: 140px;
+        height: 210px;
+        box-shadow: 15px 15px 33px -9px rgba(0, 0, 0, 0.28);
       }
     }
   }
@@ -130,6 +145,18 @@
         color: @red;
         text-decoration: underline;
       }
+    }
+
+    .order-date {
+      margin-top: 30px;
+      display: block;
+      position: relative;
+      font-family: ubuntu-medium;
+      font-size: @menu-text-2;
+      color: @header-text;
+      border-top: 1px solid #e0e0e0;
+      padding-top: 7px;
+      font-weight: bold;
     }
   }
 }

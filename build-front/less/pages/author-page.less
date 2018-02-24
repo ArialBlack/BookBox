@@ -250,6 +250,7 @@ body.authors {
           -ms-transition: all .2s ease;
           -o-transition: all .2s ease;
           transition: all .2s ease;
+          z-index: 2;
 
           @media (max-width: @laptop-2) {
             -webkit-box-shadow: 7px 10px 40px 0px rgba(0, 0, 0, 0.5);
@@ -313,6 +314,13 @@ body.authors {
           background: url(../images/svg/add-to-wish-book-2.svg);
           background-size: 100%;
           background-repeat: no-repeat;
+        }
+
+        &.unflag-action {
+          background: url(../images/svg/add-to-wish-book-3.svg);
+          background-size: 100%;
+          background-repeat: no-repeat;
+          text-decoration: none;
         }
       }
     }
