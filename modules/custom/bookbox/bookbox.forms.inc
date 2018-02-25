@@ -337,7 +337,9 @@ function bookbox_confirm_book($arg0,$arg1) {
         bookbox_mail_send('bookbox', 'book_box_order', $user->mail, $params);
     }
 
+    $date = time();
     $dest = drupal_get_destination();
+    drupal_set_message('Ура, замовлення підтверджено! Дата доставки ' . verbose_period4popup($date));
     drupal_goto($dest);
 }
 
