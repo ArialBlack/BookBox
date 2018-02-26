@@ -187,8 +187,8 @@
 
       $('.alert.alert-block.alert-success.messages.status').insertBefore($('.page-node-893 .main-container'));
 
-      if($('.page-node-893 .alert.alert-block.alert-success.messages.status').length) {
-        $('.page-node-893').addClass('open-alert');
+      if($('.page-node-893 .alert.alert-block.alert-success.messages.status, .node-type-book .alert.alert-block.alert-success.messages.status').length) {
+        $('body').addClass('open-alert modal-open');
       }
 
         $( document ).ready(function() {
@@ -371,7 +371,6 @@
             $('.books.category .col-sm-3 #edit-items-per-page, .collection .col-sm-3 #edit-items-per-page, .page-books .col-sm-3 #edit-items-per-page').val(thisValue).trigger('change');
           });
 
-
           //Add placeholder to finder
           $('.search-block .finder-element-title').attr('placeholder', 'Пошук за назвою та (або) автором');
           $('.page-book-search .main-container .finder-element-title').attr('placeholder', 'Пошук за назвою та (або) автором');
@@ -452,7 +451,8 @@
           });
 
           $('.alert.alert-block.alert-success.messages.status .close').click(function() {
-            $('.page-node-893').removeClass('open-alert');
+            $('body').removeClass('open-alert');
+            $('body').removeClass('modal-open');
           });
 
           $('.scroll-to').click(function(e) {

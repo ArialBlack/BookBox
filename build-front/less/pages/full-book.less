@@ -1,5 +1,72 @@
 .node-type-book {
 
+  &.open-alert {
+    position: relative;
+
+    &:before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      background: rgba(0, 0, 0, .4);
+      width: 100%;
+      height: 100%;
+      z-index: 100;
+    }
+  }
+
+  .alert-block.alert-success.messages {
+    position: absolute;
+    top: 25vh;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    background: #fff;
+    border: none;
+    width: 585px;
+    height: 300px;
+
+    font-family: GillSansC;
+    font-size: @text-block-title;
+    color: @header-text;
+    text-align: center;
+    padding-top: 135px;
+
+    &:before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 45px;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 60px;
+      background: url(../images/order-popup.png);
+      background-size: 100%;
+    }
+
+    .order-date {
+      margin-top: 30px;
+      display: block;
+      position: relative;
+      font-family: ubuntu-medium;
+      font-size: @menu-text-2;
+      color: @header-text;
+      border-top: 1px solid #e0e0e0;
+      padding-top: 7px;
+      font-weight: bold;
+    }
+
+    a.close {
+      position: relative;
+      top: -120px;
+      color: @red;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-weight: normal;
+      font-size: 24px;
+      opacity: 1;
+    }
+  }
+
   &.role-administrator {
     .tabs--primary, .action-links {
        position: fixed;
