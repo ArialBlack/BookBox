@@ -4,7 +4,7 @@
 
 <?php if($bookslist !=null): ?>
 
-  <h2>Хіти в <?php print $name;?></h2>
+  <h2>Популярне в <?php print $name;?></h2>
   <a href="/books/company-hits">Дивитись більше</a>
 
   <?php print $bookslist; ?>

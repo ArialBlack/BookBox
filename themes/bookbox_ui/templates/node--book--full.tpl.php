@@ -143,7 +143,7 @@ $translations = translation_path_get_translations("node/" . $node->nid);
 
 	        <?php
 	          if (count($translations) > 1) {
-              print '<div class="change-lang"><a>Є іншою мовою</a></div>';
+              print '<div class="change-lang"><a>Наявна іншою мовою</a></div>';
 	            print '<ul class="books-translations">';
 	            foreach ($translations as $key => $value) {
 	              if($key != $node_lang) {
@@ -160,7 +160,7 @@ $translations = translation_path_get_translations("node/" . $node->nid);
 	                    $l_name = 'російською';
 	                    break;
 	                }
-	                print '<li><a href="/' . drupal_get_path_alias($value) .'">Є  ' . $l_name . ' мовою</a></li>';
+	                print '<li><a href="/' . drupal_get_path_alias($value) .'">' . $l_name . '</a></li>';
 	              }
 	            }
 	            print '</ul>';

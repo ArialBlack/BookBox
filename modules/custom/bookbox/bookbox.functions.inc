@@ -347,4 +347,15 @@ function _bookbox_user_orders_history() {
   return array($content, $c);
 }
 
+function verbose_book_num($num, $form_for_1, $form_for_2, $form_for_5){
+  $num = abs($num) % 100;
+  $num_x = $num % 10;
 
+  if ($num > 10 && $num < 20)
+    return $num . ' ' . $form_for_5;
+  if ($num_x > 1 && $num_x < 5)
+    return $num . ' ' . $form_for_2;
+  if ($num_x == 1)
+    return $num . ' ' . $form_for_1;
+  return $num . ' ' . $form_for_5;
+}

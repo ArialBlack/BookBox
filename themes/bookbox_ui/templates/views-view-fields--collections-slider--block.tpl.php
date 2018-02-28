@@ -23,10 +23,11 @@
  *
  * @ingroup views_templates
  */
+
 $tid = $fields['tid']->raw;
 $data = taxonomy_select_nodes($tid);
 $count = count($data);
-$nc = '<div>' . $count . ' книги</div>'; //todo verbose
+$nc = '<div>' . verbose_book_num($count, 'книга', 'книги', 'книг') . '</div>'; //todo verbose
 ?>
 
 <?php

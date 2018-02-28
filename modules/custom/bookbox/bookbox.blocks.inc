@@ -278,7 +278,7 @@ function bookbox_preprocess_relevantbooks(&$variables) {
 //Формує блок http://prntscr.com/i8dymf
 function bookbox_sidebarfc_block() {
   $content = '<ul><li><a href="/books">Всі книги</a></li>';
-  $content = $content . '<li><a href="/books/hits">Хіти місяця</a></li>';
+  $content = $content . '<li><a href="/books/hits">Хіти</a></li>';
 
   global $user;
   $uid = $user->uid;
@@ -289,10 +289,10 @@ function bookbox_sidebarfc_block() {
 
   //Якщо компнія молода, то не виводимо лінку.
   if($date_diff > 60) {
-    $content = $content . '<li><a href="/books/company-hits">Хіти в ' . $company->title . '</a></li>';
+    $content = $content . '<li><a href="/books/company-hits">Популярне в ' . $company->title . '</a></li>';
   }
 
-  $content = $content . '<li><a href="/books/new">Новинки</a></li></ul>';
+  $content = $content . '<li><a href="/books/new">Нові надходження</a></li></ul>';
 
   return $content;
 }
@@ -423,10 +423,6 @@ function bookbox_custom_usermenu_block() {
     $uid = $user->uid;
     $account = user_load($uid);
 
-    if(isset($account->field_author_photo['und'])) {
-      $uri = $account->field_author_photo['und'][0]['uri'];
-    }
-
     $u_orders_c = bookbox_count_in_confirm($user->uid);
     $u_reading_c = bookbox_count_in_reading_now($user->uid);
 
@@ -446,17 +442,10 @@ function bookbox_custom_usermenu_block() {
     $content = $content . '<ul class="menu nav navbar-nav secondary dup-tabs">';
     $content = $content . '<li class="first last expanded dropdown">';
     $content = $content . '<a href="/user" title="" data-target="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <span class="user-name"><span>' . $nanme . '</span> <span>' . $snanme . '</span></span>';
-
-    if(isset($account->field_author_photo['und'])) {
-      $content = $content . '<span class="caret has-image"><img src="' . image_style_url("medium", $uri) . '"/>';
-    } else {
-      $content = $content . '<span class="caret">';
-    }
-
-    $content = $content . '</span></a>';
+    $content = $content . '<span class="caret"></span></a>';
 
     $content = $content . '<ul class="dropdown-menu"><li class="first leaf"><a href="/user" title="">Профіль</a></li>';
-    //
+
     $content = $content . '<li class="leaf"><a href="/user#order" title="">Замовлено ';
 
     if ($u_orders_c > 0) {
@@ -465,13 +454,6 @@ function bookbox_custom_usermenu_block() {
     $content = $content . '</a></li>';
     //
     $content = $content . '<li class="leaf"><a href="/user#read" title="">Читаю зараз ';
-
-    if ($u_reading_c > 0) {
-      $content = $content . '<span class="badge">' . $u_reading_c . '</span>';
-    }
-    $content = $content . '</a></li>';
-    //
-    $content = $content . '<li class="leaf"><a href="/user#history" title="">Прочитано ';
 
     if ($u_history_c > 0) {
       $content = $content . '<span class="badge">' . $u_history_c . '</span>';
