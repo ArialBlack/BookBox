@@ -112,6 +112,7 @@ $term = taxonomy_term_load(arg(2));
         <ul class="action-links"><?php print render($action_links); ?></ul>
       <?php endif; ?>
 
+      <h2>Книги видавництва</h2>
       <?php print render($page['content']); ?>
 
     </div>

@@ -195,7 +195,22 @@ function bookbox_user_update(&$edit, $account, $category){
       $mail_to = $account->mail;
       $params['merge_vars']['FNAME'] = $account->field_name['und'][0]['value'];
       bookbox_mail_send('bookbox', 'password_change', $mail_to, $params);
+      drupal_set_message('Пароль успішно змінено');
     }
+  }
+
+  if($account->original->field_tel['und'][0]['value'] != $edit['field_tel']['und'][0]['value']){
+    $company_nid = $account->field_company['und'][0]['target_id'];
+    $company = node_load($company_nid);
+    $mail_to = variable_get('site_mail', '');
+
+    $params = array(
+      'subject' => 'Користувач ' . $account->field_name['und'][0]['value'] . ' ' . $account->field_sirname['und'][0]['value'] . ' з ' . $company->title . ' змінив телефон.',
+      'body' => "Новий номер: " . $edit['field_tel']['und'][0]['value'],
+    );
+
+    bookbox_mail_send('bookbox', 'user_update_tel', $mail_to, $params);
+    drupal_set_message('Телефон успішно змінено');
   }
 }
 

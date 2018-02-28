@@ -453,14 +453,14 @@ function bookbox_custom_usermenu_block() {
     }
     $content = $content . '</a></li>';
     //
-    $content = $content . '<li class="leaf"><a href="/user#read" title="">Читаю зараз ';
+    $content = $content . '<li class="leaf"><a href="/user#read" title="">Зараз читаю ';
 
     if ($u_history_c > 0) {
       $content = $content . '<span class="badge">' . $u_history_c . '</span>';
     }
     $content = $content . '</a></li>';
     //
-    $content = $content . '<li class="leaf"><a href="/user#favs" title="">Вішліст ';
+    $content = $content . '<li class="leaf"><a href="/user#favs" title="">Список бажань ';
 
     if ($u_favs_c > 0) {
       $content = $content . '<span class="badge">' . $u_favs_c . '</span>';

@@ -60,6 +60,7 @@ function bookbox_ui_preprocess_page(&$vars) {
     ///////////////
     $breadcrumb = array();
     $breadcrumb[] = l('Головна', '<front>');
+    $breadcrumb[] = l('Всі книги', '/books');
     $tid = null;
 
     $urlparams = drupal_get_query_parameters();

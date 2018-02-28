@@ -145,8 +145,8 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state)
                                           </div>
                                           <div class="modal-footer">
                                           	<div class="btn-block">
-                                          		 <a class="btn btn-outline red" href="/confirm/' . $uid . '/' . $form_product . '/book?destination=' . $destination . '">Замовити</a>
-                                            	 <button type="button" class="btn cancel red" data-dismiss="modal">Скасувати</button>
+                                          		 <a class="btn btn-outline red" href="/confirm/' . $uid . '/' . $form_product . '/book?destination=' . $destination . '">Так, замовити</a>
+                                            	 <button type="button" class="btn cancel red" data-dismiss="modal">Ні, скасувати</button>
                                           	</div>
                                            ' . verbose_period4popup($date) . '
                                           </div>

@@ -79,6 +79,7 @@ function next_friday_object($date) {
   }
 }
 
+//todo: review
 //Функція формує строку дати доставки
 function verbose_period4order($date) {
   if (period4order ($date) == 1 || period4order($date) == 3) {
@@ -88,12 +89,13 @@ function verbose_period4order($date) {
   }
 }
 
+//todo: review
 //Функція формує строку дати доставки для попапу
 function verbose_period4popup($date) {
   if (period4order ($date) == 1 || period4order($date) == 3) {
-    return "<div class='order-date'>Дата доставки: <span>" . next_friday_full($date) . "</span></div>";
+    return "<div class='order-date'>Доставка: <span>" . next_friday_full($date) . "</span></div>";
   } else {
-    return "<div class='order-date'>Дата доставки: <span>" . next_friday_full($date) . "</span></div>";
+    return "<div class='order-date'>Доставка: <span>" . next_friday_full($date) . "</span></div>";
   }
 }
 
