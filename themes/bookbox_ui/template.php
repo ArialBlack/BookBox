@@ -56,7 +56,6 @@ function bookbox_ui_preprocess_page(&$vars) {
 
   // Do we have a node?
   if (isset($vars['node'])) {
-
     ///////////////
     $breadcrumb = array();
     $breadcrumb[] = l('Головна', '<front>');
@@ -176,6 +175,16 @@ function bookbox_ui_preprocess_html(&$vars, $hook) {
   if ($r == 'user') {
     $vars['head_title'] = 'Профіль | Book Box';
   }
+
+  if (arg(0) == 'books') {
+    $vars['head_title'] = 'Всі книги | Book Box';
+  }
+
+  if (user_is_logged_in()) {
+    if($r == 'user/' . $vars['user']->uid . '/edit') {
+      $vars['head_title'] = 'Налаштування | Book Box';
+    }
+  }
 }
 
 function bookbox_ui_preprocess_field(&$variables) {
@@ -186,4 +195,5 @@ function bookbox_ui_preprocess_field(&$variables) {
     $variables['element']['#help'] = $instance['description'];
   }
 }
+
 
