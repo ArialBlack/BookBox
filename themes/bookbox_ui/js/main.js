@@ -699,6 +699,16 @@
         });
         $('a[href="#link-0"]').click();
 
+        if($(window).width() < 768) {
+          $('.open-faq-block.opened .panel-heading a').click(function() {
+            setTimeout(function(){
+              var inHeight = $('.open-faq-block.opened .field-content').height() + 15;
+              $('.open-faq-block.opened').css('max-height', inHeight + 'px');
+            }, 200);
+
+          });
+        }
+
 
 
         //Sliders
