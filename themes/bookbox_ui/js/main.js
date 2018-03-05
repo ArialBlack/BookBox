@@ -54,23 +54,6 @@
 
           booksCount= $(book).length;
 
-          //Changes count of book-blocks relatively from the device size.
-          // if ($(window).width() <= 991 && $(window).width() >= 741) {
-          //   var allowBookCount = 8;
-          //
-          // } else if ($(window).width() <= 740) {
-          //   allowBookCount = 4;
-          // }
-          //
-          // if (booksCount > allowBookCount) {
-          //   for (var b = 0; b < (booksCount - allowBookCount); b++ ) {
-          //     console.log('detach works');
-          //     $(book + ':last-child').detach();
-          //   }
-          // }
-          //
-          // booksCount= $(book).length;
-
           if ( booksCount > booksInBlock) {
             $(currentBookBox).addClass('box-pagination');
             var innerBoxesCount = Math.ceil(booksCount/booksInBlock);
@@ -123,12 +106,74 @@
           // console.log($(bookBlock).length);
         for(var tb = 0; tb<$(bookBlock).length; tb++) {
           // console.log('checking book name');
-          if ($(bookBlock + ':nth-child('+ tb +' ) h4').text().length > 42) {
+          if ($(bookBlock + ':nth-child('+ tb +' ) h4').text().length > 48) {
             //console.log('book name is too long');
-            var newBookName = $(bookBlock + ':nth-child('+ tb +' ) h4').text().substr(0, 41);
+            var newBookName = $(bookBlock + ':nth-child('+ tb +' ) h4').text().substr(0, 47);
             $(bookBlock + ':nth-child('+ tb +' ) h4').text(newBookName + '...');
           }
         }
+      }
+
+      function validateTextField(id){
+        var value = $(id).val();
+        if( value.length !== 0){
+          $(id).css('border', '2px solid #dfdfdf');
+          $(id).css('background', '#e9e9e9');
+          $(id).css('color', '#dfdfdf');
+          return true;
+        } else {
+          $(id).css('border', '2px solid #db553f');
+          $(id).css('background', 'rgba(255, 0, 0, .06)');
+          $(id).addClass('webform-error');
+          $(id).attr('placeholder', 'Це поле необхідно заповнити');
+          return false
+        }
+      }
+
+      function validateTel(telId) {
+        var telValue = $(telId).val().trim();
+        var re = /^((8|0|((\+|00)\d{1,2}))[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/;
+        if(telValue.length !== 0 && re.test(telValue) && telValue.length == 13){
+          $(telId).css('border', '2px solid #dfdfdf');
+          $(telId).css('background', '#e9e9e9');
+          $(telId).css('color', '#dfdfdf');
+          return true;
+        } else {
+          if(telValue.length < 1) {
+            $(telId).css('border', '2px solid #db553f');
+            $(telId).css('background', 'rgba(255, 0, 0, .06)');
+            $(telId).attr('placeholder', 'Це поле необхідно заповнити');
+            $(telId).addClass('webform-error');
+            return false;
+          }
+          if(!re.test(telValue) && telValue.length > 1) {
+            $(telId).css('border', '2px solid #db553f');
+            $(telId).css('background', 'rgba(255, 0, 0, .06)');
+            $(telId).addClass('webform-error');
+            document.getElementById('edit-submitted-tel').value='';
+            $(telId).attr('placeholder', 'Введіть телефон у форматі 380ХХХХХХХХХ');
+          }
+        }
+      }
+
+      function validateNewPass(pass, confirm) {
+          if (pass.val() == '' && confirm.val() == '') {
+            console.log('cond1 true');
+            return true
+          } else if (pass.val() == confirm.val()) {
+            console.log('cond2 true');
+            return true;
+          } else if (pass.val() !== confirm.val()) {
+            console.log('cond3 false');
+            pass.attr('placeholder', 'Паролі не співпадають');
+            pass.css('border', '2px solid #f86b54');
+            pass.css('border-bottom', 'none');
+            pass.val('');
+            confirm.attr('placeholder', 'Паролі не співпадають');
+            confirm.css('border', '2px solid #f86b54');
+            confirm.val('');
+            return false;
+          }
       }
 
         $(document).ajaxStop(function() {
@@ -140,7 +185,7 @@
                 }
             });
 
-          $('#autocomplete .show-all a').on('click', function(e) {
+          $('#autocomplete .show-all a').not('.books-btn').on('click', function(e) {
             e.preventDefault();
 
             $('.search-block button[type="submit"]').click();
@@ -186,12 +231,91 @@
         }
 
       $('.alert.alert-block.alert-success.messages.status').insertBefore($('.page-node-893 .main-container'));
-
-      if($('.page-node-893 .alert.alert-block.alert-success.messages.status, .node-type-book .alert.alert-block.alert-success.messages.status').length) {
+      $('<h4>Повідомлення надіслано!</h4>').insertBefore($('.page-node-893 .alert.alert-block.alert-success.messages.status p'));
+      $('<a class="btn" data-dismiss="alert">OK</a>').insertAfter($('.page-node-893 .alert.alert-block.alert-success.messages.status p'));
+      $('.page-node-893 .alert.alert-block.alert-success.messages.status p').text('Якнайскоріше відповімо :)');
+      if($('.page-node-893 .alert.alert-block.alert-success.messages.status, .node-type-book .alert.alert-block.alert-success.messages.status, .page-user-edit .alert.alert-block.alert-success.messages.status').length) {
         $('body').addClass('open-alert modal-open');
       }
 
-        $( document ).ready(function() {
+      //Script for slides in collection slider. Fix height.
+      var equalheight = function(container) {
+
+        var currentTallest = 0,
+          currentRowStart = 0,
+          rowDivs = new Array(),
+          $el,
+          topPosition = 0;
+        $(container).each(function() {
+
+          $el = $(this);
+          $($el).height('auto')
+          topPostion = $el.position().top;
+
+          if (currentRowStart != topPostion) {
+            for (currentDiv = 0 ; currentDiv < rowDivs.length ; currentDiv++) {
+              rowDivs[currentDiv].height(currentTallest);
+            }
+            rowDivs.length = 0; // empty the array
+            currentRowStart = topPostion;
+            currentTallest = $el.height();
+            rowDivs.push($el);
+          } else {
+            rowDivs.push($el);
+            currentTallest = (currentTallest < $el.height()) ? ($el.height()) : (currentTallest);
+          }
+          for (currentDiv = 0 ; currentDiv < rowDivs.length ; currentDiv++) {
+            rowDivs[currentDiv].height(currentTallest);
+          }
+        });
+      }
+
+      $(window).load(function() {
+        equalheight('.front .view-collections-slider .slick-track .views-row');
+      });
+
+
+      $(window).resize(function(){
+        equalheight('.front .view-collections-slider .slick-track .views-row');
+      });
+
+      //end.
+      $(window).on('load', function() {
+        if ($('body').hasClass('page-user')) {
+          if (location.hash) {
+            setTimeout(function () {
+
+              window.scrollTo(0, 0);
+            }, 0);
+          }
+        }
+
+
+        if ($('body').hasClass('node-type-book')) {
+          var textHeight = $('.text-cover-block').height(),
+              marginBottom,
+              paddingTop;
+
+          if($(window).width() >= 1200 ) {
+            marginBottom = textHeight - 512;
+            paddingTop = 522 - textHeight;
+
+            $('.name-and-links').css('padding-top', paddingTop + 'px');
+            $('.book-cover-block .field-type-image').css('margin-bottom', marginBottom + 'px');
+          }
+          else if ($(window).width() >= 992 && $(window).width() < 1199) {
+              marginBottom = textHeight - 412;
+              paddingTop = 422 - textHeight;
+
+            $('.name-and-links').css('padding-top', paddingTop + 'px');
+            $('.book-cover-block .field-type-image').css('margin-bottom', marginBottom + 'px');
+          }
+        }
+      });
+
+      $('.form-item-current-pass .form-text.error').attr('placeholder', 'Ви ввели невірний пароль.');
+
+      $( document ).ready(function() {
             //console.log(Drupal.settings.firstLogin);
 
             searchResultsActions();
@@ -261,23 +385,8 @@
                 if( $('.active-left').length ) {
                     $('.active-left').click();
                 }
-            })
-
-            if ($(window).width() <768) {
-                $('.page-faq #block-system-main .view-id-faq .nav-tabs .active').append($('.page-faq #block-system-main .view-id-faq .tab-content'));
-
-                $('.node-type-book .mobile.visible-xs .description-tabs-mobile .nav-tabs .active').append($('.node-type-book .mobile.visible-xs .description-tabs-mobile .tab-content'));
-            }
-
-            $(window).resize(function(){
-                if ($(this).width() < 768 && $('.page-faq #block-system-main .view-id-faq .nav-tabs li.active').children().length == 1) {
-                    $('.page-faq #block-system-main .view-id-faq .nav-tabs .active').append($('.page-faq #block-system-main .view-id-faq .tab-content'));
-                } else if ( $(this).width() >= 768 ) {
-                    $('.page-faq #block-system-main .view-id-faq .tab-content').css('display', 'block');
-                    $('.page-faq #block-system-main .view-id-faq #views-bootstrap-tab-1').append($('.page-faq #block-system-main .view-id-faq .tab-content'));
-                }
-
             });
+
 
             $('.page-faq #block-system-main .view-id-faq .nav-tabs li').click(function(){
                 if ($(window).width() <768) {
@@ -328,7 +437,6 @@
           //
 
           $('.page-user-register .field-name-field-tel input').click(function() {
-            // console.log($(this).val().length);
             if (!$(this).val().length) {
               $(this).val('+380');
             }
@@ -342,10 +450,6 @@
           checkBookName('.publishers .view-content>.views-row');
           checkBookName('.book-search .view-content>article');
           checkBookName('body.authors .view-content .views-row');
-
-            $('.navbar .dropdown-toggle .user-name').click(function() {
-              // $('body').toggleClass('openNav');
-            });
 
           $('.navbar .menu.secondary').click(function() {
             if($(window).width() <= 768) {
@@ -372,26 +476,26 @@
           });
 
           //Add placeholder to finder
-          $('.search-block .finder-element-title').attr('placeholder', 'Пошук за назвою та (або) автором');
-          $('.page-book-search .main-container .finder-element-title').attr('placeholder', 'Пошук за назвою та (або) автором');
+          $('.search-block .finder-element-title').attr('placeholder', 'Пошук за назвою та автором');
+          $('.page-book-search .main-container .finder-element-title').attr('placeholder', 'Пошук за назвою та автором');
 
           //Remove text from finder when go from finder on book page
           $('.node-type-book .navbar .finder-element.form-autocomplete').text('');
 
           if($(window).width() < 992) {
             var activeCategory = $('.category #block-system-main-menu .menu.nav>.active-trail>a').text();
-            $('.category #block-bookbox-sidebarfitlerblockcompany').prepend('<button class="comp-block-btn">Хіти</button>');
+            $('.category #block-bookbox-sidebarfitlerblockcompany').prepend('<button class="comp-block-btn">Всі книги</button>');
             $('<button class="category-block-btn">Обрати</button>').insertAfter('.category #block-system-main-menu .block-title');
             $('<button class="lang-block-btn">Обрати</button>').insertAfter('.category #edit-lang-wrapper>label');
             $('<button class="collection-block-btn">Обрати</button>').insertAfter('.category #block-views-collection-list-block-1 .block-title');
             $('.category .category-block-btn').text(activeCategory);
 
-            $('.page-books #block-bookbox-sidebarfitlerblockcompany').prepend('<button class="comp-block-btn">Хіти</button>');
+            $('.page-books #block-bookbox-sidebarfitlerblockcompany').prepend('<button class="comp-block-btn">Всі книги</button>');
             $('<button class="category-block-btn">Обрати</button>').insertAfter('.page-books #block-system-main-menu .block-title');
             $('<button class="lang-block-btn">Обрати</button>').insertAfter('.page-books #edit-lang-wrapper>label');
             $('<button class="collection-block-btn">Обрати</button>').insertAfter('.page-books #block-views-collection-list-block-1 .block-title');
 
-            $('.collection #block-bookbox-sidebarfitlerblockcompany').prepend('<button class="comp-block-btn">Хіти</button>');
+            $('.collection #block-bookbox-sidebarfitlerblockcompany').prepend('<button class="comp-block-btn">Всі книги</button>');
             $('<button class="category-block-btn">Обрати</button>').insertAfter('.collection #block-system-main-menu .block-title');
             $('<button class="lang-block-btn">Обрати</button>').insertAfter('.collection #edit-lang-wrapper>label');
             $('<button class="collection-block-btn">Обрати</button>').insertAfter('.collection #block-views-collection-list-block-1 .block-title');
@@ -400,6 +504,20 @@
               $('.comp-block-btn').text($('.page-header').text());
             }
           }
+
+          //For FAQ page
+
+        if($(window).width() < 768 && $('body').hasClass('page-faq')) {
+            var countOfBlocks = $('#views-bootstrap-tab-1 .tab-pane').length;
+
+            for (var i = 0; i< countOfBlocks; i++) {
+              var titleText = $('a[href="#tab-1-' + i + '"').text();
+
+              $('#tab-1-' + i).prepend('<a href="#link-'+ i +'" class="open-faq-link">' + titleText + '</a>');
+              $('#tab-1-' + i + '>.views-field-body').addClass('open-faq-block');
+              $('#tab-1-' + i + '>.views-field-body').attr('id', 'link-' + i);
+            }
+        }
 
             // Add slideDown animation to Bootstrap dropdown when expanding.
             $('.category .col-sm-3 #block-system-main-menu .dropdown, .page-books .col-sm-3 #block-system-main-menu .dropdown, .collection .col-sm-3 #block-system-main-menu .dropdown').on('show.bs.dropdown', function() {
@@ -450,7 +568,7 @@
             $('#block-views-collection-list-block-1').toggleClass('open-block');
           });
 
-          $('.alert.alert-block.alert-success.messages.status .close').click(function() {
+          $('.alert.alert-block.alert-success.messages.status .close, .alert.alert-block.alert-success.messages.status .btn').click(function() {
             $('body').removeClass('open-alert');
             $('body').removeClass('modal-open');
           });
@@ -459,7 +577,7 @@
             e.preventDefault();
             var target = $(this).attr('href');
             var offsetScroll = $(target).offset().top;
-            $('html, body').animate( { scrollTop:  offsetScroll}, 1400);
+            $('html, body').animate( { scrollTop:  offsetScroll}, 800);
           });
 
           var firstChild = $('.text-center>ul.pagination>li:first-child span').text();
@@ -516,7 +634,74 @@
             $('.show-finder.bg').removeClass('visible');
           });
 
-          //Sliders
+          //VALIDATE OF FORMS
+
+        $('.page-node-893 button.webform-submit').click(function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          var text = validateTextField('#edit-submitted-message');
+
+          if (text) {
+            $('#webform-client-form-892').submit();
+          }
+        });
+
+        $('.page-user-edit #edit-submit').click(function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+
+
+          var tel = validateTel('#edit-field-tel-und-0-value'),
+              newPass = validateNewPass($('#edit-pass-pass1'), $('#edit-pass-pass2'));
+
+          if (tel && newPass) {
+            $('#user-profile-form').submit();
+          }
+        });
+
+        $('.page-user-edit .form-text.error').click (function() {
+          $(this).removeClass('error');
+          $(this).attr('placeholder', '');
+        });
+
+        $('.form-type-password-confirm .form-text').click(function() {
+          $(this).css('border', 'initial');
+          $(this).css('border-bottom', 'initial');
+        });
+
+        $('#webform-client-form-892 textarea').click(function() {
+          $(this).css('border','');
+          $(this).css('border-bottom', '');
+          $(this).css('background','');
+          $(this).css('color','');
+          $(this).removeClass('webform-error');
+          $(this).attr('placeholder', '');
+        });
+
+        //page-faq
+
+        $('.open-faq-link').click(function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          var textAddress = $(this).attr('href'),
+              inHeight = $(textAddress + ' .field-content').height() + 15;
+
+          $('.open-faq-link.opened-link').not(this).click();
+          $(this).toggleClass('opened-link');
+          $(textAddress).css('max-height', inHeight + 'px');
+          if($(textAddress).hasClass('opened')) {
+            $(textAddress).css('max-height', '0');
+          }
+          $(this).siblings('.open-faq-block').toggleClass('opened');
+
+          $('.open-faq-block:not('+textAddress+')').css('max-height', '0');
+        });
+        $('a[href="#link-0"]').click();
+
+
+
+        //Sliders
           $('.view-front-slider>.view-content').slick({
             autoplay: true,
             autoplaySpeed: 8000,

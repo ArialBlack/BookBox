@@ -238,10 +238,11 @@ Drupal.jsFAC.prototype.found = function (matches) {
   }
 
   if ( matches.length === 0) {
-    $('<div class="sorry">На жаль, нічого не знайдено</div>').appendTo(ul);
+    $('<div class="sorry">Нічого не знайдено :(</div>').appendTo(ul);
+    $('<div class="show-all"><a type="submit" class="btn books-btn" href="/books">Весь асортимент</a></div>').appendTo(ul);
+  } else {
+    $('<div class="show-all"><a type="submit" class="btn" href="#">Всі результати пошуку</a></div>').appendTo(ul);
   }
-
-  $('<div class="show-all"><a type="submit" class="btn" href="#">Показати всі результати</a></div>').appendTo(ul);
 
   // Show popup with matches, if any.
   if (this.popup) {

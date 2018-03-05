@@ -42,6 +42,10 @@ body.publishers {
     color: @header-text-3;
     border: none;
 
+    @media (min-width: 992px) {
+      width: ~'calc(8.3333333% * 8)';
+    }
+
     @media (max-width: @laptop-2) {
       margin-bottom: 10px;
     }
@@ -56,6 +60,26 @@ body.publishers {
 
     @media (max-width: @mid-xs) {
       font-size: 26px;
+    }
+  }
+
+  .page-icon {
+    position: absolute;
+    top: 60px;
+    right: ~'calc(8.3333333% * 3)';
+    height: 140px;
+    width: 165px;
+    background:url(../images/svg/author-icon.svg);
+    background-repeat: no-repeat;
+    background-size: 100%;
+
+    @media (max-width: @laptop-2) {
+      width: 132px;
+      right: ~'calc(8.3333333% * 2)';
+    }
+
+    @media (max-width: @max-sm) {
+      display: none;
     }
   }
 

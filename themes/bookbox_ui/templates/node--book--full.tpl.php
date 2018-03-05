@@ -132,7 +132,7 @@ $translations = translation_path_get_translations("node/" . $node->nid);
             ?>
 	      		<?php print render($content['field_nni']); ?>
     			</div>
-    			<div class="col-md-8 col-sm-8">
+    			<div class="col-md-8 col-sm-8 text-cover-block">
     				<h1<?php print $title_attributes; ?>><?php print $title; ?></h1>
 	      <?php print render($content['field_book_author']); ?>
 	      <?php print $node->body['und'][0]['safe_value']; ?>

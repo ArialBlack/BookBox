@@ -29,16 +29,30 @@ body.authors {
 
     .page-header {
       font-family: GillSansC;
-      font-size: @text-block-title;
+      //font-size: @text-block-title;
+      font-size: @header-large;
       color: @header-text-3;
       text-transform: uppercase;
       border: none;
       margin-bottom: 5px;
       padding-top: 40px;
 
+      @media (max-width: @max-sm) {
+        font-size: 50px;
+      }
+
+      @media (max-width: @max-xs) {
+        font-size: @screen-title;
+      }
+
+      @media (max-width: @mid-xs) {
+        font-size: 26px;
+      }
       @media (max-width: 500px) {
         padding-top: 20px;
       }
+
+
     }
 
     .author-original-name {
@@ -105,6 +119,14 @@ body.authors {
           font-family: ubuntu-regular;
           font-size: @body-text-n;
           color: @header-text;
+
+          @media (min-width: 992px) {
+            padding-right: 170px;
+          }
+
+          @media (min-width: @laptop-1) {
+            padding-right: 210px;
+          }
 
           @media (max-width: 500px) {
             padding-top: 20px;

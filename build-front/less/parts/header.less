@@ -268,13 +268,18 @@
       border: none;
       background-repeat: no-repeat;
       background-position: center bottom;
+      margin-top: -5px;
 
       &:hover {
         text-decoration: none;
         border: none;
 
         .badge {
-          background: @red;
+          background: darken(@green, 5);
+
+          &-empty {
+            background: darken(@red, 5);
+          }
         }
       }
 
@@ -488,13 +493,21 @@
             background: @green;
             color: #fff;
             border-radius: 0;
+
+            &-empty {
+              background: @red;
+            }
           }
 
           &:hover {
             color: #232323;
 
             .badge {
-              background: @red;
+              background: darken(@green, 5);
+
+              &-empty {
+                background: darken(@red, 5);
+              }
             }
           }
         }

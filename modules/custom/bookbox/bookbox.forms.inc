@@ -135,13 +135,14 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state)
                                       <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                           <div class="modal-header">
-                                          	<img src="/sites/all/themes/bookbox_ui/images/order-popup.png" alt="">
+                                            <a class="close" data-dismiss="modal" href="#">×</a>
+                                          	<img src="/sites/all/themes/bookbox_ui/images/read-now.png" alt="">
                                           </div>
                                           <div class="modal-body">
                                           	<h4>Ви підтверджуєте замовлення?</h4>
-                                          	<div class="modal-book-block">
+                                          	<!--<div class="modal-book-block">
                                           	<img class="modal-book-img" src="' . image_style_url("bookcover", $uri) . '"/>
-                                          	</div>
+                                          	</div>-->
                                           </div>
                                           <div class="modal-footer">
                                           	<div class="btn-block">
@@ -167,11 +168,11 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state)
                                       <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                           <div class="modal-header">
-                                            <img src="/sites/all/themes/bookbox_ui/images/order-popup.png" alt="">
+                                            <a class="close" data-dismiss="modal" href="#">×</a>
+                                            <img src="/sites/all/themes/bookbox_ui/images/alert-mark.png" alt="">
                                           </div>
                                           <div class="modal-body">
-                                            <p>Три книжки - максимальна кількість на руках в один момент часу.</p>
-                                            <p>Коли книга повертається нам - відкривається можливість замовити наступну.</p>
+                                            <p>Три книжки – максимальна кількість на руках в один момент часу. <br> Коли ви повернете одну з прочитаних книжок – відкриється можливість замовити наступну.</p>
                                           </div>
                                           <div class="modal-footer">
                                             <button type="button" class="btn btn-outline red" data-dismiss="modal">Зрозуміло</button>

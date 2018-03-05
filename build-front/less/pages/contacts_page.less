@@ -16,7 +16,8 @@
   }
 
   .tabs--primary.nav.nav-tabs,
-  .action-links {
+  .action-links,
+  .form-required {
     display: none;
   }
 
@@ -95,6 +96,10 @@
         background-repeat: no-repeat;
         background-size: 100% 100%;
 
+        @media (min-width: @laptop-2) {
+          margin-left: 17%;
+        }
+
         @media (max-width: @max-sm) {
           display: none;
         }
@@ -171,6 +176,15 @@
 
       textarea {
         height: 170px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-family: ubuntu-medium;
+        font-size: 16px;
+        color: #2e2e2e;
+
+        &::placeholder {
+          color: @red;
+        }
 
         &:focus {
           box-shadow: none;
@@ -195,21 +209,57 @@
     background: #fff;
     border: none;
     width: 585px;
-    height: 300px;
+    height: 425px;
 
-    p {
-      font-family: GillSansC;
+    .element-invisible {
+      display: none;
+    }
+
+    h4 {
+      position: relative;
+      padding-top: 135px;
+      font-family: gillsans-bold;
       font-size: @text-block-title;
       color: @header-text;
       text-align: center;
-      padding-top: 115px;
+
+      &:before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        top: 50px;
+        width: 60px;
+        height: 60px;
+        background: url(../images/checkmark.png);
+        background-size: 100%;
+      }
+    }
+
+    p {
+      padding-top: 25px;
+      padding-bottom: 45px;
+      font-family: ubuntu-medium;
+      font-size: @body-text-n;
+      color: @header-text;
+      text-align: center;
     }
 
     a.close {
+      position: relative;
       color: @red;
       font-weight: normal;
       font-size: 24px;
       opacity: 1;
+      z-index: 10;
+    }
+
+    a.btn {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      color: @white;
+      line-height: 65px;
     }
   }
 }

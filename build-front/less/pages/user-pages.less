@@ -1,5 +1,9 @@
 .page-user {
 
+  .badge-empty {
+    background: @red !important;
+  }
+
   .main-container {
     @media (min-width: @max-xs) {
       min-height: 90vh;
@@ -106,9 +110,6 @@
         font-size: 20px;
         color: @header-text-2;
 
-        @media(max-width: @mid-xs) {
-          padding-left: 80px;
-        }
       }
 
       h1 {
@@ -127,7 +128,6 @@
           font-size: 22px;
           padding-top: 0;
           padding-bottom: 35px;
-          padding-left: 80px;
         }
       }
 
@@ -200,11 +200,11 @@
           padding: 6px 50px;
 
           @media (max-width: @laptop-2) {
-            padding: 5px 40px;
+            padding: 5px 30px;
           }
 
           @media (max-width: @max-sm) {
-            padding: 5px 16px;
+            padding: 5px 10px;
           }
 
           a {

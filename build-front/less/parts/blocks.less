@@ -630,7 +630,18 @@ body.books.category .breadcrumb {
       position: relative;
       display: inline-block;
 
+      &:not(.active):not(.next):not(.prev) {
+        @media (max-width: @max-xs) {
+          display: none;
+        }
+      }
+
       &.first.active {
+
+        @media (max-width: @max-xs) {
+          margin-left: 50px;
+        }
+
         &:before {
           content: '◄';
           position: absolute;
@@ -732,3 +743,6 @@ body.books.category .breadcrumb {
 }
 
 
+.not-aviable-mark {
+  display: none;
+}

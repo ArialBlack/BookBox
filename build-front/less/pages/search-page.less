@@ -6,7 +6,7 @@ body.page-book-search {
       float: left;
       width: 16.66666667%;
       margin-top: -40px;
-      margin-left: 8.3333333%;
+      margin-left: 0;
       height: 150px;
       background:url(../images/svg/search-page.svg);
       background-repeat: no-repeat;
@@ -157,7 +157,16 @@ body.page-book-search {
       .view-content {
         display: flex;
         flex-wrap: wrap;
+
+
+        @media (max-width: @max-sm) {
+          justify-content: center;
+        }
       }
     }
+  }
+
+  article.node-book {
+    z-index: 1;
   }
 }

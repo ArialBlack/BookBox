@@ -198,7 +198,7 @@ global $user;
           <div class="page-icon"></div>
       		</div>
       	</div>
-        
+
         </div>
     </div>
 
@@ -215,12 +215,12 @@ global $user;
 
             <div class="views-exposed-widget views-widget-per-page">
               <div class="form-item form-item-items-per-page form-type-select form-group">
-                <label class="control-label" for="edit-items-per-page">Показати по:</label>
+                <label class="control-label" for="edit-items-per-page">Кількість для відображення:</label>
                 <select class="form-control form-select" id="edit-items-per-page" name="items_per_page">
-                  <option value="12" selected="selected"><p>12 книг</p></option>
-                  <option value="24">24 книги</option>
-                  <option value="48">48 книг</option>
-                  <option value="60">60 книг</option>
+                  <option value="12" selected="selected">12</option>
+                  <option value="24">24</option>
+                  <option value="48">48</option>
+                  <option value="60">60</option>
                 </select>
               </div>
             </div>

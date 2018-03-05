@@ -1,6 +1,106 @@
 .page-user-edit {
   min-height: 100px;
 
+  .form-item-field-tel-und-0-value {
+    @media (max-width: @max-xs) {
+      display: inline-block;
+      left: 50%;
+      position: relative;
+      transform: translateX(-50%);
+    }
+  }
+  input.form-text {
+    @media (max-width: 500px) {
+      max-width: 300px !important;
+      min-width: 0 !important;
+    }
+  }
+
+  &.open-alert {
+    position: relative;
+
+    &:before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      background: rgba(0, 0, 0, .4);
+      width: 100%;
+      height: 100%;
+      z-index: 100;
+    }
+  }
+
+  .alert-block.alert-success.messages {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -20%);
+    z-index: 100;
+    background: #fff;
+    border: none;
+    width: 585px;
+    height: 265px;
+    padding-top: 120px;
+    font-family: gillsans-bold;
+    font-size: @text-block-title;
+    color: @header-text;
+    text-align: center;
+
+    .element-invisible {
+      display: none;
+    }
+
+    h4 {
+      position: relative;
+      padding-top: 135px;
+      font-family: gillsans-bold;
+      font-size: @text-block-title;
+      color: @header-text;
+      text-align: center;
+
+      &:before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        top: 50px;
+        width: 60px;
+        height: 60px;
+        background: url(../images/checkmark.png);
+        background-size: 100%;
+      }
+    }
+
+    p {
+      padding-top: 25px;
+      padding-bottom: 45px;
+      font-family: ubuntu-medium;
+      font-size: @body-text-n;
+      color: @header-text;
+      text-align: center;
+    }
+
+    a.close {
+      position: absolute;
+      right: 15px;
+      top: 15px;
+      color: @red;
+      font-weight: normal;
+      font-size: 24px;
+      opacity: 1;
+      z-index: 10;
+    }
+
+    a.btn {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      color: @white;
+      line-height: 65px;
+    }
+  }
+
   .main-container {
     width: 100%;
     min-height: 100px;
@@ -9,11 +109,23 @@
 
     #block-system-main {
 
+      .help-block,
+      .form-required {
+        display: none;
+      }
+
       #edit-account,
-      #edit-field-tel,
-      .form-item-field-author-photo-und-0,
-      .form-actions {
+      .form-actions,
+      #field-tel-add-more-wrapper {
         .container;
+      }
+
+      .form-actions {
+        padding-top: 15px;
+
+        .icon.glyphicon.glyphicon-ok {
+          display: none;
+        }
       }
 
       .glyphicon.form-control-feedback,
@@ -68,6 +180,10 @@
         }
       }
 
+      .form-item-current-pass {
+        padding-top: 25px;
+      }
+
       #user-profile-form > div {
         display: flex;
         flex-wrap: wrap;
@@ -78,56 +194,23 @@
           display: none;
         }
 
-        .field-name-field-author-photo {
+        .field-name-field-tel {
           order: -3;
-          padding-top: 35px;
-          padding-bottom: 35px;
+          padding-top: 45px;
+          padding-bottom: 45px;
           background: @yellow;
-
-          .image-preview {
-            border: 2px solid #e0e0e0;
-            padding: 0;
-            margin-bottom: 20px;
-          }
-
-          .image-widget-data {
-            float: left;
-            clear: both;
-
-            >button {
-              width: 223px;
-            }
-
-            .input-group {
-              .form-control.form-file {
-                float: left;
-                display: block;
-                width: auto;
-                background: none;
-                border: none;
-                box-shadow: none;
-                outline: none;
-                padding-left: 0;
-                margin-top: 10px;
-                cursor: pointer;
-                font-family: ubuntu-regular;
-              }
-
-              .input-group-btn {
-                float: left;
-                clear: both;
-                padding-top: 20px;
-
-                button {
-                  box-shadow: none;
-                }
-              }
-            }
-          }
         }
 
         .form-item-pass-pass2 {
-          margin-bottom: 0;
+          //margin-bottom: 0;
+        }
+
+        .form-item-current-pass {
+          .form-text.error {
+            border: 2px solid @red;
+            //background: rgba(255, 0, 0, 0.06);
+            color: @red;
+          }
         }
       }
     }

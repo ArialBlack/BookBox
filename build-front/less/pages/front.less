@@ -248,10 +248,17 @@
           }
         }
 
+        .slick-track {
+          display: flex !important;
+          align-items: stretch;
+          flex-direction: row;
+        }
+
         .views-row {
           width: 50%;
           padding-left: 15px;
           padding-right: 15px;
+          flex-grow: 1;
 
           &>a {
             position: relative;
@@ -259,10 +266,16 @@
             border: 3px solid #dfdfdf;
             background: none;
             padding-bottom: 15px;
+            height: 100%;
+            transition: all .3s ease;
 
             &:hover {
               background: @white;
               text-decoration: none;
+
+              &>div:not(.term-image):not(.term-name):not(.term-description) {
+                background: #fff;
+              }
             }
 
             &>div:not(.term-image):not(.term-name):not(.term-description) {
@@ -275,6 +288,7 @@
               color: @header-text;
               text-transform: uppercase;
               padding: 10px 14px 10px 36px;
+              transition: all .3s ease;
 
               &:before {
                 content: '';
@@ -312,7 +326,7 @@
               font-size: @body-text-n;
               color: #767687;
               padding: 0 15px;
-              height: 85px;
+              //height: 85px;
               overflow: hidden;
             }
           }
