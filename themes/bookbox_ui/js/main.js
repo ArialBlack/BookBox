@@ -500,10 +500,17 @@
           changeFormSelect('.books.category .col-sm-3 #edit-items-per-page','.books.category .col-sm-9 #edit-items-per-page');
           changeFormSelect('.page-books .col-sm-3 #edit-items-per-page','.page-books .col-sm-9 #edit-items-per-page');
           changeFormSelect('.collection .col-sm-3 #edit-items-per-page','.collection .col-sm-9 #edit-items-per-page');
+          changeFormSelect('.page-books-company-hits .col-sm-3 #edit-items-per-page','.page-books-company-hits .col-sm-9 #edit-items-per-page');
 
-          $('.books.category .col-sm-9 #edit-items-per-page, .collection .col-sm-9 #edit-items-per-page, .page-books .col-sm-9 #edit-items-per-page').change(function() {
+          $('.books.category .col-sm-9 #edit-items-per-page, ' +
+              '.collection .col-sm-9 #edit-items-per-page, ' +
+              '.page-books-company-hits .col-sm-9 #edit-items-per-page, ' +
+              '.page-books .col-sm-9 #edit-items-per-page').change(function() {
             var thisValue = $(this).val();
-            $('.books.category .col-sm-3 #edit-items-per-page, .collection .col-sm-3 #edit-items-per-page, .page-books .col-sm-3 #edit-items-per-page').val(thisValue).trigger('change');
+            $('.books.category .col-sm-3 #edit-items-per-page, ' +
+                '.collection .col-sm-3 #edit-items-per-page, ' +
+                '.page-books-company-hits .col-sm-3 #edit-items-per-page, ' +
+                '.page-books .col-sm-3 #edit-items-per-page').val(thisValue).trigger('change');
           });
 
           //Add placeholder to finder
