@@ -185,30 +185,13 @@
                 }
             });
 
+            // Submit search button when ajax stop
           $('#autocomplete .show-all a').not('.books-btn').on('click', function(e) {
             e.preventDefault();
 
-            $('.search-block button[type="submit"]').click();
-
             setTimeout(function(){
-              $('.search-block button[type="submit"]').click();
+              $('#finder-form-content-finder').submit();
             }, 260);
-          });
-
-          $('.navbar .finder-element.form-autocomplete').keypress(function(e) {
-            if (e.keyCode == 13) {
-              setTimeout(function() {
-                $('.navbar .btn-default.form-submit').click();
-              }, 260);
-            }
-          });
-
-          $('.page-book-search .yellow-block .finder-element.form-autocomplete').keypress(function(e) {
-            if (e.keyCode == 13) {
-              setTimeout(function() {
-                $('.page-book-search .yellow-block .btn-default.form-submit').click();
-              }, 260);
-            }
           });
 
           checkBookName('#autocomplete ul>li');
@@ -221,7 +204,6 @@
             if($('.region-precontent #finder-block-content_finder-wrapper form').length > 0) {
                 var sString = $('#finder-block-content_finder form input.finder-element').val();
 
-                console.log(sString);
                 if($('.view-search-results-div').length > 0) {
                     $('.view-search-results-div').find('span').text(sString);
                 }
@@ -234,6 +216,7 @@
       $('<h4>Повідомлення надіслано!</h4>').insertBefore($('.page-node-893 .alert.alert-block.alert-success.messages.status p'));
       $('<a class="btn" data-dismiss="alert">OK</a>').insertAfter($('.page-node-893 .alert.alert-block.alert-success.messages.status p'));
       $('.page-node-893 .alert.alert-block.alert-success.messages.status p').text('Якнайскоріше відповімо :)');
+
       if($('.page-node-893 .alert.alert-block.alert-success.messages.status, .node-type-book .alert.alert-block.alert-success.messages.status, .page-user-edit .alert.alert-block.alert-success.messages.status').length) {
         $('body').addClass('open-alert modal-open');
       }
@@ -298,14 +281,14 @@
 
           if($(window).width() >= 1200 ) {
             marginBottom = textHeight - 512;
-            paddingTop = 522 - textHeight;
+            paddingTop = 485 - textHeight;
 
             $('.name-and-links').css('padding-top', paddingTop + 'px');
             $('.book-cover-block .field-type-image').css('margin-bottom', marginBottom + 'px');
           }
           else if ($(window).width() >= 992 && $(window).width() < 1199) {
               marginBottom = textHeight - 412;
-              paddingTop = 422 - textHeight;
+              paddingTop = 385 - textHeight;
 
             $('.name-and-links').css('padding-top', paddingTop + 'px');
             $('.book-cover-block .field-type-image').css('margin-bottom', marginBottom + 'px');
@@ -319,6 +302,51 @@
             //console.log(Drupal.settings.firstLogin);
 
             searchResultsActions();
+
+            //Submit forms on Enter and button click on search page and navber
+        $('.page-book-search .yellow-block .finder-element.form-autocomplete').keypress(function(e) {
+          if (e.keyCode == 13) {
+            if ($(this).val() == '') {
+              e.preventDefault();
+            } else {
+              setTimeout(function() {
+                $('#finder-form-content-finder--2').submit();
+              }, 260);
+            }
+          }
+        });
+
+        $('.page-book-search .yellow-block .btn-default.form-submit').click(function(e) {
+          if ($('.page-book-search .yellow-block .finder-element.form-autocomplete').val() == '') {
+            e.preventDefault();
+          } else {
+            setTimeout(function() {
+              $('#finder-form-content-finder--2').submit();
+            }, 250);
+          }
+        });
+
+        $('.navbar .finder-element.form-autocomplete').keypress(function(e) {
+          if (e.keyCode == 13) {
+            if ($(this).val() == '') {
+              e.preventDefault();
+            } else {
+              setTimeout(function() {
+                $('#finder-form-content-finder').submit();
+              }, 260);
+            }
+          }
+        });
+
+        $('.navbar .btn-default.form-submit').click(function(e) {
+          if ($('.navbar .finder-element.form-autocomplete').val() == '') {
+            e.preventDefault();
+          } else {
+            setTimeout(function() {
+              $('#finder-form-content-finder').submit();
+            }, 250);
+          }
+        });
 
             ///url must switch tab
             var hash = window.location.hash;
@@ -442,7 +470,10 @@
             }
           });
 
-          checkBookName('.block-bookbox ul>li');
+          checkBookName('.front #block-bookbox-manualhits ul>li');
+          checkBookName('.front #block-bookbox-companyhits ul>li');
+          checkBookName('.front #block-bookbox-newbyadmin ul>li');
+          checkBookName('body:not(.front) .block-bookbox ul>li');
           checkBookName('.page-books .view-content>.views-row');
           checkBookName('body.books .view-content>.views-row');
           checkBookName('body.collection .view-content>.views-row');
@@ -479,8 +510,8 @@
           $('.search-block .finder-element-title').attr('placeholder', 'Пошук за назвою та автором');
           $('.page-book-search .main-container .finder-element-title').attr('placeholder', 'Пошук за назвою та автором');
 
-          //Remove text from finder when go from finder on book page
-          $('.node-type-book .navbar .finder-element.form-autocomplete').text('');
+          // //Remove text from finder when go from finder on book page
+          // $('.node-type-book .navbar .finder-element.form-autocomplete').text('');
 
           if($(window).width() < 992) {
             var activeCategory = $('.category #block-system-main-menu .menu.nav>.active-trail>a').text();

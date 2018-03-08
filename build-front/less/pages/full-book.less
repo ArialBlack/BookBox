@@ -518,26 +518,34 @@
         }
 
         @media (max-width: @max-xs) {
-          left: 222px;
+          left: 221px;
           top: 65px;
         }
 
         @media (max-width: @mid-xs) {
-          left: 52%;
+          left: 38.5%;
           top: 175px;
           transform: translateX(-50%);
         }
 
+        @media (max-width: 376px) {
+          left: 37%;
+        }
+
+        @media (max-width: 321px) {
+          left: 34.5%;
+        }
+
         &.open {
           display: block;
-          width: 195px;
+          width: 140px;
         }
 
         &:before {
           content: '';
           position: absolute;
           top: -55px;
-          right: 95px;
+          right: 39px;
           width: 0;
           height: 0;
           border-left: 75px solid transparent;
@@ -575,6 +583,14 @@
         padding-bottom: 20px;
       }
 
+      >.field {
+
+        @media (min-width: 768px) {
+          padding-top: 2px;
+          padding-bottom: 2px;
+        }
+      }
+
       .field-label-above {
         padding-bottom: 35px;
       }
@@ -582,7 +598,8 @@
       .field-label {
         font-family: ubuntu-medium;
         font-size: @menu-text;
-        color: @input-text;
+        //color: @input-text;
+        color: @header-text-3;
         text-transform: uppercase;
 
         @media (max-width: @max-xs) {
@@ -594,7 +611,8 @@
       .field-items a {
         font-family: ubuntu-medium;
         font-size: @body-text-n;
-        color: @header-text-3;
+        //color: @header-text-3;
+        color: @input-text;
 
         ul, li {
           padding-left: 0;

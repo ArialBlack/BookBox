@@ -26,7 +26,6 @@ Drupal.behaviors.finder_autocomplete = {
       new Drupal.jsFAC($input, acdb[uri], settings);
     });
   }
-
 };
 
 /**
@@ -114,13 +113,13 @@ Drupal.jsFAC.prototype.onkeyup = function (input, e) {
 /**
  * Puts the currently highlighted suggestion into the autocomplete field.
  */
-Drupal.jsFAC.prototype.select = function (node) {
-  this.input.value = $(node).data('autocompleteValue');
-  if (this.settings.autosubmit) {
-    this.input.form.submit();
-  }
-
-};
+// Drupal.jsFAC.prototype.select = function (node) {
+//   this.input.value = $(node).data('autocompleteValue');
+//   if (this.settings.autosubmit) {
+//     this.input.form.submit();
+//   }
+//
+// };
 
 /**
  * Highlights the next suggestion.

@@ -172,7 +172,7 @@ function bookbox_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state)
                                             <img src="/sites/all/themes/bookbox_ui/images/alert-mark.png" alt="">
                                           </div>
                                           <div class="modal-body">
-                                            <p>Три книжки – максимальна кількість на руках в один момент часу. <br> Коли ви повернете одну з прочитаних книжок – відкриється можливість замовити наступну.</p>
+                                            <p>Три книжки – максимальна кількість на руках в один момент часу. Коли ви повернете одну з прочитаних книжок – відкриється можливість замовити наступну.</p>
                                           </div>
                                           <div class="modal-footer">
                                             <button type="button" class="btn btn-outline red" data-dismiss="modal">Зрозуміло</button>
