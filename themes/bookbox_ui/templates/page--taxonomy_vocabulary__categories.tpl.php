@@ -174,9 +174,16 @@ global $user;
       			<?php if (!empty($breadcrumb)): print $breadcrumb; endif;?>
 
             <h1 class="page-header"><?php print $term->name; ?></h1>
+            <?php print $term->description; ?>
       		</div>
       		<div class="col-md-2">
-          <div class="page-icon"></div>
+
+          <?php if (count($term->field_icon) > 0): ?>
+            <div class="page-icon has-icon"><?php  print '<img src="'. image_style_url('medium', $term->field_icon['und'][0]['uri']). '" />'; ?></div>
+          <?php else: ?>
+            <div class="page-icon"></div>
+          <?php endif; ?>
+
       		</div>
       	</div>
 

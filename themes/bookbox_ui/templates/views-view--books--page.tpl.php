@@ -26,7 +26,12 @@
  *
  * @ingroup views_templates
  */
+$vtc = $view->total_rows;
 ?>
+
+<?php if ($vtc > 0): ?>
+<div class="view-search-results-div"><?php print $vtc;?></div>
+<?php endif; ?>
 
 <div class="views-exposed-widget views-widget-per-page">
       <div class="form-item form-item-items-per-page form-type-select form-group">

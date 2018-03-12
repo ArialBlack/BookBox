@@ -26,15 +26,22 @@
  *
  * @ingroup views_templates
  */
-
 $vtc = $view->total_rows;
 ?>
 
 <?php if ($vtc > 0): ?>
-<div class="view-search-results-div">По запиту "<span></span>" знайдено <?php print $vtc;?> книг.</div>
-<?php else: ?>
-<div class="view-search-results-div">По запиту "<span></span>", на жаль, нічого не знайдено.</div>
+<div class="view-search-results-div"><?php print $vtc;?></div>
 <?php endif; ?>
+
+    <div class="views-exposed-widget views-widget-sort-by">
+      <div class="form-item form-item-sort-by form-type-select form-group"> <label class="control-label" for="edit-sort-by">Сортувати за:</label>
+        <select class="form-control form-select" id="edit-sort-by" name="sort_by">
+        	<option value="field_hit_value">Популярністю</option>
+        	<option value="commerce_stock_value">Наявністю</option>
+        </select>
+      </div>
+    </div>
+
 
 <div class="<?php print $classes; ?>">
   <?php print render($title_prefix); ?>

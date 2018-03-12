@@ -37,8 +37,6 @@
 //global $user;
 $email = $elements['#account']->mail;
 $edit_link = '/user/' . $elements['#account']->uid .'/edit';
-$uri = $user_profile['field_author_photo'][0]['#item']['uri'];
-
 ?>
 
 <div class="yellow-block">

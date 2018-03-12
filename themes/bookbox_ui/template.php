@@ -36,6 +36,24 @@ function bookbox_ui_preprocess_node(&$vars) {
   }
 }
 
+function bookbox_ui_preprocess_views_view(&$vars) {
+
+  if (in_array($vars['view']->name, array('taxonomy_term'))) {
+    $breadcrumb = array();
+    $breadcrumb[] = l('Головна', '<front>');
+    $breadcrumb[] = l('Всі книги', '/books');
+
+    $tid = $vars['view']->args[0];
+
+    if(isset($tid)) {
+      $parent = taxonomy_get_parents_all($tid);
+      $breadcrumb[] = l($parent[0]->name, 'taxonomy/term/' . $parent[0]->tid);
+    }
+
+    drupal_set_breadcrumb($breadcrumb);
+  }
+}
+
 function bookbox_ui_preprocess_page(&$vars) {
 
   $url  = request_path();

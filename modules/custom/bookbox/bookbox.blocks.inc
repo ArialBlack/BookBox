@@ -450,13 +450,18 @@ function bookbox_custom_usermenu_block() {
 
     if ($u_orders_c > 0) {
       $content = $content . '<span class="badge">' . $u_orders_c . '</span>';
+    } else {
+      $content = $content . '<span class="badge badge-empty">0</span>';
     }
+
     $content = $content . '</a></li>';
     //
     $content = $content . '<li class="leaf"><a href="/user#read" title="">Зараз читаю ';
 
     if ($u_history_c > 0) {
       $content = $content . '<span class="badge">' . $u_history_c . '</span>';
+    } else {
+      $content = $content . '<span class="badge badge-empty">0</span>';
     }
     $content = $content . '</a></li>';
     //
@@ -464,6 +469,8 @@ function bookbox_custom_usermenu_block() {
 
     if ($u_favs_c > 0) {
       $content = $content . '<span class="badge">' . $u_favs_c . '</span>';
+    } else {
+      $content = $content . '<span class="badge badge-empty">0</span>';
     }
     $content = $content . '</a></li>';
 

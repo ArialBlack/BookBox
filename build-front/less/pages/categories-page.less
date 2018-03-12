@@ -123,9 +123,13 @@ body.collection {
 
       .page-icon {
         height: 140px;
-        background:url(../images/svg/author-icon.svg);
+        background: url(../images/svg/author-icon.svg);
         background-repeat: no-repeat;
         background-size: 100%;
+
+        &.has-icon {
+          background: none;
+        }
 
         @media (max-width: @laptop-2) {
           position: absolute;
@@ -133,7 +137,6 @@ body.collection {
           top: 50%;
           transform: translateY(5%);
         }
-
 
         @media (max-width: @max-sm) {
           display: none;
