@@ -424,6 +424,12 @@
           background-repeat: no-repeat;
         }
 
+        @media (max-width: @max-sm) and (min-width: @max-xs) {
+          &:before {
+            right: -15px;
+          }
+        }
+
         span {
           @media (max-width: 1500px) {
             display: none;
@@ -479,6 +485,10 @@
           border-right: 75px solid transparent;
           border-bottom: 100px solid #ffffff;
           transform: scale(0.11);
+
+          @media (max-width: @max-sm) and (min-width: @max-xs){
+            right: -36px;
+          }
         }
 
         a {

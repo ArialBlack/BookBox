@@ -73,8 +73,6 @@
       function BookBoxBlockBuilder(index, book) {
           var BookContainer = index + ' ' + book,
               BooksCount=$(BookContainer).length;
-          // console.log(index);
-          // console.log(BooksCount);
 
           $(index).append('<div class="book-inner-block"></div>');
           for (var i=1; i<=BooksCount; i++) {
@@ -103,11 +101,8 @@
         }
 
       function checkBookName(bookBlock) {
-          // console.log($(bookBlock).length);
         for(var tb = 0; tb<$(bookBlock).length; tb++) {
-          // console.log('checking book name');
           if ($(bookBlock + ':nth-child('+ tb +' ) h4').text().length > 48) {
-            //console.log('book name is too long');
             var newBookName = $(bookBlock + ':nth-child('+ tb +' ) h4').text().substr(0, 47);
             $(bookBlock + ':nth-child('+ tb +' ) h4').text(newBookName + '...');
           }
@@ -144,6 +139,7 @@
             $(telId).css('background', 'rgba(255, 0, 0, .06)');
             $(telId).attr('placeholder', 'Це поле необхідно заповнити');
             $(telId).addClass('webform-error');
+            $(telId).val('');
             return false;
           }
           if(!re.test(telValue) && telValue.length > 1) {
@@ -152,6 +148,7 @@
             $(telId).addClass('webform-error');
             document.getElementById('edit-submitted-tel').value='';
             $(telId).attr('placeholder', 'Введіть телефон у форматі 380ХХХХХХХХХ');
+            $(telId).val('');
           }
         }
       }
@@ -483,7 +480,7 @@
           checkBookName('body.authors .view-content .views-row');
 
           $('.navbar .menu.secondary').click(function() {
-            if($(window).width() <= 768) {
+            if($(window).width() < 768) {
               $('body').toggleClass('openNav');
             }
           });
@@ -517,9 +514,6 @@
           $('.search-block .finder-element-title').attr('placeholder', 'Пошук за назвою та автором');
           $('.page-book-search .main-container .finder-element-title').attr('placeholder', 'Пошук за назвою та автором');
 
-          // //Remove text from finder when go from finder on book page
-          // $('.node-type-book .navbar .finder-element.form-autocomplete').text('');
-
           if($(window).width() < 992) {
             var activeCategory = $('.category #block-system-main-menu .menu.nav>.active-trail>a').text();
             $('.category #block-bookbox-sidebarfitlerblockcompany').prepend('<button class="comp-block-btn">Всі книги</button>');
@@ -549,12 +543,20 @@
             var countOfBlocks = $('#views-bootstrap-tab-1 .tab-pane').length;
 
             for (var i = 0; i< countOfBlocks; i++) {
-              var titleText = $('a[href="#tab-1-' + i + '"').text();
+              var titleText = $('a[href="#tab-1-' + i + '"]').text();
 
               $('#tab-1-' + i).prepend('<a href="#link-'+ i +'" class="open-faq-link">' + titleText + '</a>');
               $('#tab-1-' + i + '>.views-field-body').addClass('open-faq-block');
               $('#tab-1-' + i + '>.views-field-body').attr('id', 'link-' + i);
             }
+        }
+
+        //Change structure for Front-page
+
+        if ($('body.front').length && $(window).width() < 768) {
+            $('#block-bookbox-manualhits').append($('#block-bookbox-manualhits > a'));
+            $('#block-bookbox-companyhits').append($('#block-bookbox-companyhits > a'));
+            $('#block-bookbox-newbyadmin').append($('#block-bookbox-newbyadmin > a'));
         }
 
             // Add slideDown animation to Bootstrap dropdown when expanding.
@@ -597,6 +599,7 @@
             $('#block-views-exp-taxonomy-term-page').toggleClass('open-block');
             $('#block-views-exp-books-page-2').toggleClass('open-block');
             $('#block-views-exp-books-page-1').toggleClass('open-block');
+            $('#block-views-exp-books-page').toggleClass('open-block');
           });
 
           $('#block-views-collection-list-block-1 .collection-block-btn').click(function(e) {
@@ -635,10 +638,6 @@
           });
           $(document).on('click', '.page-books .main-container *', function (e) {
             e.stopPropagation();
-          });
-
-          $('.page-faq .panel-default').not('.open').click(function() {
-            // $('.page-faq .panel-default.open .panel-heading a').click();
           });
 
           $('.page-faq .panel-collapse').on('shown.bs.collapse', function () {
@@ -738,16 +737,14 @@
         $('a[href="#link-0"]').click();
 
         if($(window).width() < 768) {
-          $('.open-faq-block.opened .panel-heading a').click(function() {
+          $('.open-faq-block.opened .panel-title>a').click(function() {
             setTimeout(function(){
-              var inHeight = $('.open-faq-block.opened .field-content').height() + 15;
+              var inHeight = $('.open-faq-block.opened .field-content').height() + 22;
               $('.open-faq-block.opened').css('max-height', inHeight + 'px');
             }, 200);
 
           });
         }
-
-
 
         //Sliders
           $('.view-front-slider>.view-content').slick({
@@ -784,9 +781,6 @@
             });
           }
         });
-
-
-
 
         $( document ).on( "click", ".sort-submenu a", function() {
             var $this = $(this),

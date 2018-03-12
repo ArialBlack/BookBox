@@ -32,6 +32,12 @@
 
     .yellow-block {
 
+      >.container {
+        @media (max-width: @max-sm) {
+          position: relative;
+        }
+      }
+
       >.alert-block.alert-success.messages {
         display: none;
       }
@@ -45,12 +51,20 @@
         .mail {
           display: inline-block;
 
+          @media (max-width: @max-xs) {
+            display: block;
+          }
+
           a {
             position: relative;
             font-family: GillSansC;
             font-size: @text-block-title;
             color: @header-text-3;
             padding-left: 35px;
+
+            @media (max-width: @max-sm) {
+              font-size: 22px;
+            }
 
             &:hover {
               text-decoration: none;
@@ -67,11 +81,29 @@
           height: 100%;
           width: 30px;
           background-size: 90%;
+
+          @media (max-width: @max-sm) {
+            background-size: 100% 100%;
+            left: 0;
+          }
+
+          @media (max-width: @max-xs) {
+            width: 20px;
+          }
         }
 
 
         .mail {
           margin-left: 70px;
+
+          @media (max-width: @max-sm) {
+            margin-left: 30px;
+          }
+
+          @media (max-width: @max-xs) {
+            margin-left: 0;
+            margin-top: 12px;
+          }
         }
 
         .mail a:before {
@@ -83,6 +115,15 @@
           height: 100%;
           width: 30px;
           background-size: 90%;
+
+
+          @media (max-width: @max-sm) {
+            background-size: 100% 100%;
+          }
+
+          @media (max-width: @max-xs) {
+            width: 20px;
+          }
         }
       }
 
@@ -101,6 +142,20 @@
         }
 
         @media (max-width: @max-sm) {
+          position: absolute;
+          left: 610px;
+          margin-left: 0;
+          width: 140px;
+        }
+
+        @media (max-width: @max-xs) {
+          margin-top: 0;
+          top: 0;
+          left: auto;
+          right: 10px;
+        }
+
+        @media (max-width: 400px) {
           display: none;
         }
       }
@@ -197,6 +252,12 @@
     .form-actions {
       float: right;
       padding-top: 10px;
+
+      button {
+        @media (max-width: @mid-xs) {
+          width: 210px;
+        }
+      }
     }
   }
 
@@ -210,6 +271,12 @@
     border: none;
     width: 585px;
     height: 425px;
+
+
+    @media (max-width: @mid-xs) {
+      width: ~'calc(100% - 20px)';
+      top: 20vh;
+    }
 
     .element-invisible {
       display: none;

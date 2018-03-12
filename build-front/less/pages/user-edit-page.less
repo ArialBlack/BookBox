@@ -47,6 +47,19 @@
     color: @header-text;
     text-align: center;
 
+    @media (max-width: @mid-xs) {
+      width: ~'calc(100% - 20px)';
+      padding-top: 100px;
+    }
+
+    @media (max-width: 375px) {
+      padding-top: 65px;
+    }
+
+    @media (max-width: 321px) {
+
+    }
+
     .element-invisible {
       display: none;
     }
@@ -134,6 +147,12 @@
 
         .icon.glyphicon.glyphicon-ok {
           display: none;
+        }
+
+        .btn {
+          @media (max-width: @mid-xs) {
+            width: 210px;
+          }
         }
       }
 
