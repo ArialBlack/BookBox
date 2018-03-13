@@ -340,7 +340,7 @@ function bookbox_views_pre_render(&$view) {
     $account = user_load($uid);
     $company_nid = $account->field_company['und'][0]['target_id'];
     $company = node_load($company_nid);
-    $view->build_info['title'] = "Хіти в " . $company->title;
+    $view->build_info['title'] = "Популярне в " . $company->title;
   }
 }
 

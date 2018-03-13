@@ -1,5 +1,26 @@
 <!--(bake parts/header.php)-->
 
+<?php
+  $url  = request_path();
+
+  if($url == 'books') {
+    $image_fid = variable_get('bookbox_allbooks_icon');
+    $desc = variable_get('bookbox_allbooks_desc');
+  }
+
+  if($url == 'books/hits') {
+    $image_fid = variable_get('bookbox_hits_icon');
+    $desc = variable_get('bookbox_hits_desc');
+  }
+
+  if($url == 'books/new') {
+    $image_fid = variable_get('bookbox_new_icon');
+    $desc = variable_get('bookbox_new_desc');
+  }
+
+  $icon_image = file_load($image_fid);
+?>
+
 <div class="main-container <?php print $container_class; ?>">
   <header role="banner" id="page-header">
     <?php if (!empty($site_slogan)): ?>
@@ -27,9 +48,17 @@
                     <h1 class="page-header"><?php print $title; ?></h1>
                   <?php endif; ?>
                <?php print render($title_suffix); ?>
+
+              <div class="description">
+                <?php print $desc;?>
+              </div>
           </div>
           <div class="col-md-2">
-            <div class="page-icon"></div>
+            <?php if ($icon_image): ?>
+              <div class="page-icon has-icon"><?php  print '<img src="'. image_style_url('medium', $icon_image->uri). '" />'; ?></div>
+            <?php else: ?>
+              <div class="page-icon"></div>
+            <?php endif; ?>
           </div>
         </div>
       </div>

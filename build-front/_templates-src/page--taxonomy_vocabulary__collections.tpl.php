@@ -104,12 +104,15 @@ $term = taxonomy_term_load(arg(2));
             }
             print '<div class="description">' . check_markup($description, $term->format, '', TRUE) . '</div>';
             ?>
-
-
-
           </div>
       		<div class="col-md-2">
-          <div class="page-icon"></div>
+
+            <?php if (count($term->field_icon) > 0): ?>
+              <div class="page-icon has-icon"><?php  print '<img src="'. image_style_url('medium', $term->field_icon['und'][0]['uri']). '" />'; ?></div>
+            <?php else: ?>
+              <div class="page-icon"></div>
+            <?php endif; ?>
+
       		</div>
       	</div>
 

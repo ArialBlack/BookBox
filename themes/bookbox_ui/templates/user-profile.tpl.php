@@ -134,23 +134,35 @@ $edit_link = '/user/' . $elements['#account']->uid .'/edit';
 				</ul>
 				<div class="tab-content">
 					<div role="tabpanel" class="tab-pane active" id="order">
+            <div class="description">
+              <?php print variable_get('bookbox_order_tab'); ?>
+            </div>
 						<?php
               $block = module_invoke('bookbox', 'block_view', 'MonthOrder');
               print render($block['content']);
 						?>
 					</div>
 					<div role="tabpanel" class="tab-pane" id="read">
+            <div class="description">
+              <?php print variable_get('bookbox_reading_tab'); ?>
+            </div>
 						<?php
               $block = module_invoke('bookbox', 'block_view', 'ReadingNow');
               print render($block['content']);
 						?>
 					</div>
 					<div role="tabpanel" class="tab-pane" id="history">
+            <div class="description">
+              <?php print variable_get('bookbox_archive_tab'); ?>
+            </div>
 						<?php
 						  print $u_history;
 						?>
 					</div>
 					<div role="tabpanel" class="tab-pane" id="favs">
+            <div class="description">
+              <?php print variable_get('bookbox_fav_tab'); ?>
+            </div>
 						<?php
 						  print $favs_view->render();
 						?>

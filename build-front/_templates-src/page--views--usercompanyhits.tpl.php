@@ -27,9 +27,21 @@
                     <h1 class="page-header"><?php print $title; ?></h1>
                   <?php endif; ?>
                <?php print render($title_suffix); ?>
+
+               <div class="description">
+                 <?php print variable_get('bookbox_usercompanyhits_desc');?>
+               </div>
           </div>
           <div class="col-md-2">
-            <div class="page-icon"></div>
+            <?php
+              $image_fid = variable_get('bookbox_usercompanyhits_icon');
+              $icon_image = file_load($image_fid);
+            ?>
+            <?php if ($icon_image): ?>
+              <div class="page-icon has-icon"><?php  print '<img src="'. image_style_url('medium', $icon_image->uri). '" />'; ?></div>
+            <?php else: ?>
+              <div class="page-icon"></div>
+            <?php endif; ?>
           </div>
         </div>
       </div>

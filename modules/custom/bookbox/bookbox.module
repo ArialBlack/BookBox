@@ -31,6 +31,16 @@ function bookbox_menu(){
       'access callback' => TRUE,
   );
 
+  $items['admin/bookbox/icons'] = array(
+    'title' => 'Адмін-іконки',
+    'description' => 'Admin icons',
+    'type' => MENU_NORMAL_ITEM,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('bookbox_set_default_header_image_form'),
+    'access arguments' => array('access adminstration page'),
+    'access callback' => TRUE,
+  );
+
   $items['user/orders'] = array(
       'title' => 'Історія замовлень',
       'page callback' => 'bookbox_user_orders_history',

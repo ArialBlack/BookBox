@@ -249,3 +249,5 @@ themes/bookbox_ui/templates/page--node--893.tpl.php
 themes/bookbox_ui/templates/page--book-search.tpl.php
 themes/bookbox_ui/templates/page--views--books.tpl.php
 themes/bookbox_ui/templates/page--views--usercompanyhits.tpl.php
+themes/bookbox_ui/templates/page--taxonomy_vocabulary__collections.tpl.php
+themes/bookbox_ui/templates/page--views--usercompanyhits.tpl.php
