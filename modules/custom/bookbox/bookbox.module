@@ -326,3 +326,9 @@ function bookbox_theme() {
     ),
   );
 }
+
+function register_alter_password_confirm($element) {
+  $element['pass1']['#title'] = t("Новий пароль");
+  $element['pass2']['#title'] = t("Підтвердити новий пароль");
+  return $element;
+}

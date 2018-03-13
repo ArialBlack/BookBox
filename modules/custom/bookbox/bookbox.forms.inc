@@ -14,6 +14,11 @@ function bookbox_form_alter(&$form, &$form_state, $form_id){
         );
     }
 
+    //Форма редагування профілю
+    if ($form['#id'] == 'user-profile-form') {
+      $form['account']['pass']['#process'] = array('form_process_password_confirm', 'register_alter_password_confirm');
+    }
+
     //Форма реєстрації юзера
     if ($form['#id'] == 'user-register-form') {
         $form['#validate'][] = 'bookbox_registeruser_validate';
