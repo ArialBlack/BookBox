@@ -251,3 +251,4 @@ themes/bookbox_ui/templates/page--views--books.tpl.php
 themes/bookbox_ui/templates/page--views--usercompanyhits.tpl.php
 themes/bookbox_ui/templates/page--taxonomy_vocabulary__collections.tpl.php
 themes/bookbox_ui/templates/page--views--usercompanyhits.tpl.php
+themes/bookbox_ui/templates/page--taxonomy_vocabulary__categories.tpl.php
