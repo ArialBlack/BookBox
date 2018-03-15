@@ -1,6 +1,12 @@
 .page-user-edit {
   min-height: 100px;
 
+  .webform-error {
+    &::placeholder {
+      color: @red;
+    }
+  }
+
   .form-item-field-tel-und-0-value {
     @media (max-width: @max-xs) {
       display: inline-block;

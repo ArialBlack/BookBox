@@ -75,7 +75,8 @@ body.collection {
   }
 
   .dropdown-backdrop,
-  div.col-sm-12 {
+  div.col-sm-12,
+  .view-search-results-div {
     display: none;
   }
 
@@ -175,6 +176,7 @@ body.collection {
         @media (max-width: @max-sm) {
           display: flex;
           justify-content: space-between;
+          margin-bottom: 0;
         }
 
         @media (max-width: @max-xs) {
@@ -294,7 +296,7 @@ body.collection {
               opacity: 1;
             }
 
-            @media (max-width: @max-xs) {
+            @media (max-width: 768px) {
               font-size: @body-text-n;
             }
           }
@@ -493,6 +495,10 @@ body.collection {
 
                   @media (max-width: @max-sm) {
                     margin-top: -14px;
+                  }
+
+                  @media (max-width: @max-sm) and (min-width: @max-xs) {
+                    padding-right: 12px;
                   }
 
                   >li {

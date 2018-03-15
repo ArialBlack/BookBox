@@ -201,7 +201,8 @@ $translations = translation_path_get_translations("node/" . $node->nid);
                   $uri = $node->field_book_author['und'][$i]['taxonomy_term']->field_author_photo['und'][0]['uri'];
                   print '<div class="author-block clearfix"><div class="a-img"><img src="' . image_style_url("medium", $uri) . '"/></div> <div class="about-autor">';
                   print '<h3><a href="/taxonomy/term/' . $node->field_book_author['und'][$i]['taxonomy_term']->tid .'">' . $node->field_book_author['und'][$i]['taxonomy_term']->name . '</a></h3>';
-                  print $desc . '</div> </div>';
+                  print '<p>' . $desc . '</p></div>';
+                  print '<div class="visible-xs">' . $desc . '</div> </div>';
                 }
                 ?>
               </div>

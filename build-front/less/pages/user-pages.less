@@ -195,6 +195,10 @@
         border: none;
         margin-top: -49px;
 
+        @media (max-width: @max-sm) {
+          margin-top: -48px;
+        }
+
         li {
           background: transparent;
           padding: 6px 50px;
@@ -333,7 +337,7 @@
   }
 
 
-  .tab-content>.tab-pane>h6 {
+  .tab-content>.tab-pane>.description {
     padding: 10px 0;
     font-family: ubuntu-regular;
     font-size: @body-text-n;
@@ -577,8 +581,17 @@
 
       .panel-body {
         border: none;
-        padding-top: 25px;
+        padding-top: 10px;
         padding-bottom: 0;
+
+        >.description {
+          padding: 0 0 20px 0;
+          font-family: ubuntu-regular;
+          font-size: @menu-text-2;
+          color: @white;
+          font-weight: normal;
+          line-height: 1.4;
+        }
       }
 
       .panel-heading {

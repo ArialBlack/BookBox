@@ -101,6 +101,7 @@
         position: relative;
         left: 10px;
         margin-left: 0;
+        margin-right: 15px;
       }
     }
 
@@ -229,6 +230,10 @@
 
           &-prev {
             left: -50px;
+
+            @media (max-width: @max-xs) {
+              z-index: 1;
+            }
 
             @media (max-width: @mid-xs) {
               left: -25px;

@@ -128,7 +128,7 @@
       function validateTel(telId) {
         var telValue = $(telId).val().trim();
         var re = /^((8|0|((\+|00)\d{1,2}))[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/;
-        if(telValue.length !== 0 && re.test(telValue) && telValue.length == 13){
+        if(telValue.length !== 0 && re.test(telValue)){
           $(telId).css('border', '2px solid #dfdfdf');
           $(telId).css('background', '#e9e9e9');
           $(telId).css('color', '#dfdfdf');
@@ -143,25 +143,23 @@
             return false;
           }
           if(!re.test(telValue) && telValue.length > 1) {
+            console.log('works!');
             $(telId).css('border', '2px solid #db553f');
             $(telId).css('background', 'rgba(255, 0, 0, .06)');
             $(telId).addClass('webform-error');
-            document.getElementById('edit-submitted-tel').value='';
             $(telId).attr('placeholder', 'Введіть телефон у форматі 380ХХХХХХХХХ');
             $(telId).val('');
+            return false;
           }
         }
       }
 
       function validateNewPass(pass, confirm) {
           if (pass.val() == '' && confirm.val() == '') {
-            console.log('cond1 true');
-            return true
+            return true;
           } else if (pass.val() == confirm.val()) {
-            console.log('cond2 true');
             return true;
           } else if (pass.val() !== confirm.val()) {
-            console.log('cond3 false');
             pass.attr('placeholder', 'Паролі не співпадають');
             pass.css('border', '2px solid #f86b54');
             pass.css('border-bottom', 'none');
@@ -171,6 +169,18 @@
             confirm.val('');
             return false;
           }
+      }
+
+      function validateOldPass(oldPass, newPass, confirmPass) {
+        if ((oldPass.val() !== '') && (newPass.val().length === 0) && (confirmPass.val().length === 0)) {
+          newPass.attr('placeholder', 'Необхідно заповнити це поле');
+          newPass.css('border', '2px solid #f86b54');
+          confirmPass.attr('placeholder', 'Необхідно заповнити це поле');
+          confirmPass.css('border', '2px solid #f86b54');
+          return false;
+        } else {
+          return true;
+        }
       }
 
         $(document).ajaxStop(function() {
@@ -294,6 +304,15 @@
       });
 
       $('.form-item-current-pass .form-text.error').attr('placeholder', 'Ви ввели невірний пароль.');
+
+      var booksInCategory = parseInt($('.view-search-results-div').text());
+      $('.col-sm-9 .form-item-items-per-page option').each(function() {
+        if($(this).attr('value') > booksInCategory && booksInCategory > 12) {
+          $(this).detach();
+        }  else if (booksInCategory < 12) {
+          $('.col-sm-9 .form-item-items-per-page').css('display', 'none');
+        }
+      });
 
       $( document ).ready(function() {
             //console.log(Drupal.settings.firstLogin);
@@ -559,7 +578,21 @@
             $('#block-bookbox-newbyadmin').append($('#block-bookbox-newbyadmin > a'));
         }
 
-            // Add slideDown animation to Bootstrap dropdown when expanding.
+        //change links in nav user menu
+
+        if ($(window).width() < 768) {
+            $('.navbar .navbar-nav a[href="/user#order"]').attr('href', '/user#order-m');
+            $('.navbar .navbar-nav a[href="/user#read"]').attr('href', '/user#read-m');
+            $('.navbar .navbar-nav a[href="/user#favs"]').attr('href', '/user#favs-m');
+        }
+
+          if($('body.page-user').length) {
+            var hash = window.location.hash;
+
+            $('.visible-mobile a[href="' + hash + '"]').click();
+          }
+
+        // Add slideDown animation to Bootstrap dropdown when expanding.
             $('.category .col-sm-3 #block-system-main-menu .dropdown, .page-books .col-sm-3 #block-system-main-menu .dropdown, .collection .col-sm-3 #block-system-main-menu .dropdown').on('show.bs.dropdown', function() {
               $(this).find('.dropdown-menu').first().stop(true, true).slideDown();
             });
@@ -581,6 +614,7 @@
           $('#block-bookbox-sidebarfitlerblockcompany .comp-block-btn').click(function(e) {
             e.preventDefault();
             $('#block-bookbox-sidebarfitlerblockcompany>ul').toggleClass('visible');
+            $('.open').not(this).click();
             $(this).toggleClass('open');
             $('#block-bookbox-sidebarfitlerblockcompany').toggleClass('open-block');
           });
@@ -588,6 +622,7 @@
           $('#block-system-main-menu .category-block-btn').click(function(e) {
             e.preventDefault();
             $('#block-system-main-menu .menu.nav').toggleClass('visible');
+            $('.open').not(this).click();
             $(this).toggleClass('open');
             $('#block-system-main-menu').toggleClass('open-block');
           });
@@ -598,6 +633,7 @@
             $(this).toggleClass('open');
             $('#block-views-exp-taxonomy-term-page').toggleClass('open-block');
             $('#block-views-exp-books-page-2').toggleClass('open-block');
+            $('.open').not(this).click();
             $('#block-views-exp-books-page-1').toggleClass('open-block');
             $('#block-views-exp-books-page').toggleClass('open-block');
           });
@@ -605,6 +641,7 @@
           $('#block-views-collection-list-block-1 .collection-block-btn').click(function(e) {
             e.preventDefault();
             $('#block-views-collection-list-block-1 .view-collection-list').toggleClass('visible');
+            $('.open').not(this).click();
             $(this).toggleClass('open');
             $('#block-views-collection-list-block-1').toggleClass('open-block');
           });
@@ -689,9 +726,11 @@
 
 
           var tel = validateTel('#edit-field-tel-und-0-value'),
+              oldPass = validateOldPass($('#edit-current-pass'), $('#edit-pass-pass1'), $('#edit-pass-pass2')),
               newPass = validateNewPass($('#edit-pass-pass1'), $('#edit-pass-pass2'));
 
-          if (tel && newPass) {
+
+          if (tel && newPass && oldPass) {
             $('#user-profile-form').submit();
           }
         });

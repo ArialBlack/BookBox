@@ -345,7 +345,7 @@ function bookbox_confirm_book($arg0,$arg1) {
 
     $date = time();
     $dest = drupal_get_destination();
-    drupal_set_message('Ура, замовлення підтверджено! ' . verbose_period4popup($date) . '<button type="button" class="btn btn-outline red">Зрозуміло</button>');
+    drupal_set_message('Ура, замовлення підтверджено! ' . verbose_period4popup($date) . '<br><button type="button" data-dismiss="alert" class="btn btn-outline red">Зрозуміло</button>');
     drupal_goto($dest);
 }
 

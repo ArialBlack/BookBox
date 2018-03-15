@@ -197,6 +197,9 @@ $edit_link = '/user/' . $elements['#account']->uid .'/edit';
 					</div>
 					<div id="order-m" class="panel-collapse collapse" aria-expanded="false">
 						<div class="panel-body">
+						<div class="description">
+              <?php print variable_get('bookbox_order_tab'); ?>
+            </div>
 							<?php
 							$block = module_invoke('bookbox', 'block_view', 'MonthOrder');
 							print render($block['content']);
@@ -212,6 +215,9 @@ $edit_link = '/user/' . $elements['#account']->uid .'/edit';
 					</div>
 					<div id="read-m" class="panel-collapse collapse" aria-expanded="false">
 						<div class="panel-body">
+						<div class="description">
+              <?php print variable_get('bookbox_reading_tab'); ?>
+            </div>
 							<?php
 							$block = module_invoke('bookbox', 'block_view', 'ReadingNow');
 							print render($block['content']);
@@ -227,6 +233,9 @@ $edit_link = '/user/' . $elements['#account']->uid .'/edit';
 					</div>
 					<div id="history-m" class="panel-collapse collapse">
 						<div class="panel-body">
+						<div class="description">
+              <?php print variable_get('bookbox_archive_tab'); ?>
+            </div>
 							<?php
 							print $u_history;
 							?>
@@ -241,6 +250,9 @@ $edit_link = '/user/' . $elements['#account']->uid .'/edit';
 					</div>
 					<div id="favs-m" class="panel-collapse collapse">
 						<div class="panel-body">
+              <div class="description">
+                <?php print variable_get('bookbox_fav_tab'); ?>
+              </div>
 							<?php
 							print $favs_view->render();
 							?>
