@@ -211,6 +211,23 @@ body.offline {
       text-transform: uppercase;
       color: white;
       display: inline-block;
+      font-size: 61px;
+
+      @media (max-width: @laptop-1) {
+        font-size: 53px;
+      }
+
+      @media (max-width: @laptop-2) {
+        font-size: 44px;
+      }
+
+      @media (max-width: @max-xs) {
+        font-size: 29px;
+      }
+
+      @media (max-width: 375px) {
+        font-size: 24px;
+      }
 
       .div {
         display: block;
@@ -220,9 +237,13 @@ body.offline {
         display: inline-block;
         background: #2e2e32;
         padding: 5px 20px;
+
+        @media (max-width: @max-xs) {
+          padding: 5px 10px;
+        }
       }
 
-      .rft(20,70);
+      //.rft(20,70);
     }
 
     .tip-text {
@@ -231,7 +252,10 @@ body.offline {
       text-transform: uppercase;
 
       p {
+        font-family: ubuntu-medium;
+        font-size: 18px;
         text-shadow: 2px 0px 0px rgba(249, 211, 92, 1);
+        text-transform: none;
       }
     }
 

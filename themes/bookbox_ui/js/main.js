@@ -102,8 +102,8 @@
 
       function checkBookName(bookBlock) {
         for(var tb = 0; tb<$(bookBlock).length; tb++) {
-          if ($(bookBlock + ':nth-child('+ tb +' ) h4').text().length > 48) {
-            var newBookName = $(bookBlock + ':nth-child('+ tb +' ) h4').text().substr(0, 47);
+          if ($(bookBlock + ':nth-child('+ tb +' ) h4').text().length > 44) {
+            var newBookName = $(bookBlock + ':nth-child('+ tb +' ) h4').text().substr(0, 43);
             $(bookBlock + ':nth-child('+ tb +' ) h4').text(newBookName + '...');
           }
         }
@@ -309,7 +309,7 @@
       $('.col-sm-9 .form-item-items-per-page option').each(function() {
         if($(this).attr('value') > booksInCategory && booksInCategory > 12) {
           $(this).detach();
-        }  else if (booksInCategory < 12) {
+        }  else if (booksInCategory <= 12) {
           $('.col-sm-9 .form-item-items-per-page').css('display', 'none');
         }
       });
