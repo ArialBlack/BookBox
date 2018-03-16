@@ -29,7 +29,8 @@ module.exports = function(grunt) {
 
                 },
                 files: {
-                    '../themes/bookbox_ui/css/style.css': 'less/style.less'
+                    '../themes/bookbox_ui/css/style.css': 'less/style.less',
+                    '../themes/bookbox_ui/css/maintenance.css': 'less/pages/maintenance.less'
                 }
             }
         },
