@@ -586,6 +586,12 @@
             $('.navbar .navbar-nav a[href="/user#favs"]').attr('href', '/user#favs-m');
         }
 
+        //For page-pagination
+        if($(window).width() < 768) {
+            $('.text-center ul.pagination li.active').prev().css('display', 'inline-block');
+            $('.text-center ul.pagination li.active').next().css('display', 'inline-block');
+        }
+
           if($('body.page-user').length) {
             var hash = window.location.hash;
 

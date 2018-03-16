@@ -96,10 +96,19 @@ div:not(.well)>.block-bookbox {
       }
 
       &:before {
-        content: '◄';
+        //content: '◄';
+        //position: absolute;
+        //left: 8px;
+        //top: 0;
+        content: '';
         position: absolute;
-        left: 8px;
-        top: 0;
+        left: 47%;
+        top: 50%;
+        background: url(../images/svg/gray-arrow.svg);
+        background-size: 100% 100%;
+        height: 11px;
+        width: 13px;
+        transform: translate(-50%, -50%);
       }
     }
 
@@ -107,10 +116,20 @@ div:not(.well)>.block-bookbox {
       order: 1;
 
       &:before {
-        content: '►';
+        //content: '&#9658;';
+        //position: absolute;
+        //left: 8px;
+        //top: 0;
+
+        content: '';
         position: absolute;
-        left: 8px;
-        top: 0;
+        left: 50%;
+        top: 50%;
+        background: url(../images/svg/gray-arrow.svg);
+        background-size: 100% 100%;
+        height: 11px;
+        width: 13px;
+        transform: translate(-50%, -50%) rotate(180deg);
       }
     }
 
@@ -658,15 +677,12 @@ body.books.category .breadcrumb {
         }
 
         &:before {
-          content: '◄';
+          content: '';
           position: absolute;
           top: 0;
           left: -41px;
           border: 2px solid rgba(0, 0, 0, .09);
           line-height: 28px;
-          font-family: ubuntu-regular;
-          font-size: 10px;
-          color: @white;
           background: none;
           margin-right: 5px;
           padding: 0;
@@ -675,6 +691,10 @@ body.books.category .breadcrumb {
           width: 32px;
           height: 32px;
           opacity: 1;
+          background-image: url(../images/svg/white-arrow.svg);
+          background-size: 9px 8px;
+          background-position: center center;
+          background-repeat: no-repeat;
         }
       }
 
@@ -733,24 +753,42 @@ body.books.category .breadcrumb {
       &.prev a {
 
         &:before {
-          content: '◄';
+          //content: '◄';
+          //position: absolute;
+          //left: 0;
+          //top: 0;
+          //width: 100%;
+          //text-align: center;
+          content: '';
           position: absolute;
-          left: 0;
-          top: 0;
-          width: 100%;
-          text-align: center;
+          left: 50%;
+          top: 50%;
+          background: url(../images/svg/white-arrow.svg);
+          background-size: 100% 100%;
+          height: 8px;
+          width: 8px;
+          transform: translate(-50%, -50%);
         }
       }
 
       &.next a {
 
         &:before {
-          content: '►';
+          //content: '►';
+          //position: absolute;
+          //left: 0;
+          //top: 0;
+          //width: 100%;
+          //text-align: center;
+          content: '';
           position: absolute;
-          left: 0;
-          top: 0;
-          width: 100%;
-          text-align: center;
+          left: 50%;
+          top: 50%;
+          background: url(../images/svg/white-arrow.svg);
+          background-size: 100% 100%;
+          height: 8px;
+          width: 8px;
+          transform: translate(-50%, -50%) rotate(180deg);
         }
       }
     }
