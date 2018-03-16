@@ -1,0 +1,54 @@
+body.offline {
+
+  .main-container {
+
+    h1 {
+      font-family: 'GillSansC';
+      text-transform: uppercase;
+      color: white;
+      display: inline-block;
+      font-size: 61px;
+
+      @media (max-width: @laptop-1) {
+        font-size: 53px;
+      }
+
+      @media (max-width: @laptop-2) {
+        font-size: 44px;
+      }
+
+      @media (max-width: @max-xs) {
+        font-size: 29px;
+      }
+
+      @media (max-width: 375px) {
+        font-size: 24px;
+      }
+
+      .div {
+        display: block;
+      }
+
+      .text {
+        display: inline-block;
+        background: #2e2e32;
+        padding: 5px 20px;
+
+        @media (max-width: @max-xs) {
+          padding: 5px 10px;
+        }
+      }
+    }
+
+    .tip-text {
+      .rft(18,24);
+      margin-top: 40px;
+
+      p {
+        font-family: ubuntu-medium;
+        font-size: 18px;
+        text-shadow: 2px 0px 0px rgba(249, 211, 92, 1);
+      }
+    }
+  }
+}
