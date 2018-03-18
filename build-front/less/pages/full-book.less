@@ -127,6 +127,26 @@
   }
 
   &.role-administrator {
+    &.open-alert:before {
+      display: none !important;
+    }
+
+    .alert-block.alert-success.messages {
+      position: static !important;
+      transform: none;
+      height: auto;
+      width: auto;
+      padding-top: 20px;
+
+      a.close {
+        position: static;
+      }
+
+      &:before {
+        display: none;
+      }
+    }
+
     .tabs--primary, .action-links {
        position: fixed;
        left: 0;

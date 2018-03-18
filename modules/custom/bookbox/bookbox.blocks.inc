@@ -257,6 +257,34 @@ function bookbox_preprocess_relevantbooks(&$variables) {
     }
   }
 
+  //Може буть ситуація, коли ми прийшли зі сторінки автора, у якого всього одна книжка.
+  //Тоді в крихтах буде автор. І релевантиних книжок не буде.
+  //Тоді треба добивать книжками з категорій книжки
+  if ($books_count < 12) {
+    foreach ($node->field_book_category['und'] as $cat) {
+
+      $ttid = $cat['tid'];
+      $parents =  taxonomy_get_parents($ttid);
+
+      if(count($parents) == 0) {
+        $view_results = views_get_view_result('category_hits', 'default', $ttid);
+
+        if(count($view_results) > 0) {
+          foreach ($view_results as $row) {
+            //Нам не потрібна ця ж книга
+            if ($row->nid != $node->nid) {
+              $book = node_load($row->nid);
+              $node_view = node_view($book, 'teaser');
+              $rendered_teaser = render($node_view);
+              $books_count++;
+              $books_list[] = $rendered_teaser;
+            }
+          }
+        }
+      }
+    }
+  }
+
   if ($books_count > 0) {
     $content = '<ul>';
     $c = 0;

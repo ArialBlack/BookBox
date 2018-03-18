@@ -34,19 +34,26 @@
  * @ingroup themeable
  */
 
-//global $user;
+global $user;
+$uid = $user->uid;
+$account = user_load($uid);
 $email = $elements['#account']->mail;
 $edit_link = '/user/' . $elements['#account']->uid .'/edit';
+
+$nanme = $account->field_name['und'][0]['safe_value'];
+$snanme = $account->field_sirname['und'][0]['safe_value'];
+$cid = $account->field_company['und'][0]['target_id'];
+$company = node_load($cid);
 ?>
 
 <div class="yellow-block">
 	<div class="container">
 		<div class="profile-info">
 			<h6>
-				<?php print $user_profile['field_company'][0]['#markup'];?>
+				<?php print $company->title;?>
 			</h6>
 			<h1>
-				<?php print $user_profile['field_name']['#items'][0]['value'] . ' ' . $user_profile['field_sirname']['#items'][0]['value'];?>
+				<?php print $nanme . ' ' . $snanme;?>
 			</h1>
 
 			<div class="field field-name-field-email field-type-text field-label-above">
@@ -59,8 +66,8 @@ $edit_link = '/user/' . $elements['#account']->uid .'/edit';
 			</div>
 
 			<?php
-			if(isset($user_profile['field_tel'])) {
-				$tel = $user_profile['field_tel'][0]['#markup'];
+			if(isset($elements['field_tel'])) {
+				$tel = $elements['field_tel'][0]['#markup'];
 				if(isset($tel)) {
 					print '<div class="field field-name-field-tel field-type-text field-label-above"><div class="field-label">Телефон:</div><div class="field-items"><div class="field-item even">' . $tel . ' <a href="' . $edit_link . '"> <img src="/sites/all/themes/bookbox_ui/images/svg/change-phone.svg">...</a></div></div></div>';
 				}
