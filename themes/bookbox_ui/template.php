@@ -152,6 +152,22 @@ function bookbox_ui_preprocess_page(&$vars) {
 
   if (arg(0) == 'taxonomy' && arg(1) == 'term' ) {
     $term = taxonomy_term_load(arg(2));
+    $parents =  taxonomy_get_parents(arg(2));
+
+    $breadcrumb = array();
+    $breadcrumb[] = l('Головна', '<front>');
+    $breadcrumb[] = l('Всі книги', '/books');
+
+    if(count($parents) != 0) {
+      $newArray = array_keys($parents);
+      $key = $newArray[0];
+      $parent_name = $parents[$key]->name;
+      $breadcrumb[] = l($parent_name, '/taxonomy/term/' . $key);
+    }
+
+    $breadcrumb[] = l($term->name, '/taxonomy/term/' . $term->tid);
+    drupal_set_breadcrumb($breadcrumb);
+
     $vocabulary = taxonomy_vocabulary_load($term->vid);
     $vars['theme_hook_suggestions'][] = 'page__taxonomy_vocabulary__' . $vocabulary->machine_name;
   }
