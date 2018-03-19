@@ -486,8 +486,8 @@ function bookbox_custom_usermenu_block() {
     //
     $content = $content . '<li class="leaf"><a href="/user#read" title="">Зараз читаю ';
 
-    if ($u_history_c > 0) {
-      $content = $content . '<span class="badge">' . $u_history_c . '</span>';
+    if ($u_reading_c > 0) {
+      $content = $content . '<span class="badge">' . $u_reading_c . '</span>';
     } else {
       $content = $content . '<span class="badge badge-empty">0</span>';
     }
