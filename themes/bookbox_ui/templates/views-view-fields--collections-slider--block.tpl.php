@@ -25,7 +25,7 @@
  */
 
 $tid = $fields['tid']->raw;
-$data = taxonomy_select_nodes($tid);
+$data = taxonomy_select_nodes($tid, $limit = FALSE);
 $count = count($data);
 $nc = '<div>' . verbose_book_num($count, 'книга', 'книги', 'книг') . '</div>'; //todo verbose
 ?>
