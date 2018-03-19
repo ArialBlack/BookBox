@@ -31,9 +31,9 @@ $vtc = $view->total_rows;
 ?>
 
 <?php if ($vtc > 0): ?>
-<div class="view-search-results-div">По запиту "<span></span>" знайдено <?php print $vtc;?> книг.</div>
+<div class="view-search-results-div">Результати пошуку за запитом "<span></span>" наведені нижче.</div>
 <?php else: ?>
-<div class="view-search-results-div">По запиту "<span></span>", на жаль, нічого не знайдено.</div>
+<div class="view-search-results-div">За запитом "<span></span>", на жаль, нічого не знайдено.</div>
 <?php endif; ?>
 
 <div class="<?php print $classes; ?>">

@@ -33,27 +33,6 @@ $vtc = $view->total_rows;
   <div class="view-search-results-div"><?php print $vtc;?></div>
 <?php endif; ?>
 
-<div class="views-exposed-widget views-widget-per-page">
-      <div class="form-item form-item-items-per-page form-type-select form-group">
-    	  <label class="control-label" for="edit-items-per-page">Кількість для відображення:</label>
-        <select class="form-control form-select" id="edit-items-per-page" name="items_per_page">
-        	<option value="12" selected="selected">12</option>
-        	<option value="24">24</option>
-        	<option value="48">48</option>
-        	<option value="60">60</option>
-        </select>
-      </div>
-    </div>
-<div class="views-exposed-widget views-widget-sort-by">
-      <div class="form-item form-item-sort-by form-type-select form-group"> <label class="control-label" for="edit-sort-by">Сортувати за:</label>
-        <select class="form-control form-select" id="edit-sort-by" name="sort_by">
-        	<option value="field_hit_value">Популярністю</option>
-        	<option value="commerce_stock_value">Наявністю</option>
-        </select>
-      </div>
-    </div>
-
-
 <div class="<?php print $classes; ?>">
   <?php print render($title_prefix); ?>
   <?php if ($title): ?>
