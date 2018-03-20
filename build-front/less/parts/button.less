@@ -16,6 +16,13 @@
   box-shadow: 18px 28px 61px 5px rgba(216,72,48,0.2);
   outline: 0;
 
+  &:active  {
+    box-shadow: 18px 28px 61px 5px rgba(216, 72, 48, 0.2);
+    color: @white;
+    background-color: @red;
+    outline: 0;
+  }
+
   @media (max-width: @laptop-2) {
     width: 220px;
   }
@@ -32,7 +39,7 @@
     width: 100%;
   }
 
-  &:hover {
+  &:hover, &:active:hover, &:focus {
     color: @white;
     border: none;
     background: #db553f;
@@ -45,55 +52,50 @@
     outline: 0;
   }
 
-  &[disabled]:hover {
-    background-color: @red;
-    border: none;
+  &[disabled]{
+    background: darken(@green, 5);
+    opacity: 1;
+    cursor: auto;
+    font-family: ubuntu-medium;
+    letter-spacing: 4px;
+    font-size: @menu-text;
+
+    //@media (max-width: @max-sm) and (min-width: 451px) {
+    //  display: none;
+    //}
+
+   &:hover {
+     background-color: darken(@green, 7);
+     border: none;
+     box-shadow: none;
+   }
+  }
+}
+
+.btn-container.with-tip {
+  position: relative;
+
+  .book-tip {
+    font-family: ubuntu-medium;
+    //letter-spacing: 4px;
+    text-transform: uppercase;
+    font-size: @menu-text;
+    color: @white;
+    position: absolute;
+    width:100%;
+    text-align: center;
+    top: 50%;
+    transform: translateY(-50%);
   }
 
-  //color: @light-color;
-  //background-color: @primary-color;
-  //transition: all .3s;
-  //text-transform: uppercase;
-  //padding: 20px;
-  //letter-spacing: 1px;
-  //
-  //&:hover, &:focus {
-  //  text-decoration: none;
-  //  background-color: darken(@primary-color, 20);
-  //  color: @light-color;
-  //}
-  //
-  //&-red {
-  //  background-color: @secondary-color;
-  //
-  //  &:hover, &:focus {
-  //    color: @light-color;
-  //    text-decoration: none;
-  //    background-color: darken(@secondary-color, 20);
-  //  }
-  //}
-  //
-  //&.outline {
-  //  background: none;
-  //
-  //  &.red {
-  //    color: @secondary-color;
-  //    border-color: @secondary-color;
-  //
-  //    &:hover {
-  //      background: @secondary-color;
-  //      color: white;
-  //    }
-  //  }
-  //}
-
+  button {
+    font-size: 0;
+  }
 }
 
 .field-name-field-isnew,
 .field-name-field-bookbox-rec,
 .field-name-field-hit {
-  //.font-size(9) !important;
-  //.line-height(24) !important;
   float: left;
   margin-bottom: 5px;
   text-align: center;
@@ -116,6 +118,10 @@
 }
 
 
+.book-labels {
+  z-index: 0;
+}
+
 .field-name-field-isnew {
   font-family: ubuntu-bold;
   background-color: @yellow;
@@ -124,7 +130,7 @@
   width: 90px;
   position: absolute;
   top: 132px;
-  left: -5px;
+  left: 4px;
   transform: rotate(-90deg);
 
 }
@@ -134,11 +140,12 @@
   height: 25px;
   width: 45px;
   top: 65px;
-  left: 17.9px;
+  left: 27px;
   transform: rotate(-90deg);
   font-family: ubuntu-bold;
   background-color: @secondary-color;
   color: @label-color;
+  text-transform: uppercase;
 }
 
 .pager.pager-load-more {

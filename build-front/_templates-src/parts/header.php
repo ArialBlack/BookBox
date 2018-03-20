@@ -1,10 +1,10 @@
-<?php global $user; ?>
+<?php
+global $user;
+?>
 
 <header id="navbar" role="banner" class="<?php print $navbar_classes; ?>">
     <div class="<?php print $container_class; ?>">
         <div class="navbar-header">
-            <a href="/" class="home-header"><i class="icon ion-ios-home-outline"></i></a>
-
             <?php if ($logo): ?>
                 <a class="logo navbar-btn pull-left" href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>">
                     <!-- <img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>" /> -->
@@ -13,12 +13,8 @@
             <?php endif; ?>
         </div>
 
-        <div class="navbar-collapse collapse main-nav-collapse">
-            <nav role="navigation">
-                <?php if (!empty($primary_nav)): ?>
-                    <span class="primary-nav"><?php print render($primary_nav); ?></span>
-                <?php endif; ?>
-            </nav>
+        <div class="button-block">
+          <a href="/books" class="all-books">Всі книги</a>
         </div>
 
         <div class="search-block">
@@ -26,9 +22,8 @@
                 $block = module_invoke('finder', 'block_view', 'content_finder');
                 print render($block['content']);
             ?>
-
-            <svg class="svg-icon icon-search" preserveAspectRatio="xMaxYMax"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/sites/all/themes/bookbox_ui/images/svg/search.svg#icon-search"></use></svg>
         </div>
+        <div class="show-finder"></div>
 
       <div class="navbar-collapse collapse user-navbar-collapse">
         <?php if ($user->uid != 0): ?>
@@ -49,23 +44,29 @@
 
             <ul class="user-icons-menu nav nav-tabs dup-tabs" role="tablist">
               <li role="presentation">
-                <a href="/user#order">Замовлено
+                <a href="/user#order" title="Замовлено">
                   <?php if ($u_orders_c > 0): ?>
                     <span class="badge"><?php print $u_orders_c; ?></span>
+                  <?php else: ?>
+                    <span class="badge badge-empty">0</span>
                   <?php endif; ?>
                 </a>
               </li>
               <li role="presentation">
-                <a href="/user#read">Зараз читаю
+                <a href="/user#read" title="Зараз читаю">
                   <?php if ($u_reading_c > 0): ?>
                     <span class="badge"><?php print $u_reading_c; ?></span>
+                  <?php else: ?>
+                    <span class="badge badge-empty">0</span>
                   <?php endif; ?>
                 </a>
               </li>
               <li role="presentation">
-                <a href="/user#favs">Вішліст
+                <a href="/user#favs" title="Список бажань">
                   <?php if ($u_favs_c > 0): ?>
                     <span class="badge"><?php print $u_favs_c; ?></span>
+                  <?php else: ?>
+                    <span class="badge badge-empty">0</span>
                   <?php endif; ?>
                 </a>
               </li>

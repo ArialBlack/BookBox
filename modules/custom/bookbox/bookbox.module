@@ -3,8 +3,8 @@ module_load_include('inc', 'bookbox', 'bookbox.functions');
 module_load_include('inc', 'bookbox', 'bookbox.mail');          //emails
 module_load_include('inc', 'bookbox', 'bookbox.forms');
 //module_load_include('inc', 'bookbox', 'bookbox.cart');          //Корзина
-module_load_include('inc', 'bookbox', 'bookbox.order');         //Заказ месяца
-module_load_include('inc', 'bookbox', 'bookbox.readnow');       //Читаю сейчас
+module_load_include('inc', 'bookbox', 'bookbox.order');         //Заказ месяца // удалить после релиза
+module_load_include('inc', 'bookbox', 'bookbox.readnow');       //Читаю сейчас // удалить после релиза
 module_load_include('inc', 'bookbox', 'bookbox.adminmessages');
 module_load_include('inc', 'bookbox', 'bookbox.blocks');
 
@@ -29,6 +29,16 @@ function bookbox_menu(){
       'page arguments' => array('bookbox_admin_labels_form'),
       'access arguments' => array('access adminstration page'),
       'access callback' => TRUE,
+  );
+
+  $items['admin/bookbox/icons'] = array(
+    'title' => 'Адмін-іконки',
+    'description' => 'Admin icons',
+    'type' => MENU_NORMAL_ITEM,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('bookbox_set_default_header_image_form'),
+    'access arguments' => array('access adminstration page'),
+    'access callback' => TRUE,
   );
 
   $items['user/orders'] = array(
@@ -63,17 +73,19 @@ function bookbox_menu(){
   global $user;
   $uid = $user->uid;
 
+  //эти блоки уже не выводим
   $show_cart = true;
-  //todo
   if(bookbox_count_in_confirm($uid) > 0 ) {
     $show_cart = false;
   }
 
+  //эти блоки уже не выводим
   $show_order = true;
   if( bookbox_count_in_confirm($uid) < 1 ) {
     $show_order = false;
   }
 
+  //эти блоки уже не выводим
   $show_reading_now = true;
   if( count(bookbox_get_in_reading_now($uid)) < 1) {
     $show_reading_now = false;
@@ -82,6 +94,7 @@ function bookbox_menu(){
   if ($show_reading_now &&  count(bookbox_get_in_reading_now($uid)) >= variable_get('varMaxBooks')) {
     $show_order = false;
   }
+
 
   if ($show_cart) {
     $items['user/usercart'] = array(
@@ -192,7 +205,22 @@ function bookbox_user_update(&$edit, $account, $category){
       $mail_to = $account->mail;
       $params['merge_vars']['FNAME'] = $account->field_name['und'][0]['value'];
       bookbox_mail_send('bookbox', 'password_change', $mail_to, $params);
+      drupal_set_message('Пароль успішно змінено');
     }
+  }
+
+  if($account->original->field_tel['und'][0]['value'] != $edit['field_tel']['und'][0]['value']){
+    $company_nid = $account->field_company['und'][0]['target_id'];
+    $company = node_load($company_nid);
+    $mail_to = variable_get('site_mail', '');
+
+    $params = array(
+      'subject' => 'Користувач ' . $account->field_name['und'][0]['value'] . ' ' . $account->field_sirname['und'][0]['value'] . ' з ' . $company->title . ' змінив телефон.',
+      'body' => "Новий номер: " . $edit['field_tel']['und'][0]['value'],
+    );
+
+    bookbox_mail_send('bookbox', 'user_update_tel', $mail_to, $params);
+    drupal_set_message('Телефон успішно змінено');
   }
 }
 
@@ -212,6 +240,8 @@ function bookbox_equal_stocks() {
   }
 }
 
+//при кожному редагуванні (апдейті) книги ми оновлюємо товарні запаси (кнопка замовлення дивиться на товарні запаси)
+//Товарні запаси = абсолютний сток (скільки книг є фізічно у Букбокс мінус кількість книг у замовленнях
 function bookbox_node_update($node) {
   if(isset($node->field_bookfields) && count($node->field_bookfields) > 0 ) {
     $product_id = $node->field_bookfields['und'][0]['product_id'];
@@ -256,6 +286,7 @@ function bookbox_commerce_order_presave($order) {
   }
 }
 
+//Поле книги, яке збирає у себе текстову інфу для пошуку. Пошук по назві + автору + оригінальній назві
 function computed_field_field_search_string_compute(&$entity_field, $entity_type, $entity, $field, $instance, $langcode, $items) {
   $authors = " ";
   $author_count = count($entity->field_book_author['und']);
@@ -294,4 +325,10 @@ function bookbox_theme() {
       'variables' => array(),
     ),
   );
+}
+
+function register_alter_password_confirm($element) {
+  $element['pass1']['#title'] = t("Новий пароль");
+  $element['pass2']['#title'] = t("Підтвердити новий пароль");
+  return $element;
 }

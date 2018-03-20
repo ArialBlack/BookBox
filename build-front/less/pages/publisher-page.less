@@ -1,6 +1,9 @@
 body.publishers {
   .sort-submenu,
-  div.col-sm-12 {
+  div.col-sm-12,
+  .translation_ru,
+  .view-search-results-div,
+  .views-widget-sort-by {
     display: none !important;
   }
 
@@ -12,35 +15,25 @@ body.publishers {
     width: 100%;
   }
 
-  .breadcrumb {
-    display: block;
-    background: none;
-
-    a {
-      font-family: ubuntu-medium;
-      color: #a58c3c;
-      font-size: @menu-text;
-      text-transform: uppercase;
-      opacity: .65;
+  .yellow-block {
+    img {
+      display: none;
     }
 
-    .delimiter {
-      position: relative;
-      display: inline-block;
-      font-size: .01px;
-      padding: 0 9px;
+    .description {
+      font-family: ubuntu-regular;
+      font-size: @body-text-n;
+      color: @header-text-3;
 
-      &:after {
-        content: '';
-        position: absolute;
-        width: 0;
-        left: 6px;
-        top: 7px;
-        height: 0;
-        border-top: 4px solid transparent;
-        border-left: 6px solid @red;
-        border-bottom: 4px solid transparent;
+      @media (max-width: @max-xs) {
+        font-size: @menu-text-2;
       }
+    }
+  }
+
+  &.collection {
+    #block-system-main>.view-taxonomy-term {
+      .container;
     }
   }
 
@@ -50,6 +43,10 @@ body.publishers {
     text-transform: uppercase;
     color: @header-text-3;
     border: none;
+
+    @media (min-width: 992px) {
+      width: ~'calc(8.3333333% * 8)';
+    }
 
     @media (max-width: @laptop-2) {
       margin-bottom: 10px;
@@ -68,7 +65,30 @@ body.publishers {
     }
   }
 
+  .page-icon {
+    position: absolute;
+    top: 60px;
+    right: ~'calc(8.3333333% * 3)';
+    height: 140px;
+    width: 165px;
+    background:url(../images/svg/author-icon.svg);
+    background-repeat: no-repeat;
+    background-size: 100%;
+
+    @media (max-width: @laptop-2) {
+      width: 132px;
+      right: ~'calc(8.3333333% * 2)';
+    }
+
+    @media (max-width: @max-sm) {
+      display: none;
+    }
+  }
+
   .publisher-url {
+    width: 100%;
+    overflow: hidden;
+
     a {
       position: relative;
       font-family: ubuntu-medium;
@@ -76,6 +96,7 @@ body.publishers {
       color: @header-text-3;
       text-decoration: underline;
       padding-left: 30px;
+      white-space: normal;
 
       &:before {
         content: '';
@@ -118,35 +139,52 @@ body.publishers {
   }
 
 
-  #block-system-main {
-    //padding-left: 0 !important;
-    justify-content: flex-start !important;
+  #block-system-main > .view-taxonomy-term {
+    >.view-content {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start !important;
+      padding-top: 30px;
+      padding-bottom: 0;
 
-    @media (max-width: @laptop-2) {
-      padding: 0 47px;
-    }
+      @media (max-width: @laptop-2) {
+        padding: 0 47px;
+      }
 
-    @media (max-width: @max-sm) {
-      padding: 0 82px;
-    }
+      @media (max-width: @max-sm) {
+        padding: 0 82px;
+      }
 
-    @media (max-width: @max-xs) {
-      display: block !important;
-      padding: 0;
-    }
-
-    article {
       @media (max-width: @max-xs) {
-        display: block;
-        clear: both;
-        margin-left: auto !important;
-        margin-right: auto !important;
+        display: block !important;
+        padding: 0;
+      }
+
+      .field-name-field-bookbox-rec {
+        display: none;
+      }
+
+      .views-row {
+        @media (max-width: @max-xs) {
+          display: block;
+          clear: both;
+          margin-left: auto !important;
+          margin-right: auto !important;
+        }
+
+        .book-card {
+          ul {
+            padding-left: 0;
+            list-style-type: none;
+          }
+        }
+      }
+
+      .term-listing-heading,
+      .node-readmore,
+      .not-aviable-mark {
+        display: none;
       }
     }
-
-    .term-listing-heading {
-      display: none;
-    }
   }
-
 }

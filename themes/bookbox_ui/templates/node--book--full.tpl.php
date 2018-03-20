@@ -113,10 +113,26 @@ $translations = translation_path_get_translations("node/" . $node->nid);
     <header class="book-initials">
     	<div class="container">
     		<div class="row">
-    			<div class="col-md-4 col-sm-4">
+    			<div class="col-md-4 col-sm-4 book-cover-block">
+            <?php
+              print '<div class="book-labels">';
+
+              if(isset($node->field_isnew['und'])) {
+                if($node->field_isnew['und']['0']['value'] == 1) { print render($content['field_isnew']);}
+              }
+
+              if(isset($node->field_hit['und'])) {
+                if($node->field_hit['und']['0']['value'] == 1) { print render($content['field_hit']);}
+              }
+
+              if(isset($node->field_rec['und'])) {
+                if($node->field_bookbox_rec['und']['0']['value'] == 1) { print render($content['field_bookbox_rec']);}
+              }
+              print '</div>';
+            ?>
 	      		<?php print render($content['field_nni']); ?>
     			</div>
-    			<div class="col-md-8 col-sm-8">
+    			<div class="col-md-8 col-sm-8 text-cover-block">
     				<h1<?php print $title_attributes; ?>><?php print $title; ?></h1>
 	      <?php print render($content['field_book_author']); ?>
 	      <?php print $node->body['und'][0]['safe_value']; ?>
@@ -127,7 +143,7 @@ $translations = translation_path_get_translations("node/" . $node->nid);
 
 	        <?php
 	          if (count($translations) > 1) {
-              print '<div class="change-lang"><a>Є іншою мовою</a></div>';
+              print '<div class="change-lang"><a>Наявна іншою мовою</a></div>';
 	            print '<ul class="books-translations">';
 	            foreach ($translations as $key => $value) {
 	              if($key != $node_lang) {
@@ -144,7 +160,7 @@ $translations = translation_path_get_translations("node/" . $node->nid);
 	                    $l_name = 'російською';
 	                    break;
 	                }
-	                print '<li><a href="/' . drupal_get_path_alias($value) .'">Є  ' . $l_name . ' мовою</a></li>';
+	                print '<li><a href="/' . drupal_get_path_alias($value) .'">' . $l_name . '</a></li>';
 	              }
 	            }
 	            print '</ul>';
@@ -164,6 +180,8 @@ $translations = translation_path_get_translations("node/" . $node->nid);
   				  <?php print render($content['field_origin_name']); ?>
       			<?php print render($content['field_book_publisher']); ?>
      			  <?php print render($content['field_lang']); ?>
+            <?php print render($content['field_book_size']); ?>
+            <?php print render($content['field_year']); ?>
       			<?php print render($content['field_book_category']); ?>
     			</div>
     			<div class="col-md-8 col-sm-8">
@@ -182,9 +200,9 @@ $translations = translation_path_get_translations("node/" . $node->nid);
                   $desc = $node->field_book_author['und'][$i]['taxonomy_term']->description;
                   $uri = $node->field_book_author['und'][$i]['taxonomy_term']->field_author_photo['und'][0]['uri'];
                   print '<div class="author-block clearfix"><div class="a-img"><img src="' . image_style_url("medium", $uri) . '"/></div> <div class="about-autor">';
-                  print '<h3>' . $node->field_book_author['und'][$i]['taxonomy_term']->name . '</h3>';
-                  print $desc . '</div> </div>';
-
+                  print '<h3><a href="/taxonomy/term/' . $node->field_book_author['und'][$i]['taxonomy_term']->tid .'">' . $node->field_book_author['und'][$i]['taxonomy_term']->name . '</a></h3>';
+                  print '<p>' . $desc . '</p></div>';
+                  print '<div class="visible-xs">' . $desc . '</div> </div>';
                 }
                 ?>
               </div>

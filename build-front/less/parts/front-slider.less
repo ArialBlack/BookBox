@@ -2,16 +2,63 @@
   .region-slider-area {
     position: relative;
 
+
+    .slick-slide {
+      @media (max-width: @mid-xs) {
+        height: 610px;
+      }
+    }
+
     .slick-track:focus,
     .slick-slide:focus {
       border: none;
       outline: none;
     }
 
+    .slick-slide:nth-child(2n) {
+      .col-md-4 {
+        float: right;
+      }
+
+      .slider-image {
+        @media (max-width: @laptop-2) {
+          position: absolute;
+          top: -20px;
+          right: 7.5%;
+          left: initial;
+          width: 800px;
+        }
+
+        @media (max-width: @max-sm) {
+          right: 45%;
+        }
+
+        @media (max-width: @max-xs) {
+          right: 66%;
+        }
+
+        @media (max-width: @mid-xs) {
+          position: relative;
+          right: 0;
+          margin: 0;
+          width: 100%;
+        }
+      }
+
+      .slider-text {
+        @media (max-width: @laptop-2) and (min-width: @max-sm) {
+          margin-left: -40px;
+        }
+      }
+    }
+
     .slick-prev,
-    .slick-next,
-    .slick-dots {
+    .slick-next {
       z-index: 100;
+      outline: none;
+    }
+
+    .slick-dots {
       outline: none;
     }
 
@@ -24,6 +71,10 @@
       background: url(../images/left.png);
       border: none;
       text-indent: -10000px;
+
+      @media (max-width: @laptop-2) {
+        display: none !important;
+      }
     }
 
     .slick-next {
@@ -35,6 +86,10 @@
       background: url(../images/right.png);
       border: none;
       text-indent: -10000px;
+
+      @media (max-width: @laptop-2) {
+        display: none !important;
+      }
     }
 
     .slick-dots {
@@ -43,6 +98,10 @@
       bottom: 40px;
       padding: 0;
       transform: translateX(-50%);
+
+      @media (max-width: @laptop-2) {
+        bottom: 20px;
+      }
 
       li {
         list-style-type: none;
@@ -70,10 +129,72 @@
       .slider-container {
         padding-top: 25px;
         padding-bottom: 80px;
+
+        @media (min-width: 992px) {
+          position: relative;
+          height: ~'calc(100vh - 95px)';
+
+          .phantom-container {
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+          }
+        }
+
+        @media (max-width: @laptop-2) {
+          padding-bottom: 155px;
+        }
+
+        @media (max-width: @max-sm) {
+          padding-bottom: 180px;
+        }
+
+        @media (max-width: @max-xs) {
+          padding-top: 85px;
+          padding-bottom: 140px;
+        }
+
+        @media (max-width: @mid-xs) {
+          padding-top: 5px;
+          padding-bottom: 70px;
+          height: 100%;
+        }
+
+        .col-xs-8 {
+          @media (max-width: @mid-xs) {
+            width: 85%;
+            float: left;
+          }
+        }
+        .col-md-8 {
+          @media (max-width: @mid-xs) {
+            padding: 0;
+          }
+
+          img {
+            @media (max-width: @max-xs) and (min-width: 451px) {
+              max-height: 282px;
+            }
+          }
+        }
       }
 
       .slider-text {
+        position: relative;
         padding-top: 110px;
+        z-index: 25;
+
+        @media (max-width: @laptop-2) {
+          padding-top: 60px;
+        }
+
+        @media (max-width: @max-xs) {
+          padding-top: 40px;
+        }
+
+        @media (max-width: @mid-xs) {
+          padding-bottom: 45px;
+        }
 
         h2 {
           font-family: GillSansC;
@@ -85,6 +206,23 @@
           box-shadow: -15px 0px 0 #353535, 16px 0 0 #353535;
           padding: 10px 0;
           line-height: 1.2;
+          margin-left: 0;
+
+          @media (max-width: @max-sm) {
+            font-size: 50px;
+          }
+
+          @media (max-width: @max-xs) {
+            font-size: 36px;
+            padding: 5px 0;
+            line-height: 1.1;
+          }
+
+          @media (max-width: @mid-xs) {
+            font-size: @text-block-title;
+            line-height: 1.4;
+            padding-top: 11px;
+          }
         }
 
         h6 {
@@ -92,6 +230,12 @@
           font-size: @body-text-b;
           margin-left: -15px;
           padding: 15px 0 25px 0;
+
+          @media (max-width: @max-xs) {
+            font-size: @body-text-n;
+            padding-top: 5px;
+            padding-bottom: 10px;
+          }
         }
 
         .cta-link a {
@@ -124,8 +268,30 @@
         margin: 0 -15px;
         padding-top: 15px;
         text-align: center;
+
+        @media (max-width: @laptop-2) {
+          position: absolute;
+          top: -20px;
+          left: 7.5%;
+          width: 800px;
+        }
+
+        @media (max-width: @max-sm) {
+          left: 45%;
+        }
+
+        @media (max-width: @max-xs) {
+          left: 66%;
+          width: 480px;
+        }
+
+        @media (max-width: @mid-xs) {
+          position: relative;
+          left: 0;
+          margin: 0;
+          width: 100%;
+        }
       }
     }
   }
-
 }

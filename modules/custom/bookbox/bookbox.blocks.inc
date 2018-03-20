@@ -19,7 +19,8 @@ function bookbox_block_info() {
       'info' => t('Orders history'),
     );
 
-    $blocks['CatBiz'] = array(
+    // Старі блоки видалить після релізу
+    /*$blocks['CatBiz'] = array(
         'info' => t('cat biz'),
     );
 
@@ -41,7 +42,7 @@ function bookbox_block_info() {
 
     $blocks['CatHud'] = array(
         'info' => t('cat hud'),
-    );
+    );*/
 
     $blocks['BBUserMenu'] = array(
         'info' => t('custom user menu'),
@@ -63,19 +64,27 @@ function bookbox_block_info() {
       'info' => t('Relevant books'),
     );
 
+    $blocks['SidebarFitlerBlockCompany'] = array(
+      'info' => t('Sidebar Fitler Block Company'),
+    );
+
+    $blocks['SidebarFitlerBlockCollections'] = array(
+      'info' => t('Sidebar Fitler Block Collections'),
+    );
+
     return $blocks;
 }
 
 function bookbox_block_view($delta = '') {
+    //Логіка блоків
     global $user;
     $uid = $user->uid;
     $max_books = variable_get('varMaxBooks');
 
     $block = array();
-
     $show_order = true;
-
     $show_reading_now = true;
+
     if (bookbox_count_in_reading_now($uid) < 1) {
         $show_reading_now = false;
     }
@@ -103,7 +112,8 @@ function bookbox_block_view($delta = '') {
             }
             break;
 
-        case 'CatBiz':
+        //Видалить після релізу
+        /*case 'CatBiz':
             $block['subject'] = '';
             $block['content'] = bookbox_cat_biz_block();
             break;
@@ -132,6 +142,7 @@ function bookbox_block_view($delta = '') {
             $block['subject'] = '';
             $block['content'] = bookbox_cat_hud_block();
             break;
+        */
 
         case 'BBUserMenu':
             $block['subject'] = '';
@@ -164,8 +175,18 @@ function bookbox_block_view($delta = '') {
             break;
 
         case 'OrdersHistory':
+            $block['subject'] = '';
+            $block['content'] = bookbox_user_orders_history_block();
+          break;
+
+        case 'SidebarFitlerBlockCompany':
           $block['subject'] = '';
-          $block['content'] = bookbox_user_orders_history_block();
+          $block['content'] = bookbox_sidebarfc_block();
+          break;
+
+        case 'SidebarFitlerBlockCollections':
+          $block['subject'] = '';
+          //$block['content'] = bookbox_sidebarfc_block();
           break;
     }
     return $block;
@@ -236,6 +257,34 @@ function bookbox_preprocess_relevantbooks(&$variables) {
     }
   }
 
+  //Може буть ситуація, коли ми прийшли зі сторінки автора, у якого всього одна книжка.
+  //Тоді в крихтах буде автор. І релевантиних книжок не буде.
+  //Тоді треба добивать книжками з категорій книжки
+  if ($books_count < 12) {
+    foreach ($node->field_book_category['und'] as $cat) {
+
+      $ttid = $cat['tid'];
+      $parents =  taxonomy_get_parents($ttid);
+
+      if(count($parents) == 0) {
+        $view_results = views_get_view_result('category_hits', 'default', $ttid);
+
+        if(count($view_results) > 0) {
+          foreach ($view_results as $row) {
+            //Нам не потрібна ця ж книга
+            if ($row->nid != $node->nid) {
+              $book = node_load($row->nid);
+              $node_view = node_view($book, 'teaser');
+              $rendered_teaser = render($node_view);
+              $books_count++;
+              $books_list[] = $rendered_teaser;
+            }
+          }
+        }
+      }
+    }
+  }
+
   if ($books_count > 0) {
     $content = '<ul>';
     $c = 0;
@@ -254,6 +303,29 @@ function bookbox_preprocess_relevantbooks(&$variables) {
   }
 }
 
+//Формує блок http://prntscr.com/i8dymf
+function bookbox_sidebarfc_block() {
+  $content = '<ul><li><a href="/books">Всі книги</a></li>';
+  $content = $content . '<li><a href="/books/hits">Хіти</a></li>';
+
+  global $user;
+  $uid = $user->uid;
+  $account = user_load($uid);
+  $company_nid = $account->field_company['und'][0]['target_id'];
+  $company = node_load($company_nid);
+  $date_diff = (time() - $company->created)/60/60/24;
+
+  //Якщо компнія молода, то не виводимо лінку.
+  if($date_diff > 60) {
+    $content = $content . '<li><a href="/books/company-hits">Популярне в ' . $company->title . '</a></li>';
+  }
+
+  $content = $content . '<li><a href="/books/new">Нові надходження</a></li></ul>';
+
+  return $content;
+}
+
+//Логіка формування блоку http://prntscr.com/i8dts9
 function bookbox_preprocess_companyhits(&$variables) {
   global $user;
   $uid = $user->uid;
@@ -288,10 +360,21 @@ function bookbox_preprocess_companyhits(&$variables) {
   }
 }
 
+//Змінить заголовок на сторінці блоку http://prntscr.com/i8dts9
+function bookbox_views_pre_render(&$view) {
+  if ($view->name == 'user_company_hits' && $view->current_display == 'page_1') {
+    global $user;
+    $uid = $user->uid;
+    $account = user_load($uid);
+    $company_nid = $account->field_company['und'][0]['target_id'];
+    $company = node_load($company_nid);
+    $view->build_info['title'] = "Популярне в " . $company->title;
+  }
+}
+
+//Логіка формування блоку http://prntscr.com/i8dtxv
 function bookbox_preprocess_newbyadmin(&$variables) {
-  if ($cache = cache_get('bookbox_newbyadmin_data')) {
-    $content = $cache->data;
-  } else {
+
     $content = null;
 
     $nid = db_select('node', 'n')
@@ -316,16 +399,12 @@ function bookbox_preprocess_newbyadmin(&$variables) {
       $content = $content . '</ul>';
     }
 
-    cache_set('bookbox_newbyadmin_data', $content, 'cache');
-  }
-
   $variables['bookslist'] = $content;
 }
 
+//Логіка формування блоку http://prntscr.com/i8duku
 function bookbox_preprocess_manualhits(&$variables) {
-  if ($cache = cache_get('bookbox_manualhits_data')) {
-    $content = $cache->data;
-  } else {
+
     $content = null;
 
     $nid = db_select('node', 'n')
@@ -350,9 +429,6 @@ function bookbox_preprocess_manualhits(&$variables) {
       $content = $content . '</ul>';
     }
 
-    cache_set('bookbox_manualhits_data', $content, 'cache');
-  }
-
   $variables['bookslist'] = $content;
 }
 
@@ -368,6 +444,7 @@ function bookbox_debug_block() {
     return $output;
 }
 
+//Формує блок http://prntscr.com/i8e0x0
 function bookbox_custom_usermenu_block() {
     $content = "";
     global $user;
@@ -392,30 +469,36 @@ function bookbox_custom_usermenu_block() {
 
     $content = $content . '<ul class="menu nav navbar-nav secondary dup-tabs">';
     $content = $content . '<li class="first last expanded dropdown">';
-    $content = $content . '<a href="/user" title="" data-target="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <span class="user-name"><span>' . $nanme . '</span> <span>' . $snanme . '</span></span> <span class="caret"></span></a>';
+    $content = $content . '<a href="/user" title="" data-target="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <span class="user-name"><span>' . $nanme . '</span> <span>' . $snanme . '</span></span>';
+    $content = $content . '<span class="caret"></span></a>';
+
     $content = $content . '<ul class="dropdown-menu"><li class="first leaf"><a href="/user" title="">Профіль</a></li>';
-    //
+
     $content = $content . '<li class="leaf"><a href="/user#order" title="">Замовлено ';
+
     if ($u_orders_c > 0) {
       $content = $content . '<span class="badge">' . $u_orders_c . '</span>';
+    } else {
+      $content = $content . '<span class="badge badge-empty">0</span>';
     }
+
     $content = $content . '</a></li>';
     //
-    $content = $content . '<li class="leaf"><a href="/user#read" title="">Читаю зараз ';
+    $content = $content . '<li class="leaf"><a href="/user#read" title="">Зараз читаю ';
+
     if ($u_reading_c > 0) {
       $content = $content . '<span class="badge">' . $u_reading_c . '</span>';
+    } else {
+      $content = $content . '<span class="badge badge-empty">0</span>';
     }
     $content = $content . '</a></li>';
     //
-    $content = $content . '<li class="leaf"><a href="/user#history" title="">Прочитано ';
-    if ($u_history_c > 0) {
-      $content = $content . '<span class="badge">' . $u_history_c . '</span>';
-    }
-    $content = $content . '</a></li>';
-    //
-    $content = $content . '<li class="leaf"><a href="/user#favs" title="">Вішліст ';
+    $content = $content . '<li class="leaf"><a href="/user#favs" title="">Список бажань ';
+
     if ($u_favs_c > 0) {
       $content = $content . '<span class="badge">' . $u_favs_c . '</span>';
+    } else {
+      $content = $content . '<span class="badge badge-empty">0</span>';
     }
     $content = $content . '</a></li>';
 
@@ -433,7 +516,7 @@ function bookbox_block_view_alter(&$data, $block) {
     }
 }
 
-function bookbox_cat_biz_block() {
+/*function bookbox_cat_biz_block() {
     $content = _bookbox_catblock(7);
     return $content;
 }
@@ -462,8 +545,9 @@ function bookbox_cat_hud_block() {
     $content = _bookbox_catblock(317);
     return $content;
 }
+*/
 
-function _bookbox_catblock($parent_tid) {
+/*function _bookbox_catblock($parent_tid) {
     $content = '';
     $childrens = taxonomy_get_children($parent_tid);
 
@@ -492,7 +576,7 @@ function _bookbox_catblock($parent_tid) {
         $content = $content . '</div></div>';
     }
     return $content;
-}
+}*/
 
 function bookbox_user_orders_history_block() {
   $content = '<h2>Історія замовлень</h2><div class="row">';

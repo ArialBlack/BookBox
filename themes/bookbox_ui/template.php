@@ -36,6 +36,24 @@ function bookbox_ui_preprocess_node(&$vars) {
   }
 }
 
+function bookbox_ui_preprocess_views_view(&$vars) {
+
+  if (in_array($vars['view']->name, array('taxonomy_term'))) {
+    $breadcrumb = array();
+    $breadcrumb[] = l('Головна', '<front>');
+    $breadcrumb[] = l('Всі книги', '/books');
+
+    $tid = $vars['view']->args[0];
+
+    if(isset($tid)) {
+      $parent = taxonomy_get_parents_all($tid);
+      $breadcrumb[] = l($parent[0]->name, 'taxonomy/term/' . $parent[0]->tid);
+    }
+
+    drupal_set_breadcrumb($breadcrumb);
+  }
+}
+
 function bookbox_ui_preprocess_page(&$vars) {
 
   $url  = request_path();
@@ -44,12 +62,22 @@ function bookbox_ui_preprocess_page(&$vars) {
     drupal_goto('user/login');
   }
 
+  if ($views_page = views_get_page_view() ) {
+    if ($views_page->name === "books") {
+      $vars['theme_hook_suggestions'][] = 'page__views__books';
+    }
+
+    if ($views_page->name === "user_company_hits") {
+      $vars['theme_hook_suggestions'][] = 'page__views__usercompanyhits';
+    }
+  }
+
   // Do we have a node?
   if (isset($vars['node'])) {
-
     ///////////////
     $breadcrumb = array();
     $breadcrumb[] = l('Головна', '<front>');
+    $breadcrumb[] = l('Всі книги', '/books');
     $tid = null;
 
     $urlparams = drupal_get_query_parameters();
@@ -124,20 +152,25 @@ function bookbox_ui_preprocess_page(&$vars) {
 
   if (arg(0) == 'taxonomy' && arg(1) == 'term' ) {
     $term = taxonomy_term_load(arg(2));
+    $parents =  taxonomy_get_parents(arg(2));
+
+    $breadcrumb = array();
+    $breadcrumb[] = l('Головна', '<front>');
+    $breadcrumb[] = l('Всі книги', '/books');
+
+    if(count($parents) != 0) {
+      $newArray = array_keys($parents);
+      $key = $newArray[0];
+      $parent_name = $parents[$key]->name;
+      $breadcrumb[] = l($parent_name, '/taxonomy/term/' . $key);
+    }
+
+    $breadcrumb[] = l($term->name, '/taxonomy/term/' . $term->tid);
+    drupal_set_breadcrumb($breadcrumb);
+
     $vocabulary = taxonomy_vocabulary_load($term->vid);
     $vars['theme_hook_suggestions'][] = 'page__taxonomy_vocabulary__' . $vocabulary->machine_name;
   }
-}
-
-function bookbox_ui_preprocess(&$variables) {
-  global $user;
-
-  $query = db_select('flagging', 'f');
-  $query->addExpression('COUNT(*)');
-  $query->condition('f.uid', $user->uid);
-  $count = $query->execute()->fetchField();
-
-  $variables['u_flag'] = $count;
 }
 
 function bookbox_ui_preprocess_html(&$vars, $hook) {
@@ -156,13 +189,6 @@ function bookbox_ui_preprocess_html(&$vars, $hook) {
   }
 
   $r = request_path();
-
-  //https://lib.bookbox.ua/user/login - Вхід | Book Box
-  //https://lib.bookbox.ua/user/register - Реєстрація | Book Box
-  //https://lib.bookbox.ua/user/password - Відновлення паролю | Book Box
-  //https://lib.bookbox.ua/ - Book Box (не капсом і без рисочки)
-  //https://lib.bookbox.ua/user (сторінка профілю) - Профіль | Book Box
-  //https://lib.bookbox.ua/user/240/orders (історія замовлень) - Історія замовлень | Book Box
 
   if ($r == 'user/login') {
     $vars['head_title'] = 'Вхід | Book Box';
@@ -183,5 +209,37 @@ function bookbox_ui_preprocess_html(&$vars, $hook) {
   if ($r == 'user') {
     $vars['head_title'] = 'Профіль | Book Box';
   }
+
+  if (arg(0) == 'books') {
+    $vars['head_title'] = 'Всі книги | Book Box';
+  }
+
+  if ($r == 'books/hits') {
+    $vars['head_title'] = 'Хіти | Book Box';
+  }
+
+  if ($r == 'books/new') {
+    $vars['head_title'] = 'Нові надходження | Book Box';
+  }
+
+  if ($r == 'books/company-hits') {
+    $vars['head_title'] = drupal_get_title() . ' | Book Box';
+  }
+
+  if (user_is_logged_in()) {
+    if($r == 'user/' . $vars['user']->uid . '/edit') {
+      $vars['head_title'] = 'Налаштування | Book Box';
+    }
+  }
 }
+
+function bookbox_ui_preprocess_field(&$variables) {
+  $field_name = $variables['element']['#field_name'];
+
+  if($field_name == 'field_book_size') {
+    $instance = field_info_instance('node', $field_name, 'book');
+    $variables['element']['#help'] = $instance['description'];
+  }
+}
+
 

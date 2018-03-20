@@ -82,11 +82,9 @@
             <img src="https://lib.bookbox.ua/sites/all/themes/bookbox_ui/images/bb-compact-logo.png" alt="BookBox" />
 
             <div class="notice-message">
-                <h1><span class="div"><span class="text">Сайт</span></span> <span class="div"><span class="text">вдосконалюється</span></span></h1>
+                <h1><span class="div"><span class="text">Вдосконалюємо</span></span> <span class="div"><span class="text">сайт</span></span></h1>
                 <div class="tip-text">
-                    <p>До 8 вересня все знову працюватиме.</p>
-                    <p>Дякуємо за розуміння.</p>
-                    <p>Відповімо на запитання на info@bookbox.ua</p>
+                    <p>В середу (21 березня) відновлюємо роботу</p>
                 </div>
             </div>
         </div>

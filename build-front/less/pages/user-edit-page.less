@@ -1,0 +1,252 @@
+.page-user-edit {
+  min-height: 100px;
+
+  .webform-error {
+    &::placeholder {
+      color: @red;
+    }
+  }
+
+  .form-item-field-tel-und-0-value {
+    @media (max-width: @max-xs) {
+      display: inline-block;
+      left: 50%;
+      position: relative;
+      transform: translateX(-50%);
+    }
+  }
+  input.form-text {
+    @media (max-width: 500px) {
+      max-width: 300px !important;
+      min-width: 0 !important;
+    }
+  }
+
+  &.open-alert {
+    position: relative;
+
+    &:before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      background: rgba(0, 0, 0, .4);
+      width: 100%;
+      height: 100%;
+      z-index: 100;
+    }
+  }
+
+  .alert-block.alert-success.messages {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -20%);
+    z-index: 100;
+    background: #fff;
+    border: none;
+    width: 585px;
+    height: 265px;
+    padding-top: 120px;
+    font-family: gillsans-bold;
+    font-size: @text-block-title;
+    color: @header-text;
+    text-align: center;
+
+    @media (max-width: @mid-xs) {
+      width: ~'calc(100% - 20px)';
+      padding-top: 100px;
+    }
+
+    @media (max-width: 375px) {
+      padding-top: 65px;
+    }
+
+    @media (max-width: 321px) {
+
+    }
+
+    .element-invisible {
+      display: none;
+    }
+
+    ul {
+      padding-left: 0;
+
+      li {
+        list-style-type: none;
+        line-height: 1;
+      }
+    }
+
+    h4 {
+      position: relative;
+      padding-top: 135px;
+      font-family: gillsans-bold;
+      font-size: @text-block-title;
+      color: @header-text;
+      text-align: center;
+
+      &:before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        top: 50px;
+        width: 60px;
+        height: 60px;
+        background: url(../images/checkmark.png);
+        background-size: 100%;
+      }
+    }
+
+    p {
+      padding-top: 25px;
+      padding-bottom: 45px;
+      font-family: ubuntu-medium;
+      font-size: @body-text-n;
+      color: @header-text;
+      text-align: center;
+    }
+
+    a.close {
+      position: absolute;
+      right: 15px;
+      top: 15px;
+      color: @red;
+      font-weight: bold;
+      font-size: 24px;
+      opacity: 1;
+      z-index: 10;
+    }
+
+    a.btn {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      color: @white;
+      line-height: 65px;
+    }
+  }
+
+  .main-container {
+    width: 100%;
+    min-height: 100px;
+    padding-bottom: 60px !important;
+    background: @green !important;
+
+    #block-system-main {
+
+      .help-block,
+      .form-required {
+        display: none;
+      }
+
+      #edit-account,
+      .form-actions,
+      #field-tel-add-more-wrapper {
+        .container;
+      }
+
+      .form-actions {
+        padding-top: 15px;
+
+        .icon.glyphicon.glyphicon-ok {
+          display: none;
+        }
+
+        .btn {
+          @media (max-width: @mid-xs) {
+            width: 210px;
+          }
+        }
+      }
+
+      .glyphicon.form-control-feedback,
+      .help-block.password-help {
+        display: none !important;
+      }
+
+      .help-block {
+        max-width: 400px;
+        color: @white;
+        font-family: ubuntu-regular;
+
+        em {
+          font-style: normal;
+        }
+
+        a {
+          font-family: ubuntu-regular;
+        }
+      }
+
+      #edit-account {
+        margin-bottom: 0;
+      }
+
+      .control-label {
+        font-family: ubuntu-medium;
+        font-size: 14px;
+        text-transform: uppercase;
+        color: @header-text-3;
+      }
+
+      input[type="password"],
+      input[type="text"] {
+        height: 55px;
+        min-width: 400px;
+        max-width: 400px;
+        font-family: ubuntu-medium;
+        font-size: 16px;
+        color: #2e2e2e;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+
+        &:focus {
+          box-shadow: none;
+          border-color: #ccc;
+          border-bottom: 3px solid #f9d35c;
+        }
+      }
+
+      .form-item-current-pass {
+        padding-top: 25px;
+      }
+
+      #user-profile-form > div {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+
+        .field-name-field-position,
+        .image-widget-data .form-group {
+          display: none;
+        }
+
+        .field-name-field-tel {
+          order: -3;
+          padding-top: 45px;
+          padding-bottom: 45px;
+          background: @yellow;
+        }
+
+        .form-item-pass-pass2 {
+          //margin-bottom: 0;
+        }
+
+        .form-item-current-pass {
+          .form-text.error {
+            border: 2px solid @red;
+            //background: rgba(255, 0, 0, 0.06);
+            color: @red;
+          }
+        }
+      }
+    }
+  }
+}

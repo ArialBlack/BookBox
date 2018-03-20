@@ -1,5 +1,7 @@
 <?php
 
+//Старый блок, можно удалить после релиза
+
 // Блок Заказ
 function bookbox_current_order_block ($form, &$form_state) {
     global $user;

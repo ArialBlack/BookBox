@@ -79,12 +79,23 @@ function next_friday_object($date) {
   }
 }
 
+//todo: review
 //Функція формує строку дати доставки
 function verbose_period4order($date) {
   if (period4order ($date) == 1 || period4order($date) == 3) {
     return "<div class='order-date'>Очікуйте доставку у п'ятницю: <span>" . next_friday($date) . "</span></div>";
   } else {
     return "<div class='order-date'>Очікуйте доставку у п'ятницю: <span>" . next_friday($date) . "</span></div>";
+  }
+}
+
+//todo: review
+//Функція формує строку дати доставки для попапу
+function verbose_period4popup($date) {
+  if (period4order ($date) == 1 || period4order($date) == 3) {
+    return "<div class='order-date'>Доставка: <span>" . next_friday_full($date) . "</span></div>";
+  } else {
+    return "<div class='order-date'>Доставка: <span>" . next_friday_full($date) . "</span></div>";
   }
 }
 
@@ -139,6 +150,7 @@ function bookbox_count_in_reading_now($uid) {
   return count(bookbox_get_in_reading_now($uid));
 }
 
+//Скількьки саме цієї книги у замовленнях
 function bookbox_get_in_orders($node) {
   $product_id = $node->field_bookfields['und'][0]['product_id'];
 
@@ -179,6 +191,7 @@ function _is_in_orders($product_id) {
   return $orders;
 }
 
+//Чи юзер замовив цю книгу
 function is_in_order($product_id, $uid) {
   $orders = _is_in_orders($product_id);
 
@@ -201,6 +214,7 @@ function is_in_order($product_id, $uid) {
   return $in_orders;
 }
 
+//Чи юзер читає ц книгу
 function is_in_redingnow($product_id, $uid) {
   $orders = _is_in_orders($product_id);
 
@@ -223,6 +237,7 @@ function is_in_redingnow($product_id, $uid) {
   return $in_orders;
 }
 
+//Чи юзер читав цю книгу
 function is_in_archive($product_id, $uid) {
   $orders = _is_in_orders($product_id);
 
@@ -288,6 +303,7 @@ function taxonomy_nested_tree_render($tree, $recurring = FALSE) {
   return $items;
 }
 
+//Формує список http://prntscr.com/i8e87n
 function _bookbox_user_orders_history() {
   global $user;
   $content = '';
@@ -333,4 +349,15 @@ function _bookbox_user_orders_history() {
   return array($content, $c);
 }
 
+function verbose_book_num($num, $form_for_1, $form_for_2, $form_for_5){
+  $num = abs($num) % 100;
+  $num_x = $num % 10;
 
+  if ($num > 10 && $num < 20)
+    return $num . ' ' . $form_for_5;
+  if ($num_x > 1 && $num_x < 5)
+    return $num . ' ' . $form_for_2;
+  if ($num_x == 1)
+    return $num . ' ' . $form_for_1;
+  return $num . ' ' . $form_for_5;
+}

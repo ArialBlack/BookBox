@@ -17,7 +17,6 @@ regions[slider_area]     = 'Slider Area'
 regions[precontent]     = 'PreContent'
 regions[content]        = 'Content'
 regions[content_bottom] = 'Content bottom'
-regions[sidebar_filters]  = 'Sidebar filters'
 regions[sidebar_first]  = 'Primary'
 regions[sidebar_second] = 'Secondary'
 regions[footer]         = 'Footer'
@@ -30,6 +29,7 @@ regions[page_bottom]    = 'Page bottom'
 ;;;;;;;;;;;;;;;;;;;;;
 
 stylesheets[all][] = css/style.css
+stylesheets[all][] = css/maintenance.css
 
 
 ;;;;;;;;;;;;;;;;;;;;;

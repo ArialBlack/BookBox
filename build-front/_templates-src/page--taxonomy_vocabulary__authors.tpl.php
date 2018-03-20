@@ -74,7 +74,6 @@
  */
 
 $term = taxonomy_term_load(arg(2));
-//dsm($term);
 
 ?>
 
@@ -86,12 +85,12 @@ $term = taxonomy_term_load(arg(2));
       <?php print $messages; ?>
     <div class="yellow-block">
       <div class="container">
-        <?php if (!empty($breadcrumb)): print $breadcrumb; endif;?>
-           <?php print render($title_prefix); ?>
-              <?php if (!empty($title)): ?>
-                <h1 class="page-header"><?php print $title; ?></h1>
-              <?php endif; ?>
-           <?php print render($title_suffix); ?>
+      	<div class="row">
+      		<div class="col-md-9">
+      			<?php if (!empty($breadcrumb)): print $breadcrumb; endif;?>
+
+            <h1 class="page-header"><?php print $term->name; ?></h1>
+
 
           <?php if(isset($term->field_original_name['und'])): ?>
             <div class="author-original-name">
@@ -101,11 +100,38 @@ $term = taxonomy_term_load(arg(2));
               ?>
             </div>
           <?php endif; ?>
+      		</div>
+      		<div class="col-md-2">
+          <div class="page-icon"></div>
+      		</div>
+      	</div>
 
-           <div class="page-icon"></div>
         </div>
     </div>
-    <div class="container">
+    <div class="term-listing-heading">
+      <div class="taxonomy-term">
+        <div class="content">
+          <div class="field-name-field-author-photo">
+            <?php
+              if(isset($term->field_author_photo)) {
+                print '<img src="'. image_style_url('medium', $term->field_author_photo['und'][0]['uri']). '" />';
+              }
+            ?>
+          </div>
+
+          <?php
+          if (module_exists('i18n_taxonomy') && i18n_taxonomy_vocabulary_mode($term->vid) == 1) {
+            $description = i18n_string("taxonomy:term:$term->tid:description", $term->description);
+          }
+          else {
+            $description = $term->description;
+          }
+          print '<div class="taxonomy-term-description">' . check_markup($description, $term->format, '', TRUE) . '</div>';
+          ?>
+        </div>
+      </div>
+    </div>
+
       <a id="main-content"></a>
       <?php if (!empty($tabs)): ?>
         <?php print render($tabs); ?>
@@ -113,16 +139,13 @@ $term = taxonomy_term_load(arg(2));
       <?php if (!empty($page['help'])): ?>
         <?php print render($page['help']); ?>
       <?php endif; ?>
+      <h4 class="author-block-title">Книги автора</h4>
       <?php if (!empty($action_links)): ?>
         <ul class="action-links"><?php print render($action_links); ?></ul>
       <?php endif; ?>
-
       <?php print render($page['content']); ?>
-
     </div>
     </section>
-
-  </div>
 </div>
 
 <!--(bake parts/footer.php)-->

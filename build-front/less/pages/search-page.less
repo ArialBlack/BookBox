@@ -1,56 +1,174 @@
-.view-id-booksearch {
-  .views-row {
-    .col(12);
+body.page-book-search {
+  .main-container {
+    width: 100%;
 
-    @media (min-width: @screen-sm-min) {
-      .col(6);
+    .page-icon {
+      float: left;
+      width: 16.66666667%;
+      margin-top: -40px;
+      margin-left: 0;
+      height: 150px;
+      background:url(../images/svg/search-page.svg);
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
 
-      &:nth-of-type(odd) {
-        clear: both;
+      @media (max-width: @max-sm) {
+        display: none;
       }
     }
 
-    @media (min-width: @screen-md-min) {
-      .col(4);
+    .page-header {
+      display: none;
+    }
 
-      &:nth-of-type(odd) {
-        clear: none;
+    .yellow-block {
+      height: 255px;
+
+      #autocomplete {
+        display: none !important;
       }
 
-      &:nth-of-type(3n+1) {
-        clear: both;
+      .col-sm-9 {
+        padding-left: 0;
+
+        #block-finder-content-finder {
+          .finder-wrapper {
+            .finder-results-content_finder {
+              display: none;
+            }
+
+            .form-type-textfield {
+              position: relative;
+              padding-bottom: 10px;
+              margin-bottom: 20px;
+
+              &:after {
+                content: '';
+                position: absolute;
+                width: 100%;
+                height: 2px;
+                bottom: 0;
+                left: 0;
+                background: #000;
+                opacity: .1;
+              }
+
+              #edit-title--2 {
+                background: none;
+                border: none;
+                outline: 0;
+                box-shadow: none;
+                font-family: GillSansC;
+                font-size: @screen-title;
+                color: @header-text;
+                text-transform: uppercase;
+                padding: 0 0 0 40px;
+
+                @media (max-width: @max-sm) {
+                  font-size: 28px;
+                }
+
+                @media (max-width: @max-xs) {
+                  font-size: 22px;
+                }
+
+                @media (max-width: @mid-xs) {
+                  font-size: 18px;
+                }
+
+                &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+                  color: #d7b44e;
+                }
+
+                &::-moz-placeholder { /* Firefox 19+ */
+                  color: #d7b44e;
+                }
+
+                &:-ms-input-placeholder { /* IE 10+ */
+                  color: #d7b44e;
+                }
+
+                &:-moz-placeholder { /* Firefox 18- */
+                  color: #d7b44e;
+                }
+              }
+            }
+          }
+
+          .view-search-results-div {
+            font-family: ubuntu-regular;
+            font-size: @body-text-n;
+            color: #a58c3c;
+          }
+        }
+      }
+    }
+
+    .search-results {
+      form {
+        display: none;
+      }
+    }
+
+    #block-finder-content-finder {
+      .btn {
+        font-size: 0;
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 30px;
+        height: 30px;
+        background: url(../images/svg/search-b.svg);
+        background-size: 100%;
+        background-repeat: no-repeat;
+        cursor: pointer;
+        box-shadow: none;
+        outline: none !important;
+
+        @media (max-width: @max-xs) {
+          width: 25px;
+          top: 3px;
+        }
+      }
+    }
+
+    section.col-sm-12>.container {
+      width: 100%;
+      padding:0;
+
+      >.action-links {
+        display: none;
+      }
+    }
+
+    #finder-form-content-finder {
+      .container;
+
+      .control-label,
+      #autocomplete {
+        display: none;
+      }
+
+    }
+
+    .finder-results-content_finder {
+      .container;
+      padding-top: 40px;
+
+      .view-content {
+        display: flex;
+        flex-wrap: wrap;
+
+
+        @media (max-width: @max-sm) {
+          justify-content: center;
+        }
       }
     }
   }
-}
 
-.page-content-finder {
-  .page-header {
-    margin-top: 60px;
-  }
-
-  #edit-go {
-    display: none!important;
-  }
-  
-    #autocomplete {
-      li {
-        @media screen and (max-width: 1199px){
-          width: 33.3%;
-        }
-
-        @media screen and (max-width: 991px){
-          width: 50%;
-        }
-
-        @media screen and (max-width: 550px){
-          width: 100%;
-        }
-      }
-    }
-  
-
-  .finder-form-element.finder-form-element-f {
-    margin-bottom: 25px;
+  article.node-book {
+    z-index: 1;
   }
 }

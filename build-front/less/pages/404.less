@@ -1,66 +1,84 @@
 .page-node-881 {
-  .tabs--primary,
-  .col-sm-12,
-  .breadcrumb {
+  background: @yellow !important;
+
+  .scroll-to {
     display: none;
   }
 
-  .field-type-text-with-summary {
-    margin-left: 90px;
-    color: @light-grey;
-    margin-bottom: 0;
-
-    ul {
-      padding-left: 0;
-      margin-left: 0;
-    }
-
-    li {
-      list-style: none;
-      display: inline-block;
-      float: left;
-      margin-right: 20px;
-    }
-  }
-
   .main-container {
+    position: relative;
     width: 100%;
-    margin: 0;
-    padding: 0;
-    padding-right: 15px;
+    background: url(../images/svg/bg_without_lamp.svg) !important;
+    background-size: 100% !important;
+    background-repeat: no-repeat !important;
+    background-position: center center !important;
+    text-align: center;
 
-    .page-header {
-      margin: 60px 0 20px 0;
-      color: @bb-darkblue;
-      text-transform: uppercase;
-      display: inline-block;
-      font-size: 24px;
-      border: none;
+    @media (max-width: 1367px) {
+      background-size: 110% !important;
+    }
 
-      &:before {
-        content: " ";
-        width: 90px;
-        height: 2px;
-        background: @primary-color;
+    @media (max-width: @laptop-2) {
+      min-height: 1px !important;
+      background-position-y: top !important;
+    }
+
+    @media (max-width: @max-xs) {
+      background: transparent !important;
+    }
+
+    &:before {
+      content:'';
+      position: absolute;
+      left: 50%;
+      top:0;
+      width: 170px;
+      height: 180px;
+      transform: translateX(-50%);
+      background: url(../images/svg/lamp.svg);
+      background-size: 100%;
+      background-repeat: no-repeat;
+      background-position: bottom;
+    }
+
+    .yellow-block,
+    .tabs--primary.nav.nav-tabs,
+    .action-links {
+      display: none;//TODO
+    }
+
+    .block-404 {
+      height: 770px;
+      position: relative;
+
+      @media (max-width: @laptop-2) {
+        height: 600px;
+        padding-top: 130px;
+      }
+
+      >div {
         position: relative;
-        display: inline-block;
-        margin-bottom: 7px;
-        margin-right: 4px;
-        margin-left: 0;
-        padding: 0;
+        top: 50%;
+        transform: translateY(-50%);
       }
     }
 
-    #node-881 {
-      ul {
-        padding-left: 0;
-        li {
-          display: inline-block;
-          list-style: none;
-          margin-right: 18px;
-        }
-      }
+    h1 {
+      font-family: Handlee-Regular;
+      font-weight: 100;
+      color: @red;
+      font-size: 170px;
+      line-height: .8;
+      margin-bottom: 0;
+    }
+
+    h4 {
+      font-family: GillSansC;
+      font-size: @text-block-title;
+      color: @red;
+      text-transform: uppercase;
+      margin-top: 0;
+      margin-bottom: 60px;
     }
   }
-
 }

@@ -26,36 +26,32 @@
  *
  * @ingroup views_templates
  */
+$vtc = $view->total_rows;
 ?>
+
+<?php if ($vtc > 0): ?>
+<div class="view-search-results-div"><?php print $vtc;?></div>
+<?php endif; ?>
+
+    <div class="views-exposed-widget views-widget-sort-by">
+      <div class="form-item form-item-sort-by form-type-select form-group"> <label class="control-label" for="edit-sort-by">Сортувати за:</label>
+        <select class="form-control form-select" id="edit-sort-by" name="sort_by">
+        	<option value="field_hit_value">Популярністю</option>
+        	<option value="commerce_stock_value">Наявністю</option>
+        </select>
+      </div>
+    </div>
+
+
 <div class="<?php print $classes; ?>">
   <?php print render($title_prefix); ?>
   <?php if ($title): ?>
     <?php print $title; ?>
   <?php endif; ?>
   <?php print render($title_suffix); ?>
-
-  <?php
-    $tid = arg(2);
-    $term = taxonomy_term_load($tid);
-
-    if(isset($term->field_author_photo)) {
-      print '<img src="'. image_style_url('medium', $term->field_author_photo['und'][0]['uri']). '" />';
-    }
-
-    if (module_exists('i18n_taxonomy') && i18n_taxonomy_vocabulary_mode($term->vid) == 1) {
-      $description = i18n_string("taxonomy:term:$term->tid:description", $term->description);
-    }
-    else {
-      $description = $term->description;
-    }
-    print check_markup($description, $term->format, '', TRUE);
-  ?>
-
   <?php if ($header): ?>
     <div class="view-header">
-      <?php
-      print $header;
-      ?>
+      <?php print $header; ?>
     </div>
   <?php endif; ?>
 

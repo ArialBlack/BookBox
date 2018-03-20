@@ -1,4 +1,7 @@
 <?php
+
+//Старый блок, можно удалить после релиза
+
 // Блок ЧИТАЮ СЕЙЧАС
 function bookbox_reading_now_block ($form, &$form_state) {
     global $user;

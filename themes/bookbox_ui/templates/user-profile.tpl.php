@@ -33,106 +33,241 @@
  *
  * @ingroup themeable
  */
-global $user;
-$email = $user->mail;
-//dsm($user_profile);
-$edit_link = '/user/' . $user->uid .'/edit';
 
+global $user;
+$uid = $user->uid;
+$account = user_load($uid);
+$email = $elements['#account']->mail;
+$edit_link = '/user/' . $elements['#account']->uid .'/edit';
+
+$nanme = $account->field_name['und'][0]['safe_value'];
+$snanme = $account->field_sirname['und'][0]['safe_value'];
+$cid = $account->field_company['und'][0]['target_id'];
+$company = node_load($cid);
 ?>
 
-<div class="profile"<?php print $attributes; ?>>
+<div class="yellow-block">
+	<div class="container">
+		<div class="profile-info">
+			<h6>
+				<?php print $company->title;?>
+			</h6>
+			<h1>
+				<?php print $nanme . ' ' . $snanme;?>
+			</h1>
 
-  <?php
+			<div class="field field-name-field-email field-type-text field-label-above">
+				<div class="field-label">Email:</div>
+				<div class="field-items">
+					<div class="field-item even">
+						<?php print $email;?>
+					</div>
+				</div>
+			</div>
 
-    if(isset($user_profile['field_position'])) {
-      $pos = $user_profile['field_position'][0]['#markup'];
-      if(isset($pos)) {
-        print '<div class="field field-name-field-position field-type-text field-label-above"><div class="field-label">Посада <a href="' . $edit_link . '"> (Змінити) </a></div><div class="field-items"><div class="field-item even">' . $pos . '</div></div></div>';
-      }
-    }
+			<?php
+			if(isset($elements['field_tel'])) {
+				$tel = $elements['field_tel'][0]['#markup'];
+				if(isset($tel)) {
+					print '<div class="field field-name-field-tel field-type-text field-label-above"><div class="field-label">Телефон:</div><div class="field-items"><div class="field-item even">' . $tel . ' <a href="' . $edit_link . '"> <img src="/sites/all/themes/bookbox_ui/images/svg/change-phone.svg">...</a></div></div></div>';
+				}
+			}
 
-    if(isset($user_profile['field_tel'])) {
-      $tel = $user_profile['field_tel'][0]['#markup'];
-      if(isset($tel)) {
-        print '<div class="field field-name-field-tel field-type-text field-label-above"><div class="field-label">Телефон <a href="' . $edit_link . '"> (Змінити) </a></div><div class="field-items"><div class="field-item even">' . $tel . '</div></div></div>';
-      }
-    }
+			print '<a class="user-change-pass" href="' . $edit_link . '">Встановити новий пароль</a>'
+			?>
+		</div>
 
-    print '<div class="field field-name-field-email field-type-text field-label-above"><div class="field-label">Email</div><div class="field-items"><div class="field-item even">' . $email . '</div></div></div>';
-    print '<a class="user-change-pass" href="' . $edit_link . '">Змінити пароль</a>'
-  ?>
-
-  <div class="user-tabs">
-    <?php
-      $u_orders_c = bookbox_count_in_confirm($user->uid);
-      $u_reading_c = bookbox_count_in_reading_now($user->uid);
-
-      list($x,$y) = _bookbox_user_orders_history();
-      $u_history = $x;
-      $u_history_c = $y;
-
-      $favs_view = views_get_view('user_wishlist');
-      $favs_view->set_display('block_1');
-      $favs_view->set_arguments(array($user->uid));
-      $favs_view->pre_execute();
-      $favs_view->execute();
-      $u_favs_c = $favs_view->total_rows;
-
-    ?>
-    <ul class="nav nav-tabs" role="tablist">
-      <li role="presentation" class="active">
-        <a href="#order" aria-controls="order" role="tab" data-toggle="tab">Замовлено
-          <?php if($u_orders_c > 0):?>
-          <span class="badge"><?php print $u_orders_c;?></span>
-          <?php endif; ?>
-        </a>
-      </li>
-      <li role="presentation">
-        <a href="#read" aria-controls="read" role="tab" data-toggle="tab">Зараз читаю
-          <?php if($u_reading_c > 0):?>
-            <span class="badge"><?php print $u_reading_c;?></span>
-          <?php endif; ?>
-        </a>
-      </li>
-      <li role="presentation">
-        <a href="#history" aria-controls="history" role="tab" data-toggle="tab">Прочитано
-          <?php if($u_history_c > 0):?>
-            <span class="badge"><?php print $u_history_c;?></span>
-          <?php endif; ?>
-        </a>
-      </li>
-      <li role="presentation">
-        <a href="#favs" aria-controls="favs" role="tab" data-toggle="tab">Вішліст
-          <?php if($u_favs_c > 0):?>
-            <span class="badge"><?php print $u_favs_c;?></span>
-          <?php endif; ?>
-        </a>
-      </li>
-    </ul>
-    <div class="tab-content">
-      <div role="tabpanel" class="tab-pane active" id="order">
-        <?php
-          $block = module_invoke('bookbox', 'block_view', 'MonthOrder');
-          print render($block['content']);
-        ?>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="read">
-        <?php
-          $block = module_invoke('bookbox', 'block_view', 'ReadingNow');
-          print render($block['content']);
-        ?>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="history">
-        <h3>Історія замовлень</h3>
-        <?php
-          print $u_history;
-        ?>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="favs">
-        <?php
-          print $favs_view->render();
-        ?>
-      </div>
-    </div>
-  </div>
+	</div>
 </div>
+
+<div class="container">
+	<div class="profile"<?php print $attributes; ?>>
+
+		<div class="visible-desktop">
+			<div class="user-tabs">
+				<?php
+				$u_orders_c = bookbox_count_in_confirm($elements['#account']->uid);
+				$u_reading_c = bookbox_count_in_reading_now($elements['#account']->uid);
+
+				list($x,$y) = _bookbox_user_orders_history();
+				$u_history = $x;
+				$u_history_c = $y;
+
+				$favs_view = views_get_view('user_wishlist');
+				$favs_view->set_display('block_1');
+				$favs_view->set_arguments(array($elements['#account']->uid));
+				$favs_view->pre_execute();
+				$favs_view->execute();
+				$u_favs_c = $favs_view->total_rows;
+
+				?>
+				<ul class="nav nav-tabs" role="tablist">
+					<li role="presentation" class="active">
+						<a href="#order" aria-controls="order" role="tab" data-toggle="tab">Замовлено
+							<?php if($u_orders_c > 0):?>
+								<span class="badge"><?php print $u_orders_c;?></span>
+              <?php else: ?>
+                <span class="badge badge-empty">0</span>
+              <?php endif; ?>
+						</a>
+					</li>
+					<li role="presentation">
+						<a href="#read" aria-controls="read" role="tab" data-toggle="tab">Зараз читаю
+							<?php if($u_reading_c > 0):?>
+								<span class="badge"><?php print $u_reading_c;?></span>
+              <?php else: ?>
+                <span class="badge badge-empty">0</span>
+              <?php endif; ?>
+						</a>
+					</li>
+					<li role="presentation">
+						<a href="#history" aria-controls="history" role="tab" data-toggle="tab">Прочитано
+							<?php if($u_history_c > 0):?>
+								<span class="badge"><?php print $u_history_c;?></span>
+              <?php else: ?>
+                <span class="badge badge-empty">0</span>
+              <?php endif; ?>
+						</a>
+					</li>
+					<li role="presentation">
+						<a href="#favs" aria-controls="favs" role="tab" data-toggle="tab">Список бажань
+							<?php if($u_favs_c > 0):?>
+								<span class="badge"><?php print $u_favs_c;?></span>
+              <?php else: ?>
+                <span class="badge badge-empty">0</span>
+              <?php endif; ?>
+						</a>
+					</li>
+				</ul>
+				<div class="tab-content">
+					<div role="tabpanel" class="tab-pane active" id="order">
+            <div class="description">
+              <?php print variable_get('bookbox_order_tab'); ?>
+            </div>
+						<?php
+              $block = module_invoke('bookbox', 'block_view', 'MonthOrder');
+              print render($block['content']);
+						?>
+					</div>
+					<div role="tabpanel" class="tab-pane" id="read">
+            <div class="description">
+              <?php print variable_get('bookbox_reading_tab'); ?>
+            </div>
+						<?php
+              $block = module_invoke('bookbox', 'block_view', 'ReadingNow');
+              print render($block['content']);
+						?>
+					</div>
+					<div role="tabpanel" class="tab-pane" id="history">
+            <div class="description">
+              <?php print variable_get('bookbox_archive_tab'); ?>
+            </div>
+						<?php
+						  print $u_history;
+						?>
+					</div>
+					<div role="tabpanel" class="tab-pane" id="favs">
+            <div class="description">
+              <?php print variable_get('bookbox_fav_tab'); ?>
+            </div>
+						<?php
+						  print $favs_view->render();
+						?>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="visible-mobile">
+			<?php
+			$u_orders_c = bookbox_count_in_confirm($elements['#account']->uid);
+			$u_reading_c = bookbox_count_in_reading_now($elements['#account']->uid);
+
+			list($x,$y) = _bookbox_user_orders_history();
+			$u_history = $x;
+			$u_history_c = $y;
+
+			$favs_view = views_get_view('user_wishlist');
+			$favs_view->set_display('block_1');
+			$favs_view->set_arguments(array($elements['#account']->uid));
+			$favs_view->pre_execute();
+			$favs_view->execute();
+			$u_favs_c = $favs_view->total_rows;
+			?>
+
+			<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#collapse-group" href="#order-m" class="collapsed">Замовлено <span class="caret"></span></a>
+						</h4>
+					</div>
+					<div id="order-m" class="panel-collapse collapse" aria-expanded="false">
+						<div class="panel-body">
+						<div class="description">
+              <?php print variable_get('bookbox_order_tab'); ?>
+            </div>
+							<?php
+							$block = module_invoke('bookbox', 'block_view', 'MonthOrder');
+							print render($block['content']);
+							?>
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#collapse-group" href="#read-m" class="collapsed">Зараз читаю <span class="caret"></span></a>
+						</h4>
+					</div>
+					<div id="read-m" class="panel-collapse collapse" aria-expanded="false">
+						<div class="panel-body">
+						<div class="description">
+              <?php print variable_get('bookbox_reading_tab'); ?>
+            </div>
+							<?php
+							$block = module_invoke('bookbox', 'block_view', 'ReadingNow');
+							print render($block['content']);
+							?>
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#collapse-group" href="#history-m" class="collapsed">Прочитано <span class="caret"></span></a>
+						</h4>
+					</div>
+					<div id="history-m" class="panel-collapse collapse">
+						<div class="panel-body">
+						<div class="description">
+              <?php print variable_get('bookbox_archive_tab'); ?>
+            </div>
+							<?php
+							print $u_history;
+							?>
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#collapse-group" href="#favs-m" class="collapsed">Вішліст <span class="caret"></span></a>
+						</h4>
+					</div>
+					<div id="favs-m" class="panel-collapse collapse">
+						<div class="panel-body">
+              <div class="description">
+                <?php print variable_get('bookbox_fav_tab'); ?>
+              </div>
+							<?php
+							print $favs_view->render();
+							?>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+

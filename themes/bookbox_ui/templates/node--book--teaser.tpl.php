@@ -117,6 +117,7 @@ if(isset($term->tid)) {
   ?>
 
   <a class="book-card" href="/node/<?php print $node->nid . $term_ref;?>">
+    <span class="book-crust"></span>
     <?php
       print render($content['field_nni']);
       print '<h4>' . $title . '</h4>';
@@ -138,7 +139,7 @@ if(isset($term->tid)) {
     //dsm($node);
     ?>
   </a>
-  
+
   <?php
     print render($content['links']);
 

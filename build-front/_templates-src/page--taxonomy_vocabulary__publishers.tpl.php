@@ -85,11 +85,8 @@ $term = taxonomy_term_load(arg(2));
     <div class="yellow-block">
       <div class="container">
         <?php if (!empty($breadcrumb)): print $breadcrumb; endif;?>
-           <?php print render($title_prefix); ?>
-              <?php if (!empty($title)): ?>
-                <h1 class="page-header"><?php print $title; ?></h1>
-              <?php endif; ?>
-           <?php print render($title_suffix); ?>
+
+         <h1 class="page-header"><?php print $term->name; ?></h1>
 
           <?php if(isset($term->field_url['und'])): ?>
             <div class="publisher-url">
@@ -99,6 +96,15 @@ $term = taxonomy_term_load(arg(2));
               ?>
             </div>
           <?php endif; ?>
+
+        <?php if(isset($term->field_field_url['und'])): ?>
+          <div class="publisher-url">
+            <?php
+            $url = $term->field_field_url['und'][0]['url'];
+            print l($url, $url, array('attributes' => array('target'=>'_blank')));
+            ?>
+          </div>
+        <?php endif; ?>
 
            <div class="page-icon"></div>
         </div>
@@ -115,6 +121,7 @@ $term = taxonomy_term_load(arg(2));
         <ul class="action-links"><?php print render($action_links); ?></ul>
       <?php endif; ?>
 
+      <h2>Книги видавництва</h2>
       <?php print render($page['content']); ?>
 
     </div>

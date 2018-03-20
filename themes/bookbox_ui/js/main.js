@@ -70,6 +70,21 @@
         }
       }
 
+      function BookBoxBlockBuilder(index, book) {
+          var BookContainer = index + ' ' + book,
+              BooksCount=$(BookContainer).length;
+
+          $(index).append('<div class="book-inner-block"></div>');
+          for (var i=1; i<=BooksCount; i++) {
+            $(index + ' ' + '.book-inner-block').append($(BookContainer + ':first'));
+          }
+      }
+
+      function changeFormSelect(hiddenForm, visibleForm) {
+          var currentValue = $(hiddenForm).val();
+          $(visibleForm).val(currentValue);
+      }
+
         function readCookie(name) {
             var nameEQ = name + "=";
             var ca = document.cookie.split(';');
@@ -87,12 +102,84 @@
 
       function checkBookName(bookBlock) {
         for(var tb = 0; tb<$(bookBlock).length; tb++) {
-          // console.log('checking book name');
-          if ($(bookBlock + ':nth-child('+ tb +' ) h4').text().length > 32) {
-            //console.log('book name is too long');
-            var newBookName = $(bookBlock + ':nth-child('+ tb +' ) h4').text().substr(0, 31);
+          if ($(bookBlock + ':nth-child('+ tb +' ) h4').text().length > 44) {
+            var newBookName = $(bookBlock + ':nth-child('+ tb +' ) h4').text().substr(0, 43);
             $(bookBlock + ':nth-child('+ tb +' ) h4').text(newBookName + '...');
           }
+        }
+      }
+
+      function validateTextField(id){
+        var value = $(id).val();
+        if( value.length !== 0){
+          $(id).css('border', '2px solid #dfdfdf');
+          $(id).css('background', '#e9e9e9');
+          $(id).css('color', '#dfdfdf');
+          return true;
+        } else {
+          $(id).css('border', '2px solid #db553f');
+          $(id).css('background', 'rgba(255, 0, 0, .06)');
+          $(id).addClass('webform-error');
+          $(id).attr('placeholder', 'Це поле необхідно заповнити');
+          return false
+        }
+      }
+
+      function validateTel(telId) {
+        var telValue = $(telId).val().trim();
+        var re = /^((8|0|((\+|00)\d{1,2}))[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/;
+        if(telValue.length !== 0 && re.test(telValue) && telValue.length == 12){
+          $(telId).css('border', '2px solid #dfdfdf');
+          $(telId).css('background', '#e9e9e9');
+          $(telId).css('color', '#dfdfdf');
+          return true;
+        } else {
+          if(telValue.length < 1) {
+            $(telId).css('border', '2px solid #db553f');
+            $(telId).css('background', 'rgba(255, 0, 0, .06)');
+            $(telId).attr('placeholder', 'Це поле необхідно заповнити');
+            $(telId).addClass('webform-error');
+            $(telId).val('');
+            return false;
+          }
+          if(!re.test(telValue) && telValue.length > 1 || telValue.length !== 12){
+            console.log('works!');
+            $(telId).css('border', '2px solid #db553f');
+            $(telId).css('background', 'rgba(255, 0, 0, .06)');
+            $(telId).addClass('webform-error');
+            $(telId).attr('placeholder', 'Введіть телефон у форматі 380ХХХХХХХХХ');
+            $(telId).val('');
+            return false;
+          }
+        }
+      }
+
+      function validateNewPass(pass, confirm) {
+          if (pass.val() == '' && confirm.val() == '') {
+            return true;
+          } else if (pass.val() == confirm.val()) {
+            return true;
+          } else if (pass.val() !== confirm.val()) {
+            pass.attr('placeholder', 'Паролі не співпадають');
+            pass.css('border', '2px solid #f86b54');
+            pass.css('border-bottom', 'none');
+            pass.val('');
+            confirm.attr('placeholder', 'Паролі не співпадають');
+            confirm.css('border', '2px solid #f86b54');
+            confirm.val('');
+            return false;
+          }
+      }
+
+      function validateOldPass(oldPass, newPass, confirmPass) {
+        if ((oldPass.val() !== '') && (newPass.val().length === 0) && (confirmPass.val().length === 0)) {
+          newPass.attr('placeholder', 'Необхідно заповнити це поле');
+          newPass.css('border', '2px solid #f86b54');
+          confirmPass.attr('placeholder', 'Необхідно заповнити це поле');
+          confirmPass.css('border', '2px solid #f86b54');
+          return false;
+        } else {
+          return true;
         }
       }
 
@@ -104,13 +191,179 @@
                     $(this).remove();
                 }
             });
+
+            // Submit search button when ajax stop
+          $('#autocomplete .show-all a').not('.books-btn').on('click', function(e) {
+            e.preventDefault();
+
+            setTimeout(function(){
+              $('#finder-form-content-finder').submit();
+            }, 260);
+          });
+
+          checkBookName('#autocomplete ul>li');
         });
 
         $('#userreglink').appendTo("#edit-actions"); //todo in backend
         $('.sort-submenu').insertAfter(".page-header");
 
-        $( document ).ready(function() {
+        function searchResultsActions() {
+            if($('.region-precontent #finder-block-content_finder-wrapper form').length > 0) {
+                var sString = $('#finder-block-content_finder form input.finder-element').val();
+
+                if($('.view-search-results-div').length > 0) {
+                    $('.view-search-results-div').find('span').text(sString);
+                }
+
+                $('.view-search-results-div').insertAfter( ".region-precontent #finder-block-content_finder-wrapper" );
+            }
+        }
+
+      $('.alert.alert-block.alert-success.messages.status').insertBefore($('.page-node-893 .main-container'));
+      $('<h4>Повідомлення надіслано!</h4>').insertBefore($('.page-node-893 .alert.alert-block.alert-success.messages.status p'));
+      $('<a class="btn" data-dismiss="alert">OK</a>').insertAfter($('.page-node-893 .alert.alert-block.alert-success.messages.status p'));
+      $('.page-node-893 .alert.alert-block.alert-success.messages.status p').text('Якнайскоріше відповімо :)');
+
+      if($('.page-node-893 .alert.alert-block.alert-success.messages.status, .node-type-book .alert.alert-block.alert-success.messages.status, .page-user-edit .alert.alert-block.alert-success.messages.status').length) {
+        $('body').addClass('open-alert modal-open');
+      }
+
+      //Script for slides in collection slider. Fix height.
+      var equalheight = function(container) {
+
+        var currentTallest = 0,
+          currentRowStart = 0,
+          rowDivs = new Array(),
+          $el,
+          topPosition = 0;
+        $(container).each(function() {
+
+          $el = $(this);
+          $($el).height('auto')
+          topPostion = $el.position().top;
+
+          if (currentRowStart != topPostion) {
+            for (currentDiv = 0 ; currentDiv < rowDivs.length ; currentDiv++) {
+              rowDivs[currentDiv].height(currentTallest);
+            }
+            rowDivs.length = 0; // empty the array
+            currentRowStart = topPostion;
+            currentTallest = $el.height();
+            rowDivs.push($el);
+          } else {
+            rowDivs.push($el);
+            currentTallest = (currentTallest < $el.height()) ? ($el.height()) : (currentTallest);
+          }
+          for (currentDiv = 0 ; currentDiv < rowDivs.length ; currentDiv++) {
+            rowDivs[currentDiv].height(currentTallest);
+          }
+        });
+      }
+
+      $(window).load(function() {
+        equalheight('.front .view-collections-slider .slick-track .views-row');
+      });
+
+
+      $(window).resize(function(){
+        equalheight('.front .view-collections-slider .slick-track .views-row');
+      });
+
+      //end.
+      $(window).on('load', function() {
+        if ($('body').hasClass('page-user')) {
+          if (location.hash) {
+            setTimeout(function () {
+
+              window.scrollTo(0, 0);
+            }, 0);
+          }
+        }
+
+
+        if ($('body').hasClass('node-type-book')) {
+          var textHeight = $('.text-cover-block').height(),
+              marginBottom,
+              paddingTop;
+
+          if($(window).width() >= 1200 ) {
+            marginBottom = textHeight - 512;
+            paddingTop = 485 - textHeight;
+
+            $('.name-and-links').css('padding-top', paddingTop + 'px');
+            $('.book-cover-block .field-type-image').css('margin-bottom', marginBottom + 'px');
+          }
+          else if ($(window).width() >= 992 && $(window).width() < 1199) {
+              marginBottom = textHeight - 412;
+              paddingTop = 385 - textHeight;
+
+            $('.name-and-links').css('padding-top', paddingTop + 'px');
+            $('.book-cover-block .field-type-image').css('margin-bottom', marginBottom + 'px');
+          }
+        }
+      });
+
+      $('.form-item-current-pass .form-text.error').attr('placeholder', 'Ви ввели невірний пароль.');
+
+      var booksInCategory = parseInt($('.view-search-results-div').text());
+
+      $('.col-sm-9 .form-item-items-per-page option').each(function() {
+        if($(this).attr('value') > booksInCategory && booksInCategory > 12) {
+          $(this).detach();
+        }  else if (booksInCategory <= 12) {
+          $('.col-sm-9 .form-item-items-per-page').css('display', 'none');
+        }
+      });
+
+      $( document ).ready(function() {
             //console.log(Drupal.settings.firstLogin);
+
+            searchResultsActions();
+
+            //Submit forms on Enter and button click on search page and navber
+        $('.page-book-search .yellow-block .finder-element.form-autocomplete').keypress(function(e) {
+          if (e.keyCode == 13) {
+            if ($(this).val() == '') {
+              e.preventDefault();
+            } else {
+              setTimeout(function() {
+                $('#finder-form-content-finder--2').submit();
+              }, 260);
+            }
+          }
+        });
+
+        $('.page-book-search .yellow-block .btn-default.form-submit').click(function(e) {
+          if ($('.page-book-search .yellow-block .finder-element.form-autocomplete').val() == '') {
+            e.preventDefault();
+          } else {
+            setTimeout(function() {
+              $('#finder-form-content-finder--2').submit();
+            }, 250);
+          }
+        });
+
+        $('.navbar .finder-element.form-autocomplete').keypress(function(e) {
+          if (e.keyCode == 13) {
+            if ($(this).val() == '') {
+              e.preventDefault();
+            } else {
+              setTimeout(function() {
+                $('#finder-form-content-finder').submit();
+              }, 260);
+            }
+          }
+        });
+
+        $('.navbar .btn-default.form-submit').click(function(e) {
+          if ($('.navbar .finder-element.form-autocomplete').val() == '') {
+            e.preventDefault();
+          } else {
+            setTimeout(function() {
+              $('#finder-form-content-finder').submit();
+            }, 250);
+          }
+        });
 
             ///url must switch tab
             var hash = window.location.hash;
@@ -131,7 +384,6 @@
                 hash && $('.user-tabs ul.nav a[href="' + hash + '"]').tab('show');
             });
 
-            $('body').append('<div class="scroll-up"></div>');
 
             $( ".region-sidebar-second .block-bookbox" ).each(function( index ) {
                 var $this = $(this),
@@ -152,18 +404,6 @@
             if($('.btn-container.with-tip').length > 0) {
                 $('#block-system-main').addClass('with-tip');
             }
-
-            $('.scroll-up').click(function() {
-                $('html, body').animate({ scrollTop: 0}, 1000 );
-            });
-
-            $(window).scroll(function(){
-                if ($(this).scrollTop() > 300 && $(this).width() < 768 ) {
-                    $('.scroll-up').fadeIn();
-                } else {
-                    $('.scroll-up').fadeOut();
-                }
-            });
 
             var html = document.documentElement;
             var startSize =  parseInt(getComputedStyle(html, '').fontSize);
@@ -190,23 +430,8 @@
                 if( $('.active-left').length ) {
                     $('.active-left').click();
                 }
-            })
-
-            if ($(window).width() <768) {
-                $('.page-faq #block-system-main .view-id-faq .nav-tabs .active').append($('.page-faq #block-system-main .view-id-faq .tab-content'));
-
-                $('.node-type-book .mobile.visible-xs .description-tabs-mobile .nav-tabs .active').append($('.node-type-book .mobile.visible-xs .description-tabs-mobile .tab-content'));
-            }
-
-            $(window).resize(function(){
-                if ($(this).width() < 768 && $('.page-faq #block-system-main .view-id-faq .nav-tabs li.active').children().length == 1) {
-                    $('.page-faq #block-system-main .view-id-faq .nav-tabs .active').append($('.page-faq #block-system-main .view-id-faq .tab-content'));
-                } else if ( $(this).width() >= 768 ) {
-                    $('.page-faq #block-system-main .view-id-faq .tab-content').css('display', 'block');
-                    $('.page-faq #block-system-main .view-id-faq #views-bootstrap-tab-1').append($('.page-faq #block-system-main .view-id-faq .tab-content'));
-                }
-
             });
+
 
             $('.page-faq #block-system-main .view-id-faq .nav-tabs li').click(function(){
                 if ($(window).width() <768) {
@@ -219,21 +444,6 @@
                         });
                     } else {
                         $('.page-faq #block-system-main .view-id-faq .tab-content').slideToggle();
-                    }
-                }
-            });
-
-            $('.node-type-book .mobile.visible-xs .description-tabs-mobile .nav-tabs li').click(function(){
-                if ($(window).width() <768) {
-                    if (!$(this).hasClass('active')) {
-                        $('.node-type-book .mobile.visible-xs .description-tabs-mobile .tab-content').css('display','none');
-                        $(this).append($('.node-type-book .mobile.visible-xs .description-tabs-mobile .tab-content'));
-                        $('.node-type-book .mobile.visible-xs .description-tabs-mobile .tab-content').slideToggle(300, function(){
-                            var offsetActiveBook = $('.node-type-book .mobile.visible-xs .description-tabs-mobile .tab-pane.active').parent().parent().offset().top + 5;
-                            $('html, body').animate( { scrollTop: offsetActiveBook }, 300 );
-                        });
-                    } else {
-                        $('.node-type-book .mobile.visible-xs .description-tabs-mobile .tab-content').slideToggle();
                     }
                 }
             });
@@ -272,31 +482,317 @@
           //
 
           $('.page-user-register .field-name-field-tel input').click(function() {
-            // console.log($(this).val().length);
             if (!$(this).val().length) {
               $(this).val('+380');
             }
           });
 
-          checkBookName('.block-bookbox ul>li');
-
-            $('.navbar .dropdown-toggle .user-name').click(function() {
-              // $('body').toggleClass('openNav');
-            });
+          checkBookName('.front #block-bookbox-manualhits ul>li');
+          checkBookName('.front #block-bookbox-companyhits ul>li');
+          checkBookName('.front #block-bookbox-newbyadmin ul>li');
+          checkBookName('body:not(.front) .block-bookbox ul>li');
+          checkBookName('.page-books .view-content>.views-row');
+          checkBookName('body.books .view-content>.views-row');
+          checkBookName('body.collection .view-content>.views-row');
+          checkBookName('.node-type-book .inner-block-bookbox>li');
+          checkBookName('.publishers .view-content>.views-row');
+          checkBookName('.book-search .view-content>article');
+          checkBookName('body.authors .view-content .views-row');
 
           $('.navbar .menu.secondary').click(function() {
-            if($(window).width() <= 768) {
+            if($(window).width() < 768) {
               $('body').toggleClass('openNav');
             }
           });
 
           //Initialization of pagination for Main page
-            BookBoxPagination('.front', '.block-bookbox');
-            BookBoxPagination('.node-type-book', '.block-bookbox');
-            $('.publishers #block-system-main .term-listing-heading').detach();
-            // BookBoxPagination('.publishers', '#block-system-main');
+          BookBoxPagination('.front', '.block-bookbox');
+          BookBoxPagination('.node-type-book', '.block-bookbox');
+          BookBoxBlockBuilder('.page-user- .visible-desktop #order>form>div', '.book-container');
+          BookBoxBlockBuilder('.page-user- .visible-desktop #read>form>div', '.book-container');
+          BookBoxBlockBuilder('.page-user- .visible-desktop #history', '.node-book');
+          BookBoxBlockBuilder('.page-user- .visible-desktop #favs>.view-user-wishlist>.view-content', '.views-row');
+          BookBoxBlockBuilder('body.authors #block-system-main .view-content', '.views-row');
+
+          changeFormSelect('.books.category .col-sm-3 #edit-items-per-page','.books.category .col-sm-9 #edit-items-per-page');
+          changeFormSelect('.page-books .col-sm-3 #edit-items-per-page','.page-books .col-sm-9 #edit-items-per-page');
+          changeFormSelect('.collection .col-sm-3 #edit-items-per-page','.collection .col-sm-9 #edit-items-per-page');
+          changeFormSelect('.page-books-company-hits .col-sm-3 #edit-items-per-page','.page-books-company-hits .col-sm-9 #edit-items-per-page');
+
+          $('.books.category .col-sm-9 #edit-items-per-page, ' +
+              '.collection .col-sm-9 #edit-items-per-page, ' +
+              '.page-books-company-hits .col-sm-9 #edit-items-per-page, ' +
+              '.page-books .col-sm-9 #edit-items-per-page').change(function() {
+            var thisValue = $(this).val();
+            $('.books.category .col-sm-3 #edit-items-per-page, ' +
+                '.collection .col-sm-3 #edit-items-per-page, ' +
+                '.page-books-company-hits .col-sm-3 #edit-items-per-page, ' +
+                '.page-books .col-sm-3 #edit-items-per-page').val(thisValue).trigger('change');
+          });
+
+          //Add placeholder to finder
+          $('.search-block .finder-element-title').attr('placeholder', 'Пошук за назвою та автором');
+          $('.page-book-search .main-container .finder-element-title').attr('placeholder', 'Пошук за назвою та автором');
+
+          if($(window).width() < 992) {
+            var activeCategory = $('.category #block-system-main-menu .menu.nav>.active-trail>a').text();
+            $('.category #block-bookbox-sidebarfitlerblockcompany').prepend('<button class="comp-block-btn">Всі книги</button>');
+            $('<button class="category-block-btn">Обрати</button>').insertAfter('.category #block-system-main-menu .block-title');
+            $('<button class="lang-block-btn">Обрати</button>').insertAfter('.category #edit-lang-wrapper>label');
+            $('<button class="collection-block-btn">Обрати</button>').insertAfter('.category #block-views-collection-list-block-1 .block-title');
+            $('.category .category-block-btn').text(activeCategory);
+
+            $('.page-books #block-bookbox-sidebarfitlerblockcompany').prepend('<button class="comp-block-btn">Всі книги</button>');
+            $('<button class="category-block-btn">Обрати</button>').insertAfter('.page-books #block-system-main-menu .block-title');
+            $('<button class="lang-block-btn">Обрати</button>').insertAfter('.page-books #edit-lang-wrapper>label');
+            $('<button class="collection-block-btn">Обрати</button>').insertAfter('.page-books #block-views-collection-list-block-1 .block-title');
+
+            $('.collection #block-bookbox-sidebarfitlerblockcompany').prepend('<button class="comp-block-btn">Всі книги</button>');
+            $('<button class="category-block-btn">Обрати</button>').insertAfter('.collection #block-system-main-menu .block-title');
+            $('<button class="lang-block-btn">Обрати</button>').insertAfter('.collection #edit-lang-wrapper>label');
+            $('<button class="collection-block-btn">Обрати</button>').insertAfter('.collection #block-views-collection-list-block-1 .block-title');
+
+            if($('body').hasClass('hits') || $('body').hasClass('new') || $('body').hasClass('company-hits')) {
+              $('.comp-block-btn').text($('.page-header').text());
+            }
+          }
+
+          //For FAQ page
+
+        if($(window).width() < 768 && $('body').hasClass('page-faq')) {
+            var countOfBlocks = $('#views-bootstrap-tab-1 .tab-pane').length;
+
+            for (var i = 0; i< countOfBlocks; i++) {
+              var titleText = $('a[href="#tab-1-' + i + '"]').text();
+
+              $('#tab-1-' + i).prepend('<a href="#link-'+ i +'" class="open-faq-link">' + titleText + '</a>');
+              $('#tab-1-' + i + '>.views-field-body').addClass('open-faq-block');
+              $('#tab-1-' + i + '>.views-field-body').attr('id', 'link-' + i);
+            }
+        }
+
+        //Change structure for Front-page
+
+        if ($('body.front').length && $(window).width() < 768) {
+            $('#block-bookbox-manualhits').append($('#block-bookbox-manualhits > a'));
+            $('#block-bookbox-companyhits').append($('#block-bookbox-companyhits > a'));
+            $('#block-bookbox-newbyadmin').append($('#block-bookbox-newbyadmin > a'));
+        }
+
+        //change links in nav user menu
+
+        if ($(window).width() < 768) {
+            $('.navbar .navbar-nav a[href="/user#order"]').attr('href', '/user#order-m');
+            $('.navbar .navbar-nav a[href="/user#read"]').attr('href', '/user#read-m');
+            $('.navbar .navbar-nav a[href="/user#favs"]').attr('href', '/user#favs-m');
+        }
+
+        //For page-pagination
+        if($(window).width() < 768) {
+            $('.text-center ul.pagination li.active').prev().css('display', 'inline-block');
+            $('.text-center ul.pagination li.active').next().css('display', 'inline-block');
+        }
+
+          if($('body.page-user').length) {
+            var hash = window.location.hash;
+
+            $('.visible-mobile a[href="' + hash + '"]').click();
+          }
+
+        // Add slideDown animation to Bootstrap dropdown when expanding.
+            $('.category .col-sm-3 #block-system-main-menu .dropdown, .page-books .col-sm-3 #block-system-main-menu .dropdown, .collection .col-sm-3 #block-system-main-menu .dropdown').on('show.bs.dropdown', function() {
+              $(this).find('.dropdown-menu').first().stop(true, true).slideDown();
+            });
+            // Add slideUp animation to Bootstrap dropdown when collapsing.
+            $('.category .col-sm-3 #block-system-main-menu .dropdown, .page-books .col-sm-3 #block-system-main-menu .dropdown, .collection .col-sm-3 #block-system-main-menu .dropdown').on('hide.bs.dropdown', function() {
+              $(this).find('.dropdown-menu').first().stop(true, true).slideUp();
+            });
+
+          //Open Dropdown on open category
+          if($(window).width() > 991) {
+            $('.category .col-sm-3 .menu.nav>.active-trail>a').click();
+          }
+
+          $('.category #block-bookbox-sidebarfitlerblockcompany a').click(function() {
+            var newCategory = $(this).text();
+            $('.lang button').text(newCategory);
+          });
+
+          $('#block-bookbox-sidebarfitlerblockcompany .comp-block-btn').click(function(e) {
+            e.preventDefault();
+            $('#block-bookbox-sidebarfitlerblockcompany>ul').toggleClass('visible');
+            $('.open').not(this).click();
+            $(this).toggleClass('open');
+            $('#block-bookbox-sidebarfitlerblockcompany').toggleClass('open-block');
+          });
+
+          $('#block-system-main-menu .category-block-btn').click(function(e) {
+            e.preventDefault();
+            $('#block-system-main-menu .menu.nav').toggleClass('visible');
+            $('.open').not(this).click();
+            $(this).toggleClass('open');
+            $('#block-system-main-menu').toggleClass('open-block');
+          });
+
+          $('#edit-lang-wrapper .lang-block-btn').click(function(e) {
+            e.preventDefault();
+            $('#edit-lang-wrapper .views-widget').toggleClass('visible');
+            $(this).toggleClass('open');
+            $('#block-views-exp-taxonomy-term-page').toggleClass('open-block');
+            $('#block-views-exp-books-page-2').toggleClass('open-block');
+            $('.open').not(this).click();
+            $('#block-views-exp-books-page-1').toggleClass('open-block');
+            $('#block-views-exp-books-page').toggleClass('open-block');
+          });
+
+          $('#block-views-collection-list-block-1 .collection-block-btn').click(function(e) {
+            e.preventDefault();
+            $('#block-views-collection-list-block-1 .view-collection-list').toggleClass('visible');
+            $('.open').not(this).click();
+            $(this).toggleClass('open');
+            $('#block-views-collection-list-block-1').toggleClass('open-block');
+          });
+
+          $('.alert.alert-block.alert-success.messages.status .close, .alert.alert-block.alert-success.messages.status .btn').click(function() {
+            $('body').removeClass('open-alert');
+            $('body').removeClass('modal-open');
+          });
+
+          $('.scroll-to').click(function(e) {
+            e.preventDefault();
+            var target = $(this).attr('href');
+            var offsetScroll = $(target).offset().top;
+            $('html, body').animate( { scrollTop:  offsetScroll}, 800);
+          });
+
+          var firstChild = $('.text-center>ul.pagination>li:first-child span').text();
+          if(firstChild === '1') {
+            $('.text-center>ul.pagination>li').first().addClass('first');
+          }
+
+          $(document).on('click', '.category .col-sm-3 .menu.nav .dropdown-menu', function (e) {
+            e.stopPropagation();
+          });
+          $(document).on('click', '.category .main-container *', function (e) {
+            e.stopPropagation();
+          });
+
+          $(document).on('click', '.page-books .col-sm-3 .menu.nav .dropdown-menu', function (e) {
+            e.stopPropagation();
+          });
+          $(document).on('click', '.page-books .main-container *', function (e) {
+            e.stopPropagation();
+          });
+
+          $('.page-faq .panel-collapse').on('shown.bs.collapse', function () {
+            $('.panel-collapse.in').not(this).siblings('.panel-heading').find('a').click();
+          });
+
+          $('.page-faq .panel-heading a').click(function() {
+            var currentLink = $(this).attr('aria-controls'),
+                currentTab = $('.page-faq .panel-default.' + currentLink);
+
+            currentTab.toggleClass('open');
+          });
 
 
+          $('.page-user- .panel-collapse').on('shown.bs.collapse', function () {
+            $('.profile .panel-collapse.in').not(this).siblings('.panel-heading').find('a').click();
+          });
+
+          $('.node-type-book .change-lang a').click(function(e) {
+            e.preventDefault();
+            $('.node-type-book .books-translations').toggleClass('open');
+          });
+
+          $('.navbar .show-finder').click(function() {
+            $('.navbar').addClass('finder-open');
+            $('.show-finder.bg').addClass('visible');
+          });
+
+          $('.show-finder.bg').click(function() {
+            $('.navbar').removeClass('finder-open');
+            $('.show-finder.bg').removeClass('visible');
+          });
+
+          //VALIDATE OF FORMS
+
+        $('.page-node-893 button.webform-submit').click(function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          var text = validateTextField('#edit-submitted-message');
+
+          if (text) {
+            $('#webform-client-form-892').submit();
+          }
+        });
+
+        $('.page-user-edit #edit-submit').click(function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+
+
+          var tel = validateTel('#edit-field-tel-und-0-value'),
+              oldPass = validateOldPass($('#edit-current-pass'), $('#edit-pass-pass1'), $('#edit-pass-pass2')),
+              newPass = validateNewPass($('#edit-pass-pass1'), $('#edit-pass-pass2'));
+
+
+          if (tel && newPass && oldPass) {
+            $('#user-profile-form').submit();
+          }
+        });
+
+        $('.page-user-edit .form-text.error').click (function() {
+          $(this).removeClass('error');
+          $(this).attr('placeholder', '');
+        });
+
+        $('.form-type-password-confirm .form-text').click(function() {
+          $(this).css('border', 'initial');
+          $(this).css('border-bottom', 'initial');
+        });
+
+        $('#webform-client-form-892 textarea').click(function() {
+          $(this).css('border','');
+          $(this).css('border-bottom', '');
+          $(this).css('background','');
+          $(this).css('color','');
+          $(this).removeClass('webform-error');
+          $(this).attr('placeholder', '');
+        });
+
+        //page-faq
+
+        $('.open-faq-link').click(function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          var textAddress = $(this).attr('href'),
+              inHeight = $(textAddress + ' .field-content').height() + 15;
+
+          $('.open-faq-link.opened-link').not(this).click();
+          $(this).toggleClass('opened-link');
+          $(textAddress).css('max-height', inHeight + 'px');
+          if($(textAddress).hasClass('opened')) {
+            $(textAddress).css('max-height', '0');
+          }
+          $(this).siblings('.open-faq-block').toggleClass('opened');
+
+          $('.open-faq-block:not('+textAddress+')').css('max-height', '0');
+        });
+        $('a[href="#link-0"]').click();
+
+        if($(window).width() < 768) {
+          $('.open-faq-block.opened .panel-title>a').click(function() {
+            setTimeout(function(){
+              var inHeight = $('.open-faq-block.opened .field-content').height() + 22;
+              $('.open-faq-block.opened').css('max-height', inHeight + 'px');
+            }, 200);
+
+          });
+        }
+
+        //Sliders
           $('.view-front-slider>.view-content').slick({
             autoplay: true,
             autoplaySpeed: 8000,
@@ -315,14 +811,22 @@
             cssEase: 'none'
           });
 
-          $('.node-type-book .change-lang a').click(function(e) {
-            e.preventDefault();
-            $('.node-type-book .books-translations').toggleClass('open');
-          });
+          if($(window).width() >= 768 ) {
+            $('.front #block-views-collections-slider-block .view-content').slick({
+              lazyLoad: 'ondemand',
+              dots: true,
+              slidesToScroll: 2,
+              slidesToShow:2
+            });
+          } else {
+            $('.front #block-views-collections-slider-block .view-content').slick({
+              lazyLoad: 'ondemand',
+              dots: true,
+              slidesToScroll: 1,
+              slidesToShow: 1
+            });
+          }
         });
-
-
-
 
         $( document ).on( "click", ".sort-submenu a", function() {
             var $this = $(this),
@@ -352,9 +856,7 @@
         $(".page-user-register #edit-field-company-und").change(function () {
             $( "select option:selected" ).each(function() {
                 var cid = $(this).val(),
-                    tiptext = $( "#clist li:contains(" + cid + ")" ).data('d');
-
-                // $(".page-user-register #edit-mail--2").attr('placeholder', tiptext);
+                tiptext = $( "#clist li:contains(" + cid + ")" ).data('d');
             });
         }).change();
 
@@ -364,22 +866,6 @@
 
             }, 250);
         });
-
-
-        // $(document).mouseup(function (e) {
-        //     var container = $(".search-block");
-        //
-        //     if (!container.is(e.target) && container.has(e.target).length === 0) {
-        //         $('body').removeClass('open-search');
-        //     }
-        //     ////
-        //     var filters = $('.sidebar-filters');
-        //
-        //     if (!filters.is(e.target)
-        //         && filters.has(e.target).length === 0) {
-        //         $('body').removeClass('open-filters');
-        //     }
-        // });
 
         $('#show-filters').click(function() {
             $('body').toggleClass('open-filters');
@@ -395,5 +881,6 @@
             var $this = $(this);
             $('<a data-target="#" class="new-dropdown-toggle" data-toggle="dropdown"></a>').insertAfter($this);
         });
+
     });
 }(jQuery));

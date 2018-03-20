@@ -101,6 +101,7 @@
       <?php print render($page['precontent']); ?>
     </div>
 
+
     <?php if (!empty($page['sidebar_first'])): ?>
       <aside class="col-sm-3" role="complementary">
         <?php print render($page['sidebar_first']); ?>
@@ -120,7 +121,7 @@
                 <h1 class="page-header"><?php print $title; ?></h1>
               <?php endif; ?>
            <?php print render($title_suffix); ?>
-           <div class="page-icon"></div>
+            <div class="page-icon"></div>
         </div>
     </div>
     <div class="container">
@@ -142,6 +143,12 @@
       <aside class="col-sm-4" role="complementary">
         <?php print render($page['sidebar_second']); ?>
       </aside>  <!-- /#sidebar-second -->
+    <?php endif; ?>
+
+    <?php if (!empty($page['content_bottom'])): ?>
+      <div class="col-sm-12" role="complementary">
+        <?php print render($page['content_bottom']); ?>
+      </div>  <!-- /#sidebar-second -->
     <?php endif; ?>
 
   </div>

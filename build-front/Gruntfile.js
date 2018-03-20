@@ -22,13 +22,15 @@ module.exports = function(grunt) {
         less: {
             development: {
                 options: {
-                    paths: ['less'],
                     compress: false,
+                    //sourceMap: true,
                     cleancss: true,
                     dumpLineNumbers: 'comments'
+
                 },
                 files: {
-                    '../themes/bookbox_ui/css/style.css': 'less/style.less'
+                    '../themes/bookbox_ui/css/style.css': 'less/style.less',
+                    '../themes/bookbox_ui/css/maintenance.css': 'less/pages/maintenance.less'
                 }
             }
         },
@@ -42,13 +44,20 @@ module.exports = function(grunt) {
                 files: {
                     // files go here, like so:
                     "../themes/bookbox_ui/templates/page.tpl.php": "_templates-src/page.tpl.php",
+                    "../themes/bookbox_ui/templates/page--user.tpl.php": "_templates-src/page--user.tpl.php",
                     "../themes/bookbox_ui/templates/page--type-book.tpl.php": "_templates-src/page--type-book.tpl.php",
                     "../themes/bookbox_ui/templates/page--user--login.tpl.php": "_templates-src/page--user--login.tpl.php",
                     "../themes/bookbox_ui/templates/page--user--register.tpl.php": "_templates-src/page--user--register.tpl.php",
                     "../themes/bookbox_ui/templates/page--user--password.tpl.php": "_templates-src/page--user--password.tpl.php",
                     "../themes/bookbox_ui/templates/page--user--reset.tpl.php": "_templates-src/page--user--reset.tpl.php",
                     "../themes/bookbox_ui/templates/page--taxonomy_vocabulary__publishers.tpl.php": "_templates-src/page--taxonomy_vocabulary__publishers.tpl.php",
-                    "../themes/bookbox_ui/templates/page--taxonomy_vocabulary__authors.tpl.php": "_templates-src/page--taxonomy_vocabulary__authors.tpl.php"
+                    "../themes/bookbox_ui/templates/page--taxonomy_vocabulary__authors.tpl.php": "_templates-src/page--taxonomy_vocabulary__authors.tpl.php",
+                    "../themes/bookbox_ui/templates/page--taxonomy_vocabulary__collections.tpl.php": "_templates-src/page--taxonomy_vocabulary__collections.tpl.php",
+                    "../themes/bookbox_ui/templates/page--taxonomy_vocabulary__categories.tpl.php": "_templates-src/page--taxonomy_vocabulary__categories.tpl.php",
+                    "../themes/bookbox_ui/templates/page--node--893.tpl.php": "_templates-src/page--node--893.tpl.php", //contacts
+                    "../themes/bookbox_ui/templates/page--book-search.tpl.php": "_templates-src/page--book-search.tpl.php",
+                    "../themes/bookbox_ui/templates/page--views--books.tpl.php": "_templates-src/page--views--books.tpl.php",
+                    "../themes/bookbox_ui/templates/page--views--usercompanyhits.tpl.php": "_templates-src/page--views--usercompanyhits.tpl.php",
                 }
             }
         },
@@ -85,6 +94,7 @@ module.exports = function(grunt) {
         
         postcss: {
             options: {
+              //map: true,
               processors: [
                 require('autoprefixer')({browsers: ['last 2 versions', 'ie 10']})
               ]
