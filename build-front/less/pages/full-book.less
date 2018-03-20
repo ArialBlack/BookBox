@@ -669,9 +669,9 @@
         }
       }
 
-      .field-label-above {
-        padding-bottom: 35px;
-      }
+      //.field-label-above {
+      //  padding-bottom: 35px;
+      //}
 
       .field-label {
         font-family: ubuntu-medium;
@@ -679,6 +679,10 @@
         //color: @input-text;
         color: @header-text-3;
         text-transform: uppercase;
+
+        @media (min-width: @max-sm) {
+          float: left;
+        }
 
         @media (max-width: @max-xs) {
           display: inline-block;

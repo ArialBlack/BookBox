@@ -3,6 +3,12 @@
     position: relative;
 
 
+    .slick-slide {
+      @media (max-width: @mid-xs) {
+        height: 610px;
+      }
+    }
+
     .slick-track:focus,
     .slick-slide:focus {
       border: none;
@@ -151,6 +157,7 @@
         @media (max-width: @mid-xs) {
           padding-top: 5px;
           padding-bottom: 70px;
+          height: 100%;
         }
 
         .col-xs-8 {

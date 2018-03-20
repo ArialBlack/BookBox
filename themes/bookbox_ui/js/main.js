@@ -128,7 +128,7 @@
       function validateTel(telId) {
         var telValue = $(telId).val().trim();
         var re = /^((8|0|((\+|00)\d{1,2}))[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/;
-        if(telValue.length !== 0 && re.test(telValue)){
+        if(telValue.length !== 0 && re.test(telValue) && telValue.length == 12){
           $(telId).css('border', '2px solid #dfdfdf');
           $(telId).css('background', '#e9e9e9');
           $(telId).css('color', '#dfdfdf');
@@ -142,7 +142,7 @@
             $(telId).val('');
             return false;
           }
-          if(!re.test(telValue) && telValue.length > 1) {
+          if(!re.test(telValue) && telValue.length > 1 || telValue.length !== 12){
             console.log('works!');
             $(telId).css('border', '2px solid #db553f');
             $(telId).css('background', 'rgba(255, 0, 0, .06)');
@@ -306,6 +306,7 @@
       $('.form-item-current-pass .form-text.error').attr('placeholder', 'Ви ввели невірний пароль.');
 
       var booksInCategory = parseInt($('.view-search-results-div').text());
+
       $('.col-sm-9 .form-item-items-per-page option').each(function() {
         if($(this).attr('value') > booksInCategory && booksInCategory > 12) {
           $(this).detach();
