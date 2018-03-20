@@ -214,6 +214,18 @@ function bookbox_ui_preprocess_html(&$vars, $hook) {
     $vars['head_title'] = 'Всі книги | Book Box';
   }
 
+  if ($r == 'books/hits') {
+    $vars['head_title'] = 'Хіти | Book Box';
+  }
+
+  if ($r == 'books/new') {
+    $vars['head_title'] = 'Нові надходження | Book Box';
+  }
+
+  if ($r == 'books/company-hits') {
+    $vars['head_title'] = drupal_get_title() . ' | Book Box';
+  }
+
   if (user_is_logged_in()) {
     if($r == 'user/' . $vars['user']->uid . '/edit') {
       $vars['head_title'] = 'Налаштування | Book Box';
