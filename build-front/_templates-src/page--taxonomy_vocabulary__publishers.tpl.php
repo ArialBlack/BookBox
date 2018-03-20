@@ -97,6 +97,15 @@ $term = taxonomy_term_load(arg(2));
             </div>
           <?php endif; ?>
 
+        <?php if(isset($term->field_field_url['und'])): ?>
+          <div class="publisher-url">
+            <?php
+            $url = $term->field_field_url['und'][0]['url'];
+            print l($url, $url, array('attributes' => array('target'=>'_blank')));
+            ?>
+          </div>
+        <?php endif; ?>
+
            <div class="page-icon"></div>
         </div>
     </div>
