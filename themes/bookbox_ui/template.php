@@ -60,15 +60,15 @@ function bookbox_ui_preprocess_page(&$vars) {
   $status = drupal_get_http_header("status");
 
   if(user_is_anonymous() && $status == '404 Not Found') {
-    header('Location: user/login');
+    header('Location: /user/login');
   }
 
   if(user_is_anonymous() && $status == '403 Forbidden') {
-    header('Location: user/login');
+    header('Location: /user/login');
   }
 
-  if(user_is_anonymous() && arg(1) != 'login'){ //check user here
-    header('Location: user/login');
+  if(user_is_anonymous() && arg(0) != 'user'){ //check user here
+    header('Location: /user/login');
   }
 
   if ($views_page = views_get_page_view() ) {
