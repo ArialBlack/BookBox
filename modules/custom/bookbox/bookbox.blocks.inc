@@ -333,28 +333,51 @@ function bookbox_preprocess_companyhits(&$variables) {
   $company_nid = $account->field_company['und'][0]['target_id'];
   $company = node_load($company_nid);
 
-  $date_diff = (time() - $company->created)/60/60/24;
+  $result = db_select('field_data_field_company', 'c')
+    ->fields('c', array('entity_id'))
+    ->condition('c.field_company_target_id', $company_nid)
+    ->execute()->fetchAll();
 
-  if($date_diff > 60) {
-    $view_results = views_get_view_result('company_orders', 'default', $company_nid);
-    $content = null;
+  $company_orders = [];
 
-    if(count($view_results) > 0) {
-      $content = '<ul>';
+  foreach ($result as $uid) {
+    $merge = array_merge($company_orders, _bookbox_user_orders($uid->entity_id));
+    $company_orders = $merge;
+  }
 
-      foreach ($view_results as $row) {
-        $product_id = $row->commerce_line_item_field_data_commerce_line_items__field_dat;
-        $book = _bookbox_get_product_display_by_product_id($product_id);
+  $company_orders = sortAndUnique($company_orders);
+  $c = count($company_orders);
 
+  if($c >= 16) {
+    $c = 16;
+  }
+
+  $content = null;
+
+  if($c > 0) {
+    $content = '<ul>';
+
+    foreach ($company_orders as $key => $row) {
+      $product_id = $key;
+      $book = node_load($product_id);
+
+
+      if($book->status == 1) {
         $node_view = node_view($book, 'teaser');
         $rendered_teaser = render($node_view);
-
         $content = $content . '<li>' . $rendered_teaser . '</li>';
+        $c--;
       }
-      $content = $content . '</ul>';
-    }
+
+      if($c == 0) {
+        break;
+      }
+    }//foreach
+
+    $content = $content . '</ul>';
     $variables['bookslist'] = $content;
     $variables['name'] = $company->title;
+
   } else {
     $variables['bookslist'] = null;
   }

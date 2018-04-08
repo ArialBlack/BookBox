@@ -349,6 +349,38 @@ function _bookbox_user_orders_history() {
   return array($content, $c);
 }
 
+//Формує список замовлення юзера
+function _bookbox_user_orders($uid) {
+  $content = '';
+
+  $result = db_select('commerce_order', 'o')
+    ->fields('o', array('order_id'))
+    ->condition('o.uid', $uid)
+    ->condition('o.status', 'archive')
+    ->execute()->fetchAll();
+
+  $user_product_displays = array();
+  $c = 0;
+
+  foreach ($result as $res) {
+    $order = commerce_order_load($res->order_id);
+    $line_item_id = $order->commerce_line_items['und'][0]['line_item_id'];
+    $line_item = commerce_line_item_load($line_item_id);
+    $product_id =  $line_item->commerce_product['und'][0]['product_id'];
+    $product_display = _bookbox_get_product_display_by_product_id($product_id);
+
+    if($product_display) {
+      if ($product_display->nid > 0) {
+        $user_product_displays[$c] = array();
+        $user_product_displays[$c] = $product_display->nid;
+        $c++;
+      }
+    }
+  }
+
+  return $user_product_displays;
+}
+
 function verbose_book_num($num, $form_for_1, $form_for_2, $form_for_5){
   $num = abs($num) % 100;
   $num_x = $num % 10;
@@ -360,4 +392,11 @@ function verbose_book_num($num, $form_for_1, $form_for_2, $form_for_5){
   if ($num_x == 1)
     return $num . ' ' . $form_for_1;
   return $num . ' ' . $form_for_5;
+}
+
+function sortAndUnique($array) {
+  arsort($array);
+  $array = array_count_values($array);
+  arsort($array, SORT_NUMERIC);
+  return $array;
 }

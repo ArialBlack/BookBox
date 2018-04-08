@@ -28,7 +28,10 @@
 <?php
   $product_id = strip_tags($fields['commerce_product']->content, '');
   $book = _bookbox_get_product_display_by_product_id($product_id);
-  $node_view = node_view($book, 'teaser');
-  $rendered_teaser = render($node_view);
-  print $rendered_teaser;
+
+  if($book->status == 1) {
+    $node_view = node_view($book, 'teaser');
+    $rendered_teaser = render($node_view);
+    print $rendered_teaser;
+  }
 ?>
