@@ -72,6 +72,10 @@ function bookbox_ui_preprocess_page(&$vars) {
   }
 
   if ($views_page = views_get_page_view() ) {
+    if(user_is_anonymous()) {
+      header('Location: /user/login');
+    }
+
     if ($views_page->name === "books") {
       $vars['theme_hook_suggestions'][] = 'page__views__books';
     }
@@ -94,6 +98,9 @@ function bookbox_ui_preprocess_page(&$vars) {
       $tid = $urlparams['term'];
     } else {
       if ($vars['node']->type == 'book') {
+        if(user_is_anonymous()) {
+          header('Location: /user/login');
+        }
         $nid = $vars['node']->nid;
         $node = node_load($nid);
         $tid = $node->field_book_category['und'][1]['tid'];
