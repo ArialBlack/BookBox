@@ -59,6 +59,10 @@ function bookbox_ui_preprocess_page(&$vars) {
   $url  = request_path();
   $status = drupal_get_http_header("status");
 
+  if(user_is_anonymous() && drupal_is_front_page()) {
+    header('Location: /user/login');
+  }
+
   if(user_is_anonymous() && $status == '404 Not Found') {
     header('Location: /user/login');
   }
